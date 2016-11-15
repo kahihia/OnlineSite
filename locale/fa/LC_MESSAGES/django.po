@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-17 18:28+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: interpay/templates/base.html:57
+msgid "Home Page "
+msgstr "صفحه اصلی"
+
+#: interpay/templates/base.html:78
+msgid "'s Profile"
+msgstr "پروفایل "
+
+#: interpay/templates/base.html:109
+msgid "Home"
+msgstr "صفحه اصلی"
+
+#: interpay/templates/base.html:119
+msgid "Wallets"
+msgstr "کیف پول من"
+
+#: interpay/templates/base.html:129
+msgid " Transaction History"
+msgstr "پیشینه تراکنش"
+
+#: interpay/templates/base.html:140
+msgid " Reports"
+msgstr "گزارش های مالی"
+
+#: interpay/templates/base.html:151
+msgid " General"
+msgstr "اطلاعات عمومی حساب"
+
+#: interpay/templates/base.html:160
+msgid "Name"
+msgstr "نام "
+
+#: interpay/templates/base.html:161
+msgid "Login ID"
+msgstr "شناسه ورود"
+
+#: interpay/templates/base.html:162
+msgid "InterPay ID"
+msgstr "شناسه interpay"
+
+#: interpay/templates/base.html:165
+msgid "Logout"
+msgstr " خروج "
+
+#: interpay/templates/general.html:9 interpay/templates/general.html:16
+msgid "General"
+msgstr "اطلاعات عمومی حساب"
+
+#: interpay/templates/general.html:21 interpay/templates/reports.html:27
+msgid ""
+"This page is still under construction ... . we will be at your service soon."
+msgstr "این صفحه همچنان در دست آماده سازی است. از شکیبایی شما سپاسگزاریم."
+
+#: interpay/templates/home.html:20
+msgid "Welcome to interpay"
+msgstr "به interpay خوش آمدید"
+
+#: interpay/templates/home.html:26
+msgid ""
+"Interpay is an online electronic service which provides a safe and secure "
+"platform for business transactions and e-commerce. No matter you are the "
+"merchant or the consumer, we will bring you an enjoyable experience of "
+"transaction."
+msgstr ""
+"اینترپی یک بستر آنلاین است که به شما اجازه می دهد تا در محیطی امن و به راحتی "
+"تراکنش های مالی و خریدهای اینترتی خود را انجام دهید."
+
+#: interpay/templates/reports.html:11
+msgid "Reports"
+msgstr "گزارش مالی"
+
+#: interpay/templates/reports.html:22
+msgid "Wallet Report"
+msgstr "کیف پول من"
+
+#: interpay/templates/trans_history.html:10
+msgid "Transaction History "
+msgstr "پیشینه تراکنش"
+
+#: interpay/templates/trans_history.html:20
+msgid "Transaction History"
+msgstr "پیشینه تراکنش"
+
+#: interpay/templates/trans_history.html:66
+msgid "Transaction Date"
+msgstr "تاریخ تراکنش"
+
+#: interpay/templates/trans_history.html:69
+msgid "Bank Name"
+msgstr "بانک"
+
+#: interpay/templates/trans_history.html:72
+msgid "Wallet Holder Name"
+msgstr "صاحب حساب"
+
+#: interpay/templates/trans_history.html:75
+msgid "Activity"
+msgstr "نوع فعالیت "
+
+#: interpay/templates/trans_history.html:78
+msgid "Index Number"
+msgstr "شماره در لیست"
+
+#: interpay/templates/trans_history.html:81
+msgid "Interpay ID"
+msgstr "شناسه interpay"
+
+#: interpay/templates/trans_history.html:84
+msgid "Transaction Desc."
+msgstr "توضیحات"
+
+#: interpay/templates/trans_history.html:87
+msgid "Amount"
+msgstr "مقدار"
+
+#: interpay/templates/trans_history.html:110
+#: interpay/templates/wallets.html:91
+msgid "My total stock in"
+msgstr "کل نقدینگی من در واحد "
+
+#: interpay/templates/trans_history.html:110
+#: interpay/templates/wallets.html:91
+msgid "USD"
+msgstr "دلار"
+
+#: interpay/templates/wallets.html:11
+#, fuzzy
+#| msgid "Wallet Info"
+msgid "Wallet Info "
+msgstr "کیف پول من"
+
+#: interpay/templates/wallets.html:22
+msgid "Wallet Info"
+msgstr "کیف پول من"
+
+#: interpay/templates/wallets.html:54
+msgid "Wallet Code"
+msgstr "شماره حساب"
+
+#: interpay/templates/wallets.html:57
+msgid "Wallet Type"
+msgstr "نوع حساب"
+
+#: interpay/templates/wallets.html:60
+msgid "Currency Name"
+msgstr "نام ارز"
+
+#: interpay/templates/wallets.html:63
+msgid "Currenncy Symbol"
+msgstr "نماد واحد ارز"
+
+#: interpay/templates/wallets.html:66
+msgid "Balance"
+msgstr "مانده ارز"
+
+#: interpay/templates/wallets.html:69
+msgid "Wallet Description"
+msgstr "توضیحات"

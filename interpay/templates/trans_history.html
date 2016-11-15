@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}
+        {% trans 'Transaction History ' %}
+    {% endblock %}</title>
+    {% block CSS %}
+        <link rel="stylesheet" href="{% static 'css/trans_history.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block cont-header %}
+    <div>
+        <h3 class="page-title">
+            {% trans 'Transaction History' %}
+        </h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+    <div id="" class="row">
+        <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper">
+            <div id="trans-his-tab-searchbar" class="row ">
+                <span id="display-records" class="col-sm-6">
+                    <i class="fa fa-eye" aria-hidden="true">
+                        <select>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="500">500</option>
+                        </select>
+                    </i>
+                </span>
+            </div>
+            <table id="trans-his-tab">
+                <thead>
+                <tr role="row" class="table-header-row">
+                    <td class="table-header-cell">
+                    </td>
+                    <td class="table-header-cell">
+                    </td>
+                    <td class="table-header-cell">
+                    </td>
+                    <td class="table-header-cell">
+                    </td>
+                    <td class="table-header-cell">
+                    </td>
+                    <td class="table-header-cell">
+                    </td>
+                    <td class="table-header-cell">
+
+                    </td>
+                    <td class="table-header-cell">
+
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header-cell">
+                        {% trans 'Transaction Date' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Bank Name' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Wallet Holder Name' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Activity' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Index Number' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Interpay ID' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Transaction Desc.' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Amount' %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {#                {% for e in entries %}#}
+                <tr>
+                    <td class="table-cell"></td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell"></td>
+                </tr>
+                {#                {% endfor %}#}
+
+                </tbody>
+            </table>
+            <div id="trans-his-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+                <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
+                <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4">
+                    <b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ 1000 }}</b></h5>
+            </div>
+        </div>
+        <hr>
+    </div>
+{% endblock %}
+</body>
+</html>

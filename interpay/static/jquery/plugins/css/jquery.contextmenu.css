@@ -1,0 +1,217 @@
+.context-menu-theme-default {
+    background-color: #D4D0C8;
+    border: 2px outset white;
+}
+.context-menu-theme-default .context-menu-item {
+    color: black;
+    cursor: pointer;
+    font-family: Tahoma,Arial;
+    font-size: 11px;
+    padding: 4px 28px 4px 16px;
+    text-align: left;
+}
+.context-menu-theme-default .context-menu-separator {
+    border-bottom: 1px solid white;
+    border-top: 1px solid #808080;
+    font-size: 0;
+    margin: 4px 2px;
+}
+.context-menu-theme-default .context-menu-item-disabled {
+    color: #808080;
+}
+.context-menu-theme-default .context-menu-item .context-menu-item-inner {
+    background: none no-repeat fixed 999px 999px transparent;
+}
+.context-menu-theme-default .context-menu-item-hover {
+    background-color: #0A246A;
+    color: white;
+}
+.context-menu-theme-default .context-menu-item-disabled-hover {
+    background-color: #0A246A;
+}
+.context-menu-theme-xp {
+    background: url("cmenu-xp-bg.gif") repeat-y scroll left top #F9F8F7;
+    border: 1px solid #666666;
+    padding: 1px;
+}
+.context-menu-theme-xp .context-menu-separator {
+    border-bottom: 1px solid white;
+    border-top: 1px solid #808080;
+    font-size: 0;
+    margin: 4px 2px;
+}
+.context-menu-theme-xp .context-menu-item {
+    color: black;
+    cursor: pointer;
+    font-family: arial;
+    font-size: 11px;
+    text-align: left;
+}
+.context-menu-theme-xp .context-menu-item .context-menu-item-inner {
+    background: none no-repeat scroll 2px center transparent;
+    padding: 4px 10px 4px 30px;
+}
+.context-menu-theme-xp .context-menu-item-hover .context-menu-item-inner {
+    background: none no-repeat scroll 2px center #B6BDD2;
+    border: 1px solid #0A246A;
+    padding: 3px 9px 3px 29px;
+}
+.context-menu-theme-vista {
+    background: url("cmenu-vista-bg.gif") repeat-y scroll left top #FAFAFA;
+    border: 1px solid #868686;
+}
+.context-menu-theme-vista .context-menu-item {
+    color: black;
+    cursor: pointer;
+    font-family: Tahoma,Arial;
+    font-size: 11px;
+    text-align: left;
+}
+.context-menu-theme-vista .context-menu-separator {
+    border-bottom: 1px solid #F5F5F5;
+    border-top: 1px solid #C5C5C5;
+    font-size: 0;
+    margin: 0 0 0 32px;
+}
+.context-menu-theme-vista .context-menu-item-hover {
+    background: url("cmenu-vista-menu-item-hover.gif") repeat-x scroll left center transparent;
+    border: 1px solid #D7D0B3;
+}
+.context-menu-theme-vista .context-menu-item .context-menu-item-inner {
+    background-image: none;
+    background-position: 3px center;
+    background-repeat: no-repeat;
+    margin-left: 1px;
+    padding: 4px 16px 4px 35px;
+}
+.context-menu-theme-vista .context-menu-item-hover .context-menu-item-inner {
+    margin-left: 0;
+    padding: 3px 15px 3px 35px;
+}
+.context-menu-theme-vista .context-menu-item-disabled {
+    color: #A7A7A7;
+}
+.context-menu-theme-osx {
+    background-color: white;
+    border: 1px solid #B2B2B2;
+    opacity: 0.93;
+}
+.context-menu-theme-osx .context-menu-item {
+    color: black;
+    cursor: pointer;
+    font-family: Lucida Grande,Arial;
+    font-size: 12px;
+    font-weight: 700;
+    opacity: 1;
+    text-align: left;
+    z-index: 1;
+}
+.context-menu-theme-osx .context-menu-separator {
+    border-top: 1px solid #E4E4E4;
+    font-size: 0;
+    margin: 5px 1px 4px;
+}
+.context-menu-theme-osx .context-menu-item-hover {
+    background-color: #1C44F2;
+    color: white;
+}
+.context-menu-theme-osx .context-menu-item .context-menu-item-inner {
+    background-image: none;
+    background-position: 4px center;
+    background-repeat: no-repeat;
+    padding: 2px 10px 2px 22px;
+}
+.context-menu-theme-osx .context-menu-item-disabled {
+    color: #939393;
+}
+.context-menu-theme-human {
+    background: none repeat scroll 0 0 #F9F5F2;
+    border: 1px solid #996633;
+}
+.context-menu-theme-human .context-menu-item {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #F9F5F2 -moz-use-text-color;
+    border-image: none;
+    border-style: solid none;
+    border-width: 1px 0;
+    color: black;
+    cursor: pointer;
+    font-family: Helvetica,DejaVu Sans,Arial;
+    font-size: 12px;
+    height: 28px;
+    line-height: 20px;
+    text-align: left;
+}
+.context-menu-theme-human .context-menu-separator {
+    border-bottom: 1px solid #F5F5F5;
+    border-top: 1px solid #C5C5C5;
+    font-size: 0;
+    margin: 0 0 0 32px;
+}
+.context-menu-theme-human .context-menu-item-hover {
+    background: url("cmenu-human-menu-item-hover.gif") repeat-x scroll left center transparent;
+    border-color: #996633;
+}
+.context-menu-theme-human .context-menu-item .context-menu-item-inner {
+    background-image: none;
+    background-position: 3px center;
+    background-repeat: no-repeat;
+    margin-left: 0;
+    padding: 4px 16px 4px 35px;
+}
+.context-menu-theme-human .context-menu-item-hover .context-menu-item-inner {
+}
+.context-menu-theme-human .context-menu-item-disabled {
+    color: #A7A7A7;
+}
+.context-menu-theme-gloss {
+    background: url("cmenu-gloss-bg.gif") repeat-y scroll left center #F4F4F4;
+    border: 1px solid #F4F4F4;
+    padding: 1px 0 1px 1px;
+}
+.context-menu-theme-gloss .context-menu-item {
+    border: 1px solid transparent;
+    color: black;
+    cursor: pointer;
+    font-family: Helvetica,DejaVu Sans,Arial;
+    font-size: 12px;
+    height: 27px;
+    line-height: 20px;
+    text-align: left;
+}
+.context-menu-theme-gloss .context-menu-separator {
+    border-bottom: 1px solid #F5F5F5;
+    border-top: 1px solid #C5C5C5;
+    font-size: 0;
+    margin: 0 0 0 32px;
+}
+.context-menu-theme-gloss .context-menu-item-hover {
+    background: url("cmenu-gloss-menu-item-hover.gif") repeat-x scroll left center transparent;
+    border-color: #000000;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+}
+.context-menu-theme-gloss .context-menu-item .context-menu-item-inner {
+    background-image: none;
+    background-position: 3px center;
+    background-repeat: no-repeat;
+    margin-left: 0;
+    padding: 4px 16px 4px 35px;
+}
+.context-menu-theme-gloss .context-menu-item-hover .context-menu-item-inner {
+}
+.context-menu-theme-gloss .context-menu-item-disabled {
+    color: #A7A7A7;
+}
+.context-menu-theme-gloss-cyan .context-menu-item-hover {
+    background-image: url("cmenu-gloss-cyan-menu-item-hover.gif");
+    border-color: #0000CC;
+}
+.context-menu-theme-gloss-semitransparent .context-menu-item-hover {
+    background-color: #3300FF;
+    background-image: url("cmenu-item-gloss-semitransparent-menu-item-hover.png");
+    border-color: #0000CC;
+}
