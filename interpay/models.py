@@ -160,15 +160,16 @@ class BankAccount(models.Model):
             print self.deposit_set.on_date(current_date).count()
             result -= sum(x.total for x in self.cashing_set.on_date(current_date))
             result -= sum(x.total for x in self.outcome_transfers.on_date(current_date))
-            result = sum(x.total for x in self.deposit_set.on_date(current_date))
+            result += sum(x.total for x in self.deposit_set.on_date(current_date))
             # for c,x in groupby(self.deposit_set.on_date(current_date), lambda x: x.cur_code):
             #     result[c]+= sum(y.total for y in x)
             result += sum(x.total for x in self.income_transfers.on_date(current_date))
-            result *= 1-(rule.deposit_charge_percent * 0.01)
+
             current_date += timedelta(days=1)
             print rule.deposit_charge_percent
 
          #   print current_date
+        result *= 1 - (rule.deposit_charge_percent * 0.01)
         return result
 
     @property

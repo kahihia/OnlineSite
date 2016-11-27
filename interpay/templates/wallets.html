@@ -47,7 +47,7 @@
                     </i>
                 </span>
             </div>
-            {% for account in accountList %}
+
             <table id="wal-tab">
                 <thead>
                 <tr class="table-header-row">
@@ -61,7 +61,7 @@
                         {% trans 'Currency Name' %}
                     </th>
                     <th class="table-header-cell">
-                        {% trans 'Currenncy Symbol' %}
+                        {% trans 'Currency Symbol' %}
                     </th>
                     <th class="table-header-cell">
                         {% trans 'Balance' %}
@@ -73,21 +73,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                {#                {% for e in entries %}#}
+                {% for account in accountList %}
                 <tr>
+                    <td class="table-cell">{{ account.account_id }}</td>
+                    <td class="table-cell">user</td>
                     <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
+                    <td class="table-cell">{{ account.cur_code }}</td>
                     <td class="table-cell">{{ account.balance }}</td>
+                    <td class="table-cell">{{ account.name }}</td>
                     <td class="table-cell"></td>
                 </tr>
-                {#                {% endfor %}#}
+                {% endfor %}
 
                 </tbody>
             </table>
-            {% endfor %}
+
             <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
                 <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
                 <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4"><b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ 1000 }}</b></h5>
