@@ -11,17 +11,47 @@
         <link rel="stylesheet" href="{% static 'css/index.css' %}">
     {% endblock %}
 
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
-    <link rel="stylesheet" href="{% static "bower_components/font-awesome/css/font-awesome.css" %}">
-    <link rel="stylesheet" href="{% static "bower_components/font-awesome/css/font-awesome.min.css" %}">
 </head>
 <body>
+<script>
+    {% block script %}
+        function forgot_pass() {
+            swal({
+                title: "Password Retrieval",
+                text: "Enter your phone number",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "Phone number"
+            }, function (inputValue) {
+                if (inputValue === "") {
+                    swal.showInputError("You need enter your number");
+                    return false
+                }
+                var postUrl = "/retrieve_pass/";
+                $.ajax({
+                    url: postUrl,
+                    type: 'POST',
+                    data: {'mobile_no': inputValue},
+                    traditional: true,
+                    dataType: 'html',
+                    success: function (result) {
+                        // for now, this method is the same as sending a common sms, but it has to be improved
+                        // to generating a more secure password and email it as well as SMSing #TODO
+                        swal(result, "A new password was sent to your phone.", "success");
+                    }
+                });
+            });
+        }
+    {% endblock %}
+
+</script>
 <header>
     <div class="top-bar">
         <div class="container" style="color: white;">
             <b>{% block header_title %}
-                Welcome to InterPay Iran
+                Welcome to InterPay Iran (Rizpardakht)
             {% endblock %}</b>
 
             <div class="row">
@@ -38,18 +68,20 @@
             {% block main-cont %}
 
                 <div class="col-xs-12" style="text-align: center ">
-                    <h3 style="margin-top: 40px">Welcome to Interpay Iran</h3>
+                    <h3 style="margin-top: 40px">{% trans 'Welcome to Interpay Iran' %}</h3>
 
                     <div class="form-wrapper" id="login-form-wrapper">
                         <div style="font-size: larger"><i class="fa fa-sign-in" style="padding-right: 5px"
                                                           aria-hidden="true"></i>
-                            Login to Interpay
+                            {% trans 'Login to Interpay' %}
                         </div>
                         <div>{% block message %}
                             {% if msg %}
-{#                                TODO this style should be omitted and implemented via registration-form.css #}
-                                <div class="form-msg" style="padding: 10px 5px;color: red;font-size: small;margin-top: 5px"><i class="fa fa-exclamation-triangle" style="color: red"
-                        aria-hidden="true"></i> {{ msg }}</div>
+                                {#                                TODO this style should be omitted and implemented via registration-form.css #}
+                                <div class="form-msg"
+                                     style="padding: 10px 5px;color: red;font-size: small;margin-top: 5px"><i
+                                        class="fa fa-exclamation-triangle" style="color: red"
+                                        aria-hidden="true"></i> {{ msg }}</div>
                             {% endif %}
                         {% endblock %}</div>
                         <hr>
@@ -63,15 +95,30 @@
                                                           id="password" value=""
                                                           placeholder="Password" size="50"/>
                             </div>
+                            {#                            <input type="text" id="mobile_number" name="mobile_number" placeholder="111-111-1111"#}
+                            {#                                   required>#}
+                            {#                            <button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN#}
+                            {#                            </button>#}
                             <div id="lgn-btn-div" style="text-align: center"><input
-                                    id="submit-btn"
+                                    id="login-btn"
                                     class="btn btn-info" type="submit"
-                                    value="Login"/></div>
+                                    value="{% trans 'Login' %}"/></div>
                         </form>
+                        <div id="forgot-pass-div" style="text-align: center"><h6><a
+                                onclick="forgot_pass()">{% trans 'Forgot password or account disabled ?' %}</a></h6>
+                        </div>
                     </div>
-                    <div id="register-div">
-                        <h6>Don't have an account yet?</h6>
-                        <a id="register-link" href="/register/">Create One!</a>
+                    <div id="register-link-div">
+                        <h6>{% trans "Don't have an account yet?" %}</h6>
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a id="register-link" href="/register/">
+                            {% else %}
+                            <a id="register-link" href="/fa-ir/register/">
+                        {% endifequal %}
+                        {% trans 'Create One!' %}
+                        </a><br/>
+
+                        {#                        <a id="register-link" href="/register/">{% trans 'Create One!' %}</a>#}
                     </div>
                 </div>
             {% endblock %}

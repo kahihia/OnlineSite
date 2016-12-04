@@ -14,7 +14,7 @@
 .top-bar {
     background-color: #438eb9;
     padding: 5px 0 5px 15px;
-    line-height: 40px;
+    line-height: 10px;
     border-radius: 0;
     margin-bottom: 0;
     height: 17%;
@@ -42,6 +42,11 @@ label[for=id_date_of_birth_day] {
     font-weight: 500;
 }
 
+/*label[for=id_national_card_photo] {*/
+    /*display: inline-block !important;*/
+    /*font-weight: 500;*/
+/*}*/
+
 /*TODO this task should be done in a correct and neat way. */
 span.helptext {
     display: none !important;
@@ -52,8 +57,8 @@ span.helptext {
     content: "* ";
 }
 
-#submit-btn {
-    width: 30%;
+#submit-btn #continue-btn {
+    width: 35%;
     margin: 20px auto 10px;
 }
 
@@ -81,5 +86,17 @@ span.helptext {
 
 .login-register-div {
     margin-bottom: 30px;
-    margin-top: 15tpx;
+    margin-top: 15px;
+}
+
+#translation-link {
+    float: right;
+    width: 5%;
+    padding: 13px;
+    font-size: 12px;
+    text-align: center;
+}
+
+input#id_national_card_photo {
+    display: none;!important;
 }

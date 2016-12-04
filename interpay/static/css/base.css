@@ -139,6 +139,7 @@
     padding: 13px;
     font-size: 12px;
     text-align: center;
+    cursor: pointer
 }
 
 @media only screen and (max-device-width: 480px) {

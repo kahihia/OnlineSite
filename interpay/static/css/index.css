@@ -10,3 +10,8 @@
     margin-top: 60px;
     width: 30%;
 }
+
+#login-btn{
+    width: 30%;
+    margin: 20px auto 10px;
+}

@@ -17,7 +17,8 @@ import random
 import time
 from itertools import groupby
 from collections import defaultdict
-from currencies.utils import calculate
+from currencies.utils import convert
+from decimal import Decimal
 
 class Manager(BaseUserManager):
     def create_user(self, USERNAME_FIELD, email, password):
@@ -34,10 +35,13 @@ class UserProfile(models.Model):
     password = models.CharField(max_length=10, null=False, blank=False)
     picture = models.ImageField(upload_to='userProfiles/', null=True, blank=True)
     date_of_birth = models.DateTimeField(null=False, blank=False)
-    date_joined = models.DateTimeField(default=datetime.now)
+    date_joined = models.DateTimeField(default=datetime.now())
     country = CountryField(default="Iran")
-    national_code = models.CharField(max_length=10,null=False, blank=False)
-    email = models.EmailField()
+    national_code = models.CharField(max_length=10, null=False, blank=False)
+    mobile_number = models.CharField(max_length=11, null=True, blank=True)
+    email = models.EmailField(null=False, blank=False)
+    # TODO : this field should not be nullable. fix it.
+    national_card_photo = models.ImageField(upload_to='nationalCardScans/', null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
@@ -72,7 +76,12 @@ class CommonUser(models.Model):
         return '{} - {}'.format(self.customer_ID, self.user_ID.name)
 
 
+class VerificationCodes(models.Model):
+    user_code = models.IntegerField()
+    user = models.ForeignKey(UserProfile, null=False, related_name='verif_code_user')
 
+    def __str__(self):
+        return '{} - {}'.format(self.user, self.user.name)
 
 class Rule(models.Model):
     my_formats = get_format('DATETIME_INPUT_FORMATS')
@@ -135,14 +144,14 @@ class BankAccount(models.Model):
     cur_code = models.CharField(_('cur_code'), max_length=3, default='IRR')
 
     def totalValue(self):
-        totalValue  = 0;
-        totalEstimate = defaultdict(lambda: 0.0)
+        tValue  = Decimal(0)
+        totalEstimate = defaultdict(lambda: Decimal(0.0))
         qset  = BankAccount.objects.filter(owner  = self.owner)
         for account in qset:
-            totalEstimate[account.cur_code] += account.balance
+            totalEstimate[account.cur_code] += Decimal(convert(account.balance, account.cur_code, 'USD'))
+            tValue += totalEstimate[account.cur_code]
 
-        totalValue  = totalEstimate['USD']
-        return totalValue
+        return tValue.quantize(Decimal("0.01"), rounding=Decimal.ROUND_UP)
         # todo define total value
 
     @property
