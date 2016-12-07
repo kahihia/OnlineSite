@@ -151,7 +151,7 @@ class BankAccount(models.Model):
             totalEstimate[account.cur_code] += Decimal(convert(account.balance, account.cur_code, 'USD'))
             tValue += totalEstimate[account.cur_code]
 
-        return tValue.quantize(Decimal("0.01"), rounding=Decimal.ROUND_UP)
+        return tValue.quantize(Decimal("0.01"))
         # todo define total value
 
     @property
@@ -165,14 +165,14 @@ class BankAccount(models.Model):
         result  = 0
         while current_date <= datetime.date(today):
          #   print 'count of sets'
-            print self.income_transfers.on_date(current_date).count()
-            print self.deposit_set.on_date(current_date).count()
-            result -= sum(x.total for x in self.cashing_set.on_date(current_date))
-            result -= sum(x.total for x in self.outcome_transfers.on_date(current_date))
-            result += sum(x.total for x in self.deposit_set.on_date(current_date))
+           # print self.income_transfers.on_date(current_date).count()
+            #print self.deposit_set.on_date(current_date).count()
+            result -= sum(x.total for x in self.cashing_set.on_date_c(current_date, self.cur_code))
+            result -= sum(x.total for x in self.outcome_transfers.on_date_c(current_date, self.cur_code))
+            result += sum(x.total for x in self.deposit_set.on_date_c(current_date, self.cur_code))
             # for c,x in groupby(self.deposit_set.on_date(current_date), lambda x: x.cur_code):
             #     result[c]+= sum(y.total for y in x)
-            result += sum(x.total for x in self.income_transfers.on_date(current_date))
+            result += sum(x.total for x in self.income_transfers.on_date_c(current_date, self.cur_code))
 
             current_date += timedelta(days=1)
             print rule.deposit_charge_percent
@@ -200,8 +200,12 @@ class BankAccount(models.Model):
 
 class OperationManager(models.Manager):
 
+
+    def on_date_c(self, date, cc):
+        return (super(OperationManager, self).get_queryset()).filter(when__gte=date, when__lte=date, cur_code=cc)
+
     def on_date(self, date):
-        return (super(OperationManager, self).get_queryset()).filter(when__gte=date, when__lte=date)
+        return (super(OperationManager, self).get_queryset()).filter(when__gte=date, when__lte=date, cur_code='USD')
 
 
 class MoneyTransfer(models.Model):
