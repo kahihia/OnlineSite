@@ -11,6 +11,7 @@ from interpay.forms import RegistrationForm, UserForm
 from django.views.decorators.csrf import csrf_exempt
 from firstsite.SMS import ds, api
 from interpay import models
+from interpay.models import BankAccount
 from random import randint
 import json
 

@@ -151,7 +151,7 @@ class BankAccount(models.Model):
             totalEstimate[account.cur_code] += Decimal(convert(account.balance, account.cur_code, 'USD'))
             tValue += totalEstimate[account.cur_code]
 
-        return tValue.quantize(Decimal("0.01"), rounding=Decimal.ROUND_UP)
+        return tValue.quantize(Decimal("0.01"))
         # todo define total value
 
     @property
