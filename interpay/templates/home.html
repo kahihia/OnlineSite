@@ -10,13 +10,12 @@
     {% endblock %}
     <meta charset="UTF-8">
     <title>{% block title %}
-        Home Page
+        {% trans 'Home Page' %}
     {% endblock %}</title>
 </head>
 <body>
 {% block cont-header %}
     <div id="welcome-msg" >
-
         <h3 class="page-title"> {% trans "Welcome to interpay" %}</h3>
     </div>
 {% endblock %}

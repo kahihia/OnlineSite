@@ -1,3 +1,4 @@
+from interpay.forms import RegistrationForm, UserForm, RechargeAccountForm
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -13,10 +14,12 @@ from firstsite.SMS import ds, api
 from interpay import models
 from interpay.models import BankAccount
 from random import randint
+from suds.client import Client
 import json
 
 
 def main_page(request):
+
     if request.user.is_authenticated():
         return home(request)
     return render(request, 'index.html')
@@ -37,8 +40,6 @@ def register(request):
             user_profile.email = user_form.cleaned_data['email']
             # user_profile.date_of_birth = user_profile.cleaned_data['date_of_birth']
             user_profile.password = user.password
-            # if user.is_active:
-            #     user_profile.is_active = True
             user_profile.user = user
 
             if 'picture' in request.FILES:
@@ -82,8 +83,9 @@ def register(request):
 
 @csrf_exempt
 def send_sms(request, mobile_no):
+    # TODO : make mobile_no an optional input argument
     mobile_no = request.session['mobile_no']
-    print mobile_no
+    #
     request.session['try_counter'] = 0
     code = random_code_gen()
     request.session['code'] = code
@@ -92,7 +94,18 @@ def send_sms(request, mobile_no):
     p = api.ParsGreenSmsServiceClient()
     api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
     user = models.User.objects.get(id=request.session['user_id'])
-    user_profile = models.UserProfile.objects.get(user=user)
+    #user = request.user
+    while 1:
+        try:
+            user_profile = models.UserProfile.objects.get(user=user)
+        # do thing
+        except:
+            continue
+        else:
+            break
+
+    # if models.VerificationCodes.objects.get(id=user_profile.id):
+    #     models.VerificationCodes.objects.get(id=user_profile.id).user_code = code
     # TODO check if there exists a code for this user and replace it
     models.VerificationCodes.objects.create(user_code=code, user=user_profile)
     msg = "A code has just been sent to your phone."
@@ -172,6 +185,65 @@ def user_login(request):
         return render(request, 'index.html', {})
 
 
+@login_required()
+def recharge_account(request):
+    recharge_form = RechargeAccountForm(data=request.POST)
+    if request.method == 'POST':
+        if recharge_form.is_valid():
+            cur = recharge_form.cleaned_data['currency']
+            amnt = recharge_form.cleaned_data['amount']
+            print amnt, cur, request.user, request.user.id, request.user.username
+            user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+            user_b_account, created = models.BankAccount.objects.get_or_create(
+                owner=user_profile,
+                cur_code=cur,
+                method=models.BankAccount.DEBIT,
+                name=request.user.username + '_' + cur + '_account'
+            )
+            deposit = models.Deposit(account=user_b_account, total=amnt, banker=user_profile,
+                                     when=user_b_account.when_opened, cur_code=cur)
+            deposit.save()
+            zarinpal = zarinpal_payment_gate(request, amnt)
+            if zarinpal['status'] == 100:
+                return redirect(zarinpal['ret'])
+            return zarinpal['ret']
+    recharge_form = RechargeAccountForm()
+
+    user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+    deposit_set = models.Deposit.objects.filter(banker=user_profile)
+    return render(request, "top_up.html", {'form': recharge_form, 'deposit_set': deposit_set})
+
+
+def zarinpal_payment_gate(request, amount):
+    MMERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
+    ZARINPAL_WEBSERVICE = 'https://www.zarinpal.com/pg/services/WebGate/wsdl'  # test version : 'https://sandbox.zarinpal.com/pg/services/WebGate/wsdl'
+    description = "this is a test"
+    email = 'user@user.com'
+    mobile = '09123456789'
+    call_back_url = 'http://www.interpayafrica.com'  # this should be changed to our website url
+
+    client = Client(ZARINPAL_WEBSERVICE)
+    result = client.service.PaymentRequest(MMERCHANT_ID,
+                                           amount,
+                                           description,
+                                           email,
+                                           mobile,
+                                           call_back_url)
+
+    redirect_to = 'https://www.zarinpal.com/pg/StartPay/' + result.Authority  # the test vrsion : 'https://sandbox.zarinpal.com/pg/StartPay/'
+    if result.Status != 100:
+        redirect_to = 'Error'
+    res = {'status': result.Status, 'ret': redirect_to}
+    return res
+
+
+def deposit_history_table(request):
+    user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+    deposit_set = models.Deposit.objects.filter(banker=user_profile)
+
+    return deposit_set
+
+
 @login_required
 def user_logout(request):
     logout(request)
@@ -189,8 +261,11 @@ class HomeView(TemplateView):
 
 @login_required()
 def wallets(request):
+    user_profile = models.UserProfile.objects.get(user=request.user)
     context = {
-        'accountList': BankAccount.objects.filter(owner=request.user),
+
+        'accountList': BankAccount.objects.filter(owner=user_profile),
+        'user_profile':user_profile
     }
     return render(request, "wallets.html", context)
 

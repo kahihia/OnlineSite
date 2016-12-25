@@ -49,7 +49,7 @@ class UserForm(forms.ModelForm):
         password = self.cleaned_data.get('password', '')
         confirm_password = self.cleaned_data.get("confirm_password", '')
         if password != confirm_password:
-            print("error")
+            # print("error")
             raise forms.ValidationError("Passwords do not match!")
         return confirm_password
 
@@ -112,28 +112,30 @@ def check_id(id):
     return is_valid
 
 
-class AuthenticationForm(forms.Form):
-    code = forms.TextInput()
+CURRENCY_CHOICES = {
+    ('Rials', 'RLS'),
+    ('USDollar', 'USD')
+}
+
+
+class RechargeAccountForm(forms.Form):
+    #  we do not need this part right now since the only gateway which we use is Zarinpal
+    # payment_gateway = forms.ChoiceField(widget=forms.RadioSelect)
+    currency = forms.ChoiceField(choices=CURRENCY_CHOICES, required=True, label='')
+    amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder': '0.00'}))
 
     def __init__(self, *args, **kwargs):
-        super(AuthenticationForm, self).__init__(*args, **kwargs)
-        self.fields['code'].required = True
+        super(RechargeAccountForm, self).__init__(*args, **kwargs)
+        self.fields['amount'].required = True
+        self.fields['currency'].required = True
 
     class Meta:
-        widgets = {
-            'code': forms.TextInput(
-                attrs={'id': 'verification-code', 'class': 'registration-form-field', 'placeholder': 'Enter the code',
-                       'type': 'text', 'maxlength': '6'})}
+        fields = ['currency', 'amount']
 
-    def clean_authentication_code(self):
-        authentication_code = self.cleaned_data.get('code', '')
-        if not authentication_code:
-            raise forms.ValidationError('Please enter the code which was sent to you.')
-        return authentication_code
 
-        # def verify_code(code):
-        #     is_valid = False
-        #
+
+
+
         # def send_email(self, datas):
         #     link = "http://127.0.0.1:8000//activate/" + datas['activation_key']
         #     c = Context({'activation_link': link, 'username': datas['username']})

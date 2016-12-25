@@ -38,6 +38,10 @@
                 #interpay-id {
                     float: right !important;
                 }
+
+                .sidebar-links {
+                    text-align: right;
+                }
             {% endifequal %}
         </style>
     {% endblock %}
@@ -56,6 +60,9 @@
         {#        <script type="text/javascript" src="../static/jquery/jquery.js"></script>#}
         <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% endblock %}
+    {% block JS %}
     {% endblock %}
     {% block CSS %}
     {% endblock %}
@@ -64,6 +71,12 @@
 
 </head>
 <script>
+    {% block script %}
+        $(document).ready(function () {
+            console.log(navigator.language);
+            console.log(navigator.userLanguage);
+        });
+    {% endblock %}
     function to_en() {
         var en_url = window.location.href.replace("/fa-ir/", "/");
         window.location.assign(en_url);
@@ -87,7 +100,7 @@
                     <br>
                 </div>
                 <div id="translation-link">
-                    {% ifequal LANGUAGE_CODE  'en-gb' %}
+                    {% ifequal LANGUAGE_CODE 'en-gb' %}
                         <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                             {#                        <link rel="icon" href="http://127.0.0.1:8000/static/images/favicon.ico" />farsi#}
                             <img src="{% static 'images/irflag.png' %}" style="width: 50%;cursor: pointer">
@@ -101,7 +114,7 @@
             </div>
         </div>
     </header>
-    {% ifequal LANGUAGE_CODE  'en-gb' %}
+    {% ifequal LANGUAGE_CODE 'en-gb' %}
         <div id="sidebar" class="pull-left">
     {% else %}
         <div id="sidebar" class="pull-right">
@@ -109,7 +122,7 @@
     <div id="sidebar-content">
         <ul id="sidebar-entries">
             <li class="sidebar-entry">
-                {% ifequal LANGUAGE_CODE  'en-gb' %}
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/home">
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/home">
@@ -117,19 +130,32 @@
                 <i class="fa fa-home sidebar-ent-items" aria-hidden="true"></i> {% trans "Home" %}
                 </a>
             </li>
-            <li class="sidebar-entry">
-                {% ifequal LANGUAGE_CODE  'en-gb' %}
-                    <a class="sidebar-links" href="/wallets">
-                {% else %}
-                    <a class="sidebar-links" href="/fa-ir/wallets">
-                {% endifequal %}
-
-                <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i> {% trans "Wallets" %}
-
+            <li class="dropdown sidebar-entry">
+                <a href="#" class="sidebar-links dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i> {% trans "Wallets" %}
+                    <span class="caret"></span>
                 </a>
+                <ul class="dropdown-menu">
+                    <li id="wallet_info">
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a class="sidebar-links" href="/wallets">
+                        {% else %}
+                            <a class="sidebar-links" href="/fa-ir/wallets">
+                        {% endifequal %}
+                        <i><span>{% trans 'Wallet Info' %}</span></i>
+                        </a></li>
+                    <li id="top_up">
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a class="sidebar-links" href="/top-up">
+                        {% else %}
+                            <a class="sidebar-links" href="/fa-ir/top-up">
+                        {% endifequal %}
+                        <i><span>{% trans 'Top Up by Credit Card' %}</span></i>
+                        </a></li>
+                </ul>
             </li>
             <li class="sidebar-entry">
-                {% ifequal LANGUAGE_CODE  'en-gb' %}
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/trans-history">
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/trans-history">
@@ -139,7 +165,7 @@
                 </a>
             </li>
             <li class="sidebar-entry">
-                {% ifequal LANGUAGE_CODE  'en-gb' %}
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/reports">
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/reports">
@@ -150,7 +176,7 @@
                 </a>
             </li>
             <li class="sidebar-entry" style="border-bottom: double #f1f1f1">
-                {% ifequal LANGUAGE_CODE  'en-gb' %}
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/general">
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/general">
@@ -168,7 +194,7 @@
             <span id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</span>
             <span id="login-id">{% trans "Login ID" %}: {{ user.id }}</span>
             <span id="interpay-id">{% trans "InterPay ID" %}: </span>
-        <span id="logout">
+            <span id="logout">
             <a id="logout-link" href="/logout">
                 <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
             </a>
@@ -191,9 +217,9 @@
         </section>
 
     </div>
-    <footer id="footer" class="footer">
-        <div id="footer-content">All rights reserved.</div>
-    </footer>
+    {#    <footer id="footer" class="footer">#}
+    {#        <div id="footer-content">All rights reserved.</div>#}
+    {#    </footer>#}
     </div>
 </div>
 </body>
