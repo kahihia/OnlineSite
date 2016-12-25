@@ -1,3 +1,16 @@
+#recharge-form-btns {
+    display: block;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e5e5e5;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 19px 20px 20px;
+}
+
+.recharge-form-label {
+    direction: rtl;
+}
+
 .table-header-cell {
     width: 139px;
     padding: 8px;
@@ -47,14 +60,23 @@
 
 }
 
-    @media only screen and (max-device-width: 480px) {
+.page-title {
+    color: rgb(46, 98, 164);
+}
 
-        #tab-wrapper {
-            /*width: 700px;*/
-        }
+#id_currency, #id_amount {
+    width: 100%;
+}
 
-        #wal-tab-searchbar {
-            /*background-color: red;*/
+.recharge-form-btn {
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
-        }
+@media only screen and (max-device-width: 480px) {
+
+    .recharge-form-btn {
+        margin-left: 2px;
+        margin-right: 2px;
     }
+}
