@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.core.mail import send_mail
 from django.core.validators import RegexValidator, int_list_validator
 from django.utils.encoding import force_text
+from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db import models
@@ -84,6 +85,7 @@ class VerificationCodes(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.user, self.user.name)
 
+
 class Rule(models.Model):
     my_formats = get_format('DATETIME_INPUT_FORMATS')
     start_date = models.DateField()  # (required=False, input_formats=('%d/%m/%Y',))#(input_formats="%d-%b-%Y")
@@ -104,7 +106,7 @@ START_TIME = 0x0
 def make_id():
     '''
     inspired by http://instagram-engineering.tumblr.com/post/10853187575/sharding-ids-at-instagram
-        '''
+    '''
 
     t = int(time.time() * 1000) - START_TIME
     u = random.SystemRandom().getrandbits(22)
@@ -132,15 +134,15 @@ class BankAccount(models.Model):
     method = models.PositiveSmallIntegerField(choices=(
         (DEBIT, 'Debit'),
         (CREDIT, 'Credit'),
-    ), default = DEBIT)
-
-
+    ), default=DEBIT)
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    # TODO : this validator should be placed in js as well, so the user can not type other kinds of inputs
     name = models.CharField(max_length=254)
-    account_id = models.BigIntegerField(default=make_id, primary_key=True)
-    owner = models.ForeignKey(UserProfile, related_name='w_accounts')
-    spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
     when_opened = models.DateField(_("Date"), default=datetime.now)
-    cur_code = models.CharField(_('cur_code'), max_length=3, default='IRR')
+    owner = models.ForeignKey(UserProfile, related_name='w_accounts')
+    cur_code = models.CharField(_('cur_code'), max_length=3, default='RLS')
+    spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
+    account_id = models.CharField(primary_key=True, max_length=24, validators=[alphanumeric])
 
     def total_value(self):
         t_value = Decimal(0)
@@ -151,7 +153,7 @@ class BankAccount(models.Model):
             t_value += total_estimate[account.cur_code]
 
         return t_value.quantize(Decimal("0.01"))
-        # todo define total value
+        # TODO define total value
 
     @property
     def balance(self):
@@ -164,19 +166,19 @@ class BankAccount(models.Model):
         result = 0
         while current_date <= datetime.date(today):
             #   print 'count of sets'
-            # print self.income_transfers.on_date(current_date).count()
-            # print self.deposit_set.on_date(current_date).count()
-            result -= sum(x.total for x in self.withdraw_set.on_date(current_date))
-            result -= sum(x.total for x in self.outcome_transfers.on_date(current_date))
-            result += sum(x.total for x in self.deposit_set.on_date(current_date))
+            print self.income_transfers.on_date(current_date).count()
+            print self.deposit_set.on_date(current_date).count()
+            result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code))
+            result -= sum(x.amount for x in self.outcome_transfers.on_date_c(current_date, self.cur_code))
+            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code))
             # for c,x in groupby(self.deposit_set.on_date(current_date), lambda x: x.cur_code):
-            #     result[c]+= sum(y.total for y in x)
-            result += sum(x.total for x in self.income_transfers.on_date_c(current_date, self.cur_code))
+            #     result[c]+= sum(y.amount for y in x)
+            result += sum(x.amount for x in self.income_transfers.on_date_c(current_date, self.cur_code))
 
             current_date += timedelta(days=1)
             print rule.deposit_charge_percent
 
-         #   print current_date
+            #   print current_date
         result *= 1 - (rule.deposit_charge_percent * 0.01)
         return result
 
@@ -188,10 +190,10 @@ class BankAccount(models.Model):
         result = 0
         current_date = self.when_opened
         while current_date <= today:
-            result += sum(x.total for x in self.withdraw_set.on_date(current_date))
-            result += sum(x.total for x in self.outcome_transfers.on_date(current_date))
-            result -= sum(x.total for x in self.deposit_set.on_date(current_date))
-            result -= sum(x.total for x in self.income_transfers.on_date(current_date))
+            result += sum(x.amount for x in self.withdraw_set.on_date(current_date))
+            result += sum(x.amount for x in self.outcome_transfers.on_date(current_date))
+            result -= sum(x.amount for x in self.deposit_set.on_date(current_date))
+            result -= sum(x.amount for x in self.income_transfers.on_date(current_date))
             result *= rule.credit_percent
             current_date += timedelta(days=1)
         return result
@@ -201,18 +203,18 @@ class OperationManager(models.Manager):
 
 
     def on_date_c(self, date, cc):
-        return (super(OperationManager, self).get_queryset()).filter(when__gte=date, when__lte=date, cur_code=cc)
+        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, cur_code=cc)
 
     def on_date(self, date):
-        return (super(OperationManager, self).get_queryset()).filter(when__gte=date, when__lte=date)
+        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date)
 
 
 class MoneyTransfer(models.Model):
     # Inter-bank-account money transfer
     sender = models.ForeignKey(BankAccount, related_name='outcome_transfers')
     receiver = models.ForeignKey(BankAccount, related_name='income_transfers')
-    when = models.DateTimeField()
-    total = models.FloatField()
+    date = models.DateTimeField()
+    amount = models.FloatField()
     comment = models.CharField(max_length=255)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
@@ -221,9 +223,9 @@ class MoneyTransfer(models.Model):
 class Deposit(models.Model):
     # Receiving money; Charging account.
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
-    total = models.FloatField()
+    amount = models.FloatField()
     banker = models.ForeignKey(UserProfile)
-    when = models.DateTimeField(default=datetime.now)
+    date = models.DateTimeField(default=datetime.now)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
     tracking_code = models.IntegerField(default='123')
@@ -232,9 +234,9 @@ class Deposit(models.Model):
 
 class Withdraw(models.Model):
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
-    total = models.FloatField()
+    amount = models.FloatField()
     banker = models.ForeignKey(User)
-    when = models.DateTimeField()
+    date = models.DateTimeField()
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
 

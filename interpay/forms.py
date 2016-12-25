@@ -113,8 +113,8 @@ def check_id(id):
 
 
 CURRENCY_CHOICES = {
-    ('Rials', 'RLS'),
-    ('USDollar', 'USD')
+    ('RLS', 'Rials'),
+    ('USD', 'Dollar')
 }
 
 
@@ -132,6 +132,57 @@ class RechargeAccountForm(forms.Form):
     class Meta:
         fields = ['currency', 'amount']
 
+
+BANK_CHOICES = {
+    ('Amin', 'Amin Investment Bank'),
+    ('Ayandeh', 'Ayande Bank'),
+    ('Day', 'Day Bank'),
+    ('Maskan', 'Maskan Bank'),
+    ('Mellat', 'Mellat Bank'),
+    ('Melli', 'Bank Melli Iran'),
+    ('Bank of Industry and Mine', 'Bank of Industry and Mine'),
+    ('Pasargad', 'Bank Pasargad'),
+    ('Saderat', 'Bank Saderat Iran'),
+    ('Sepah', 'Bank Sepah'),
+    ('Eghtesad-e-Novin', 'EN Bank'),
+    ('Export Development Bank of Iran', 'Export Development Bank of Iran'),
+    ('Ghavamin', 'Ghavamin Bank'),
+    ('Persia', 'Imperial Bank of Persia'),
+    ('Iran Zamin', 'Iran Zamin Bank'),
+    ('Karafarin', 'Karafarin Bank'),
+    ('Kardan', 'Kardan Investment Bank'),
+    ('Keshavarzi', 'Keshavarzi Bank'),
+    ('Mellat', 'Mellat Investment Bank'),
+    ('Parsian', 'Parsian Bank'),
+    ('Persia', 'Persia International Bank'),
+    ('Post Bank', 'Post Bank of Iran'),
+    ('Qarzol-Hasaneh Mehr', 'Qarzol-Hasaneh Mehr Iran Bank'),
+    ('Refah', 'Refah Bank'),
+    ('Saman', 'Saman Bank'),
+    ('Sarmayeh', 'Sarmayeh Bank'),
+    ('Sina', 'Sina Bank'),
+    ('Tejarat', 'Tejarat Bank'),
+}
+
+
+class CreateBankAccountForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CreateBankAccountForm, self).__init__(*args, **kwargs)
+        self.fields['account_id'].widget = TextInput(attrs={
+            'class': 'create_b_acc_form_field',
+            'placeholder': 'Enter your account No.'})
+
+    class Meta:
+        model = BankAccount
+        exclude = ['spectators', 'when_opened', 'owner', 'method']
+        widgets = {
+            'name': forms.Select(choices=BANK_CHOICES,
+                                 attrs={'class': 'create_b_acc_form_field', 'id': 'bank_name', }),
+            # TODO : these currency choices have to be customized and checked whether the related bank supports them.
+            'cur_code': forms.Select(choices=CURRENCY_CHOICES,
+                                     attrs={'class': 'create_b_acc_form_field'}), }
+        # 'account_id': forms.TextInput(
+        #     attrs={'class': 'create_b_acc_form_field', 'placeholder': 'Enter your account No.'})}
 
 
 

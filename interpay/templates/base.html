@@ -132,7 +132,7 @@
             </li>
             <li class="dropdown sidebar-entry">
                 <a href="#" class="sidebar-links dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i> {% trans "Wallets" %}
+                    <i class="fa fa-money" aria-hidden="true"></i> {% trans "Wallets" %}
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
@@ -161,7 +161,16 @@
                     <a class="sidebar-links" href="/fa-ir/trans-history">
                 {% endifequal %}
                 <i class="fa fa-history sidebar-ent-items" aria-hidden="true"></i>{% trans " Transaction History" %}
+                </a>
+            </li>
+            <li class="sidebar-entry" >
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a class="sidebar-links" href="/bank-accounts">
+                {% else %}
+                    <a class="sidebar-links" href="/fa-ir/bank-accounts">
+                {% endifequal %}
 
+                <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i>{% trans " Bank Accounts" %}
                 </a>
             </li>
             <li class="sidebar-entry">
@@ -170,9 +179,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/reports">
                 {% endifequal %}
-
                 <i class="fa fa-file-text-o sidebar-ent-items" aria-hidden="true"></i>{% trans " Reports" %}
-
                 </a>
             </li>
             <li class="sidebar-entry" style="border-bottom: double #f1f1f1">
@@ -181,7 +188,6 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/general">
                 {% endifequal %}
-
                 <i class="fa fa-bullseye sidebar-ent-items" aria-hidden="true"></i>{% trans " General" %}
                 </a>
             </li>

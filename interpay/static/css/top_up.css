@@ -9,6 +9,7 @@
 
 .recharge-form-label {
     direction: rtl;
+
 }
 
 .table-header-cell {
@@ -25,11 +26,11 @@
     padding: 8px;
     border: 1px solid #ddd;
     /*background-color: #f9f9f9;*/
-    text-align: left;
     background-color: #e5edef;
     color: #393939;
     vertical-align: middle;
     font-size: 13px;
+    text-align: center;
 }
 
 #wal-tab-footer {
@@ -42,9 +43,6 @@
 
 #display-records {
     padding-left: 15px;
-}
-
-#search {
 }
 
 #wal-tab-searchbar {

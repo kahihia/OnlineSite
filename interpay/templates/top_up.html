@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block CSS %}
+        <link rel="stylesheet" href="{% static 'css/top_up.css' %}">
+    {% endblock %}
+    {% block JS %}
+    {% endblock %}
+    <meta charset="UTF-8">
+    <title>{% block title %}
+        {% trans 'Top Up by Credit Card' %}
+    {% endblock %}</title>
+</head>
+<body>
+<script>
+    {% block script %}
+        $(document).ready(function () {
+            $("#id_amount").keydown(function (event) {
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                        (event.keyCode == 65 && event.ctrlKey === true) ||
+                        (event.keyCode >= 35 && event.keyCode <= 39)) {
+                }
+                else {
+                    if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                        event.preventDefault();
+                    }
+                }
+            });
+
+            {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                console.log("hey");
+                $(".recharge-form-input").addClass('pull-right');
+                $(".recharge-form-label").addClass('pull-right');
+                $(".recharge-form-label").css({'text-align': 'left'});
+                console.log($(".recharge-form-label").className);
+            {% endifequal %}
+
+        });
+
+        function showZPTrust() {
+            var thewindow = window.open("https://www.zarinpal.com/webservice/verifyWebsite/" + window.location.hostname,
+                    null, "width=656, height=500, scrollbars=no, resizable=no");
+        }
+
+
+
+    {% endblock %}
+</script>
+
+{% block cont-header %}
+    <div id="topup_title">
+        <h3 class="page-title"> {% trans "Recharge wallet using credit card" %}</h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+    <div class="row" style="display: table;width: 100%">
+        <div class="col-xs-12">
+            <form id="recharge-form" class="form-horizontal" method="post">
+                {% csrf_token %}
+                <div class="form-group recharge-form-parts">
+                    <label for="payment-gateway" class="col-sm-3 recharge-form-label"
+                           style="margin-top: 8px">{% trans 'Payment Type' %}</label>
+                    <div class="col-sm-9">
+                        <div class="control-group">
+                            <div class="radio">
+
+                                <input type="radio" name="payment-gateway" checked>
+                                <a href="javascript:showZPTrust();"
+                                   title="دروازه پرداخت معتبر"><img src="{% static 'images/Zarinpal.png' %}"
+                                                                    alt="دروازه پرداخت معتبر"></a>
+                                {#                                <script src="https://www.zarinpal.com/webservice/TrustCode"#}
+                                {#                                        type="text/javascript"></script>#}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 recharge-form-label"
+                           style="margin-top: 8px">{% trans 'Wallet Type' %}</label>
+                    <div class="col-sm-9">
+                        <div class="col-xs-6 recharge-form-input" id="recharge-currency">{{ form.currency }}</div>
+                    </div>
+                </div>
+                <div class="space"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 recharge-form-label"
+                           style="margin-top: 8px">{% trans 'Recharge Amount' %}</label>
+                    <div class="col-sm-9">
+                        <div class="col-xs-6 recharge-form-input" id="id_amount_div">{{ form.amount }}</div>
+                    </div>
+                </div>
+                <div class="space"><br></div>
+
+                <div id="recharge-form-btns" class="clearfix">
+                    <div class="col-md-offset-3 col-md-9">
+                        {#                        <div class="col-md-3">#}
+                        <button class="btn btn-info recharge-form-btn" type="submit"><i
+                                class="fa fa-check"></i> {% trans 'Charge' %}
+                        </button>
+                        {#                        </div>#}
+                        {#                        <div class="col-md-3">#}
+                        <button class="btn recharge-form-btn" type="reset"><i
+                                class="fa fa-undo"></i> {% trans 'Reset' %}</button>
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="page-header">
+        <h3 class="page-title">{% trans 'Recharge Wallet History' %}</h3>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper">
+                <div id="wal-tab-searchbar" class="row ">
+                <span id="display-records" class="col-sm-6">
+                    <i class="fa fa-eye" aria-hidden="true">
+                        <select>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="500">500</option>
+                        </select>
+                    </i>
+                </span>
+                    <span id="search" class="col-sm-6">
+                    <i class="fa fa-search" aria-hidden="true">
+                            <input type="text" id="search-txtbox">
+                    </i>
+                </span>
+                </div>
+                <table id="wal-tab">
+                    <thead>
+                    <tr class="table-header-row">
+                        <th class="table-header-cell">
+                            {% trans 'Index' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Recharge ID' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Date' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Wallet Code' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Currency' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Card Type' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Amount' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Status' %}
+                        </th>
+                        <th class="table-header-cell"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for d in deposit_set %}
+                        <tr>
+                            <td class="table-cell">{{ forloop.counter }}</td>
+                            <td class="table-cell">{{ d.id }}</td>
+                            <td class="table-cell">{{ d.date }}</td>
+                            <td class="table-cell">{{ d.account.account_id }}</td>
+                            <td class="table-cell">{{ d.cur_code }}</td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell">{{ d.amount }}</td>
+                            <td class="table-cell">{% ifequal d.status True %}
+                                Successful
+                            {% endifequal %}
+                                Failed
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+                    <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

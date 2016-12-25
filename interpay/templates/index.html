@@ -71,8 +71,9 @@
                     <h3 style="margin-top: 40px">{% trans 'Welcome to Interpay Iran' %}</h3>
 
                     <div class="form-wrapper" id="login-form-wrapper">
-                        <div style="font-size: larger"><i class="fa fa-sign-in" style="padding-right: 5px"
-                                                          aria-hidden="true"></i>
+                        <div id="login-box-hdr" style="font-size: larger"><i class="fa fa-sign-in"
+                                                                             style="padding-right: 5px"
+                                                                             aria-hidden="true"></i>
                             {% trans 'Login to Interpay' %}
                         </div>
                         <div>{% block message %}
@@ -112,7 +113,7 @@
                         <h6>{% trans "Don't have an account yet?" %}</h6>
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
                             <a id="register-link" href="/register/">
-                            {% else %}
+                        {% else %}
                             <a id="register-link" href="/fa-ir/register/">
                         {% endifequal %}
                         {% trans 'Create One!' %}
