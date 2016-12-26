@@ -160,7 +160,7 @@ def user_login(request):
         # user_user = models.User.objects.get(username=username)
         user_user = models.User.objects.filter(username=username)
         if not user_user:
-            return render(request, "login.html")
+            return render(request, "index.html", {'error': 'Username or password is invalid.'})
         else:
             user_user = user_user[0]
         user_profile = models.UserProfile.objects.get(user=user_user)
