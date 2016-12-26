@@ -94,8 +94,8 @@ def send_sms(request, mobile_no):
     # redis_ds = ds.AuthCodeDataStructure()
     # redis_ds.set_code(mobile_no, code)
     p = api.ParsGreenSmsServiceClient()
-    api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
-    
+    # api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
+    print("code:", code)
     #user = request.user
     while 1:
         try:
@@ -157,7 +157,12 @@ def user_login(request):
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
-        user_user = models.User.objects.get(username=username)
+        # user_user = models.User.objects.get(username=username)
+        user_user = models.User.objects.filter(username=username)
+        if not user_user:
+            return render(request, "login.html")
+        else:
+            user_user = user_user[0]
         user_profile = models.UserProfile.objects.get(user=user_user)
 
         if user:
