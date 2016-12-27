@@ -67,8 +67,8 @@
         <div class="row">
             {% block main-cont %}
 
-                <div class="col-xs-12" style="text-align: center ">
-                    <h3 style="margin-top: 40px">{% trans 'Welcome to Interpay Iran' %}</h3>
+                <div class="col-xs-12" style="text-align: center  ">
+                    <h3 style="margin-top: 40px; font-family: IRAN-web">{% trans 'Welcome to Interpay Iran' %}</h3>
 
                     <div class="form-wrapper" id="login-form-wrapper">
                         <div id="login-box-hdr" style="font-size: larger"><i class="fa fa-sign-in"
@@ -114,7 +114,7 @@
                                 onclick="forgot_pass()">{% trans 'Forgot password or account disabled ?' %}</a></h6>
                         </div>
                     </div>
-                    <div id="register-link-div">
+                    <div id="register-link-div" style="font-family: IRAN-web">
                         <h6>{% trans "Don't have an account yet?" %}</h6>
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
                             <a id="register-link" href="/register/">

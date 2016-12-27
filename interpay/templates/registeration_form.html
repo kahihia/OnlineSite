@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="../static/fonts/style.css" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,37 +27,21 @@
     {% block JS %}
     {% endblock %}
 
+ {% block style %}
     <style>
         {% ifequal LANGUAGE_CODE 'fa-ir' %}
+
             .form-wrapper {
                 text-align: right !important;
+                font-family: "IRAN-web";
             }
 
-            #sidebar-entries {
-                padding-right: 10px;
-                padding-left: 0 !important;
+            #reg-wrap-wrap-div{
+             font-family: "IRAN-web";
             }
 
-            .sidebar-entry {
-                text-align: right;
-                direction: rtl;
-            }
-
-            #logout {
-                float: left !important;
-            }
-
-            #name {
-                float: right !important;
-            }
-
-            #interpay-id {
-                float: right !important;
-            }
         {% endifequal %}
     </style>
-
-    {% block style %}
     {% endblock %}
 </head>
 
