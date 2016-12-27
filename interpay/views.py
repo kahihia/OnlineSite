@@ -12,7 +12,7 @@ from interpay.forms import RegistrationForm, UserForm
 from django.views.decorators.csrf import csrf_exempt
 from firstsite.SMS import ds, api
 from interpay import models
-from interpay.models import BankAccount
+from interpay.models import BankAccount, Deposit
 from random import randint
 from suds.client import Client
 import json
@@ -21,10 +21,17 @@ import random
 
 
 def main_page(request):
-
     if request.user.is_authenticated():
         return home(request)
     return render(request, 'index.html')
+
+
+# def test():
+#     ba = BankAccount.objects.get(account_id=6218767009721216990)
+#     print(ba.name)
+#     deposit = Deposit.objects.get(account=ba)
+#     print(deposit.amount)
+#     # print(ba.deposits[0])
 
 
 def register(request):
@@ -96,7 +103,7 @@ def send_sms(request, mobile_no):
     p = api.ParsGreenSmsServiceClient()
     # api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
     print("code:", code)
-    #user = request.user
+    # user = request.user
     while 1:
         try:
             user_profile = models.UserProfile.objects.get(id=request.session['user_id'])
@@ -152,6 +159,8 @@ def retrieve_pass(request):
 
 
 def user_login(request):
+    if request.get_full_path() == "/login/?next=/home/":
+        return render(request, 'index.html', {'error': 'Your session has expired. Please log in again.'})
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -313,6 +322,7 @@ def user_logout(request):
 
 @login_required()
 def home(request):
+    print("home")
     return render(request, "home.html")
 
 
@@ -326,7 +336,7 @@ def wallets(request):
     context = {
 
         'accountList': BankAccount.objects.filter(owner=user_profile),
-        'user_profile':user_profile
+        'user_profile': user_profile
     }
     return render(request, "wallets.html", context)
 
