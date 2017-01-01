@@ -38,7 +38,12 @@ urlpatterns = [
 
     url(r'^$', views.main_page),
     url(r'^home/', views.home),
-    url(r'^wallets/', views.wallets),
+    url(r'^wallets/$', views.wallets),
+    url(r'^wallets/convert_currency/$', views.convert_currency),
+    # url(r'^wallets/dollars/$', views.convert_dollar),
+    # url(r'^wallets/rials/$', views.convert_rial),
+    # url(r'^wallets/euros/$', views.convert_euro),
+    # url(r'^wallets/pounds/$', views.convert_pound),
     url(r'^trans-history/', views.trans_history),
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
@@ -71,9 +76,13 @@ urlpatterns += i18n_patterns(
     url(r'^admin/', admin.site.urls),
     url(r'session_security/', include('session_security.urls')),
 
-    url(r'^$', views.main_page),
+
     url(r'^home/', views.home),
-    url(r'^wallets/', views.wallets),
+    # url(r'^wallets/dollars/$', views.convert_dollar),
+    # url(r'^wallets/rials/$', views.convert_rial),
+    # url(r'^wallets/euros/$', views.convert_euro),
+    # url(r'^wallets/pounds/$', views.convert_pound),
+    url(r'^wallets$', views.wallets),
     url(r'^trans-history/', views.trans_history),
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
@@ -85,5 +94,6 @@ urlpatterns += i18n_patterns(
     url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
+    url(r'^$', views.main_page),
 )
 

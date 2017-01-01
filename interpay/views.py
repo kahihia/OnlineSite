@@ -14,23 +14,35 @@ from firstsite.SMS import ds, api
 from interpay import models
 from interpay.models import BankAccount, Deposit
 from random import randint
+from currencies.utils import convert
 from suds.client import Client
+from django.contrib.auth.models import User
+from interpay.models import UserProfile
 import json
 import time
 import random
+import datetime
 
 
 def main_page(request):
+    # test()
     if request.user.is_authenticated():
         return home(request)
     return render(request, 'index.html')
 
 
 # def test():
-#     ba = BankAccount.objects.get(account_id=6218767009721216990)
-#     print(ba.name)
-#     deposit = Deposit.objects.get(account=ba)
-#     print(deposit.amount)
+#     user = User.objects.get(username="arman71")
+#     up = UserProfile.objects.get(user=user)
+#     ba =BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='USD')
+#     ba.save()
+#     # ba = BankAccount.objects.get(owner=up, cur_code='USD')
+#     # ba.save()
+#     # ba.delete()
+#     d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='USD')
+#     d.save()
+#     d1 = Deposit(account=ba, amount=2000.00, banker=up, date=datetime.datetime.now(), cur_code='USD')
+#     d1.save()
 #     # print(ba.deposits[0])
 
 
@@ -322,7 +334,6 @@ def user_logout(request):
 
 @login_required()
 def home(request):
-    print("home")
     return render(request, "home.html")
 
 
@@ -332,6 +343,7 @@ class HomeView(TemplateView):
 
 @login_required()
 def wallets(request):
+    print ("wallets!!!")
     user_profile = models.UserProfile.objects.get(user=request.user)
     context = {
 
@@ -339,6 +351,44 @@ def wallets(request):
         'user_profile': user_profile
     }
     return render(request, "wallets.html", context)
+
+
+@login_required()
+def convert_currency(request):
+    from_code = request.GET.get('from_code')
+    to_code = request.GET.get('to_code')
+    amount = request.GET.get('amount')
+    # print (code)
+    # print (amount)
+    response_data = {}
+    value = convert(amount, from_code, to_code)
+    response_data['result'] = value.__str__()
+    # response_data['postpk'] = post.pk
+    # response_data['text'] = post.text
+    # response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
+    # response_data['author'] = post.author.username
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+    # return render(request, "wallets.html", {'code': 'USD'})
+
+
+@login_required()
+def convert_rial(request):
+    return render(request, "wallets.html", {'code': 'IRR'})
+
+
+@login_required()
+def convert_euro(request):
+    print ("test")
+    return render(request, "wallets.html", {'code': 'EUR'})
+
+
+@login_required()
+def convert_pound(request):
+    return render(request, "wallets.html", {'code': 'GBP'})
 
 
 @login_required()
