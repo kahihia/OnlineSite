@@ -82,8 +82,8 @@ class VerificationCodes(models.Model):
     user_code = models.IntegerField()
     user = models.ForeignKey(UserProfile, null=False, related_name='verif_code_user')
 
-    def __str__(self):
-        return '{} - {}'.format(self.user, self.user.name)
+    # def __str__(self):
+    #     return '{} - {}'.format(self.user, self.user.name)
 
 
 class Rule(models.Model):
@@ -124,7 +124,7 @@ class BankAccount(models.Model):
     LEGAL = 1
     INDIVIDUAL = 2
     DEBIT = 1
-    CREDIT = 2
+    WITHDRAW = 2
 
     # owner_type = models.PositiveSmallIntegerField(choices=(
     #     (LEGAL, 'Legal'),
@@ -133,7 +133,7 @@ class BankAccount(models.Model):
 
     method = models.PositiveSmallIntegerField(choices=(
         (DEBIT, 'Debit'),
-        (CREDIT, 'Credit'),
+        (WITHDRAW, 'Withdraw'),
     ), default=DEBIT)
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
     # TODO : this validator should be placed in js as well, so the user can not type other kinds of inputs
@@ -147,9 +147,9 @@ class BankAccount(models.Model):
     def total_value(self):
         t_value = Decimal(0)
         total_estimate = defaultdict(lambda: Decimal(0.0))
-        accounts = BankAccount.objects.filter(owner=self.owner)
+        accounts = BankAccount.objects.filter(owner=self.owner, method=BankAccount.DEBIT)
         for account in accounts:
-            total_estimate[account.cur_code] += Decimal(convert(account.balance, account.cur_code, 'USD'))
+            total_estimate[account.cur_code] = Decimal(convert(account.balance, account.cur_code, 'USD'))
             t_value += total_estimate[account.cur_code]
 
         return t_value.quantize(Decimal("0.01"))
@@ -165,52 +165,58 @@ class BankAccount(models.Model):
         # print 'started while'
         result = 0
         while current_date <= datetime.date(today):
-            #   print 'count of sets'
-            print self.income_transfers.on_date(current_date).count()
-            print self.deposit_set.on_date(current_date).count()
-            result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code))
-            result -= sum(x.amount for x in self.outcome_transfers.on_date_c(current_date, self.cur_code))
-            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code))
-            # for c,x in groupby(self.deposit_set.on_date(current_date), lambda x: x.cur_code):
-            #     result[c]+= sum(y.amount for y in x)
-            result += sum(x.amount for x in self.income_transfers.on_date_c(current_date, self.cur_code))
+            print self.deposit_set.count()
+            print 'count of sets fix withdraw outcome then deposit'
+
+            result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code, self))
+            result -= sum(x.amount for x in self.outcome_transfers.on_date_out(current_date, self))
+            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
+
+            result += sum(x.amount for x in self.income_transfers.on_date_in(current_date, self))
 
             current_date += timedelta(days=1)
-            print rule.deposit_charge_percent
+            break
 
             #   print current_date
         result *= 1 - (rule.deposit_charge_percent * 0.01)
         return result
 
-    @property
-    def debt(self):
-        assert self.method == self.CREDIT
-        today = time.timezone.now()
-        rule = Rule.on_date(self.when_opened)
-        result = 0
-        current_date = self.when_opened
-        while current_date <= today:
-            result += sum(x.amount for x in self.withdraw_set.on_date(current_date))
-            result += sum(x.amount for x in self.outcome_transfers.on_date(current_date))
-            result -= sum(x.amount for x in self.deposit_set.on_date(current_date))
-            result -= sum(x.amount for x in self.income_transfers.on_date(current_date))
-            result *= rule.credit_percent
-            current_date += timedelta(days=1)
-        return result
+   # @property
+    # def debt(self):
+    #     assert self.method == self.CREDIT
+    #     today = time.timezone.now()
+    #     rule = Rule.on_date(self.when_opened)
+    #     result = 0
+    #     current_date = self.when_opened
+    #     while current_date <= today:
+    #         result += sum(x.amount for x in self.withdraw_set.on_date(current_date))
+    #         result += sum(x.amount for x in self.outcome_transfers.on_date(current_date))
+    #         result -= sum(x.amount for x in self.deposit_set.on_date(current_date))
+    #         result -= sum(x.amount for x in self.income_transfers.on_date(current_date))
+    #         result *= rule.credit_percent
+    #         current_date += timedelta(days=1)
+    #     return result
 
 
 class OperationManager(models.Manager):
 
 
-    def on_date_c(self, date, cc):
-        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, cur_code=cc)
+    def on_date_c(self, ts, cc, bk=False):
+        print self.filter(date__gte=ts).count()
+        if bk:
+            return (super(OperationManager, self).get_queryset()).filter(date__gte=ts, cur_code=cc, account=bk)
+        else:
+            return (super(OperationManager, self).get_queryset()).filter(date__gte=ts, cur_code=cc)
 
-    def on_date(self, date):
-        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date)
+    def on_date_out(self, date, act):
+        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, sender=act)
+    def on_date_in(self, date, act):
+        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, receiver=act)
 
 
 class MoneyTransfer(models.Model):
     # Inter-bank-account money transfer
+    # banker is same as sender
     sender = models.ForeignKey(BankAccount, related_name='outcome_transfers')
     receiver = models.ForeignKey(BankAccount, related_name='income_transfers')
     date = models.DateTimeField()
@@ -224,18 +230,17 @@ class Deposit(models.Model):
     # Receiving money; Charging account.
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
     amount = models.FloatField()
-    banker = models.ForeignKey(UserProfile)
-    date = models.DateTimeField(default=datetime.now)
+    banker = models.ForeignKey(UserProfile, null=True)
+    date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    objects = OperationManager()
-    tracking_code = models.IntegerField(default='123')
+    be = models.IntegerField(default='123')
     status = models.BooleanField(default=False)
-
+    objects = OperationManager()
 
 class Withdraw(models.Model):
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
     amount = models.FloatField()
-    banker = models.ForeignKey(User)
+    banker = models.ForeignKey(UserProfile)
     date = models.DateTimeField()
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
