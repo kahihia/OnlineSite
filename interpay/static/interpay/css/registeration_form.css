@@ -1,0 +1,102 @@
+.form-wrapper {
+    margin-top: 30px;
+    padding: 20px;
+    border: 0 ridge rgb(238, 238, 255);
+    width: 30%;
+    box-shadow: 3px 1px 6px rgb(239, 239, 239);
+    display: inline-block;
+    text-align: left;
+    background-color: #e1e1e2;
+    border-radius: 3%;
+
+}
+
+.top-bar {
+    background-color: #438eb9;
+    padding: 5px 0 5px 15px;
+    line-height: 10px;
+    border-radius: 0;
+    margin-bottom: 0;
+    height: 17%;
+}
+
+.registration-form-field {
+    width: 100%;
+    padding-left: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+}
+
+#reg-wrap-wrap-div {
+    text-align: center;
+}
+
+/*TODO this part should be changed and implemented in a neat way.*/
+/*label {*/
+    /*display: none !important;*/
+/*}*/
+
+label[for=id_date_of_birth_day] {
+    display: inline-block !important;
+    font-weight: 500;
+}
+
+/*label[for=id_national_card_photo] {*/
+    /*display: inline-block !important;*/
+    /*font-weight: 500;*/
+/*}*/
+
+/*TODO this task should be done in a correct and neat way. */
+span.helptext {
+    display: none !important;
+}
+
+/*TODO this part isn't working. fix it.*/
+.registeration-form-field:before {
+    content: "* ";
+}
+
+#submit-btn #continue-btn {
+    width: 35%;
+    margin: 20px auto 10px;
+}
+
+#footer {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    bottom: 0;
+    background-color: #e1e1e1;
+    text-align: center;
+    font-size: x-small;
+    color: #585858;
+}
+
+#footer-content {
+    padding-top: 7px;
+}
+
+.form-msg {
+    padding: 10px 5px;
+    color: red;
+    font-size: small;
+    margin-top: 5px
+}
+
+.login-register-div {
+    margin-bottom: 30px;
+    margin-top: 15px;
+}
+
+#translation-link {
+    float: right;
+    width: 5%;
+    padding: 13px;
+    font-size: 12px;
+    text-align: center;
+}
+
+input#id_national_card_photo {
+    display: none;!important;
+}

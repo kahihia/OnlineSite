@@ -1,0 +1,17 @@
+.login-form-field {
+    width: 100%;
+    padding-left: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin: 10px auto;
+}
+
+#login-form-wrapper {
+    margin-top: 60px;
+    width: 30%;
+}
+
+#login-btn{
+    width: 30%;
+    margin: 20px auto 10px;
+}

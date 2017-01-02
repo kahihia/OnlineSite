@@ -1,0 +1,27 @@
+{% extends 'interpay/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            {% trans 'Reports' %}
+        {% endblock %}
+    </title>
+</head>
+<body>
+{% block cont-header %}
+    <div>
+        <h3 class="page-title">
+            {% trans 'Wallet Report' %}
+        </h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+    {% trans 'This page is still under construction ... . we will be at your service soon.' %}
+{% endblock %}
+</body>
+</html>

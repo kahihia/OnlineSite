@@ -1,0 +1,100 @@
+{% extends 'interpay/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            {% trans 'Wallet Info ' %}- Interpay Iran
+        {% endblock %}
+    </title>
+    {% block CSS %}
+        <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block cont-header %}
+    <div>
+        <h3 class="page-title">
+           {% trans 'Wallet Info' %}
+        </h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+    <div id="" class="row">
+        <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper" >
+            <div id="wal-tab-searchbar" class="row ">
+                <span id="display-records" class="col-sm-6">
+                    <i class="fa fa-eye" aria-hidden="true">
+                        <select>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="500">500</option>
+                        </select>
+                    </i>
+                </span>
+                <span id="search" class="col-sm-6">
+                    <i class="fa fa-search" aria-hidden="true">
+                            <input type="text" id="search-txtbox">
+                    </i>
+                </span>
+            </div>
+
+            <table id="wal-tab">
+                <thead>
+                <tr class="table-header-row">
+                    <th class="table-header-cell">
+                        {% trans 'Wallet Code' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Wallet Type' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Currency Name' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Currency Symbol' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Balance' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Wallet Description' %}
+                    </th>
+                    <th class="table-header-cell"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for account in accountList %}
+                <tr>
+                    <td class="table-cell">{{ account.account_id }}</td>
+                    <td class="table-cell">user</td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell">{{ account.cur_code }}</td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell">{{ account.name }}</td>
+                    <td class="table-cell"></td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+                <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
+{#                <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4"><b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ accountList.first.total_value }}</b></h5>#}
+            </div>
+        </div>
+    <hr>
+    </div>
+{% endblock %}
+</body>
+</html>

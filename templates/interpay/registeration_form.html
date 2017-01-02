@@ -1,0 +1,353 @@
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        InterPay Iran
+    </title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
+    <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static 'interpay/css/registeration_form.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+    {% block CSS %}
+    {% endblock %}
+
+    <!-- JS -->
+    <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
+    <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
+    {% block JS %}
+    {% endblock %}
+
+ {% block style %}
+    <style>
+        {% ifequal LANGUAGE_CODE 'fa-ir' %}
+
+            .form-wrapper {
+                text-align: right !important;
+                font-family: "IRAN-web";
+            }
+
+            #reg-wrap-wrap-div{
+             font-family: "IRAN-web";
+            }
+
+        {% endifequal %}
+    </style>
+    {% endblock %}
+</head>
+
+<body style="background: #f9f9f9">
+<script>
+    $(document).ready(function () {
+        $("#national_code").keydown(function (event) {
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    // Allow: Ctrl+A
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    // Allow: home, end, left, right
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $("#mob_no").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $("#verification-code").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        {#        $(function () {#}
+        {#            $("#id_date_of_birth").datepicker("show");#}
+        {#            $("#format"id_date_of_birth").datepicker("option", "dateFormat", $(this).val());#}
+        {#            });).change(function () {#}
+        {#                $("##}
+        {#        });#}
+        {#        console.log("k");#}
+        {#        $("#id_date_of_birth").click(function () {#}
+        {#            console.log("hi");#}
+        {#            $("#id_date_of_birth").datepicker("show");#}
+        {#        });#}
+
+        $('#continue-btn').attr('disabled', true);
+        $('input').keyup(function () {
+            var disable = false;
+            $('input:text').each(function () {
+                if ($(this).val() == "") {
+                    disable = true;
+                }
+            });
+            $('#continue-btn').prop('disabled', disable);
+        });
+    });
+
+    function to_en() {
+        var en_url = window.location.href.replace("/fa-ir/", "/");
+        window.location.assign(en_url);
+    }
+
+    function id_card_submit_btn() {
+        $('#id_national_card_photo').click();
+    }
+
+    function verify_user() {
+        var postUrl = "/verif/";
+        code = $("#verification-code").val();
+        $.ajax({
+            url: postUrl,
+            type: 'POST',
+            data: {'code': code},
+            traditional: true,
+            dataType: 'html',
+            success: function (result) {
+                var data = JSON.parse(result);
+                if (data['res'] == 1 || data['res'] == -1) {
+                    console.log(data['res']);
+                    $('#code-auth-box').empty();
+                    $('#code-auth-box').html(data['html']);
+                    $('#resend-code').css({'display': 'none'});
+
+                }
+                else if (data['res'] == 0) {
+                    $('#wrong-code-msg').empty();
+                    $('#wrong-code-msg').html(data['html']);
+                }
+            }
+
+        });
+    }
+
+    function resend_sms() {
+        swal({
+            title: "",
+            text: "You want to get a new code?",
+            type: "info",
+            showCancelButton: false,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function () {
+            var postUrl = "/sms/";
+            $.ajax({
+                url: postUrl,
+                type: 'POST',
+                data: {},
+                traditional: true,
+                dataType: 'html',
+                success: function (result) {
+                    swal("", result, "success")
+                }
+            });
+        });
+    }
+
+    function go() {
+        $("#submit-btn").click();
+
+        swal({
+            title: "",
+            text: "Processing. If successful a message will be sent to your mobile.",
+            type: "info",
+            showCancelButton: false,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        }, function () {
+        });
+    }
+
+    {% block script %}
+    {% endblock %}
+</script>
+<header>
+    <div class="top-bar">
+        <div class="container" style="color: white;">
+            <div id="logo-bar">
+                <img src="{% static 'interpay/images/logo.png' %}" style="width: 10%">
+                <!--The translation part is commented out until it's bug being fixed -->
+                <div id="translation-link">
+                    {% ifequal LANGUAGE_CODE 'en-gb' %}
+                        <a id="to-fa-link" href='/fa-ir{{ request.path }}'><img src="{% static 'interpay/images/irflag.png' %}"
+                                                                                style="width: 50%;cursor: pointer"></a>
+                        {% else %}
+                        <a id="to-en-link" class="trans-link" onclick="to_en()"><img src="{% static 'interpay/images/ukflag.png' %}"
+                                                                                     style="width: 50%;cursor: pointer"></a>
+                    {% endifequal %}
+                </div>
+            </div>
+            {#            <div class="row">#}
+            {#                <div id="number" class="col-sm-6 col-xs-4"></div>#}
+            {#                <div id="social" class="col-sm-6 col-xs-8"></div>#}
+            {#            </div>#}
+
+        </div>
+    </div>
+    <nav></nav>
+
+</header>
+<section>
+    <div class="container">
+        {% if registered %}
+        {% if activated %}
+        <div class="row">
+            <div class="col-xs-12" id="reg-wrap-wrap-div">
+                <div class="form-wrapper" style="text-align: center">
+                    <strong>{{ thanks_msg }}</strong>
+                    <hr>
+                    <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>
+
+                    {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a class="btn-link" href="/home/">{{ redirect_to_home_msg }}
+                        {% else %}
+                        <a class="btn-link" href="/fa-ir/home/">
+                            {% endifequal %}
+                            {% trans 'Launch to your homepage' %}
+                        </a>
+                        <br/>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-xs-12" id="reg-wrap-wrap-div">
+                <div id="code-auth-box" class="form-wrapper" style="text-align: center">
+                    <div id="wrong-code-msg"></div>
+                    <div id="authentication_form_wrapper">
+                        <p><input name="code" id="verification-code" type="text" maxlength="6"
+                                  class="registration-form-field"
+                                  placeholder="Enter the code"></p>
+                        <p><input id="send-sms-btn" onclick="verify_user()" type="button" value="Submit and Sign Up"
+                                  class="registration-form-field btn btn-success"></p>
+                    </div>
+                </div>
+                <div id="resend-code"><h6>
+                    <a onclick="resend_sms()">{% trans "Did'nt get any code? Re-send a code." %}</a></h6></div>
+            </div>
+        </div>
+        {% endif %}
+        {#            <div class="row">#}
+        {#                <div class="col-xs-12" id="reg-wrap-wrap-div">#}
+        {#                    <div class="form-wrapper" style="text-align: center">#}
+        {#                        <strong>{{ thanks_msg }}</strong>#}
+        {#                        <hr>#}
+        {#                        <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>#}
+        {##}
+        {#                        {% ifequal LANGUAGE_CODE  'en-gb' %}#}
+        {#                        <a class="btn-link" href="/home/">{{ redirect_to_home_msg }}#}
+        {#                        {% else %}#}
+        {#                            <a class="btn-link" href="/fa-ir/home/">#}
+        {#                        {% endifequal %}#}
+        {#                        {% trans 'Launch to your homepage' %}#}
+        {#                        </a>#}
+        {#                        <br/>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        {% elif registered == -1 %}#}
+        {#            <div class="row">#}
+        {#                <div class="col-xs-12" id="reg-wrap-wrap-div">#}
+        {#                    <div class="form-wrapper" style="text-align: center">#}
+        {#                        <div id="authentication_form_wrapper">#}
+        {#                            <form enctype="multipart/form-data" id="authentication_form" method="post"#}
+        {#                                  action="/register/">#}
+        {#                                {% csrf_token %}#}
+        {#                                {{ auth_form.as_p }}#}
+        {#                                <p>#}
+        {#                                    <input id="send-sms-btn" onclick="send_sms()" type="submit"#}
+        {#                                           value="Submit and Sign Up"#}
+        {#                                           class="registration-form-field btn btn-success">#}
+        {#                                </p>#}
+        {#                            </form>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {% else %}
+        <div class="row">
+            {% block main-cont %}
+                <div class="col-xs-12" id="reg-wrap-wrap-div">
+                <div class="form-wrapper">
+                    <div></div>
+                    <div id="reg-top-icon" style="margin: 5px;font-size: larger">
+                        <i class="fa fa-users" aria-hidden="true"
+                           style="padding-right: 5px"></i>
+                        {% trans 'New User Registration' %}
+                    </div>
+                    {% block message %}
+                    {% endblock %}
+                    <hr>
+                    <div id="registration_form_wrapper">
+                        <form enctype="multipart/form-data" id="registration_form" method="post"
+                              action="/register/"> {% csrf_token %}
+                            {{ user_form.as_p }}
+                            {{ profile_form.as_p }}
+
+                            <p>
+                                <input id="id-card-submit-btn" type="button"
+                                       value="{% trans 'Upload your Identification Card photo' %}"
+                                       class="registration-form-field btn btn-primary"
+                                       onclick="id_card_submit_btn()">
+                            </p>
+
+                            <div id="submit-btn-wrap" style="text-align: center">
+                                <input id="continue-btn" class="btn btn-success" type="button" name="continue"
+                                       onclick="go()"
+                                       value="{% trans 'Continue >>' %}"/>
+                            </div>
+                            <div id="submit-btn-wrap" style="text-align: center; display:none;">
+                                <input id="submit-btn" class="btn btn-success" type="submit" name="submit"
+                                       value="{% trans 'Sign Up' %}"/>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div id="authentication_form">
+                    </div>
+                </div>
+                <div class="login-register-div">
+                    <h6>{% trans 'Already have an account?' %}</h6>
+                    <a class="register-login-link" href="/login/">{% trans 'Sign In!' %}</a>
+                </div>
+            {% endblock %}
+            </div>
+            {% endif %}
+        </div>
+</section>
+{#TODO this part should be fixed ASAP#}
+{#<footer id="footer" class="footer">#}
+{#    <div id="footer-content">All rights reserved.</div>#}
+{#</footer>#}
+</body>
+</html>
