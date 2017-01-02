@@ -23,6 +23,8 @@ import time
 import random
 import redis
 import datetime
+import logging
+log = logging.getLogger('interpay')
 
 def main_page(request):
     #test()
