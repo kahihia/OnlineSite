@@ -1,0 +1,112 @@
+{% extends 'interpay/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+{% load currency %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            {% trans 'Wallet Info ' %}- Interpay Iran
+        {% endblock %}
+    </title>
+    {% block CSS %}
+        <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block js %}
+    <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
+{% endblock %}
+{% block cont-header %}
+    <div>
+        <h3 class="page-title">
+            {% trans 'Wallet Info' %}
+        </h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+    <div id="" class="row">
+        <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper">
+
+            <table id="wal-tab">
+                <thead>
+                <tr class="table-header-row">
+                    <th class="table-header-cell">
+                        {% trans 'Wallet Code' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Wallet Type' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Currency Name' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Currency Symbol' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Balance' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Wallet Description' %}
+                    </th>
+                    <th class="table-header-cell">
+                    </th>
+                    {#                    <th  class="table-header-cell">#}
+                    {#                        {% trans 'Converted Value' %}#}
+                    {#                    </th>#}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="table-cell">{{ account.account_id }} </td>
+                    <td class="table-cell">user</td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell">{{ account.cur_code }}</td>
+                    <td class="table-cell">{{ account.balance }}</td>
+                    <td class="table-cell">{{ account.name }}</td>
+                    <td class="table-cell"></td>
+                </tr>
+
+                </tbody>
+            </table>
+            <form method="post" action="../actual_convert/">
+                {% csrf_token %}
+
+                <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+
+                    <div style="margin-right:0px;width:300px;margin-left: 10px ">
+                        <div id="error" style="color:red">
+                            {{ error }}
+                        </div>
+                        <div id="message">
+                            {{ message }}
+                        </div>
+                        <label>Amount: </label>
+                        <input id="amount" name="amount" type="text" placeholder="Amount"><br>
+                        <label>To Currency: </label>
+                        <select name="currency" id="currency">
+                            <option>Select Currency...</option>
+                            {% for curr in CURRENCIES %}
+                                <option value="{{ curr.code }}">
+                                    {{ curr.symbol }} {{ curr.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="account_id" value="{{ account.account_id }}">
+                        <br>
+                        <input type="submit" value="Convert">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr>
+    </div>
+{% endblock %}
+
+</body>
+
+</html>
+

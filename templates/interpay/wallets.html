@@ -84,7 +84,7 @@
                 <tbody>
                 {% for account in accountList %}
                     <tr>
-                        <td class="table-cell">{{ account.account_id }}</td>
+                        <td class="table-cell"><a href="{{ account.account_id }}">{{ account.account_id }}</a></td>
                         <td class="table-cell">user</td>
                         <td class="table-cell"></td>
                         <td class="table-cell">{{ account.cur_code }}</td>
@@ -103,7 +103,7 @@
                                 {% endfor %}
                             </select>
                         </td>
-                        <td class="table-cell" id="converted{{ forloop.counter }}">{{ forloop.counter }}</td>
+                        <td class="table-cell" id="converted{{ forloop.counter }}"></td>
                     </tr>
                 {% endfor %}
 

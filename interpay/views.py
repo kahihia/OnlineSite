@@ -12,7 +12,7 @@ from interpay.forms import RegistrationForm, UserForm
 from django.views.decorators.csrf import csrf_exempt
 from firstsite.SMS import ds, api
 from interpay import models
-from interpay.models import BankAccount, Deposit
+from interpay.models import BankAccount, Deposit, Withdraw
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -24,22 +24,23 @@ import random
 import redis
 import datetime
 
+
 def main_page(request):
-    #test()
+    # test()
     if request.user.is_authenticated():
         return home(request)
     return render(request, 'interpay/index.html')
 
 
-# def test():
-#     user = User.objects.get(username="arman")
-#     up = UserProfile.objects.get(user=user)
-#     ba =BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='USD')
-#     ba.save()
-#     # ba = BankAccount.objects.get(owner=up, cur_code='USD')
-#     # ba.delete()
-#     d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='USD')
-#     d.save()
+def test():
+    user = User.objects.get(username="arman")
+    up = UserProfile.objects.get(user=user)
+    ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='USD', account_id=make_id())
+    ba.save()
+    # ba = BankAccount.objects.get(owner=up, cur_code='USD')
+    # ba.delete()
+    d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='USD')
+    d.save()
 
 
 def register(request):
@@ -96,6 +97,11 @@ def register(request):
                       {'user_form': user_form, 'profile_form': registration_form,
                        'registered': registered,
                        'thanks_msg': thanks_msg, 'redirect_to_home_msg': redirect_to_home_msg, 'activated': activated})
+
+
+@login_required()
+def trans_history(request):
+    return render(request, "interpay/trans_history.html")
 
 
 @csrf_exempt
@@ -381,6 +387,58 @@ def wallets(request):
 
 
 @login_required()
+def wallet(request, wallet_id):
+    context = {
+        'account': BankAccount.objects.get(account_id=wallet_id),
+        # 'user_profile': user_profile
+    }
+    return render(request, "interpay/wallet.html", context)
+
+
+@login_required()
+def actual_convert(request):
+    amount = request.POST.get('amount')
+    currency = request.POST.get('currency')
+    account_id = request.POST.get('account_id')
+    try:
+        amount = int(amount)
+    except ValueError:
+        return render(request, "interpay/wallet.html",
+                      {
+                          'error': 'Please enter a valid number.',
+                          'account': BankAccount.objects.get(account_id=account_id),
+                      })
+    cur_account = BankAccount.objects.get(account_id=account_id)
+    user_profile = models.UserProfile.objects.get(user=request.user)
+    # cur_account.balance -= amount
+    new_withdraw = Withdraw(account=cur_account, amount=amount, banker=user_profile, date=datetime.datetime.now(),
+                            cur_code=cur_account.cur_code)
+    new_withdraw.save()
+    converted_amount = convert(amount, cur_account.cur_code, currency)
+    destination_account = ""
+    print (converted_amount,"amount")
+    for temp_account in BankAccount.objects.filter(owner=user_profile):
+        if temp_account.cur_code == currency:
+            destination_account = temp_account
+            break
+    if not destination_account:
+        destination_account = BankAccount(name='usdaccount', owner=user_profile, method=BankAccount.DEBIT, cur_code=currency,
+                              account_id=make_id())
+    destination_account.save()
+    new_deposit = Deposit(account=destination_account, amount=converted_amount, banker=user_profile,
+                          date=datetime.datetime.now(), cur_code=currency)
+
+    # new_account.balance += convert(amount, cur_account.cur_code, currency)
+
+    new_deposit.save()
+    context = {
+        'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
+        'account': BankAccount.objects.get(account_id=account_id)
+    }
+    return render(request, "interpay/wallet.html", context)
+
+
+@login_required()
 def convert_currency(request):
     from_code = request.GET.get('from_code')
     to_code = request.GET.get('to_code')
@@ -400,27 +458,6 @@ def convert_currency(request):
         content_type="application/json"
     )
     # return render(request, "wallets.html", {'code': 'USD'})
-
-
-@login_required()
-def convert_rial(request):
-    return render(request, "wallets.html", {'code': 'IRR'})
-
-
-@login_required()
-def convert_euro(request):
-    print ("test")
-    return render(request, "wallets.html", {'code': 'EUR'})
-
-
-@login_required()
-def convert_pound(request):
-    return render(request, "wallets.html", {'code': 'GBP'})
-
-
-@login_required()
-def trans_history(request):
-    return render(request, "interpay/trans_history.html")
 
 
 @login_required()
