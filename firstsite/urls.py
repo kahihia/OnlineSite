@@ -45,7 +45,7 @@ urlpatterns = [
     # url(r'^wallets/rials/$', views.convert_rial),
     # url(r'^wallets/euros/$', views.convert_euro),
     # url(r'^wallets/pounds/$', views.convert_pound),
-    # url(r'^trans-history/', views.trans_history),
+    url(r'^trans-history/', views.trans_history),
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
     url(r'^register/$', views.register, name='register'),
