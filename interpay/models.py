@@ -39,11 +39,11 @@ class UserProfile(models.Model):
     date_of_birth = models.DateTimeField(null=False, blank=False)
     date_joined = models.DateTimeField(default=datetime.now())
     country = CountryField(default="Iran")
+    national_card_photo = models.ImageField(upload_to='nationalCardScans/', null=True, blank=True)
     national_code = models.CharField(max_length=10, null=False, blank=False)
     mobile_number = models.CharField(max_length=11, null=True, blank=True)
     email = models.EmailField(null=False, blank=False)
     # TODO : this field should not be nullable. fix it.
-    national_card_photo = models.ImageField(upload_to='nationalCardScans/', null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'

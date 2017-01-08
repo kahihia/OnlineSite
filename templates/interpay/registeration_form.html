@@ -101,14 +101,20 @@
         {#            console.log("hi");#}
         {#            $("#id_date_of_birth").datepicker("show");#}
         {#        });#}
-
-        $('#continue-btn').attr('disabled', true);
+    $('#continue-btn').attr('disabled', true);
         $('input').keyup(function () {
             var disable = false;
-            $('input:text').each(function () {
+            $('input[type=text]').each(function () {
                 if ($(this).val() == "") {
                     disable = true;
                 }
+                  console.log($(this).val());
+            });
+             $('input[type=file]').each(function () {
+                if ($(this).val() == "") {
+                    disable = true;
+                }
+                  console.log($(this).val());
             });
             $('#continue-btn').prop('disabled', disable);
         });
@@ -312,16 +318,8 @@
                               action="/register/"> {% csrf_token %}
                             {{ user_form.as_p }}
                             {{ profile_form.as_p }}
-
-                            <p>
-                                <input id="id-card-submit-btn" type="button"
-                                       value="{% trans 'Upload your Identification Card photo' %}"
-                                       class="registration-form-field btn btn-primary"
-                                       onclick="id_card_submit_btn()">
-                            </p>
-
                             <div id="submit-btn-wrap" style="text-align: center">
-                                <input id="continue-btn" class="btn btn-success" type="button" name="continue"
+                                <input id="continue-btn" class="btn btn-success"  type="button" name="continue"
                                        onclick="go()"
                                        value="{% trans 'Continue >>' %}"/>
                             </div>
