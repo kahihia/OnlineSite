@@ -15,11 +15,14 @@
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
     {% endblock %}
+    {% block JS %}
+        <script src="{% static 'interpay/js/conversion.js' %}"></script>
+    {% endblock %}
 </head>
 <body>
-{% block js %}
-    <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
-{% endblock %}
+{#{% block js %}#}
+{#    <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>#}
+{#{% endblock %}#}
 {% block cont-header %}
     <div>
         <h3 class="page-title">
@@ -92,11 +95,10 @@
                         <td class="table-cell">{{ account.name }}</td>
                         <td class="table-cell">
                             <select name="currency_code{{ forloop.counter }}" id="currency_code{{ forloop.counter }}"
-                                    onchange="convert({{ accountList.first.total_value }},{{ forloop.counter }},'{{ account.cur_code }}');">
+                                    onchange="convert({{ account.balance }},{{ forloop.counter }},'{{ account.cur_code }}');">
                                 <option>Currency...</option>
                                 {% for curr in CURRENCIES %}
                                     <option value="{{ curr.code }}"
-                                            {#                                    {% ifequal curr.code CURRENCY.code %}selected="selected"{% endifequal %}#}
                                     >
                                         {{ curr.symbol }} {{ curr.name }}
                                     </option>
