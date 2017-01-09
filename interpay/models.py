@@ -17,7 +17,7 @@ from collections import defaultdict
 from currencies.utils import convert
 from django.db import models
 from decimal import Decimal
-#import convert
+# import convert
 import random
 import time
 
@@ -39,11 +39,11 @@ class UserProfile(models.Model):
     date_of_birth = models.DateTimeField(null=False, blank=False)
     date_joined = models.DateTimeField(default=datetime.now())
     country = CountryField(default="Iran")
-    national_card_photo = models.ImageField(upload_to='nationalCardScans/', null=True, blank=True)
     national_code = models.CharField(max_length=10, null=False, blank=False)
     mobile_number = models.CharField(max_length=11, null=True, blank=True)
     email = models.EmailField(null=False, blank=False)
     # TODO : this field should not be nullable. fix it.
+    national_card_photo = models.ImageField(upload_to='nationalCardScans/', null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
@@ -181,26 +181,24 @@ class BankAccount(models.Model):
         result *= 1 - (rule.deposit_charge_percent * 0.01)
         return result
 
-   # @property
-    # def debt(self):
-    #     assert self.method == self.CREDIT
-    #     today = time.timezone.now()
-    #     rule = Rule.on_date(self.when_opened)
-    #     result = 0
-    #     current_date = self.when_opened
-    #     while current_date <= today:
-    #         result += sum(x.amount for x in self.withdraw_set.on_date(current_date))
-    #         result += sum(x.amount for x in self.outcome_transfers.on_date(current_date))
-    #         result -= sum(x.amount for x in self.deposit_set.on_date(current_date))
-    #         result -= sum(x.amount for x in self.income_transfers.on_date(current_date))
-    #         result *= rule.credit_percent
-    #         current_date += timedelta(days=1)
-    #     return result
+        # @property
+        # def debt(self):
+        #     assert self.method == self.CREDIT
+        #     today = time.timezone.now()
+        #     rule = Rule.on_date(self.when_opened)
+        #     result = 0
+        #     current_date = self.when_opened
+        #     while current_date <= today:
+        #         result += sum(x.amount for x in self.withdraw_set.on_date(current_date))
+        #         result += sum(x.amount for x in self.outcome_transfers.on_date(current_date))
+        #         result -= sum(x.amount for x in self.deposit_set.on_date(current_date))
+        #         result -= sum(x.amount for x in self.income_transfers.on_date(current_date))
+        #         result *= rule.credit_percent
+        #         current_date += timedelta(days=1)
+        #     return result
 
 
 class OperationManager(models.Manager):
-
-
     def on_date_c(self, ts, cc, bk=False):
         print self.filter(date__gte=ts).count()
         if bk:
@@ -210,6 +208,7 @@ class OperationManager(models.Manager):
 
     def on_date_out(self, date, act):
         return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, sender=act)
+
     def on_date_in(self, date, act):
         return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, receiver=act)
 
@@ -236,6 +235,7 @@ class Deposit(models.Model):
     be = models.IntegerField(default='123')
     status = models.BooleanField(default=False)
     objects = OperationManager()
+
 
 class Withdraw(models.Model):
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
