@@ -237,6 +237,7 @@ class Deposit(models.Model):
     status = models.BooleanField(default=False)
     objects = OperationManager()
 
+
 class Withdraw(models.Model):
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
     amount = models.FloatField()
@@ -245,4 +246,7 @@ class Withdraw(models.Model):
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
 
-# Create your models here.
+
+class CurrencyConversion(models.Model):
+    deposit = models.OneToOneField(Deposit, related_name="conversion_deposit")
+    withdraw = models.OneToOneField(Withdraw, related_name="conversion_withdraw")

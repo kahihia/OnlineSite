@@ -12,7 +12,7 @@ from interpay.forms import RegistrationForm, UserForm
 from django.views.decorators.csrf import csrf_exempt
 from firstsite.SMS import ds, api
 from interpay import models
-from interpay.models import BankAccount, Deposit, Withdraw
+from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -413,9 +413,12 @@ def actual_convert(request):
     cur_account = BankAccount.objects.get(account_id=account_id)
     user_profile = models.UserProfile.objects.get(user=request.user)
     # cur_account.balance -= amount
+    conversion = CurrencyConversion()
+
     new_withdraw = Withdraw(account=cur_account, amount=amount, banker=user_profile, date=datetime.datetime.now(),
                             cur_code=cur_account.cur_code)
     new_withdraw.save()
+    conversion.withdraw = new_withdraw
     converted_amount = convert(amount, cur_account.cur_code, currency)
     destination_account = ""
     print (converted_amount,"amount")
@@ -429,10 +432,9 @@ def actual_convert(request):
     destination_account.save()
     new_deposit = Deposit(account=destination_account, amount=converted_amount, banker=user_profile,
                           date=datetime.datetime.now(), cur_code=currency)
-
-    # new_account.balance += convert(amount, cur_account.cur_code, currency)
-
     new_deposit.save()
+    conversion.deposit = new_deposit
+    conversion.save()
     context = {
         'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
         'account': BankAccount.objects.get(account_id=account_id)
