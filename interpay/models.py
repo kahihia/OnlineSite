@@ -235,6 +235,7 @@ class Deposit(models.Model):
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     tracking_code = models.IntegerField(default='0')
+
     commission = models.FloatField(default=0)
     status = models.BooleanField(default=False)
     objects = OperationManager()
