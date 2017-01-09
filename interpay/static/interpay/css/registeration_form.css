@@ -98,5 +98,14 @@ span.helptext {
 }
 
 input#id_national_card_photo {
-    display: none;!important;
+    /*display: none;!important;*/
+  padding:5px 10px;
+  background:#006699;
+  border:1px solid #004466;
+  position:relative;
+  color:#ffffff;
+  border-radius:2px;
+  text-align:center;
+  float:left;
+  cursor:pointer
 }
