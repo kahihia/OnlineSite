@@ -142,7 +142,7 @@ class BankAccount(models.Model):
     owner = models.ForeignKey(UserProfile, related_name='w_accounts')
     cur_code = models.CharField(_('cur_code'), max_length=3, default='RLS')
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
-    account_id = models.CharField(primary_key=True, max_length=24, validators=[alphanumeric])
+    account_id = models.CharField(max_length=24, validators=[alphanumeric])
 
     def total_value(self):
         t_value = Decimal(0)
@@ -234,7 +234,7 @@ class Deposit(models.Model):
     banker = models.ForeignKey(UserProfile, null=True)
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    tracking_code = models.IntegerField(default='123')
+    tracking_code = models.IntegerField(default='0')
     commission = models.FloatField(default=0)
     status = models.BooleanField(default=False)
     objects = OperationManager()
