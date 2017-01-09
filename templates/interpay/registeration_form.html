@@ -106,13 +106,13 @@
             var disable = false;
             $('input[type=text]').each(function () {
                 if ($(this).val() == "") {
-                    disable = true;
+                    disable = true ;
                 }
                   console.log($(this).val());
             });
              $('input[type=file]').each(function () {
                 if ($(this).val() == "") {
-                    disable = true;
+                    disable = false;
                 }
                   console.log($(this).val());
             });

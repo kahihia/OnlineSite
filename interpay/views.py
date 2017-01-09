@@ -246,16 +246,19 @@ def recharge_account(request):
             user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
             # TODO : this part should be edited to check whether there is already an account with this name;
             #  if so, increment the account's total
-            account_id = make_id()
             user_b_account, created = models.BankAccount.objects.get_or_create(
                 owner=user_profile,
                 cur_code=cur,
                 method=models.BankAccount.DEBIT,
                 name=request.user.username + '_' + cur + '_InterPay-account',
-                account_id=account_id
             )
+
+            if created:
+                user_b_account.account_id = make_id()
+                user_b_account.save()
+
             banker = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
-            data = {"account_id": account_id, "amount": amnt, "banker_id": banker.id,
+            data = {"account_id": user_b_account.account_id, "amount": amnt, "banker_id": banker.id,
                     "date": str(user_b_account.when_opened), "cur_code": cur}
             new_connection.set('data', data)
             # TODO : place a logger here
@@ -263,7 +266,7 @@ def recharge_account(request):
             zarinpal = zarinpal_payment_gate(request, amnt)
             if zarinpal['status'] == 100:
                 return redirect(zarinpal['ret'])
-            return zarinpal['ret']
+            return HttpResponse(zarinpal['ret'])
     recharge_form = RechargeAccountForm()
 
     user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
