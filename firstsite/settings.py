@@ -16,6 +16,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -28,6 +29,7 @@ OPENEXCHANGERATES_APP_ID = "444ee7425aa646c0a789ef4a900013ee"
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # ALLOWED_HOSTS = ['.rizpardakht.com','www.rizpardakht.com']
 
@@ -52,7 +54,7 @@ INSTALLED_APPS = [
 
 ]
 
-SITE_ID = 1
+SITE_ID=1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,9 +75,6 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 20
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
-# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = "default"
-
 SESSION_SECURITY_WARN_AFTER = 28 * 60
 SESSION_SECURITY_EXPIRE_AFTER = 30 * 60
 TEMPLATES = [
@@ -86,7 +85,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'currencies.context_processors.currencies',
+		'currencies.context_processors.currencies',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -110,6 +109,7 @@ WSGI_APPLICATION = 'firstsite.wsgi.application'
 MEDIA_ROOT = '/home/sepehr/firstsite/media/'
 MEDIA_URL = '/media/'
 
+
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -120,8 +120,10 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# SERVERSET
-# DATABASES = {
+
+
+#SERVERSET
+#DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql',
 #        'NAME': 'rizpardakht',
@@ -130,7 +132,7 @@ AUTHENTICATION_BACKENDS = (
 #        'HOST': 'localhost',
 #        'PORT': '',        
 #    }
-# }
+#}
 
 DATABASES = {
     'default': {
@@ -138,6 +140,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -157,13 +162,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGE_CODE = 'en-gb'
 ugettext = lambda s: s
 
-# TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
 TIME_ZONE = 'Iran'
 
 USE_I18N = True
@@ -172,15 +178,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 from django.utils.translation import ugettext_lazy as _ut
-
 LANGUAGES = (
     ('en-gb', _ut('English')),
-    ('fa-ir', _ut('Persian')),
+    ('fa-ir',_ut('Persian')),
 )
 MEDIA_ROOT = 'media/'
 MEDIA_URL = '/media/'
@@ -195,6 +201,52 @@ STATICFILES_DIRS = [
     '/home/sepehr/firstsite/interpay/static',
 ]
 prefix_default_language = False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'null': {
+            'level':'DEBUG',
+            'class':'logging.NullHandler',
+        },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': "../OnlineSite/interpay/static/example.log",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+        },
+        'console':{
+            'level':'INFO',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['console'],
+            'propagate': True,
+            'level':'WARN',
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'interpay': {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+        },
+    }
+}
 #
 # CACHES = {
 #     "default": {
