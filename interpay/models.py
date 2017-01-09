@@ -39,11 +39,11 @@ class UserProfile(models.Model):
     date_of_birth = models.DateTimeField(null=False, blank=False)
     date_joined = models.DateTimeField(default=datetime.now())
     country = CountryField(default="Iran")
+    national_card_photo = models.ImageField(upload_to='nationalCardScans/', null=True, blank=True)
     national_code = models.CharField(max_length=10, null=False, blank=False)
     mobile_number = models.CharField(max_length=11, null=True, blank=True)
     email = models.EmailField(null=False, blank=False)
     # TODO : this field should not be nullable. fix it.
-    national_card_photo = models.ImageField(upload_to='nationalCardScans/', null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
@@ -160,25 +160,26 @@ class BankAccount(models.Model):
         assert self.method == self.DEBIT
         today = datetime.today()
         # print 'started balance22'
-        rule = Rule.on_date(self.when_opened)
+        # rule = Rule.on_date(self.when_opened)
         current_date = self.when_opened
         # print 'started while'
         result = 0
         while current_date <= datetime.date(today):
-            print self.deposit_set.count()
-            print 'count of sets fix withdraw outcome then deposit'
+            # print self.deposit_set.count()
+            # print 'count of sets fix withdraw outcome then deposit'
 
             result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code, self))
             result -= sum(x.amount for x in self.outcome_transfers.on_date_out(current_date, self))
-            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
 
+            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
+            result += sum(x.commission for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             result += sum(x.amount for x in self.income_transfers.on_date_in(current_date, self))
 
             current_date += timedelta(days=1)
             break
 
             #   print current_date
-        result *= 1 - (rule.deposit_charge_percent * 0.01)
+        # result *= 1 - (rule.deposit_charge_percent * 0.01)
         return result
 
    # @property
@@ -233,7 +234,8 @@ class Deposit(models.Model):
     banker = models.ForeignKey(UserProfile, null=True)
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    be = models.IntegerField(default='123')
+    tracking_code = models.IntegerField(default='123')
+    commission = models.FloatField(default=0)
     status = models.BooleanField(default=False)
     objects = OperationManager()
 

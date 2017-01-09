@@ -22,6 +22,7 @@ import json
 import time
 import random
 import redis
+import ast
 import datetime
 import logging
 log = logging.getLogger('interpay')
@@ -230,6 +231,9 @@ def make_id():
     return id
 
 
+new_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+
 @login_required()
 def recharge_account(request):
     recharge_form = RechargeAccountForm(data=request.POST)
@@ -237,25 +241,24 @@ def recharge_account(request):
         if recharge_form.is_valid():
             cur = recharge_form.cleaned_data['currency']
             amnt = recharge_form.cleaned_data['amount']
-            print amnt, cur, request.user, request.user.id, request.user.username
+            # print amnt, cur, request.user, request.user.id, request.user.username
             user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
             # TODO : this part should be edited to check whether there is already an account with this name;
             #  if so, increment the account's total
+            account_id = make_id()
             user_b_account, created = models.BankAccount.objects.get_or_create(
                 owner=user_profile,
                 cur_code=cur,
                 method=models.BankAccount.DEBIT,
                 name=request.user.username + '_' + cur + '_InterPay-account',
-                account_id=make_id()
+                account_id=account_id
             )
-            # deposit = models.Deposit(account=user_b_account, amount=amnt, banker=user_profile,
-            #                          date=user_b_account.when_opened, cur_code=cur)
-            # deposit.save()
-            connection = redis.Redis('localhost')
-            deposit_dict = {"account": user_b_account, "amount": amnt, "banker": user_profile,
-                            "date": user_b_account.when_opened, "cur_code": cur}
-            cached_deposit_name = str(user_profile.user_id + "-cachedDeposit")
-            connection.hmset(cached_deposit_name, deposit_dict)
+            banker = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+            data = {"account_id": account_id, "amount": amnt, "banker_id": banker.id,
+                    "date": str(user_b_account.when_opened), "cur_code": cur}
+            new_connection.set('data', data)
+            # TODO : place a logger here
+            ####################################################
             zarinpal = zarinpal_payment_gate(request, amnt)
             if zarinpal['status'] == 100:
                 return redirect(zarinpal['ret'])
@@ -294,36 +297,37 @@ def zarinpal_payment_gate(request, amount):
 
 
 def zarinpal_callback_handler(request, amount):
-    user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+    # user_profile = models.UserProfile.objects.get(id=request.user.id)
     client = Client(ZARINPAL_WEBSERVICE)
-    print request.GET.get
-    result = client.service.PaymentVerification(MERCHANT_ID,
-                                                request.GET.get('Authority'),
-                                                amount)
-    print result
+    
     if request.GET.get('Status') == 'OK':
         result2 = client.service.PaymentVerification(MERCHANT_ID,
                                                      request.GET.get('Authority'),
                                                      amount)
-        print result2
+        print "result2", result2
         if result2.Status == 100:
             res = 'Transaction success. RefID: ' + str(result2.RefID)
-            connection = redis.Redis('localhost')
-            new_deposit = connection.hmget(str(user_profile.user_id + "-cachedDeposit"))  # TODO : place a logger here
-            deposit = models.Deposit(account=new_deposit['account'], amount=new_deposit['amount'],
-                                     banker=new_deposit['banker'],
-                                     date=new_deposit['data'], cur_code=new_deposit['cur_code'])
+            # TODO : place a logger here
+            ##########################################
+            data = new_connection.get('data')
+            # print "a : ", a
+            a = ast.literal_eval(data)
+            new_account = models.BankAccount.objects.get(account_id=a['account_id'])
+            new_banker = models.UserProfile.objects.get(id=a['banker_id'])
+            deposit = models.Deposit(account=new_account, amount=a['amount'],
+                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'])
             deposit.save()
-            return render(request, 'interpay/test.html', {'res': res, 'result': result, 'result2': result2})
+            ###########################################
+            return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
         elif result2.Status == 101:
             res = 'Transaction submitted : ' + str(result2.Status)
-            return render(request, 'interpay/test.html', {'res': res, 'result': result, 'result2': result2})
+            return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
         else:
             res = 'Transaction failed. Status: ' + str(result2.Status)
-            return render(request, 'interpay/test.html', {'res': res, 'result': result, 'result2': result2})
+            return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
     else:
         res = 'Transaction failed or canceled by user'
-        return render(request, 'interpay/test.html', {'res': res, 'result': result})
+        return render(request, 'interpay/test.html', {'res': res})
 
 
 # @login_required()
@@ -346,7 +350,7 @@ def bank_accounts(request):
             cur = bank_account_form.cleaned_data['cur_code']
             bank_name = bank_account_form.cleaned_data['name']
             account_no = bank_account_form.cleaned_data['account_id']
-            print bank_name, cur, request.user, request.user.id, request.user.username
+            # print bank_name, cur, request.user, request.user.id, request.user.username
             new_account = models.BankAccount(
                 owner=user_profile,
                 cur_code=cur,
@@ -369,7 +373,6 @@ def user_logout(request):
 
 @login_required()
 def home(request):
-    print("home")
     return render(request, "interpay/home.html")
 
 
