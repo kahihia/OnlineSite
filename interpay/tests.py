@@ -49,3 +49,17 @@ class LoginTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/home/')
 
+
+class ForgetPassword (TestCase):
+    def test_fotgetpass(self):
+        response = self.client.get("/login/")
+        self.assertContains(response, 'Forgot password or account disabled')
+
+class Registration (TestCase):
+    def test_registration(self):
+        c = Client()
+        response = c.post('/register/', {'firstname': 'Negar','lastname':'goli', 'username': 'neg', 'mob_no':'09102376107'})
+        self.assertContains(response, 'get any code? Re-send a code')
+
+
+

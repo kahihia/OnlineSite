@@ -102,19 +102,17 @@
         {#            $("#id_date_of_birth").datepicker("show");#}
         {#        });#}
     $('#continue-btn').attr('disabled', true);
-        $('input').keyup(function () {
+         $('input').keyup (function () {
             var disable = false;
-            $('input[type=text]').each(function () {
+            $('input[type = text]').each(function () {
                 if ($(this).val() == "") {
                     disable = true ;
                 }
-                  console.log($(this).val());
             });
-             $('input[type=file]').each(function () {
+             $('input[type = file]').each(function () {
                 if ($(this).val() == "") {
-                    disable = false;
+                    disable = true;
                 }
-                  console.log($(this).val());
             });
             $('#continue-btn').prop('disabled', disable);
         });
