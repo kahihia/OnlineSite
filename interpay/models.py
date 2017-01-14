@@ -142,7 +142,7 @@ class BankAccount(models.Model):
     owner = models.ForeignKey(UserProfile, related_name='w_accounts')
     cur_code = models.CharField(_('cur_code'), max_length=3, default='RLS')
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
-    account_id = models.CharField(primary_key=True, max_length=24, validators=[alphanumeric])
+    account_id = models.CharField(max_length=24, validators=[alphanumeric])
 
     def total_value(self):
         t_value = Decimal(0)
@@ -160,25 +160,26 @@ class BankAccount(models.Model):
         assert self.method == self.DEBIT
         today = datetime.today()
         # print 'started balance22'
-        rule = Rule.on_date(self.when_opened)
+        # rule = Rule.on_date(self.when_opened)
         current_date = self.when_opened
         # print 'started while'
         result = 0
         while current_date <= datetime.date(today):
-            print self.deposit_set.count()
-            print 'count of sets fix withdraw outcome then deposit'
+            # print self.deposit_set.count()
+            # print 'count of sets fix withdraw outcome then deposit'
 
             result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code, self))
             result -= sum(x.amount for x in self.outcome_transfers.on_date_out(current_date, self))
-            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
 
+            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
+            result += sum(x.commission for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             result += sum(x.amount for x in self.income_transfers.on_date_in(current_date, self))
 
             current_date += timedelta(days=1)
             break
 
             #   print current_date
-        result *= 1 - (rule.deposit_charge_percent * 0.01)
+        # result *= 1 - (rule.deposit_charge_percent * 0.01)
         return result
 
    # @property
@@ -233,9 +234,12 @@ class Deposit(models.Model):
     banker = models.ForeignKey(UserProfile, null=True)
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    be = models.IntegerField(default='123')
+    tracking_code = models.IntegerField(default='0')
+
+    commission = models.FloatField(default=0)
     status = models.BooleanField(default=False)
     objects = OperationManager()
+
 
 class Withdraw(models.Model):
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
@@ -245,4 +249,7 @@ class Withdraw(models.Model):
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
 
-# Create your models here.
+
+class CurrencyConversion(models.Model):
+    deposit = models.OneToOneField(Deposit, related_name="conversion_deposit")
+    withdraw = models.OneToOneField(Withdraw, related_name="conversion_withdraw")

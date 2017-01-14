@@ -1,27 +1,6 @@
 /**
  * Created by Arman on 12/27/2016.
  //  */
-// window.onload = function () {
-//     // window.location.href = "/wallets"
-//     alert("temp");
-//     var currencySelector = document.getElementById("currency_code");
-//     currencySelector.onchange = function () {
-//         switch (currencySelector.selectedIndex) {
-//             case 1:
-//                 window.location.href = "/wallets/euros/"
-//                 break;
-//             case 2:
-//                 window.location.href = "/wallets/rials/"
-//                 break;
-//             case 3:
-//                 window.location.href = "/wallets/pounds/"
-//                 break;
-//             case 4:
-//                 window.location.href = "/wallets/dollars/"
-//                 break;
-//         }
-//     }
-// }
 
 function convert(amount, index, from_code) {
     var currency_select = document.getElementById("currency_code" + index);
