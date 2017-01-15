@@ -116,7 +116,7 @@ def send_sms(request, mobile_no):
     # request.session['code'] = code #not needed anymore; this is checked from VerificationCodes table in database
     # redis_ds = ds.AuthCodeDataStructure()
     # redis_ds.set_code(mobile_no, code)
-    p = api.ParsGreenSmsServiceClient()
+    #p = api.ParsGreenSmsServiceClient()
     # api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
     print("code:", code)
     while 1:
@@ -318,10 +318,15 @@ def zarinpal_callback_handler(request, amount):
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=a['amount'],
-                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'])
+                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'], status=True)
             deposit.save()
+
+            # deposit_set = models.Deposit.objects.filter(banker=new_banker)
+            # recharge_form = RechargeAccountForm()
             ###########################################
+            #return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set, 'status': 'Success'})
             return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
+
         elif result2.Status == 101:
             res = 'Transaction submitted : ' + str(result2.Status)
             return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
