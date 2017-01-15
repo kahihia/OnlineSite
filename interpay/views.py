@@ -18,6 +18,8 @@ from currencies.utils import convert
 from suds.client import Client
 from django.contrib.auth.models import User
 from interpay.models import UserProfile
+from django.core.mail import send_mail
+from interpay.Email import Email
 import json
 import time
 import random
@@ -171,9 +173,13 @@ def verify_user(request):
 
 
 def retrieve_pass(request):
-    mobile_no = request.POST.get('mobile_no', False)
-    print mobile_no
-    return HttpResponse("hi")
+    email = request.POST.get('email', False)
+    email_sender = Email.Email(email)
+    sent = email_sender.send_email()
+    if sent:
+        return HttpResponse("Password retrieved successful")
+    else:
+        return HttpResponse("No such user")
 
 
 def user_login(request):
