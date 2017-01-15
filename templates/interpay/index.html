@@ -18,29 +18,38 @@
         function forgot_pass() {
             swal({
                 title: "Password Retrieval",
-                text: "Enter your phone number",
+                text: "Enter your email please.",
                 type: "input",
                 showCancelButton: true,
                 closeOnConfirm: false,
                 animation: "slide-from-top",
-                inputPlaceholder: "Phone number"
+                inputPlaceholder: "Email"
             }, function (inputValue) {
                 if (inputValue === "") {
-                    swal.showInputError("You need enter your number");
+                    swal.showInputError("You should enter your email.");
                     return false
                 }
                 var postUrl = "/retrieve_pass/";
                 $.ajax({
                     url: postUrl,
                     type: 'POST',
-                    data: {'mobile_no': inputValue},
+                    data: {
+                        'email': inputValue,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
                     traditional: true,
                     dataType: 'html',
                     success: function (result) {
+                        if (result == "No such user"){
+                            swal(result, "There is no user with this email.", "error");
+                        }else{
+                            swal(result, "A new password was sent to your email.", "success");
+                        }
                         // for now, this method is the same as sending a common sms, but it has to be improved
                         // to generating a more secure password and email it as well as SMSing #TODO
-                        swal(result, "A new password was sent to your phone.", "success");
+
                     }
+
                 });
             });
         }
@@ -118,7 +127,7 @@
                         <h6>{% trans "Don't have an account yet?" %}</h6>
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
                             <a id="register-link" href="/register/">
-                        {% else %}
+                            {% else %}
                             <a id="register-link" href="/fa-ir/register/">
                         {% endifequal %}
                         {% trans 'Create One!' %}
