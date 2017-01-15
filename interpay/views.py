@@ -12,7 +12,7 @@ from interpay.forms import RegistrationForm, UserForm
 from django.views.decorators.csrf import csrf_exempt
 from firstsite.SMS import ds, api
 from interpay import models
-from interpay.models import BankAccount, Deposit, Withdraw
+from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -25,6 +25,7 @@ import redis
 import ast
 import datetime
 import logging
+
 log = logging.getLogger('interpay')
 
 
@@ -302,7 +303,7 @@ def zarinpal_payment_gate(request, amount):
 def zarinpal_callback_handler(request, amount):
     # user_profile = models.UserProfile.objects.get(id=request.user.id)
     client = Client(ZARINPAL_WEBSERVICE)
-    
+
     if request.GET.get('Status') == 'OK':
         result2 = client.service.PaymentVerification(MERCHANT_ID,
                                                      request.GET.get('Authority'),
@@ -403,7 +404,6 @@ def wallets(request):
 def wallet(request, wallet_id):
     context = {
         'account': BankAccount.objects.get(account_id=wallet_id),
-        # 'user_profile': user_profile
     }
     return render(request, "interpay/wallet.html", context)
 
@@ -423,27 +423,28 @@ def actual_convert(request):
                       })
     cur_account = BankAccount.objects.get(account_id=account_id)
     user_profile = models.UserProfile.objects.get(user=request.user)
-    # cur_account.balance -= amount
+    conversion = CurrencyConversion()
+
     new_withdraw = Withdraw(account=cur_account, amount=amount, banker=user_profile, date=datetime.datetime.now(),
                             cur_code=cur_account.cur_code)
     new_withdraw.save()
+    conversion.withdraw = new_withdraw
     converted_amount = convert(amount, cur_account.cur_code, currency)
     destination_account = ""
-    print (converted_amount,"amount")
     for temp_account in BankAccount.objects.filter(owner=user_profile):
         if temp_account.cur_code == currency:
             destination_account = temp_account
             break
     if not destination_account:
-        destination_account = BankAccount(name='usdaccount', owner=user_profile, method=BankAccount.DEBIT, cur_code=currency,
-                              account_id=make_id())
+        destination_account = BankAccount(name='usdaccount', owner=user_profile, method=BankAccount.DEBIT,
+                                          cur_code=currency,
+                                          account_id=make_id())
     destination_account.save()
     new_deposit = Deposit(account=destination_account, amount=converted_amount, banker=user_profile,
                           date=datetime.datetime.now(), cur_code=currency)
-
-    # new_account.balance += convert(amount, cur_account.cur_code, currency)
-
     new_deposit.save()
+    conversion.deposit = new_deposit
+    conversion.save()
     context = {
         'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
         'account': BankAccount.objects.get(account_id=account_id)
@@ -456,21 +457,14 @@ def convert_currency(request):
     from_code = request.GET.get('from_code')
     to_code = request.GET.get('to_code')
     amount = request.GET.get('amount')
-    # print (code)
-    # print (amount)
     response_data = {}
     value = convert(amount, from_code, to_code)
     response_data['result'] = value.__str__()
-    # response_data['postpk'] = post.pk
-    # response_data['text'] = post.text
-    # response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
-    # response_data['author'] = post.author.username
 
     return HttpResponse(
         json.dumps(response_data),
         content_type="application/json"
     )
-    # return render(request, "wallets.html", {'code': 'USD'})
 
 
 @login_required()

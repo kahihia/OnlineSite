@@ -85,6 +85,7 @@ urlpatterns += i18n_patterns(
     # url(r'^wallets/euros/$', views.convert_euro),
     # url(r'^wallets/pounds/$', views.convert_pound),
     url(r'^wallets/$', views.wallets),
+    url(r'^wallets/(?P<wallet_id>\d+)/$', views.wallet),
     url(r'^trans-history/', views.trans_history),
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
