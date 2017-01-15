@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.forms import TextInput, SelectDateWidget
 from django.template import Context, Template
@@ -118,6 +119,14 @@ CURRENCY_CHOICES = {
 }
 
 
+def validate_amount(value):
+    if value < 1000:
+        raise ValidationError(
+            _('%(value) should be more than 1000'),
+            params={'value': value},
+        )
+
+
 class RechargeAccountForm(forms.Form):
     #  we do not need this part right now since the only gateway which we use is Zarinpal
     # payment_gateway = forms.ChoiceField(widget=forms.RadioSelect)
@@ -131,6 +140,12 @@ class RechargeAccountForm(forms.Form):
 
     class Meta:
         fields = ['currency', 'amount']
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount < 100:
+            raise forms.ValidationError('Amount should be more than 100.')
+        return amount
 
 
 BANK_CHOICES = {
