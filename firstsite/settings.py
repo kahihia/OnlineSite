@@ -201,7 +201,6 @@ STATICFILES_DIRS = [
     '/home/sepehr/firstsite/interpay/static',
 ]
 prefix_default_language = False
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -257,3 +256,9 @@ LOGGING = {
 #         }
 #     }
 # }
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'auth.smtp.1and1.co.uk'
+EMAIL_HOST_USER = 'info@rizpal.com'
+EMAIL_HOST_PASSWORD = 'Arman_Naeimian'
+EMAIL_PORT = 587

@@ -18,6 +18,8 @@ from currencies.utils import convert
 from suds.client import Client
 from django.contrib.auth.models import User
 from interpay.models import UserProfile
+from django.core.mail import send_mail
+from interpay.Email import Email
 import json
 import time
 import random
@@ -120,11 +122,13 @@ def send_sms(request, mobile_no):
     #p = api.ParsGreenSmsServiceClient()
     # api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
     print("code:", code)
+    user_profile = ''
     while 1:
         try:
             user_profile = models.UserProfile.objects.get(id=request.session['user_id'])
         # do thing
         except:
+            # user_profile = models.UserProfile.objects.get(id=request.user.id)
             continue
         else:
             break
@@ -171,9 +175,13 @@ def verify_user(request):
 
 
 def retrieve_pass(request):
-    mobile_no = request.POST.get('mobile_no', False)
-    print mobile_no
-    return HttpResponse("hi")
+    email = request.POST.get('email', False)
+    email_sender = Email.Email(email)
+    sent = email_sender.send_email()
+    if sent:
+        return HttpResponse("Password retrieved successful")
+    else:
+        return HttpResponse("No such user")
 
 
 def user_login(request):
@@ -236,7 +244,10 @@ new_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 @login_required()
+# def recharge_account(request, **message):
 def recharge_account(request):
+    code = 0
+    emessage = ''
     recharge_form = RechargeAccountForm(data=request.POST)
     if request.method == 'POST':
         if recharge_form.is_valid():
@@ -261,17 +272,47 @@ def recharge_account(request):
             data = {"account_id": user_b_account.account_id, "amount": amnt, "banker_id": banker.id,
                     "date": str(user_b_account.when_opened), "cur_code": cur}
             new_connection.set('data', data)
-            # TODO : place a logger here
+            log.debug("new BankAccount object created and saved")
             ####################################################
+            # if not 'message' in message:
+            #     print "no msg"
+            #     zarinpal = zarinpal_payment_gate(request, amnt)
+            #     if type(zarinpal) is not HttpResponse:
+            #         if zarinpal['status'] == 100:
+            #             return redirect(zarinpal['ret'])
+            #         return HttpResponse(zarinpal['ret'])
+            # else:
+            #     print "some msg"
             zarinpal = zarinpal_payment_gate(request, amnt)
-            if zarinpal['status'] == 100:
+            # if type(zarinpal) is not HttpResponse:
+            code = zarinpal['status']
+            if code == 100:
                 return redirect(zarinpal['ret'])
-            return HttpResponse(zarinpal['ret'])
+            # return HttpResponse(zarinpal['ret'])
     recharge_form = RechargeAccountForm()
+    try:
 
-    user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
-    deposit_set = models.Deposit.objects.filter(banker=user_profile)
-    return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set})
+        user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+        deposit_set = models.Deposit.objects.filter(banker=user_profile)
+
+    except Exception as e:
+        deposit_set = models.Deposit.none()
+    # print 'general msg', message
+    # if 'message' in message:
+    #     msg = message['message']
+    #     print "yes", msg
+    #     return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set, 'msg': msg})
+    # if zarinpal['status'] == -3:
+    #     msg = "less"
+    # return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set, 'msg': " "})
+    # code = -3
+    if code ==-3:
+        emessage = "Entered value too small. This payment will not accept less than 100."
+    else:
+        if code !=0:
+            emessage = "Unknown ZarinPal Error"
+
+    return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage':emessage})
 
 
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
@@ -293,7 +334,18 @@ def zarinpal_payment_gate(request, amount):
 
     redirect_to = 'https://sandbox.zarinpal.com/pg/StartPay/' + str(
         result.Authority)  # the real version : 'https://www.zarinpal.com/pg/StartPay/'
+
     if result.Status != 100:
+        # if result.Status == -3:
+            # print result.Status
+            # return recharge_account(request, message='The amount of money should be more than 1000. Please try again.')
+            # recharge_form = RechargeAccountForm()
+            # msg = 'The amount of money should be more than 1000. Please try again.'
+            # user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+            # deposit_set = models.Deposit.objects.filter(banker=user_profile)
+            # return render(request, "interpay/top_up.html",
+            #                   {'form': recharge_form, 'deposit_set': deposit_set, 'msg': msg})
+            # redirect_to = 'Error'
         redirect_to = 'Error'
     res = {'status': result.Status, 'ret': redirect_to}
     # zarinpal_callback_handler(request)
