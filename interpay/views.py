@@ -244,7 +244,6 @@ new_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 @login_required()
-# def recharge_account(request, **message):
 def recharge_account(request):
     code = 0
     emessage = ''
@@ -273,22 +272,10 @@ def recharge_account(request):
                     "date": str(user_b_account.when_opened), "cur_code": cur}
             new_connection.set('data', data)
             log.debug("new BankAccount object created and saved")
-            ####################################################
-            # if not 'message' in message:
-            #     print "no msg"
-            #     zarinpal = zarinpal_payment_gate(request, amnt)
-            #     if type(zarinpal) is not HttpResponse:
-            #         if zarinpal['status'] == 100:
-            #             return redirect(zarinpal['ret'])
-            #         return HttpResponse(zarinpal['ret'])
-            # else:
-            #     print "some msg"
             zarinpal = zarinpal_payment_gate(request, amnt)
-            # if type(zarinpal) is not HttpResponse:
             code = zarinpal['status']
             if code == 100:
                 return redirect(zarinpal['ret'])
-            # return HttpResponse(zarinpal['ret'])
     recharge_form = RechargeAccountForm()
     try:
 
@@ -297,22 +284,14 @@ def recharge_account(request):
 
     except Exception as e:
         deposit_set = models.Deposit.none()
-    # print 'general msg', message
-    # if 'message' in message:
-    #     msg = message['message']
-    #     print "yes", msg
-    #     return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set, 'msg': msg})
-    # if zarinpal['status'] == -3:
-    #     msg = "less"
-    # return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set, 'msg': " "})
-    # code = -3
-    if code ==-3:
+    if code == -3:
         emessage = "Entered value too small. This payment will not accept less than 100."
     else:
-        if code !=0:
+        if code != 100:
             emessage = "Unknown ZarinPal Error"
 
-    return render(request, "interpay/top_up.html", {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage':emessage})
+    return render(request, "interpay/top_up.html",
+                  {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage})
 
 
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
@@ -335,20 +314,7 @@ def zarinpal_payment_gate(request, amount):
     redirect_to = 'https://sandbox.zarinpal.com/pg/StartPay/' + str(
         result.Authority)  # the real version : 'https://www.zarinpal.com/pg/StartPay/'
 
-    if result.Status != 100:
-        # if result.Status == -3:
-            # print result.Status
-            # return recharge_account(request, message='The amount of money should be more than 1000. Please try again.')
-            # recharge_form = RechargeAccountForm()
-            # msg = 'The amount of money should be more than 1000. Please try again.'
-            # user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
-            # deposit_set = models.Deposit.objects.filter(banker=user_profile)
-            # return render(request, "interpay/top_up.html",
-            #                   {'form': recharge_form, 'deposit_set': deposit_set, 'msg': msg})
-            # redirect_to = 'Error'
-        redirect_to = 'Error'
     res = {'status': result.Status, 'ret': redirect_to}
-    # zarinpal_callback_handler(request)
     return res
 
 
@@ -364,16 +330,13 @@ def zarinpal_callback_handler(request, amount):
         if result2.Status == 100:
             res = 'Transaction success. RefID: ' + str(result2.RefID)
             # TODO : place a logger here
-            ##########################################
             data = new_connection.get('data')
-            # print "a : ", a
             a = ast.literal_eval(data)
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=a['amount'],
                                      banker=new_banker, date=a['date'], cur_code=a['cur_code'])
             deposit.save()
-            ###########################################
             return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
         elif result2.Status == 101:
             res = 'Transaction submitted : ' + str(result2.Status)
@@ -392,8 +355,6 @@ def zarinpal_callback_handler(request, amount):
 #     user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
 #     deposit_set = models.Deposit.objects.filter(banker=user_profile)
 #     return render(request, "top_up.html", {'deposit_set': deposit_set})
-
-
 
 
 @login_required()
