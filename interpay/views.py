@@ -119,7 +119,7 @@ def send_sms(request, mobile_no):
     # request.session['code'] = code #not needed anymore; this is checked from VerificationCodes table in database
     # redis_ds = ds.AuthCodeDataStructure()
     # redis_ds.set_code(mobile_no, code)
-    p = api.ParsGreenSmsServiceClient()
+    # p = api.ParsGreenSmsServiceClient()
     # api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
     print("code:", code)
     user_profile = ''
@@ -244,15 +244,17 @@ new_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 @login_required()
-def recharge_account(request):
+def recharge_account(request, **message):
     code = 0
-    emessage = ''
+    if message:
+        emessage = message['message']
+    else:
+        emessage = ''
     recharge_form = RechargeAccountForm(data=request.POST)
     if request.method == 'POST':
         if recharge_form.is_valid():
             cur = recharge_form.cleaned_data['currency']
             amnt = recharge_form.cleaned_data['amount']
-            # print amnt, cur, request.user, request.user.id, request.user.username
             user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
             # TODO : this part should be edited to check whether there is already an account with this name;
             #  if so, increment the account's total
@@ -274,6 +276,7 @@ def recharge_account(request):
             log.debug("new BankAccount object created and saved")
             zarinpal = zarinpal_payment_gate(request, amnt)
             code = zarinpal['status']
+            print code
             if code == 100:
                 return redirect(zarinpal['ret'])
     recharge_form = RechargeAccountForm()
@@ -283,13 +286,13 @@ def recharge_account(request):
         deposit_set = models.Deposit.objects.filter(banker=user_profile)
 
     except Exception as e:
+        print 'an exception occurred : ', e
         deposit_set = models.Deposit.none()
     if code == -3:
         emessage = "Entered value too small. This payment will not accept less than 100."
     else:
-        if code != 100:
+        if code != 0:
             emessage = "Unknown ZarinPal Error"
-
     return render(request, "interpay/top_up.html",
                   {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage})
 
@@ -319,9 +322,7 @@ def zarinpal_payment_gate(request, amount):
 
 
 def zarinpal_callback_handler(request, amount):
-    # user_profile = models.UserProfile.objects.get(id=request.user.id)
     client = Client(ZARINPAL_WEBSERVICE)
-
     if request.GET.get('Status') == 'OK':
         result2 = client.service.PaymentVerification(MERCHANT_ID,
                                                      request.GET.get('Authority'),
@@ -330,24 +331,29 @@ def zarinpal_callback_handler(request, amount):
         if result2.Status == 100:
             res = 'Transaction success. RefID: ' + str(result2.RefID)
             # TODO : place a logger here
+            # log.debug("new Deposit object created and saved")
             data = new_connection.get('data')
             a = ast.literal_eval(data)
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=a['amount'],
-                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'])
+                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'], status=True)
             deposit.save()
-            return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
+            # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
+            return recharge_account(request, message="Your account charged successfully.")
+
         elif result2.Status == 101:
             res = 'Transaction submitted : ' + str(result2.Status)
-            return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
+            # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
+            return recharge_account(request, message="Your transaction has been successfully submitted earlier.")
         else:
             res = 'Transaction failed. Status: ' + str(result2.Status)
-            return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
+            # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
+            return recharge_account(request, message="Your transaction was not successful. Try again later.")
     else:
         res = 'Transaction failed or canceled by user'
-        return render(request, 'interpay/test.html', {'res': res})
-
+        # return render(request, 'interpay/test.html', {'res': res})
+        return recharge_account(request, message="Transaction failed or canceled by you.")
 
 # @login_required()
 # def (request):
