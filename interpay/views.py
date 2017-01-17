@@ -408,7 +408,7 @@ def wallets(request):
     user_profile = models.UserProfile.objects.get(user=request.user)
     context = {
 
-        'accountList': BankAccount.objects.filter(owner=user_profile),
+        'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
         'user_profile': user_profile
     }
     return render(request, "interpay/wallets.html", context)
@@ -417,7 +417,7 @@ def wallets(request):
 @login_required()
 def wallet(request, wallet_id):
     context = {
-        'account': BankAccount.objects.get(account_id=wallet_id),
+        'account': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT),
     }
     return render(request, "interpay/wallet.html", context)
 
