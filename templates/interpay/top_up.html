@@ -62,21 +62,23 @@
             <form id="recharge-form" class="form-horizontal" method="post">
                 {% csrf_token %}
 
-
                 {% if forms.errors %}
                     <p>
-                    there is error
+                        there is error
                     </p>
                     <p>
                         {{ form.errors }}
                     </p>
                 {% endif %}
-                <div>
-                    {% ifnotequal code 0 %}
-                        {{ emessage }}
-                    {% endifnotequal %}
-
-                </div>
+                {% ifnotequal emessage ''%}
+                    <div class="form-group" id="recharge-form-message-div">
+                        <div id="recharge-form-message">
+                            {#                    {% ifnotequal code 0 %}#}
+                            {{ emessage }}
+                            {#                    {% endifnotequal %}#}
+                        </div>
+                    </div>
+                {% endifnotequal %}
                 <div class="form-group recharge-form-parts">
                     <label for="payment-gateway" class="col-sm-3 recharge-form-label"
                            style="margin-top: 8px">{% trans 'Payment Type' %}</label>

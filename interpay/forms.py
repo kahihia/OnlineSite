@@ -119,14 +119,6 @@ CURRENCY_CHOICES = {
 }
 
 
-def validate_amount(value):
-    if value < 1000:
-        raise ValidationError(
-            _('%(value) should be more than 1000'),
-            params={'value': value},
-        )
-
-
 class RechargeAccountForm(forms.Form):
     #  we do not need this part right now since the only gateway which we use is Zarinpal
     # payment_gateway = forms.ChoiceField(widget=forms.RadioSelect)

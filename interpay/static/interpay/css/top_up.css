@@ -78,3 +78,16 @@
         margin-right: 2px;
     }
 }
+
+#recharge-form-message-div {
+    background-color: lightgreen;
+    border-radius: 5px;
+}
+
+#recharge-form-message {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    width: 80%;
+    align-content: center;
+    margin-left: 15px;
+}
