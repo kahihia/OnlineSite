@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.forms import TextInput, SelectDateWidget
 from django.template import Context, Template
@@ -131,6 +132,12 @@ class RechargeAccountForm(forms.Form):
 
     class Meta:
         fields = ['currency', 'amount']
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount < 100:
+            raise forms.ValidationError('Amount should be more than 100.')
+        return amount
 
 
 BANK_CHOICES = {
