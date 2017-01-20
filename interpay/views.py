@@ -172,6 +172,29 @@ def verify_user(request):
             return HttpResponse(json.dumps(result))
 
 
+def reset_password(request, token):
+    if request.method == "POST":
+        new_password = request.POST['new_password']
+        re_new_password = request.POST['re_new_password']
+        user_id = request.POST['user']
+        if new_password != re_new_password:
+            return render(request, 'interpay/reset_password.html', {
+                'error': 'Both fields must match. '
+            })
+        user = User.objects.get(id=user_id)
+        user.set_password(new_password)
+        user.save()
+        return render(request, 'interpay/reset_password.html', {
+            'success': 'Your password successfully changed. '
+        })
+
+    if request.method == "GET":
+        data = new_connection.get(token)
+        data = ast.literal_eval(data)
+        user = User.objects.get(id=int(data['user_id']))
+        return render(request, 'interpay/reset_password.html', {'user': user})
+
+
 def retrieve_pass(request):
     email = request.POST.get('email', False)
     email_sender = Email.Email(email)
@@ -186,6 +209,7 @@ def user_login(request):
     if request.get_full_path() == "/login/?next=/home/":
         return render(request, 'interpay/index.html', {'error': 'Your session has expired. Please log in again.'})
     if request.method == 'POST':
+        print ("user login")
         username = request.POST['username']
         password = request.POST['password']
 
