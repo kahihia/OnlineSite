@@ -337,7 +337,8 @@ def zarinpal_callback_handler(request, amount):
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=a['amount'],
-                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'], status=True)
+                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'], status=True,
+                                     tracking_code=result2.RefID)
             deposit.save()
             # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
             return recharge_account(request, message="Your account charged successfully.")
