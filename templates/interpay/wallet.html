@@ -15,11 +15,11 @@
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
     {% endblock %}
+    {% block JS %}
+        <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
+    {% endblock %}
 </head>
 <body>
-{% block js %}
-    <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
-{% endblock %}
 {% block cont-header %}
     <div>
         <h3 class="page-title">
