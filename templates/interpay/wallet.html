@@ -84,9 +84,9 @@
                         <div id="message">
                             {{ message }}
                         </div>
-                        <label>Amount: </label>
+                        <label>{% trans 'Amount' %}: </label>
                         <input id="amount" name="amount" type="text" placeholder="Amount"><br>
-                        <label>To Currency: </label>
+                        <label>{% trans 'To Currency' %}: </label>
                         <select name="currency" id="currency">
                             <option>Select Currency...</option>
                             {% for curr in CURRENCIES %}
