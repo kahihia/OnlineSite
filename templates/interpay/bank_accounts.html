@@ -97,6 +97,13 @@
 
             <div>
                 {#TODO this part is not working - errors are not shown to the user properly#}
+                {% ifnotequal emessage ''%}
+                    <div class="form-group" id="recharge-form-message-div">
+                        <div id="recharge-form-message">
+                            {{ emessage }}
+                        </div>
+                    </div>
+                {% endifnotequal %}
                 {% if form.errors %}
                     {% for field in form %}
                         {% for error in field.errors %}
@@ -168,6 +175,7 @@
                     </i>
                 </span>
                 </div>
+
                 <table id="bank-tab">
                     <thead>
                     <tr class="table-header-row">

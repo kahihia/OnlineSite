@@ -321,3 +321,15 @@ msgstr "صاحب حساب"
 #: .\interpay\templates\bank_accounts.html:182
 msgid "Total Inventory"
 msgstr "کل موجودی حساب"
+
+#: .\interpay\templates\wallets.html:80
+msgid "Conversion"
+msgstr "تبدیل واحد ارز"
+
+#: .\interpay\templates\wallets.html:83
+msgid "Converted Value"
+msgstr "مقدار تبدیل شده"
+
+#: .\interpay\templates\wallet.html:89
+msgid "To Currency"
+msgstr "تبدیل ارز به واحد"

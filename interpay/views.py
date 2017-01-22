@@ -361,7 +361,8 @@ def zarinpal_callback_handler(request, amount):
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=a['amount'],
-                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'], status=True)
+                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'], status=True,
+                                     tracking_code=result2.RefID)
             deposit.save()
             # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
             return recharge_account(request, message="Your account charged successfully.")
@@ -390,26 +391,33 @@ def zarinpal_callback_handler(request, amount):
 @login_required()
 def bank_accounts(request):
     user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+    mymessage = ''
     bank_account_form = CreateBankAccountForm(data=request.POST)
     if request.method == 'POST':
-        print bank_account_form.errors
+#        print bank_account_form.errors
         if bank_account_form.is_valid():
             cur = bank_account_form.cleaned_data['cur_code']
             bank_name = bank_account_form.cleaned_data['name']
             account_no = bank_account_form.cleaned_data['account_id']
             # print bank_name, cur, request.user, request.user.id, request.user.username
-            new_account = models.BankAccount(
+
+            new_account, created = models.BankAccount.objects.get_or_create(
                 owner=user_profile,
                 cur_code=cur,
-                method=2,
                 name=bank_name,
                 account_id=account_no,
+                method=models.BankAccount.WITHDRAW,
             )
+
+            if not created:
+                mymessage = account_no
+                mymessage += ": Error, that account has already been added."
+
             new_account.save()
     bank_account_form = CreateBankAccountForm()
-    bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=2)
+    bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW)
     return render(request, "interpay/bank_accounts.html",
-                  {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form})
+                  {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form, 'emessage': mymessage})
 
 
 @login_required
