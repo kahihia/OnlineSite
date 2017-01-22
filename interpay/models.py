@@ -253,3 +253,8 @@ class Withdraw(models.Model):
 class CurrencyConversion(models.Model):
     deposit = models.OneToOneField(Deposit, related_name="conversion_deposit")
     withdraw = models.OneToOneField(Withdraw, related_name="conversion_withdraw")
+
+class WithdrawalRequest(models.Model):
+    deposit = models.OneToOneField(Deposit, related_name="deposit")
+    withdraw = models.OneToOneField(Withdraw, related_name="withdraw")
+    status = models.BooleanField(default=False)
