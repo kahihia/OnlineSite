@@ -55,6 +55,10 @@ urlpatterns = [
     url(r'^verif/$', views.verify_user, name='verif'),
     url(r'^sms/$', views.send_sms, name='sms'),
     url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
+
+    url(r'^retrieve_pass/(?P<token>\d+)/$', views.reset_password, name='reset_pass'),
+    url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
+
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
     url(r'^callback_handler/([0-9]*)', views.zarinpal_callback_handler, name='callback_handler'),
@@ -94,7 +98,11 @@ urlpatterns += i18n_patterns(
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^verif/$', views.verify_user, name='verif'),
     url(r'^sms/$', views.send_sms, name='sms'),
-    url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
+    # url(r'^reset_passs/$', views.test1,),
+    # url(r'^retrieve_pass/(?P<token>\d+)/$', views.reset_password, name='reset_pass'),
+    # url(r'^retrieve_pass/test/', views.retrieve_pass_test, name='retrieve_pass_test'),
+    # url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
+
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
     url(r'^$', views.main_page),
