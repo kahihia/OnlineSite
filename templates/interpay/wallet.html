@@ -15,11 +15,11 @@
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
     {% endblock %}
+    {% block JS %}
+        <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
+    {% endblock %}
 </head>
 <body>
-{% block js %}
-    <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
-{% endblock %}
 {% block cont-header %}
     <div>
         <h3 class="page-title">
@@ -84,9 +84,9 @@
                         <div id="message">
                             {{ message }}
                         </div>
-                        <label>Amount: </label>
+                        <label>{% trans 'Amount' %}: </label>
                         <input id="amount" name="amount" type="text" placeholder="Amount"><br>
-                        <label>To Currency: </label>
+                        <label>{% trans 'To Currency' %}: </label>
                         <select name="currency" id="currency">
                             <option>Select Currency...</option>
                             {% for curr in CURRENCIES %}
