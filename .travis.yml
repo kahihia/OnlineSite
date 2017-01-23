@@ -19,9 +19,9 @@ python:
 
 env:
 
-  - DJANGO=1.10 DB=postgres
+  - DJANGO=1.10.3 DB=postgres
 
-  - DJANGO=1.10 DB=mysql
+  - DJANGO=1.10.3 DB=mysql
 
 
 # Comand to install dependencies
