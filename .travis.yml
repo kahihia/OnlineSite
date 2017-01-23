@@ -28,7 +28,7 @@ env:
 
 install:
 
-  - pip install Django=$DJANGO --use-mirrors
+  - pip install Django --use-mirrors
 
   - pip install . --use-mirrors
 
