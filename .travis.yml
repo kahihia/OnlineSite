@@ -42,9 +42,7 @@ after_script: echo 'Bye'
 
 # command to run test
 
-scripts: python manage.py test
-
-
+script: python manage.py test
 
 notifications:
 
