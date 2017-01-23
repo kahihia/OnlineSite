@@ -60,6 +60,3 @@ class Registration (TestCase):
         c = Client()
         response = c.post('/register/', {'firstname': 'Negar','lastname':'goli', 'username': 'neg', 'mob_no':'09102376107'})
         self.assertContains(response, 'get any code? Re-send a code')
-
-
-
