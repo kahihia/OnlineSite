@@ -35,12 +35,11 @@ install:
 
 
 before_script: 
-	- echo 'Hello'
-	- python manage.py makemigrations
-	- python manage.py migrate
+  - echo 'Hello'
+  - python manage.py makemigrations
+  - python manage.py migrate
 
-after_script: 
-	- echo 'Bye'
+after_script: echo 'Bye'
 
 
 
