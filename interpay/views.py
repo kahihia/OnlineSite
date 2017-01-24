@@ -12,7 +12,7 @@ from interpay.forms import RegistrationForm, UserForm
 from django.views.decorators.csrf import csrf_exempt
 from firstsite.SMS import ds, api
 from interpay import models
-from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion
+from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -41,11 +41,11 @@ def main_page(request):
 def test():
     user = User.objects.get(username="arman")
     up = UserProfile.objects.get(user=user)
-    ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='USD', account_id=make_id())
+    ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
     ba.save()
     # ba = BankAccount.objects.get(owner=up, cur_code='USD')
     # ba.delete()
-    d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='USD')
+    d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='IRR')
     d.save()
 
 
@@ -176,14 +176,34 @@ def verify_user(request):
 
 def reset_password(request, token):
     if request.method == "POST":
+        birth_date = request.POST['birth_date']
+        national_id = request.POST['national_id']
+        mobile_number = request.POST['mobile_number']
         new_password = request.POST['new_password']
         re_new_password = request.POST['re_new_password']
         user_id = request.POST['user']
+        print ('user: ', str(birth_date))
         if new_password != re_new_password:
             return render(request, 'interpay/reset_password.html', {
                 'error': 'Both fields must match. '
             })
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(id=int(user_id))
+        user_profile = UserProfile.objects.get(user=user)
+        print (user_profile.mobile_number + " " + user_profile.national_code)
+        print (user_profile.date_of_birth.date())
+        if user_profile.mobile_number != mobile_number:
+            return render(request, 'interpay/reset_password.html', {
+                'error': 'mobile number is not valid.'
+            })
+        if user_profile.national_code != national_id:
+            return render(request, 'interpay/reset_password.html', {
+                'error': 'national id is not valid.'
+            })
+        if str(user_profile.date_of_birth.date()) != str(birth_date):
+            return render(request, 'interpay/reset_password.html', {
+                'error': 'date of birth is not valid.'
+            })
+
         user.set_password(new_password)
         user.save()
         return render(request, 'interpay/reset_password.html', {
@@ -380,6 +400,7 @@ def zarinpal_callback_handler(request, amount):
         # return render(request, 'interpay/test.html', {'res': res})
         return recharge_account(request, message="Transaction failed or canceled by you.")
 
+
 # @login_required()
 # def (request):
 #     print 'post', request.POST
@@ -394,7 +415,7 @@ def bank_accounts(request):
     mymessage = ''
     bank_account_form = CreateBankAccountForm(data=request.POST)
     if request.method == 'POST':
-#        print bank_account_form.errors
+        #        print bank_account_form.errors
         if bank_account_form.is_valid():
             cur = bank_account_form.cleaned_data['cur_code']
             bank_name = bank_account_form.cleaned_data['name']
@@ -414,6 +435,43 @@ def bank_accounts(request):
                 mymessage += ": Error, that account has already been added."
 
             new_account.save()
+        else:
+            if request.POST['account_id']:
+                account = BankAccount.objects.filter(account_id=request.POST['account_id'])
+                amount = request.POST['amount']
+                account_id = request.POST['account_id']
+                if account:
+                    account = account[0]
+                    debit_accounts = BankAccount.objects.filter(owner=account.owner, method=1)
+                    if not debit_accounts:
+                        bank_account_form = CreateBankAccountForm()
+                        bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile,
+                                                                              method=BankAccount.WITHDRAW)
+                        return render(request, 'interpay/bank_accounts.html',
+                                      {'error': 'No debit account.', 'bank_accounts_set': bank_accounts_set,
+                                       'form': bank_account_form, 'emessage': mymessage})
+
+                    bank_account_form = CreateBankAccountForm()
+                    bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile,
+                                                                          method=BankAccount.WITHDRAW)
+
+                    src_account = debit_accounts[0]
+                    if src_account.balance < amount:
+                        print ('error')
+                        return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,
+                                                                           'form': bank_account_form,
+                                                                           'emessage': mymessage,
+                                                                           'error': 'Your balance is less than requested amount.',
+                                                                           'account_id': account_id})
+                    withdraw_request = WithdrawalRequest(src_account=src_account, dest_account=account, amount=amount)
+                    withdraw_request.save()
+                    return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,
+                                                                           'form': bank_account_form,
+                                                                           'emessage': mymessage,
+                                                                           'success_message': 'Your request successfully saved.',
+                                                                           'account_id': account_id})
+                    # for other_account in BankAccount.objects.filter(owner=account.owner, method='Debit')
+
     bank_account_form = CreateBankAccountForm()
     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW)
     return render(request, "interpay/bank_accounts.html",
@@ -527,42 +585,42 @@ def random_code_gen():
     verif_code = randint(100000, 999999)
     return verif_code
 
-# class RegistrationView(CreateView):
-#     template_name = '../templates/registeration_form.html'
-#     user_form = UserForm
-#     registration_form = RegistrationForm
-#     model = UserProfile
-#     registered = False
-#
-#     def post(self, request, *args, **kwargs):
-#         print("post called")
-#         user_form = UserForm(data=request.POST)
-#         registration_form = RegistrationForm(data=request.POST)
-#         return self.my_form_valid(user_form)
-#
-#     def my_form_valid(self, user_form, request):
-#         print("is valid called")
-#         user = user_form.save()
-#         user.set_password(user.password)
-#         user.save()
-#
-#         user_profile = self.registration_form.save(commit=False)
-#         user_profile.email = user_form.cleaned_data['email']
-#         user_profile.password = user.password
-#
-#         if user.is_active:
-#             user_profile.is_active = True
-#         user_profile.user = user
-#
-#         if 'picture' in request.FILES:
-#             user_profile.picture = request.FILES['picture']
-#         user_profile.save()
-#         self.registered = True
-#
-#         new_user = authenticate(username=user_form.cleaned_data['username'],
-#                                 password=user_form.cleaned_data['password'], )
-#         login(request, new_user)
-#
-#     def get(self):
-#         user_form = UserForm()
-#         registration_form = RegistrationForm()
+    # class RegistrationView(CreateView):
+    #     template_name = '../templates/registeration_form.html'
+    #     user_form = UserForm
+    #     registration_form = RegistrationForm
+    #     model = UserProfile
+    #     registered = False
+    #
+    #     def post(self, request, *args, **kwargs):
+    #         print("post called")
+    #         user_form = UserForm(data=request.POST)
+    #         registration_form = RegistrationForm(data=request.POST)
+    #         return self.my_form_valid(user_form)
+    #
+    #     def my_form_valid(self, user_form, request):
+    #         print("is valid called")
+    #         user = user_form.save()
+    #         user.set_password(user.password)
+    #         user.save()
+    #
+    #         user_profile = self.registration_form.save(commit=False)
+    #         user_profile.email = user_form.cleaned_data['email']
+    #         user_profile.password = user.password
+    #
+    #         if user.is_active:
+    #             user_profile.is_active = True
+    #         user_profile.user = user
+    #
+    #         if 'picture' in request.FILES:
+    #             user_profile.picture = request.FILES['picture']
+    #         user_profile.save()
+    #         self.registered = True
+    #
+    #         new_user = authenticate(username=user_form.cleaned_data['username'],
+    #                                 password=user_form.cleaned_data['password'], )
+    #         login(request, new_user)
+    #
+    #     def get(self):
+    #         user_form = UserForm()
+    #         registration_form = RegistrationForm()

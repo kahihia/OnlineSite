@@ -140,7 +140,7 @@ class BankAccount(models.Model):
     name = models.CharField(max_length=254)
     when_opened = models.DateField(_("Date"), default=datetime.now)
     owner = models.ForeignKey(UserProfile, related_name='w_accounts')
-    cur_code = models.CharField(_('cur_code'), max_length=3, default='RLS')
+    cur_code = models.CharField(_('cur_code'), max_length=3, default='IRR')
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
     account_id = models.CharField(max_length=24, validators=[alphanumeric])
 
@@ -254,7 +254,12 @@ class CurrencyConversion(models.Model):
     deposit = models.OneToOneField(Deposit, related_name="conversion_deposit")
     withdraw = models.OneToOneField(Withdraw, related_name="conversion_withdraw")
 
+
 class WithdrawalRequest(models.Model):
-    deposit = models.OneToOneField(Deposit, related_name="deposit")
-    withdraw = models.OneToOneField(Withdraw, related_name="withdraw")
+    # deposit = models.OneToOneField(Deposit, related_name="deposit")
+    # withdraw = models.OneToOneField(Withdraw, related_name="withdraw")
+    src_account = models.ForeignKey(BankAccount, related_name="src_account", unique=False)
+    dest_account = models.ForeignKey(BankAccount, related_name="dest_account", unique=False)
     status = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now=True)
+    amount = models.IntegerField()
