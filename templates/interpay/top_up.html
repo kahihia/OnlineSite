@@ -200,10 +200,13 @@
                             <td class="table-cell">{{ d.cur_code }}</td>
                             <td class="table-cell"></td>
                             <td class="table-cell">{{ d.amount }}</td>
-                            <td class="table-cell">{% ifequal d.status True %}
+                            <td class="table-cell">
+                                {% ifequal d.status True %}
                                 Successful
-                            {% endifequal %}
-                                Failed
+                                {% else %}
+                                 Failed
+                                {% endifequal %}
+
                             </td>
                         </tr>
                     {% endfor %}

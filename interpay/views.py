@@ -216,7 +216,7 @@ def user_login(request):
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
-        # user_user = models.User.objects.get(username=username)
+
         user_user = models.User.objects.filter(username=username)
         if not user_user:
             return render(request, "interpay/index.html", {'error': 'Username or password is invalid.'})
@@ -296,9 +296,10 @@ def recharge_account(request, **message):
             banker = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
             data = {"account_id": user_b_account.account_id, "amount": amnt, "banker_id": banker.id,
                     "date": str(user_b_account.when_opened), "cur_code": cur}
-            new_connection.set('data', data)
+
             log.debug("new BankAccount object created and saved")
             zarinpal = zarinpal_payment_gate(request, amnt)
+            new_connection.set(zarinpal['Authority'], data)
             code = zarinpal['status']
             print code
             if code == 100:
@@ -341,29 +342,35 @@ def zarinpal_payment_gate(request, amount):
     redirect_to = 'https://sandbox.zarinpal.com/pg/StartPay/' + str(
         result.Authority)  # the real version : 'https://www.zarinpal.com/pg/StartPay/'
 
-    res = {'status': result.Status, 'ret': redirect_to}
+    res = {'Authority': result.Authority, 'status': result.Status, 'ret': redirect_to}
     return res
 
 
 def zarinpal_callback_handler(request, amount):
     client = Client(ZARINPAL_WEBSERVICE)
     if request.GET.get('Status') == 'OK':
+        auth = request.GET.get('Authority')
         result2 = client.service.PaymentVerification(MERCHANT_ID,
-                                                     request.GET.get('Authority'),
+                                                     auth,
                                                      amount)
         print "result2", result2
         if result2.Status == 100:
             res = 'Transaction success. RefID: ' + str(result2.RefID)
             # TODO : place a logger here
             # log.debug("new Deposit object created and saved")
-            data = new_connection.get('data')
+            data = new_connection.get(auth)
             a = ast.literal_eval(data)
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
-            deposit = models.Deposit(account=new_account, amount=a['amount'],
-                                     banker=new_banker, date=a['date'], cur_code=a['cur_code'], status=True,
+            deposit = models.Deposit(account=new_account, amount=float(a['amount']),
+                                     banker=new_banker, date=(datetime.datetime.strptime(a['date'].__str__()[:11], '%Y-%m-%d')), cur_code=a['cur_code'], status=True,
                                      tracking_code=result2.RefID)
-            deposit.save()
+        # try:
+            deposit.calculate_comission()  # automatically saves after calculating comission
+        # except:
+        #     log.error("error in Calculating Comission")
+        #     deposit.save()
+
             # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
             return recharge_account(request, message="Your account charged successfully.")
 

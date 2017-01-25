@@ -20,7 +20,9 @@ from decimal import Decimal
 #import convert
 import random
 import time
+import logging
 
+log = logging.getLogger('interpay')
 
 class Manager(BaseUserManager):
     def create_user(self, USERNAME_FIELD, email, password):
@@ -230,7 +232,7 @@ class MoneyTransfer(models.Model):
 class Deposit(models.Model):
     # Receiving money; Charging account.
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
-    amount = models.FloatField()
+    amount = models.FloatField(default=0)
     banker = models.ForeignKey(UserProfile, null=True)
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
@@ -240,6 +242,19 @@ class Deposit(models.Model):
     status = models.BooleanField(default=False)
     objects = OperationManager()
 
+    def calculate_comission(self):
+        #print datetime.datetime.strptime(self.date, 'Y-%m-%d').date()
+        #print type(self.date)
+        # http://127.0.0.1:8000/
+        thedate = self.date
+        if type(self.date) is str:
+            log.debug("Deposit object has a string date")
+            thedate = datetime.strptime(self.date.__str__()[:11], '%Y-%m-%d').date()
+        rule = Rule.on_date(thedate)
+        #print 'deposit comissiom,', rule.deposit_charge_percent
+        self.commission = (rule.deposit_charge_percent * 0.01) * self.amount
+        self.amount = self.amount - self.commission
+        self.save();
 
 class Withdraw(models.Model):
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
