@@ -30,7 +30,7 @@ class Email:
             html_content = render_to_string('interpay/reset_password_email.html', {
                 'token': new_token
             })
-            mail = EmailMultiAlternatives(subject, text_content, '', [self.destination_email])
+            mail = EmailMultiAlternatives(subject, text_content, 'info@rizpal.com', [self.destination_email])
             mail.attach_alternative(html_content, "text/html")
             mail.send()
             return 1

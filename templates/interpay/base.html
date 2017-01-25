@@ -1,6 +1,8 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
@@ -77,6 +79,16 @@
         <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+function myFunction() {
+    var x = document.getElementById("demo");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+</script>
     {% endblock %}
     {% block JS %}
     {% endblock %}
@@ -101,15 +113,15 @@
 <body style="background: #f9f9f9 repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
-        <div id="nav" class="navbar navbar-default">
-            <div class="navbar-container" id="navbar-container">
+        <div id="nav" class="w3-navbar">
+            <div class="navbar-container">
                 <div class="navbar-header pull-left" id="interpay-logo">
                     <a class="navbar-brand" style="padding-top: 10px">
                         <img id="LOGO" src="{% static 'interpay/images/logo.png' %}" style="width: 40%">
 
                     </a>
                 </div>
-                <div style="float: right; font-family: IRAN-web" id="welcome-btn" class="navbar-header ">
+                <div style="float: right; font-family: IRAN-web" id="welcome-btn" class="navbar-header w3-container">
                     {{ user.username }}{% trans "'s Profile" %}
 
                     <i class="fa fa-sort-down" aria-hidden="true"></i>
@@ -130,11 +142,11 @@
         </div>
     </header>
     {% ifequal LANGUAGE_CODE 'en-gb' %}
-        <div id="sidebar" class="pull-left">
+        <div  id="sidebar" class="pull-left w3-table w3-bordered w3-striped">
     {% else %}
-        <div id="sidebar" class="pull-right">
+        <div  id="sidebar" class="pull-right">
     {% endifequal %}
-    <div id="sidebar-content">
+    <div  id="sidebar-content">
         <ul id="sidebar-entries">
             <li class="sidebar-entry">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
@@ -211,25 +223,38 @@
     </div>
     </div>
     <div class="content">
-        <div id="info-bar">
-            <span id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</span>
-            <span id="login-id">{% trans "Login ID" %}: {{ user.id }}</span>
-            <span id="interpay-id">{% trans "InterPay ID" %}: </span>
-            <span id="logout">
+        <div id="info-bar" class="w3-navbar">
+            <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+             <a href="javascript:void(0);" onclick="myFunction()">☰</a>
+            </li>
+            <li  class="w3-hide-small" id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</li>
+            <li  class="w3-hide-small" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
+            <li  class="w3-hide-small" id="interpay-id">{% trans "InterPay ID" %}: </li>
+            <li  class="w3-hide-small" id="logout">
             <a id="logout-link" href="/logout">
                 <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
             </a>
-        </span>
+        </li>
         </div>
-        <section id="main-content-section">
-            <div id="cont-wrapper" class="">
-                <div id="cont-header" class="col-xs-12">
+    <div id="demo" class="w3-hide w3-hide-large w3-hide-medium">
+      <ul class="w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #c9dedf">
+            <li  id="name"> {{ user.first_name }} {{ user.last_name }}</li>
+            <li  id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
+            <li  id="interpay-id">{% trans "InterPay ID" %}: </li>
+            <li  id="logout">
+            <a    style="float: left" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
+            </li>
+       </ul>
+     </div>
+        <section  id="main-content-section">
+            <div id="cont-wrapper" class="w3-container" >
+                <div id="cont-header">
                     {% block cont-header %}
                     {% endblock %}
                     <hr>
                 </div>
 
-                <div id="cont-body" class="col-xs-12">
+                <div id="cont-body">
                     {% block cont-body %}
                     {% endblock %}
                 </div>

@@ -7,7 +7,8 @@
 <head>
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/bank_accounts.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'interpay/bower_components/sweetalert2/sweetalert2.min.css' %}">
+        <link rel="stylesheet" type="text/css"
+              href="{% static 'interpay/bower_components/sweetalert2/sweetalert2.min.css' %}">
     {% endblock %}
     {% block JS %}
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
@@ -79,6 +80,11 @@
                 console.log($(".recharge-form-label").className);
             {% endifequal %}
         });
+        function fill_modal(user_account_id) {
+            var account_id = document.getElementById("account_id");
+            account_id.value = user_account_id;
+            console.log(user_account_id);
+        }
     {% endblock %}
 </script>
 {% block cont-header %}
@@ -87,6 +93,7 @@
     </div>
 {% endblock %}
 {% block cont-body %}
+
     <div class="row">
         <!---#TODO the ideal form is to transform this part into a message box like fancy box or sweetalert,
          which pops up by clicking a button (which is below this page and commented out right now--->
@@ -97,7 +104,7 @@
 
             <div>
                 {#TODO this part is not working - errors are not shown to the user properly#}
-                {% ifnotequal emessage ''%}
+                {% ifnotequal emessage '' %}
                     <div class="form-group" id="recharge-form-message-div">
                         <div id="recharge-form-message">
                             {{ emessage }}
@@ -175,46 +182,112 @@
                     </i>
                 </span>
                 </div>
-
-                <table id="bank-tab">
-                    <thead>
-                    <tr class="table-header-row">
-                        <th class="table-header-cell">
-                            {% trans 'Index' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Bank Name' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Account Owner' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Account Number' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Currency' %}
-                        </th>
-{#                        <th class="table-header-cell">#}
-{#                            {% trans 'Total Inventory' %}#}
-{#                        </th>#}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for b in bank_accounts_set %}
-                        <tr>
-                            <td class="table-cell">{{ forloop.counter }}</td>
-                            <td class="table-cell">{{ b.name }}</td>
-                            <td class="table-cell">{{ b.owner.user.username }}</td>
-                            <td class="table-cell">{{ b.account_id }}</td>
-                            <td class="table-cell">{{ b.cur_code }}</td>
-{#                            <td class="table-cell">{{ b.total_value }}</td>#}
+                <form method="post">
+                    {% csrf_token %}
+                    <table id="bank-tab">
+                        <thead>
+                        <tr class="table-header-row">
+                            <th class="table-header-cell">
+                                {% trans 'Index' %}
+                            </th>
+                            <th class="table-header-cell">
+                                {% trans 'Bank Name' %}
+                            </th>
+                            <th class="table-header-cell">
+                                {% trans 'Account Owner' %}
+                            </th>
+                            <th class="table-header-cell">
+                                {% trans 'Account Number' %}
+                            </th>
+                            <th class="table-header-cell">
+                                {% trans 'Currency' %}
+                            </th>
+                            <th class="table-header-cell">
+                                {% trans 'Withdraw' %}
+                            </th>
+                            <th class="table-header-cell">
+                                {% trans 'Message' %}
+                            </th>
+                            {#                            <th class="table-header-cell">#}
+                            {#                                {% trans 'Withdraw To Account' %}#}
+                            {#                            </th>#}
+                            {#                        <th class="table-header-cell">#}
+                            {#                            {% trans 'Total Inventory' %}#}
+                            {#                        </th>#}
                         </tr>
-                    {% endfor %}
+                        </thead>
+                        <tbody>
+                        {% for b in bank_accounts_set %}
+                            <tr>
+                                <td class="table-cell">{{ forloop.counter }}</td>
+                                <td class="table-cell">{{ b.name }}</td>
+                                <td class="table-cell">{{ b.owner.user.username }}</td>
+                                <td class="table-cell">{{ b.account_id }}</td>
+                                <td class="table-cell">{{ b.cur_code }}</td>
+                                <td class="table-cell"><input type="hidden" name="account_id"
+                                                              value="{{ b.account_id }}"><input type="button"
+                                                                                                id="withdraw{{ b.account_id }}"
+                                                                                                onclick="fill_modal({{ b.account_id }})"
+                                                                                                value="Withdraw"
+                                                                                                data-toggle="modal"
+                                                                                                data-target="#myModal">
+                                </td>
+                                {#                                <td><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button></td>#}
+                                <td class="table-cell"
+                                    style="{% if error and b.account_id == account_id %}color:red;{% else %}color:green;{% endif %}font-weight: bold">
+                                    {% if success_message and b.account_id == account_id %}
+                                        {{ success_message }}
+                                    {% elif error and b.account_id == account_id%}
+                                        {{ error }}
+                                    {% endif %}</td>
+                            </tr>
+                        {% endfor %}
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+
+
+                    <div class="container">
+                        {#                        <h2>Basic Modal Example</h2>#}
+                        <!-- Trigger the modal with a button -->
+                        {#                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">#}
+                        {#                            Open Modal#}
+                        {#                        </button>#}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog" style="width:300px">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Withdrawal Request</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label>Amount:</label>
+                                        <input type="text" id="amount" name="amount">
+                                        <input type="hidden" id="account_id" name="account_id">
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <input type="submit" class="btn btn-default" style="float: left;">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                                                style="float: left;">Close
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </form>
                 <div id="tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
-{#                    <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ m }} to {{ x }} of {{ y }}entries</h5>#}
+                    {#                    <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ m }} to {{ x }} of {{ y }}entries</h5>#}
                 </div>
             </div>
             <!---this button should be activated in future --->
