@@ -1,0 +1,63 @@
+# Tips:
+#   * [ci skip] in commits messages
+#   * https://secure.travis-ci.org/:username/:project.png
+#   * Use travislint
+
+
+
+language: python
+
+
+
+python:
+
+  - '2.7'
+
+
+
+
+env:
+
+  - DJANGO=1.10.3 DB=postgres
+
+  - DJANGO=1.10.3 DB=mysql
+
+
+# Comand to install dependencies
+
+install:
+
+  - pip install Django --use-mirrors
+
+  - pip install -r requirements.txt --use-mirrors
+
+
+
+before_script: 
+  - echo 'Hello'
+  - python manage.py makemigrations
+  - python manage.py migrate
+
+after_script: echo 'Bye'
+
+
+
+# command to run test
+
+script: python manage.py test
+
+notifications:
+
+  email:
+
+    recipients:
+
+      - smarvasti@rizpardakht.com
+
+      - fhashemi@rizpardakht.com
+
+    on_success: never
+
+    on_failure: always
+
+  slack: iraninterpay:ov8wDQX0wox3jNkPCwSh3WmP

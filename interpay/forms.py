@@ -114,7 +114,7 @@ def check_id(id):
 
 
 CURRENCY_CHOICES = {
-    ('RLS', 'Rials'),
+    ('IRR', 'Rials'),
     ('USD', 'Dollar')
 }
 
@@ -170,6 +170,24 @@ BANK_CHOICES = {
     ('Sina', 'Sina Bank'),
     ('Tejarat', 'Tejarat Bank'),
 }
+
+
+class WithdrawBackAccountForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(WithdrawBackAccountForm, self).__init__(*args, **kwargs)
+        self.fields['account_id'].widget = TextInput(attrs={
+            'class': 'create_b_acc_form_field',
+            'placeholder': 'Enter your account No.'})
+
+    class Meta:
+        model = WithdrawalRequest
+        exclude = ['withdraw', 'deposit', 'status', 'date']
+        widgets = {
+            'dest_account': forms.Select(choices=BANK_CHOICES,
+                                 attrs={'class': 'create_b_acc_form_field', 'id': 'bank_name', }),
+            'cur_code': forms.Select(choices=CURRENCY_CHOICES,
+                                     attrs={'class': 'create_b_acc_form_field'}), }
+
 
 
 class CreateBankAccountForm(forms.ModelForm):
