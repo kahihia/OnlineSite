@@ -237,15 +237,13 @@ function myFunction() {
         </li>
         </div>
     <div id="demo" class="w3-hide w3-hide-large w3-hide-medium">
-      <ul class="w3-navbar w3-left-align w3-grey">
-            <li  id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</li>
+      <ul class="w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #c9dedf">
+            <li  id="name"> {{ user.first_name }} {{ user.last_name }}</li>
             <li  id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
             <li  id="interpay-id">{% trans "InterPay ID" %}: </li>
             <li  id="logout">
-            <a id="logout-link" href="/logout">
-                <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
-            </a>
-        </li>
+            <a    style="float: left" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
+            </li>
        </ul>
      </div>
         <section  id="main-content-section">
