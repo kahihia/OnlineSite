@@ -28,6 +28,7 @@ import redis
 import ast
 import datetime
 import logging
+import requests
 
 log = logging.getLogger('interpay')
 
@@ -55,6 +56,13 @@ def register(request):
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         registration_form = RegistrationForm(data=request.POST)
+
+        # gcapcha = request.POST['g-recaptcha-response']
+        # post_data = {'secret': '6LfHKRMUAAAAAJG-cEV-SPcophf8jyXvrcghDtur', 'response': gcapcha}
+        # response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=post_data)
+        # content = response.json()
+        # if not content['success']:
+        #     return render(request, "interpay/registeration_form.html", {'error': 'Captcha is not entered.'})
 
         if user_form.is_valid() and registration_form.is_valid():
             user = user_form.save()
@@ -238,14 +246,19 @@ def retrieve_pass(request):
 
 def user_login(request):
     if request.get_full_path() == "/login/?next=/home/":
-        return render(request, 'interpay/index.html', {'error': 'Your session has expired. Please log in again.','captcha_form': CaptchaForm()})
+        return render(request, 'interpay/index.html',
+                      {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
     if request.method == 'POST':
         print ("user login")
         username = request.POST['username']
         password = request.POST['password']
         gcapcha = request.POST['g-recaptcha-response']
         # post  https://www.google.com/recaptcha/api/siteverify
-
+        post_data = {'secret': '6LfHKRMUAAAAAJG-cEV-SPcophf8jyXvrcghDtur', 'response': gcapcha}
+        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=post_data)
+        content = response.json()
+        if not content['success']:
+            return render(request, "interpay/index.html", {'error': 'Captcha is not entered.'})
         user = authenticate(username=username, password=password)
         # user_user = models.User.objects.get(username=username)
         user_user = models.User.objects.filter(username=username)
@@ -470,10 +483,10 @@ def bank_accounts(request):
                     if src_account.balance < amount:
                         print ('error')
                         return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,
-                                                                           'form': bank_account_form,
-                                                                           'emessage': mymessage,
-                                                                           'error': 'Your balance is less than requested amount.',
-                                                                           'account_id': account_id})
+                                                                               'form': bank_account_form,
+                                                                               'emessage': mymessage,
+                                                                               'error': 'Your balance is less than requested amount.',
+                                                                               'account_id': account_id})
                     withdraw_request = WithdrawalRequest(src_account=src_account, dest_account=account, amount=amount)
                     withdraw_request.save()
                     return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,

@@ -7,6 +7,11 @@ from interpay.models import *
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email
+from captcha.fields import CaptchaField
+
+
+class CaptchaForm(forms.ModelForm):
+    captcha = CaptchaField()
 
 
 class UserForm(forms.ModelForm):
@@ -68,7 +73,7 @@ class UserForm(forms.ModelForm):
 
 class RegistrationForm(forms.ModelForm):
     date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1920, 2013)))
-
+    captcha = CaptchaField()
     class Meta:
         model = UserProfile
         exclude = ['user', 'password', 'email', 'is_active', 'date_joined', 'picture']

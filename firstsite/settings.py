@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'session_security',
-
+    'captcha'
 ]
 
 SITE_ID=1

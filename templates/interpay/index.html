@@ -10,7 +10,6 @@
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/index.css' %}">
     {% endblock %}
-
 </head>
 <body>
 <script>
@@ -108,7 +107,8 @@
                                                           id="password" value=""
                                                           placeholder="Password" size="50"/>
                             </div>
-                            {{ captcha_form }}
+{#                            {{ captcha_form }}#}
+                            <div class="g-recaptcha" data-sitekey="6LfHKRMUAAAAABhBgggT5PR293yWX8jSWamrxJCl"></div>
                             <div style="color:red;font-weight:bold">
                                 {% if error %}
                                     {{ error }}

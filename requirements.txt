@@ -22,3 +22,4 @@ requests==2.11.1
 requests-oauthlib==0.7.0
 six==1.10.0
 Unidecode==0.4.19
+django-simple-captcha==0.5.3
