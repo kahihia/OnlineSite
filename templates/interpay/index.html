@@ -40,7 +40,10 @@
                     traditional: true,
                     dataType: 'html',
                     success: function (result) {
-                        if (result == "No such user"){
+                        if (result == "Invalid Email") {
+                            swal(result, "Your Email is not valid. Contact support.", "error");
+                        }
+                        else if (result == "No such user"){
                             swal(result, "There is no user with this email.", "error");
                         }else{
                             swal(result, "A new password was sent to your email.", "success");
@@ -105,11 +108,13 @@
                                                           id="password" value=""
                                                           placeholder="Password" size="50"/>
                             </div>
+                            {{ captcha_form }}
                             <div style="color:red;font-weight:bold">
                                 {% if error %}
                                     {{ error }}
                                 {% endif %}
                             </div>
+
                             {#                            <input type="text" id="mobile_number" name="mobile_number" placeholder="111-111-1111"#}
                             {#                                   required>#}
                             {#                            <button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN#}

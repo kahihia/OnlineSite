@@ -32,8 +32,8 @@ class Email:
             })
             mail = EmailMultiAlternatives(subject, text_content, 'info@rizpal.com', [self.destination_email])
             mail.attach_alternative(html_content, "text/html")
-            mail.send()
-            return 1
+            code = mail.send()
+            return code
         return 0
 
     def user_exists(self):

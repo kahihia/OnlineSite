@@ -8,10 +8,11 @@ from interpay.forms import RegistrationForm, UserForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from interpay.forms import RegistrationForm, UserForm
+from interpay.forms import RegistrationForm, UserForm, CaptchaForm
 from django.views.decorators.csrf import csrf_exempt
 from firstsite.SMS import ds, api
 from interpay import models
+from smtplib import SMTPRecipientsRefused
 from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest
 from random import randint
 from currencies.utils import convert
@@ -220,20 +221,30 @@ def reset_password(request, token):
 def retrieve_pass(request):
     email = request.POST.get('email', False)
     email_sender = Email.Email(email)
-    sent = email_sender.send_email()
-    if sent:
+    error_message = ""
+    sent = ""
+    try:
+        sent = email_sender.send_email()
+
+    except SMTPRecipientsRefused:
+        error_message = "Invalid Email"
+    if sent == 1:
         return HttpResponse("Password retrieved successful")
     else:
+        if error_message:
+            return HttpResponse(error_message)
         return HttpResponse("No such user")
 
 
 def user_login(request):
     if request.get_full_path() == "/login/?next=/home/":
-        return render(request, 'interpay/index.html', {'error': 'Your session has expired. Please log in again.'})
+        return render(request, 'interpay/index.html', {'error': 'Your session has expired. Please log in again.','captcha_form': CaptchaForm()})
     if request.method == 'POST':
         print ("user login")
         username = request.POST['username']
         password = request.POST['password']
+        gcapcha = request.POST['g-recaptcha-response']
+        # post  https://www.google.com/recaptcha/api/siteverify
 
         user = authenticate(username=username, password=password)
         # user_user = models.User.objects.get(username=username)
