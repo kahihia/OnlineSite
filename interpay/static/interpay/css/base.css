@@ -19,7 +19,7 @@
 }
 
 #content {
-    padding: 20px;
+
 }
 
 #interpay-logo {
@@ -37,16 +37,16 @@
     position: relative;
     background: #438eb9;
     padding: 0 0;
+    list-style-type: none;
+    overflow: hidden;
 }
 
 #navbar-container {
-    padding-left: 10px;
-    padding-right: 20px;
+
 }
 
 #welcome-btn {
     background: #2e6589;
-    padding: 10px;
     margin-right: 10px;
     width: 13%;
     text-align: center;
@@ -136,7 +136,6 @@
 #translation-link {
     float: right;
     width: 5%;
-    padding: 13px;
     font-size: 12px;
     text-align: center;
     cursor: pointer
