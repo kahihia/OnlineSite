@@ -347,6 +347,7 @@ def recharge_account(request, **message):
             code = zarinpal['status']
             print code
             if code == 100:
+                log.debug("redirecting to ", zarinpal['ret'])
                 return redirect(zarinpal['ret'])
     recharge_form = RechargeAccountForm()
     try:
@@ -355,7 +356,7 @@ def recharge_account(request, **message):
         deposit_set = models.Deposit.objects.filter(banker=user_profile)
 
     except Exception as e:
-        print 'an exception occurred : ', e
+        log.debug('an exception occurred : ', e)
         deposit_set = models.Deposit.none()
     if code == -3:
         emessage = "Entered value too small. This payment will not accept less than 100."
@@ -382,6 +383,7 @@ def zarinpal_payment_gate(request, amount):
                                            email,
                                            mobile,
                                            call_back_url)
+    log.debug("called zarinpal payment request")
 
     redirect_to = 'https://sandbox.zarinpal.com/pg/StartPay/' + str(
         result.Authority)  # the real version : 'https://www.zarinpal.com/pg/StartPay/'
