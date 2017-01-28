@@ -308,7 +308,7 @@ def make_id():
     return id
 
 
-new_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
+new_connection = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
 
 
 @login_required()
