@@ -35,6 +35,9 @@ log = logging.getLogger('interpay')
 
 def main_page(request):
     # test()
+    if (models.Rule.objects.count == 0):
+        r = models.Rule(start_date=datetime.now().date(), end_date=datetime.now().date() + datetime.timedelta(days=100))
+        r.save();
     if request.user.is_authenticated():
         return home(request)
     return render(request, 'interpay/index.html')
