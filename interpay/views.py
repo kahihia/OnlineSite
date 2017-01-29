@@ -353,6 +353,7 @@ def recharge_account(request, **message):
             log.debug("new BankAccount object created and saved")
             zarinpal = zarinpal_payment_gate(request, amnt)
             new_connection.set(zarinpal['Authority'], data)
+            log.debug("Connected to redis")
             code = zarinpal['status']
             print code
             if code == 100:

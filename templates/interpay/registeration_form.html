@@ -319,8 +319,8 @@
                             {{ profile_form.as_p }}
 {#                            <div class="g-recaptcha" data-sitekey="6LfHKRMUAAAAABhBgggT5PR293yWX8jSWamrxJCl"></div>#}
                             <div id="submit-btn-wrap" style="text-align: center">
-                                <input id="continue-btn" class="btn btn-success"  type="button" name="continue"
-                                       onclick="go()"
+                                <input id="continue-btn" class="btn btn-success"  type="submit" name="continue"
+                                  {#       onclick="go()"#}
                                        value="{% trans 'Continue >>' %}"/>
                             </div>
                             <div id="submit-btn-wrap" style="text-align: center; display:none;">
