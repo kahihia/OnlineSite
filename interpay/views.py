@@ -21,6 +21,7 @@ from django.contrib.auth.models import User
 from interpay.models import UserProfile
 from django.core.mail import send_mail
 from interpay.Email import Email
+from django.conf import settings
 import json
 import time
 import random
@@ -55,8 +56,10 @@ def test():
 
 
 def register(request):
+    print ("test")
     registered = False
     if request.method == 'POST':
+        print ("pooost")
         user_form = UserForm(data=request.POST)
         registration_form = RegistrationForm(data=request.POST)
 
@@ -255,13 +258,16 @@ def user_login(request):
         print ("user login")
         username = request.POST['username']
         password = request.POST['password']
-        gcapcha = request.POST['g-recaptcha-response']
-        # post  https://www.google.com/recaptcha/api/siteverify
-        post_data = {'secret': '6LfHKRMUAAAAAJG-cEV-SPcophf8jyXvrcghDtur', 'response': gcapcha}
-        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=post_data)
-        content = response.json()
-        if not content['success']:
-            return render(request, "interpay/index.html", {'error': 'Captcha is not entered.'})
+        print (settings.DEBUG,"debug")
+        if not settings.DEBUG:
+            gcapcha = request.POST['g-recaptcha-response']
+            # post  https://www.google.com/recaptcha/api/siteverify
+            post_data = {'secret': '6LfHKRMUAAAAAJG-cEV-SPcophf8jyXvrcghDtur', 'response': gcapcha}
+            response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=post_data)
+            content = response.json()
+
+            if not content['success']:
+                return render(request, "interpay/index.html", {'error': 'Captcha is not entered.'})
         user = authenticate(username=username, password=password)
 
         user_user = models.User.objects.filter(username=username)

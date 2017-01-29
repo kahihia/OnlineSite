@@ -4,6 +4,7 @@ from interpay.models import User, UserProfile, BankAccount, Deposit
 from currencies.models import Currency
 import unittest
 import datetime
+from django.conf import settings
 
 
 # from interpay.models import CurrencyConversion
@@ -42,15 +43,17 @@ class LoginTestCase(TestCase):
         print ("test started")
         user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
         up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True)
+        settings.DEBUG = True
+
 
     def test_login(self):
         c = Client()
-        try:
-            response = c.post('/login/', {'username': 'arman', 'password': '1731'})
-        except:
-            print 'ignoring captcha exception for now'
-        #self.assertEqual(response.status_code, 302)
-        #self.assertRedirects(response, '/home/')
+        # try:
+        response = c.post('/login/', {'username': 'arman', 'password': '1731'})
+        # except:
+        #     print 'ignoring captcha exception for now'
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/home/')
 
 
 class ForgetPassword (TestCase):
