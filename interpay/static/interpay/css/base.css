@@ -1,7 +1,11 @@
 .content {
-    margin-left: 15%;
+        margin-left: 0%;
 }
-
+@media screen and (min-width: 800px) {
+    .content {
+        margin-left: 15%;
+    }
+}
 .sidebar-links {
     color: #585858 !important;
 }
@@ -47,10 +51,6 @@
 
 #welcome-btn {
     background: #2e6589;
-    margin-right: 10px;
-    width: 13%;
-    text-align: center;
-    cursor: pointer;
     color: white;
 }
 
@@ -62,9 +62,16 @@
     /*position: fixed;*/
 }
 
+
 #sidebar-entries {
     list-style-type: none;
     padding-left: 10px;
+}
+
+#sidebar1 {
+  width:15%;
+  padding: 5px;
+  height: 6%
 }
 
 .sidebar-entry {
@@ -121,6 +128,7 @@
     background-color: #c9dedf;
 }
 
+
 #cont-wrapper {
     margin: 15px;
 }
@@ -135,16 +143,61 @@
 
 #translation-link {
     float: right;
-    width: 5%;
     font-size: 12px;
     text-align: center;
     cursor: pointer
 }
 
-@media only screen and (max-device-width: 480px) {
 
-}
 
 .page-title {
     color: rgb(46, 98, 164);
 }
+
+ul.topnav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #438eb9;
+}
+
+ul.topnav span {float: left;}
+
+ul.topnav span a {
+  display: inline-block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+ul.topnav span a:hover {background-color: #555;}
+
+ul.topnav sapn.icon {display: none;}
+
+@media screen and (max-width:680px) {
+  ul.topnav sapn:not(:first-child) {display: none;}
+  ul.topnav sapn.icon {
+    float: right;
+    display: inline-block;
+  }
+}
+
+@media screen and (max-width:680px) {
+  ul.topnav.responsive {position: relative;}
+  ul.topnav.responsive sapn.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.topnav.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.topnav.responsive sapn a {
+      display: block;
+      text-align: left;
+  }}

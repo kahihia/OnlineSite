@@ -3,7 +3,7 @@
 {% load staticfiles %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+<link rel="stylesheet" media="all and (max-width: 1024px)" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -21,48 +21,37 @@
                     direction: rtl;
                     font-family: "IRAN-web";
                 }
-
                 #sidebar-entries {
                     padding-right: 10px;
                     padding-left: 0 !important;
                     font-family: "IRAN-web";
-
                 }
-
                 .sidebar-entry {
                     text-align: right;
                     direction: rtl;
                     font-family: "IRAN-web";
                 }
-
                 #logout {
                     float: left !important;
                     font-family: "IRAN-web";
-
                 }
-
                 #name {
                     float: right !important;
                     font-family: "IRAN-web";
-
                 }
-
                 #interpay-id {
                     float: right !important;
                     font-family: "IRAN-web";
-
                 }
-
                 .sidebar-links {
                     text-align: right;
                     font-family: "IRAN-web";
-
                 }
             {% endifequal %}
         </style>
     {% endblock %}
-{% block STYLE %}
-{% endblock %}
+    {% block STYLE %}
+    {% endblock %}
     {% block css %}
         <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap-theme.min.css' %}">
@@ -80,15 +69,43 @@
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
-function myFunction() {
-    var x = document.getElementById("demo");
-    if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-    } else {
-        x.className = x.className.replace(" w3-show", "");
-    }
-}
-</script>
+            function myFunction() {
+                var x = document.getElementById("demo");
+                if (x.className.indexOf("w3-show") == -1) {
+                    x.className += " w3-show";
+                } else {
+                    x.className = x.className.replace(" w3-show", "");
+                }
+            }
+            function myFunction1() {
+                var x = document.getElementById("demoo");
+                var y = document.getElementById("sidebar1");
+                if (x.className.indexOf("w3-show") == -1) {
+                    x.className += " w3-show"
+                    y.style.display = "none"
+                }
+                else {
+                    x.className = x.className.replace(" w3-show", "");
+                }
+            }
+
+            $(document).ready(function(){
+                $("#close").click(function(){
+                    $("#closeall").hide();
+                    $("#sidebar1").show();
+                });
+
+            });
+            $(document).ready(function(){
+                $("#open").click(function(){
+                    $("#closeall").show();
+                    $("#sidebar1").hide();
+                });
+
+            });
+
+
+        </script>
     {% endblock %}
     {% block JS %}
     {% endblock %}
@@ -113,48 +130,47 @@ function myFunction() {
 <body style="background: #f9f9f9 repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
-        <div id="nav" class="w3-navbar">
-            <div class="navbar-container">
-                <div class="navbar-header pull-left" id="interpay-logo">
-                    <a class="navbar-brand" style="padding-top: 10px">
-                        <img id="LOGO" src="{% static 'interpay/images/logo.png' %}" style="width: 40%">
-
+        <ul class="topnav" id="myTopnav">
+            <h1 style="margin-top: 0% ; margin-bottom: 3%" class="w3-hide-small w3-hide-medium"> <a>
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
+                        <img src="{% static 'interpay/images/irflag.png' %}" style=" height:5%; width:3%; float:right ; margin-top:0px;cursor: pointer">
                     </a>
-                </div>
-                <div style="float: right; font-family: IRAN-web" id="welcome-btn" class="navbar-header w3-container">
-                    {{ user.username }}{% trans "'s Profile" %}
-
-                    <i class="fa fa-sort-down" aria-hidden="true"></i>
-                    <br>
-                </div>
-                <div id="translation-link">
-                    {% ifequal LANGUAGE_CODE 'en-gb' %}
-                        <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
-                            <img src="{% static 'interpay/images/irflag.png' %}" style="width: 50%;cursor: pointer">
-                        </a>
-                    {% else %}
-                        <a id="to-en-link" class="trans-link" onclick="to_en()"><img
-                                src="{% static 'interpay/images/ukflag.png' %}" style="width: 50%;cursor: pointer"></a>
-                    {% endifequal %}
-                </div>
-
-            </div>
-        </div>
+                {% else %}
+                    <a id="to-en-link" class="trans-link" onclick="to_en()"><img
+                            src="{% static 'interpay/images/ukflag.png' %}" style=" height:5%; width:3%; float:left ; margin-top:0px;cursor: pointer"></a>
+                {% endifequal %}
+                <img src="{% static 'interpay/images/logo.png' %}" style="width:10%; float:left ; margin-top:0px"></a>
+            </h1>
+            <h1 style="margin-top: 0% ; margin-bottom: 3%" class="w3-hide-large"><a>
+                <img src="{% static 'interpay/images/logo.png' %}" style="width:10%; float:left ; margin-top:0px"></a>
+            </h1>
+     <span style="float: right; font-family: IRAN-web" id="welcome-btn" class="col-xs-4 col-md-2">
+        {{ user.username }}{% trans "'s Profile" %}
+          <i class="fa fa-sort-down" aria-hidden="true"></i>
+      </span>
+        </ul>
     </header>
+
+    <div id="topbar">
+        <div  id="sidebar1" class=" pull-left w3-navbar w3-hide-medium w3-hide-large w3-right">
+            <a  id="open" href="javascript:void(0);" onclick="myFunction1()">menu</a>
+        </div>
+    </div>
     {% ifequal LANGUAGE_CODE 'en-gb' %}
-        <div  id="sidebar" class="pull-left w3-table w3-bordered w3-striped">
+        <div id="sidebar" class="pull-left  w3-table w3-bordered w3-hide-small">
     {% else %}
         <div  id="sidebar" class="pull-right">
     {% endifequal %}
-    <div  id="sidebar-content">
-        <ul id="sidebar-entries">
-            <li class="sidebar-entry">
+    <div  id="sidebar-content" class="w3-hide-small">
+        <ul id="sidebar-entries" class= w3-hide-small">
+            <li class="sidebar-entry" clas="w3-hide-small">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <a class="sidebar-links" href="/home">
+                    <a class="sidebar-links w3-hide-small" href="/home">
                 {% else %}
-                    <a class="sidebar-links" href="/fa-ir/home">
+                    <a class="sidebar-links w3-hide-small" href="/fa-ir/home">
                 {% endifequal %}
-                <i class="fa fa-home sidebar-ent-items" aria-hidden="true"></i> {% trans "Home" %}
+                <i class="fa fa-home sidebar-ent-items w3-hide-small" aria-hidden="true"></i> {% trans "Home" %}
                 </a>
             </li>
             <li class="dropdown sidebar-entry">
@@ -219,54 +235,143 @@ function myFunction() {
                 </a>
             </li>
         </ul>
-
     </div>
     </div>
-    <div class="content">
-        <div id="info-bar" class="w3-navbar">
-            <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
-             <a href="javascript:void(0);" onclick="myFunction()">☰</a>
-            </li>
-            <li  class="w3-hide-small" id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</li>
-            <li  class="w3-hide-small" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
-            <li  class="w3-hide-small" id="interpay-id">{% trans "InterPay ID" %}: </li>
-            <li  class="w3-hide-small" id="logout">
-            <a id="logout-link" href="/logout">
-                <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
-            </a>
-        </li>
-        </div>
-    <div id="demo" class="w3-hide w3-hide-large w3-hide-medium">
-      <ul class="w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #c9dedf">
-            <li  id="name"> {{ user.first_name }} {{ user.last_name }}</li>
-            <li  id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
-            <li  id="interpay-id">{% trans "InterPay ID" %}: </li>
-            <li  id="logout">
-            <a    style="float: left" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
-            </li>
-       </ul>
-     </div>
-        <section  id="main-content-section">
-            <div id="cont-wrapper" class="w3-container" >
-                <div id="cont-header">
-                    {% block cont-header %}
-                    {% endblock %}
-                    <hr>
-                </div>
 
-                <div id="cont-body">
-                    {% block cont-body %}
-                    {% endblock %}
-                </div>
 
+    <div id="closeall">
+        <nav id="demoo" class="w3-hide w3-hide-large w3-hide-medium w3-collapse">
+            <div id="sidebar" class="pull-left w3-table w3-animate-left">
+                <div  id="sidebar-content">
+                    <ul id="sidebar-entries">
+                        <li class=" pull-left w3-hide-medium w3-hide-large w3-right">
+                            <a  class="w3-closenav" id="close" href="javascript:void(0);" onclick="myFunction1()">Close &times;</a>
+                        </li>
+                        <br>
+                        <br>
+                        <li class="sidebar-entry">
+                            {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                <a class="sidebar-links" href="/home">
+                            {% else %}
+                                <a class="sidebar-links" href="/fa-ir/home">
+                            {% endifequal %}
+                            <i class="fa sidebar-ent-items" aria-hidden="true"></i> {% trans "Home" %}
+                            </a>
+                        </li>
+                        <li class="dropdown sidebar-entry">
+                            <a href="#" class="sidebar-links dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-money" aria-hidden="true"></i> {% trans "Wallets" %}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li id="wallet_info">
+                                    {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                        <a class="sidebar-links" href="/wallets">
+                                    {% else %}
+                                        <a class="sidebar-links" href="/fa-ir/wallets">
+                                    {% endifequal %}
+                                    <i><span>{% trans 'Wallet Info' %}</span></i>
+                                    </a></li>
+                                <li id="top_up">
+                                    {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                        <a class="sidebar-links" href="/top-up">
+                                    {% else %}
+                                        <a class="sidebar-links" href="/fa-ir/top-up">
+                                    {% endifequal %}
+                                    <i><span>{% trans 'Top Up by Credit Card' %}</span></i>
+                                    </a></li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-entry">
+                            {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                <a class="sidebar-links" href="/trans-history">
+                            {% else %}
+                                <a class="sidebar-links" href="/fa-ir/trans-history">
+                            {% endifequal %}
+                            <i class="fa fa-history sidebar-ent-items" aria-hidden="true"></i>{% trans " Transaction History" %}
+                            </a>
+                        </li>
+                        <li class="sidebar-entry" >
+                            {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                <a class="sidebar-links" href="/bank-accounts">
+                            {% else %}
+                                <a class="sidebar-links" href="/fa-ir/bank-accounts">
+                            {% endifequal %}
+
+                            <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i>{% trans " Bank Accounts" %}
+                            </a>
+                        </li>
+                        <li class="sidebar-entry">
+                            {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                <a class="sidebar-links" href="/reports">
+                            {% else %}
+                                <a class="sidebar-links" href="/fa-ir/reports">
+                            {% endifequal %}
+                            <i class="fa fa-file-text-o sidebar-ent-items" aria-hidden="true"></i>{% trans " Reports" %}
+                            </a>
+                        </li>
+                        <li class="sidebar-entry" style="border-bottom: double #f1f1f1">
+                            {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                <a class="sidebar-links" href="/general">
+                            {% else %}
+                                <a class="sidebar-links" href="/fa-ir/general">
+                            {% endifequal %}
+                            <i class="fa fa-bullseye sidebar-ent-items" aria-hidden="true"></i>{% trans " General" %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </section>
+        </nav>
+    </div>
 
+    <div class="content">
+        <div id="topbar">
+            <div id="info-bar" class="w3-navbar">
+                <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+                    <a href="javascript:void(0);" onclick="myFunction()">☰</a>
+                </li>
+                <li  class="w3-hide-small" id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</li>
+                <li  class="w3-hide-small" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
+                <li  class="w3-hide-small" id="interpay-id">{% trans "InterPay ID" %}: </li>
+                <li  class="w3-hide-small" id="logout">
+                    <a id="logout-link" href="/logout">
+                        <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
+                    </a>
+                </li>
+            </div>
+        </div>
+        <div id="demo" class="w3-hide w3-hide-large w3-hide-medium">
+            <ul class="w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #c9dedf">
+                <li  id="name"> {{ user.first_name }} {{ user.last_name }}</li>
+                <li  id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
+                <li  id="interpay-id">{% trans "InterPay ID" %}: </li>
+                <li  id="logout">
+                    <a    style="float: left" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
+                </li>
+            </ul>
+        </div>
+
+    <section  id="main-content-section">
+           <div id="cont-wrapper" class="w3-container" >
+               <div id="cont-header">
+                   {% block cont-header %}
+                   {% endblock %}
+                   <hr>
+               </div>
+
+               <div id="cont-body">
+                   {% block cont-body %}
+                   {% endblock %}
+               </div>
+
+           </div>
+    </section>
+ </div>
     </div>
     {#    <footer id="footer" class="footer">#}
     {#        <div id="footer-content">All rights reserved.</div>#}
     {#    </footer>#}
-    </div>
 </div>
 </body>
 </html>
