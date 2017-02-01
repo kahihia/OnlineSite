@@ -1,0 +1,140 @@
+{% extends 'interpay/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}"/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+    {% block CSS %}
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/home.css' %}">
+    {% endblock %}
+    <meta charset="UTF-8">
+    {#    <title>{% block title %}#}
+    {#        {% trans 'Home Page' %}#}
+    {#    {% endblock %}</title>#}
+</head>
+<body>
+<script>
+    {% block script %}
+        function fill_modal() {
+            var email = document.getElementById("email");
+            var mobile = document.getElementById("mobile");
+            var comment = document.getElementById("comment");
+            var amount = document.getElementById("amount");
+
+            var modal_email = document.getElementById("modal_email");
+            var modal_mobile = document.getElementById("modal_mobile");
+            var modal_comment = document.getElementById("modal_comment");
+            var modal_amount = document.getElementById("modal_amount");
+            modal_email.innerHTML = email.value
+            modal_mobile.innerHTML = mobile.value
+            modal_comment.innerHTML = comment.value
+            modal_amount.innerHTML = amount.value
+
+        }
+    {% endblock %}
+</script>
+
+{% block cont-header %}
+    <div id="welcome-msg" style="font-family: IRAN-web">
+        <h3 class="page-title"> {% trans "Pay to user" %}</h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+    <div id="interpay-desc" style="font-family: IRAN-web">
+        <form method="post" action="/pay_user/">
+            {% csrf_token %}
+            <div>
+                <label style="display:block">
+                    Currency:
+                </label>
+                <select name="currency">
+                    <option value="IRR">Rial</option>
+                    <option value="USD">Dollar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="GBP">Pound</option>
+                </select>
+            </div>
+            <div>
+                <label style="display:block">
+                    Amount:
+                </label>
+                <input type="text" name="amount" id="amount" size="40">
+            </div>
+            <div>
+                <label style="display:block">
+                    Destination Email:
+                </label>
+                <input type="text" name="email" id="email" size="40">
+            </div>
+            <div>
+                <label style="display:block">
+                    Destination Mobile Number:
+                </label>
+                <input type="text" name="mobile" id="mobile" size="40">
+            </div>
+            <div>
+                <label style="display:block">
+                    Comment:
+                </label>
+                <textarea id="comment" name="comment" style="width:214px;height:150px"></textarea>
+            </div>
+            <br>
+            <div style="color: red;font-weight: bold">
+                {% if error %}{{ error }}{% endif %}
+            </div>
+            <div style="color: green;font-weight: bold">
+                {% if success %}{{ success }}{% endif %}
+            </div>
+            <input type="button"
+                   id="confirm"
+                   onclick="fill_modal()"
+                   value="Confirm"
+                   data-toggle="modal"
+                   data-target="#myModal">
+            <div class="container">
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog" style="width:300px">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Payment Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                <label>Amount:</label>
+                                <span id="modal_amount"></span>
+                                <br>
+                                <label>Email:</label>
+                                <span id="modal_email"></span>
+                                <br>
+                                <label>Mobile:</label>
+                                <span id="modal_mobile"></span>
+                                <br>
+                                <label>Comment:</label>
+                                <span id="modal_comment"></span>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-default" style="float: left;">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"
+                                        style="float: left;">Close
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+
+    </div>
+{% endblock %}
+
+</body>
+</html>
