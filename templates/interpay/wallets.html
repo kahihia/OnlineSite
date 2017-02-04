@@ -6,7 +6,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>
         {% block title %}
             {% trans 'Wallet Info ' %}- Interpay Iran
@@ -31,9 +34,8 @@
     </div>
 {% endblock %}
 {% block cont-body %}
-    <div id="" class="row">
-        <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper">
-            <div id="wal-tab-searchbar" class="row ">
+
+            <div id="wal-tab-searchbar" class="row w3-container" style="height:10%">
                 <span id="display-records" class="col-sm-6">
                     <i class="fa fa-eye" aria-hidden="true">
                         <select>
@@ -55,7 +57,8 @@
                 </span>
             </div>
 
-            <table id="wal-tab">
+ <div class="table-responsive">
+            <table id="wal-tab" class="table">
                 <thead>
                 <tr class="table-header-row">
                     <th class="table-header-cell">
@@ -111,8 +114,9 @@
 
                 </tbody>
             </table>
+</div>
 
-            <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+            <div id="wal-tab-footer" class="row w3-container" style=" height:20%; margin-left: 0 !important;margin-right: 0 !important;">
                 <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
                 <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4">
                     <b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ accountList.first.total_value }}</b></h5>
@@ -156,12 +160,8 @@
                 </div>
 
             </div>
-        </div>
-        <hr>
-    </div>
+
 {% endblock %}
-
 </body>
-
 </html>
 
