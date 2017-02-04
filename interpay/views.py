@@ -18,7 +18,7 @@ from random import randint
 from currencies.utils import convert
 from suds.client import Client
 from django.contrib.auth.models import User
-from interpay.models import UserProfile
+from interpay.models import UserProfile, MoneyTransfer
 from django.core.mail import send_mail
 from interpay.Email import Email
 from django.conf import settings
@@ -189,6 +189,65 @@ def verify_user(request):
             return HttpResponse(json.dumps(result))
 
 
+@login_required()
+def pay_user(request):
+    if request.method == "POST":
+        up = ""
+        currency = request.POST['currency']
+        amount = request.POST['amount']
+        comment = request.POST['comment']
+        if not amount:
+            return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
+        email = request.POST['email']
+        mobile = request.POST['mobile']
+        # if not email and not mobile:
+        #     return render(request, 'interpay/pay_user.html', {'error': 'Please enter destination email or mobile.'})
+        if email:
+            up = UserProfile.objects.filter(email=email)
+            if up:
+                up = up[0]
+            else:
+                return render(request, 'interpay/pay_user.html', {'error': 'No user with this email.'})
+        elif mobile:
+            up = UserProfile.objects.filter(mobile=mobile)
+            if up:
+                up = up[0]
+            else:
+                return render(request, 'interpay/pay_user.html', {'error': 'No user with this mobile number.'})
+        else:
+            return render(request, 'interpay/pay_user.html', {'error': 'Please enter destination email or mobile.'})
+        destination_account = ""
+        if up:
+            print ('upppp')
+            user_debit_accounts = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT)
+            for account in user_debit_accounts:
+                print (account.id, "iddddd")
+                print (account.cur_code, " ", currency)
+                if account.cur_code == currency:
+                    destination_account = account
+                    break
+        src_account_owner = UserProfile.objects.filter(user=request.user)
+        if src_account_owner:
+            src_account_owner = src_account_owner[0]
+        src_account = BankAccount.objects.filter(owner=src_account_owner, method=BankAccount.DEBIT)
+        if src_account:
+            src_account = src_account[0]
+            # d = Deposit(account=src_account, amount=1000.00, banker=UserProfile.objects.get(user=request.user), date=datetime.datetime.now(), cur_code='USD')
+            # d.save()
+            print (src_account.balance, 'fasdhf')
+            if src_account.balance < int(amount):
+                return render(request, 'interpay/pay_user.html', {'error': 'Your balance is less than entered amount.'})
+            if destination_account:
+                MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
+                                             date=datetime.datetime.now(),
+                                             amount=amount, comment=comment, cur_code=currency)
+                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.'})
+            else:
+                return render(request, 'interpay/pay_user.html', {'error': 'No destination account with this currency.'})
+
+    return render(request, "interpay/pay_user.html")
+
+
 def reset_password(request, token):
     if request.method == "POST":
         birth_date = request.POST['birth_date']
@@ -258,7 +317,7 @@ def user_login(request):
         print ("user login")
         username = request.POST['username']
         password = request.POST['password']
-        print (settings.DEBUG,"debug")
+        print (settings.DEBUG, "debug")
         if not settings.DEBUG:
             gcapcha = request.POST['g-recaptcha-response']
             # post  https://www.google.com/recaptcha/api/siteverify
@@ -419,13 +478,15 @@ def zarinpal_callback_handler(request, amount):
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=float(a['amount']),
-                                     banker=new_banker, date=(datetime.datetime.strptime(a['date'].__str__()[:11], '%Y-%m-%d')), cur_code=a['cur_code'], status=True,
+                                     banker=new_banker,
+                                     date=(datetime.datetime.strptime(a['date'].__str__()[:11], '%Y-%m-%d')),
+                                     cur_code=a['cur_code'], status=True,
                                      tracking_code=result2.RefID)
-        # try:
+            # try:
             deposit.calculate_comission()  # automatically saves after calculating comission
-        # except:
-        #     log.error("error in Calculating Comission")
-        #     deposit.save()
+            # except:
+            #     log.error("error in Calculating Comission")
+            #     deposit.save()
 
             # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
             return recharge_account(request, message="Your account charged successfully.")

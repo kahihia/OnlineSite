@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'session_security/', include('session_security.urls')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^pay_user/', views.pay_user),
     # url(r'^$', TemplateView.as_view(template_name="main_page.html")),
     # url(r'^home/', TemplateView.as_view(template_name="home.html")),
     # url(r'^wallets/', TemplateView.as_view(template_name="wallets.html")),
