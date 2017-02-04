@@ -35,7 +35,7 @@
 {% endblock %}
 {% block cont-body %}
 
-            <div id="wal-tab-searchbar" class="row w3-container" style="height:10%">
+   <div id="wal-tab-searchbar" class="row w3-container" style="height:10%">
                 <span id="display-records" class="col-sm-6">
                     <i class="fa fa-eye" aria-hidden="true">
                         <select>
@@ -55,7 +55,7 @@
                         <input type="text" id="search-txtbox">
                     </i>
                 </span>
-            </div>
+      </div>
 
  <div class="table-responsive">
             <table id="wal-tab" class="table">
@@ -116,7 +116,7 @@
             </table>
 </div>
 
-            <div id="wal-tab-footer" class="row w3-container" style=" height:20%; margin-left: 0 !important;margin-right: 0 !important;">
+   <div id="wal-tab-footer" class="row w3-container" style=" height:20%; margin-left: 0 !important;margin-right: 0 !important;">
                 <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
                 <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4">
                     <b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ accountList.first.total_value }}</b></h5>
@@ -159,7 +159,7 @@
                     {#                    in {{ CURRENCY.code }}#}
                 </div>
 
-            </div>
+   </div>
 
 {% endblock %}
 </body>
