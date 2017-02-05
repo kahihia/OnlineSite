@@ -200,6 +200,11 @@ def pay_user(request):
             comment = ""
         if not amount:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
+        if not amount.isdigit():
+            return render(request, 'interpay/pay_user.html', {'error': 'Please enter a valid number for amount.'})
+        if int(amount) <= 0:
+            return render(request, 'interpay/pay_user.html',
+                          {'error': 'Please enter a number greater than zero for amount.'})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
@@ -220,23 +225,19 @@ def pay_user(request):
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter destination email or mobile.'})
         destination_account = ""
         if up:
-            print ('upppp')
             user_debit_accounts = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT)
             for account in user_debit_accounts:
-                print (account.id, "iddddd")
-                print (account.cur_code, " ", currency)
                 if account.cur_code == currency:
                     destination_account = account
                     break
         src_account_owner = UserProfile.objects.filter(user=request.user)
         if src_account_owner:
             src_account_owner = src_account_owner[0]
-        src_account = BankAccount.objects.filter(owner=src_account_owner, method=BankAccount.DEBIT, cur_code = currency)
+        src_account = BankAccount.objects.filter(owner=src_account_owner, method=BankAccount.DEBIT, cur_code=currency)
         if src_account:
             src_account = src_account[0]
             # d = Deposit(account=src_account, amount=1000.00, banker=UserProfile.objects.get(user=request.user), date=datetime.datetime.now(), cur_code='USD')
             # d.save()
-            print (src_account.balance, 'fasdhf')
             if src_account.balance < int(amount):
                 return render(request, 'interpay/pay_user.html', {'error': 'Your balance is less than entered amount.'})
             if destination_account:
@@ -245,9 +246,11 @@ def pay_user(request):
                                              amount=amount, comment=comment, cur_code=currency)
                 return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.'})
             else:
-                return render(request, 'interpay/pay_user.html', {'error': 'No destination account with this currency.'})
+                return render(request, 'interpay/pay_user.html',
+                              {'error': 'No destination account with this currency.'})
         else:
-            return render(request, 'interpay/pay_user.html', {'error': 'You do not have any account in this currency. '})
+            return render(request, 'interpay/pay_user.html',
+                          {'error': 'You do not have any account in this currency. '})
     return render(request, "interpay/pay_user.html")
 
 
