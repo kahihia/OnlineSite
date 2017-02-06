@@ -161,8 +161,7 @@
             <div class="page-header">
                 <h4 class="page-title">{% trans 'My Bank Accounts' %}</h4>
             </div>
-            <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper">
-                <div id="tab-searchbar" class="row ">
+           <div id="tab-searchbar" class="row ">
                 <span id="display-records" class="col-sm-4">
                     <i class="fa fa-eye" aria-hidden="true">
                         <select>
@@ -184,7 +183,8 @@
                 </div>
                 <form method="post">
                     {% csrf_token %}
-                    <table id="bank-tab">
+                    <div class="table-responsive">
+                    <table id="bank-tab" class="table">
                         <thead>
                         <tr class="table-header-row">
                             <th class="table-header-cell">
@@ -245,6 +245,7 @@
 
                         </tbody>
                     </table>
+                    </div>
 
 
                     <div class="container">
@@ -289,7 +290,7 @@
                 <div id="tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
                     {#                    <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ m }} to {{ x }} of {{ y }}entries</h5>#}
                 </div>
-            </div>
+
             <!---this button should be activated in future --->
             {#            <div id="create_acc" style="margin-top: 40px;text-align: center" class="">#}
             {#                <button class="btn btn-info" onclick="create_bank_acc()"><i class="fa fa-plus"#}

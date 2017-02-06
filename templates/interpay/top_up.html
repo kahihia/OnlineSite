@@ -136,9 +136,6 @@
         <h3 class="page-title">{% trans 'Recharge Wallet History' %}</h3>
     </div>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper">
                 <div id="wal-tab-searchbar" class="row ">
                 <span id="display-records" class="col-sm-6">
                     <i class="fa fa-eye" aria-hidden="true">
@@ -160,7 +157,8 @@
                     </i>
                 </span>
                 </div>
-                <table id="wal-tab">
+             <div class="table-responsive">
+                 <table id="wal-tab" class="table">
                     <thead>
                     <tr class="table-header-row">
                         <th class="table-header-cell">
@@ -213,12 +211,12 @@
 
                     </tbody>
                 </table>
+                </div>
                 <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
                     <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
                 </div>
-            </div>
-        </div>
-    </div>
+
+
 {% endblock %}
 </body>
 </html>
