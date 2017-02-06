@@ -485,7 +485,7 @@ def zarinpal_callback_handler(request, amount):
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=float(a['amount']),
                                      banker=new_banker,
-                                     date=(datetime.datetime.strptime(a['date'].__str__()[:11], '%Y-%m-%d')),
+                                     date=(datetime.datetime.strptime(a['date'].__str__()[:10], '%Y-%m-%d')),
                                      cur_code=a['cur_code'], status=True,
                                      tracking_code=result2.RefID)
             # try:
