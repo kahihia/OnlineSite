@@ -1,6 +1,5 @@
-
 from django.test import TestCase, Client
-from interpay.models import User, UserProfile, BankAccount, Deposit
+from interpay.models import User, UserProfile, BankAccount, Deposit, MoneyTransfer
 from currencies.models import Currency
 import unittest
 import datetime
@@ -10,6 +9,52 @@ from django.conf import settings
 # from interpay.models import CurrencyConversion
 
 # Create your tests here.
+class PaymentTestCase(TestCase):
+    def setUp(self):
+        user_src = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+        up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(), email='a@b.com',
+                                            is_active=True)
+
+        user_dest = User.objects.create_user(username='arman71', password='1731', email='b@c.com', is_active=True)
+        up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(), email='b@c.com',
+                                             is_active=True)
+        src_account = BankAccount.objects.create(account_id="123", owner=up_src, cur_code='USD',
+                                                 method=BankAccount.DEBIT)
+        src_account.save()
+        destination_account = BankAccount.objects.create(account_id="246", owner=up_dest, cur_code='USD',
+                                                         method=BankAccount.DEBIT)
+        destination_account.save()
+        d = Deposit(account=src_account, amount=1000.00, banker=up_src, date=datetime.datetime.now(), cur_code='USD')
+        d.save()
+        cr1 = Currency.objects.create(code="USD", name="dollar")
+        cr1.save()
+
+    def test_payment(self):
+        c = Client()
+        c.login(username='arman', password='1731')
+        response = c.get('/pay_user/')
+        self.assertEqual(response.status_code, 200)
+        post_response = c.post('/pay_user/',
+                               {'currency': 'USD', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
+                                'mobile': '10'})
+        for temp in UserProfile.objects.all():
+            print (temp.email, 'hfsjdhf')
+        dest = UserProfile.objects.get(user__email='b@c.com')
+        self.assertEqual(post_response.status_code, 200)
+        dest_account = BankAccount.objects.get(owner=dest)
+        for temp in MoneyTransfer.objects.all():
+            print (temp.amount, " ", temp.comment, " ", temp.sender.id, " ", temp.receiver.id, " ", temp.date)
+        self.assertEqual(dest_account.balance, 100)
+
+        post_response = c.post('/pay_user/',
+                               {'currency': 'USD', 'amount': 1500, 'email': 'b@c.com', 'comment': 'new payment',
+                                'mobile': '10'})
+        # print (post_response.context['error'],'fasdfasdf')
+        # print (dest_account.)
+        self.assertEqual(post_response.context['error'], 'Your balance is less than entered amount.')
+        # cr2 = Currency.objects.create(code="IRR", name="rial", factor=39000)
+        # cr2.save()
+
 
 class ConversionTestCase(TestCase):
     def setUp(self):
@@ -45,7 +90,6 @@ class LoginTestCase(TestCase):
         up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True)
         settings.DEBUG = True
 
-
     def test_login(self):
         c = Client()
         # try:
@@ -56,13 +100,50 @@ class LoginTestCase(TestCase):
         self.assertRedirects(response, '/home/')
 
 
-class ForgetPassword (TestCase):
+class ForgetPassword(TestCase):
     def test_fotgetpass(self):
         response = self.client.get("/login/")
         self.assertContains(response, 'Forgot password or account disabled')
 
-class Registration (TestCase):
+
+class Registration(TestCase):
     def test_registration(self):
         c = Client()
-        response = c.post('/register/', {'firstname': 'Negar','lastname':'goli', 'username': 'neg', 'mob_no':'09102376107'})
+        response = c.post('/register/',
+                          {'firstname': 'Negar', 'lastname': 'goli', 'username': 'neg', 'mob_no': '09102376107'})
         self.assertContains(response, 'continue')
+
+
+# class ForeignKeyTestCase(TestCase):
+#     def setUp(self):
+#         user_src = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+#         up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(), email='a@b.com',
+#                                             is_active=True)
+#
+#         user_dest = User.objects.create_user(username='arman71', password='1731', email='b@c.com', is_active=True)
+#         up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(), email='b@c.com',
+#                                              is_active=True)
+#         account1 = BankAccount.objects.create(account_id="123", owner=up_src, cur_code='USD',
+#                                               method=BankAccount.DEBIT)
+#         account2 = BankAccount.objects.create(account_id="124", owner=up_src, cur_code='USD',
+#                                               method=BankAccount.DEBIT)
+#         account3 = BankAccount.objects.create(account_id="125", owner=up_src, cur_code='USD',
+#                                               method=BankAccount.DEBIT)
+#         account4 = BankAccount.objects.create(account_id="126", owner=up_src, cur_code='USD',
+#                                               method=BankAccount.DEBIT)
+#         MoneyTransfer.objects.create(sender=account1, receiver=account2,
+#                                      date=datetime.datetime.now(),
+#                                      amount=100, comment="test", cur_code="USD")
+#         MoneyTransfer.objects.create(sender=account1, receiver=account2,
+#                                      date=datetime.datetime.now(),
+#                                      amount=200, comment="test", cur_code="USD")
+#         MoneyTransfer.objects.create(sender=account1, receiver=account2,
+#                                      date=datetime.datetime.now(),
+#                                      amount=300, comment="test", cur_code="USD")
+#         for temp in account1.outcome_transfers.all():
+#             print ("abcde")
+#         for temp in account3.outcome_transfers.all():
+#             print ("abcdefgh")
+#
+#     def test_payment(self):
+#         print ("test started")

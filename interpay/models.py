@@ -171,11 +171,11 @@ class BankAccount(models.Model):
             # print 'count of sets fix withdraw outcome then deposit'
 
             result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code, self))
-            result -= sum(x.amount for x in self.outcome_transfers.on_date_out(current_date, self))
+            result -= sum(x.amount for x in self.outcome_transfers.all() )#.on_date_out(current_date, self))
 
             result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             result += sum(x.commission for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
-            result += sum(x.amount for x in self.income_transfers.on_date_in(current_date, self))
+            result += sum(x.amount for x in self.income_transfers.all())    #on_date_in(current_date, self))
 
             current_date += timedelta(days=1)
             break
@@ -212,9 +212,9 @@ class OperationManager(models.Manager):
             return (super(OperationManager, self).get_queryset()).filter(date__gte=ts, cur_code=cc)
 
     def on_date_out(self, date, act):
-        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, sender=act)
+        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, sender=act)
     def on_date_in(self, date, act):
-        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, date__lte=date, receiver=act)
+        return (super(OperationManager, self).get_queryset()).filter(date__gte=date, receiver=act)
 
 
 class MoneyTransfer(models.Model):
@@ -222,7 +222,7 @@ class MoneyTransfer(models.Model):
     # banker is same as sender
     sender = models.ForeignKey(BankAccount, related_name='outcome_transfers')
     receiver = models.ForeignKey(BankAccount, related_name='income_transfers')
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now=True)
     amount = models.FloatField()
     comment = models.CharField(max_length=255)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
