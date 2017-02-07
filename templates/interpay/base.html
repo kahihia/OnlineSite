@@ -137,11 +137,14 @@
             <h1  style="margin-top: 0% ; margin-bottom: 3%"> <a>
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
+                    <p class="lang"> Fa/Eng</p>
                         <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
                     </a>
                 {% else %}
-                    <a id="to-en-link" class="trans-link" onclick="to_en()"><img
-                            src="{% static 'interpay/images/ukflag.png' %}" class="flag" style=" height:5%; width:3%; float:left ; margin-top:0px;cursor: pointer"></a>
+                    <a id="to-en-link" class="trans-link" onclick="to_en()">
+                        <p class="lang" style="cursor: pointer"> Eng/Fa </p>
+                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                    </a>
                 {% endifequal %}
                 <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px"></a>
             </h1>

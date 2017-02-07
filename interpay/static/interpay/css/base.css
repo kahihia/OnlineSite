@@ -8,13 +8,25 @@
 }
 
 .flag {
-        height:3%;
-        width:5%;
+        height:1%;
+        width:2%;
 }
 @media screen and (min-width: 800px) {
     .flag {
-       height:3.5%;
-       width:4.3%;
+       height:1.5%;
+       width:1.53%;
+    }
+}
+.lang {
+        margin-right: 1%;
+        float:right;
+        font-size: 25%;
+}
+@media screen and (min-width: 800px) {
+    .lang {
+      margin-right: 1%;
+      float:right;
+      font-size: 35%;
     }
 }
 .sidebar-links {
