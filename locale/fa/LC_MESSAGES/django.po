@@ -37,6 +37,10 @@ msgstr " کیف پول من "
 msgid " Transaction History"
 msgstr " پیشینه تراکنش "
 
+#: .\interpay\templates\base.html:302
+msgid " Transaction"
+msgstr "تراکنش "
+
 #: .\interpay\templates\base.html:140
 msgid " Reports"
 msgstr " گزارش های مالی "

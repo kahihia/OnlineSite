@@ -6,6 +6,29 @@
         margin-left: 15%;
     }
 }
+
+.flag {
+        height:1%;
+        width:2%;
+}
+@media screen and (min-width: 800px) {
+    .flag {
+       height:1.5%;
+       width:1.53%;
+    }
+}
+.lang {
+        margin-right: 1%;
+        float:right;
+        font-size: 25%;
+}
+@media screen and (min-width: 800px) {
+    .lang {
+      margin-right: 1%;
+      float:right;
+      font-size: 35%;
+    }
+}
 .sidebar-links {
     color: #585858 !important;
 }

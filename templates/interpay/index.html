@@ -12,6 +12,7 @@
     {% endblock %}
 </head>
 <body>
+
 <script>
     {% block script %}
         function forgot_pass() {
@@ -108,8 +109,9 @@
                                                           placeholder="Password" size="50"/>
                             </div>
 {#                            {{ captcha_form }}#}
-                            <div class="g-recaptcha" data-sitekey="6LfHKRMUAAAAABhBgggT5PR293yWX8jSWamrxJCl"></div>
-                            <div style="color:red;font-weight:bold">
+                            <div class="g-recaptcha" style="transform:scale(0.60); transform-origin:0 0" data-theme="light"  data-sitekey="6LfHKRMUAAAAABhBgggT5PR293yWX8jSWamrxJCl"></div>
+
+                                     <div style="color:red;font-weight:bold">
                                 {% if error %}
                                     {{ error }}
                                 {% endif %}
