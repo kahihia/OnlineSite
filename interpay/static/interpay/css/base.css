@@ -142,8 +142,6 @@
     float: right;
     cursor: pointer;
     width: 15%;
-    display: inline-block;
-    text-align: center;
 }
 
 #info-bar {
