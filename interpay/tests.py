@@ -147,3 +147,39 @@ class Registration(TestCase):
 #
 #     def test_payment(self):
 #         print ("test started")
+
+
+class CallbackTestCase(TestCase):
+    def setUp(self):
+        user_src = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+        up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(), email='a@b.com',
+                                            is_active=True)
+
+        user_dest = User.objects.create_user(username='arman71', password='1731', email='b@c.com', is_active=True)
+        up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(), email='b@c.com',
+                                             is_active=True)
+        src_account = BankAccount.objects.create(account_id="123", owner=up_src, cur_code='USD',
+                                                 method=BankAccount.DEBIT)
+        src_account.save()
+        destination_account = BankAccount.objects.create(account_id="246", owner=up_dest, cur_code='USD',
+                                                         method=BankAccount.DEBIT)
+        destination_account.save()
+        d = Deposit(account=src_account, amount=1000.00, banker=up_src, date=datetime.datetime.now(), cur_code='USD')
+        d.save()
+        cr1 = Currency.objects.create(code="USD", name="dollar")
+        cr1.save()
+
+    def test_callback(self):
+        c = Client()
+        c.login(username='arman', password='1731')
+        response = c.get('/fa-ir/top-up/')
+        self.assertEqual(response.status_code, 200)
+        print "***************"
+        print response
+        post_response = c.get('/callback_handler/',
+                               {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
+                                'mobile': '10'})
+        self.assertEqual(post_response.status_code, 200)
+
+
+
