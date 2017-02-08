@@ -69,6 +69,7 @@
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
+
             function myFunction() {
                 var x = document.getElementById("demo");
                 if (x.className.indexOf("w3-show") == -1) {
@@ -135,6 +136,7 @@
     <header>
         <ul class="topnav">
             <h1  style="margin-top: 0% ; margin-bottom: 3%"> <a>
+              {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
@@ -146,6 +148,7 @@
                         <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
                     </a>
                 {% endifequal %}
+             {% endblock %}
                 <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px"></a>
             </h1>
      <span style="float: right; font-family: IRAN-web" id="welcome-btn" class="col-xs-4 col-md-2">
