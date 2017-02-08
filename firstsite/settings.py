@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'session_security',
+    'manager',
     'captcha'
 ]
 

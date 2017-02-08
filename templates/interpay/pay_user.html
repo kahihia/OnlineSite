@@ -47,11 +47,20 @@
             <form method="post" action="/pay_user/">
                 {% csrf_token %}
                 {#                <div class="row">#}
-                <div class="form-group">
+
+
+                <div class="form-group col-lg-2" style="padding:0">
+                    <label style="display:block">
+                        Amount:
+                    </label>
+                    <input type="text" name="amount" id="amount" class="form-control" style="width:150px">
+                </div>
+
+                <div class="form-group" style="padding: 0">
                     <label style="display:block">
                         Currency:
                     </label>
-                    <select name="currency" class="form-control" style="width:300px">
+                    <select name="currency" class="form-control"  style="width:110px">
                         <option value="IRR">Rial</option>
                         <option value="USD">Dollar</option>
                         <option value="EUR">Euro</option>
@@ -60,12 +69,7 @@
                 </div>
                 {#                </div>#}
                 {#                <div class="row">#}
-                <div class="form-group">
-                    <label style="display:block">
-                        Amount:
-                    </label>
-                    <input type="text" name="amount" id="amount" class="form-control" style="width:300px">
-                </div>
+
                 {#                </div>#}
                 {#                <div class="row">#}
                 <div class="form-group">
@@ -103,7 +107,7 @@
                        value="Confirm"
                        data-toggle="modal"
                        data-target="#myModal"
-                       class="btn btn-info" >
+                       class="btn btn-info">
                 <div class="container">
                     <div class="modal fade" id="myModal" role="dialog">
                         <div class="modal-dialog" style="width:300px">

@@ -583,7 +583,8 @@ def bank_accounts(request):
                     # for other_account in BankAccount.objects.filter(owner=account.owner, method='Debit')
 
     bank_account_form = CreateBankAccountForm()
-    bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW)
+    bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW)\
+        .order_by('name')
     return render(request, "interpay/bank_accounts.html",
                   {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form, 'emessage': mymessage})
 

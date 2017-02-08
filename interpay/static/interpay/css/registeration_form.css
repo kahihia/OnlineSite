@@ -2,13 +2,28 @@
     margin-top: 30px;
     padding: 20px;
     border: 0 ridge rgb(238, 238, 255);
-    width: 30%;
+    width: 75%;
     box-shadow: 3px 1px 6px rgb(239, 239, 239);
     display: inline-block;
     text-align: left;
     background-color: #e1e1e2;
     border-radius: 3%;
 
+}
+
+@media screen and (min-width: 800px) {
+    .form-wrapper {
+        margin-top: 30px;
+        padding: 20px;
+        border: 0 ridge rgb(238, 238, 255);
+        width: 40%;
+        box-shadow: 3px 1px 6px rgb(239, 239, 239);
+        display: inline-block;
+        text-align: left;
+        background-color: #e1e1e2;
+        border-radius: 3%;
+
+    }
 }
 
 .top-bar {
@@ -97,15 +112,104 @@ span.helptext {
     text-align: center;
 }
 
-input#id_national_card_photo {
-    /*display: none;!important;*/
-  padding:5px 10px;
-  background:#006699;
-  border:1px solid #004466;
-  position:relative;
-  color:#ffffff;
-  border-radius:2px;
-  text-align:center;
-  float:left;
-  cursor:pointer
+
+
+input#id_national_card_photo  {
+        width: 100%;
+        length: 10%;
+        background:#006699;
+        border:1px solid #004466;
+        position:relative;
+        color:#ffffff;
+        border-radius:2px;
+        text-align:center;
+        float:left;
+        cursor:pointer
 }
+@media screen and (min-width: 800px) {
+    input#id_national_card_photo  {
+        padding:5px 10px;
+        background:#006699;
+        border:1px solid #004466;
+        position:relative;
+        color:#ffffff;
+        border-radius:2px;
+        text-align:center;
+        float:left;
+        cursor:pointer
+    }
+}
+
+.flag {
+        height:1%;
+        width:2%;
+}
+@media screen and (min-width: 800px) {
+    .flag {
+       height:1.5%;
+       width:1.53%;
+    }
+}
+.lang {
+        margin-right: 1%;
+        float:right;
+        font-size: 25%;
+        color: white;
+}
+@media screen and (min-width: 800px) {
+    .lang {
+      margin-right: 1%;
+      float:right;
+      font-size: 35%;
+      color: white;
+    }
+}
+
+ul.topnav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #438eb9;
+}
+
+ul.topnav span {float: left;}
+
+ul.topnav span a {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+ul.topnav span a:hover {background-color: #555;}
+
+ul.topnav sapn.icon {display: none;}
+
+@media screen and (max-width:680px) {
+  ul.topnav sapn:not(:first-child) {display: none;}
+  ul.topnav sapn.icon {
+    float: right;
+    display: inline-block;
+  }
+}
+
+@media screen and (max-width:680px) {
+  ul.topnav.responsive {position: relative;}
+  ul.topnav.responsive sapn.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.topnav.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.topnav.responsive sapn a {
+      display: block;
+      text-align: left;
+  }}
+
+

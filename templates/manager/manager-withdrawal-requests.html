@@ -1,0 +1,135 @@
+{% extends 'manager/manager-base.html' %}
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            {% trans 'Withdrawal Requests' %}
+        {% endblock %}
+    </title>
+</head>
+<body>
+<script>
+    {% block script %}
+        function submit_func(withdrawal_id) {
+            var requestId = document.getElementById("withdrawal_id").value = withdrawal_id;
+            {#            requestId.value = withdrawal_id;#}
+            {#            var my_form = document.getElementById('withdrawal_form');#}
+            {#            my_form.submit();#}
+        }
+    {% endblock %}
+</script>
+{% block cont-header %}
+    <div>
+        <h3 class="page-title">
+            {% trans 'Withdrawal Requests' %}
+        </h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+    <div class="table-responsive">
+        <form method="post" id="withdrawal_form">
+            {% csrf_token %}
+            <table id="wal-tab" class="table">
+                <thead>
+                <tr class="table-header-row">
+                    <th class="table-header-cell">
+                        {% trans 'Row' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Source Account' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Destination Account' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Status' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Date' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Amount' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Confirm' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Transaction Status' %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for request in withdrawal_requests %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="table-cell">{{ request.src_account.account_id }}</td>
+                        <td class="table-cell">{{ request.dest_account.account_id }}</td>
+                        <td class="table-cell">{{ request.status }}</td>
+                        <td class="table-cell">{{ request.date }}</td>
+                        <td class="table-cell">{{ request.amount }}</td>
+                        <td class="table-cell" style="color:green">
+                            {% if not request.status %}
+                                <input
+                                        type="button"
+                                        class="btn btn-default"
+                                        onclick="submit_func({{ request.id }})"
+                                        value="Confirm"
+                                        data-toggle="modal"
+                                        data-target="#myModal">
+                            {% else %}
+                                Confirmed
+                            {% endif %}
+                        </td>
+                        <td class="table-cell" {% if message %}style="color:green"
+                            {% else %}style="color:red"{% endif %}>
+                            {% if withdraw_id|slugify == request.id|slugify %}
+                                {% if message %}
+                                    {{ message }}
+                                {% elif error %}
+                                    {{ error }}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                <input type="hidden" id="withdrawal_id" name="withdrawal_id">
+                </tbody>
+            </table>
+            <div class="container">
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog" style="width:300px">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirm Request</h4>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to confirm this request?
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-default" style="float: left;" value="Yes">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"
+                                        style="float: left;">No
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+{% endblock %}
+</body>
+</html>

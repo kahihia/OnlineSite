@@ -277,6 +277,20 @@ msgstr "صفحه اصلی"
 msgid " Bank Accounts"
 msgstr " حسابهای بانکی "
 
+#: .\interpay\templates\base.html:173
+msgid "Accounts"
+msgstr " حساب ها "
+
+#: .\interpay\templates\base.html:173
+msgid "menu"
+msgstr " صفحات"
+
+
+#: .\interpay\templates\base.html:173
+msgid "Close"
+msgstr " بستن "
+
+
 #: .\interpay\templates\index.html:108
 msgid "Forgot password or account disabled ?"
 msgstr "در ورود به سایت مشکل دارم"
