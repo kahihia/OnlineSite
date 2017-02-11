@@ -216,6 +216,15 @@
                 <i class="fa fa-history sidebar-ent-items" aria-hidden="true"></i>{% trans " Transaction History" %}
                 </a>
             </li>
+                     <li class="sidebar-entry">
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a class="sidebar-links" href="/pay_user/">
+                {% else %}
+                    <a class="sidebar-links" href="/fa-ir/pay_user/">
+                {% endifequal %}
+                <i class="fa fa-cc-discover sidebar-ent-items" aria-hidden="true"></i>{% trans " Payment" %}
+                </a>
+             </li>
             <li class="sidebar-entry" >
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/bank-accounts">
@@ -311,6 +320,15 @@
                             {% trans " Transaction" %}
                             </a>
                         </li>
+                        <li class="sidebar-entry">
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a class="sidebar-links" href="/pay_user/">
+                {% else %}
+                    <a class="sidebar-links" href="/fa-ir/pay_user/">
+                {% endifequal %}
+               {% trans "Payment" %}
+                </a>
+                    </li>
                         <li class="sidebar-entry" >
                             {% ifequal LANGUAGE_CODE 'en-gb' %}
                                 <a class="sidebar-links" href="/bank-accounts">
@@ -387,7 +405,7 @@
         </div>
 
     <section  id="main-content-section">
-           <div id="cont-wrapper" class="w3-container" >
+           <div id="cont-wrapper">
                <div id="cont-header">
                    {% block cont-header %}
                    {% endblock %}
