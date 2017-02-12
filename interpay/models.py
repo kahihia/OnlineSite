@@ -94,12 +94,21 @@ class Rule(models.Model):
     end_date = models.DateField()  # (input_formats="%d-%b-%Y")
     # end_date = models.DateField()
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    deposit_charge_percent = models.FloatField(default=2)
+    deposit_charge_percent = models.FloatField(default=4)
     credit_percent = models.FloatField(default=98)
 
     @staticmethod
     def on_date(_date, _code='USD'):
-        return Rule.objects.get(start_date__lte=_date, end_date__gte=_date, cur_code=_code)
+        r = None
+        try:
+            # print _date, _code
+            r = Rule.objects.get(start_date__lte=_date, end_date__gte=_date, cur_code=_code)
+
+        except Rule.DoesNotExist:
+            log.info('Warning: default comission rule is being used')
+            r = Rule(cur_code=_code, start_date=datetime.now().date(), end_date=(datetime.now() + timedelta(days=1)).date())
+
+        return r
 
 
 START_TIME = 0x0
@@ -250,8 +259,9 @@ class Deposit(models.Model):
         if type(self.date) is str:
             log.debug("Deposit object has a string date")
             thedate = datetime.strptime(self.date.__str__()[:11], '%Y-%m-%d').date()
-        rule = Rule.on_date(thedate)
+        rule = Rule.on_date(thedate, self.cur_code)
         #print 'deposit comissiom,', rule.deposit_charge_percent
+        # TODO check if comission less than 0.01
         self.commission = (rule.deposit_charge_percent * 0.01) * self.amount
         self.amount = self.amount - self.commission
         self.save();
