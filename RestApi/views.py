@@ -1,6 +1,5 @@
 from interpay.models import UserProfile, BankAccount, Deposit
 from rest_framework import viewsets
-from RestApi.serializers import UserSerializer, GroupSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -26,25 +25,6 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
-
-
-@api_view(['GET', 'POST'])
-def snippet_list(request):
-    """
-    List all snippets, or create a new snippet.
-    """
-    if request.method == 'GET':
-        users = UserProfile.objects.all()
-        serializer = UserSerializer(users, many=True, context={'request': request})
-        return JSONResponse(serializer.data)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        user = UserSerializer(data=data)
-        if user.is_valid():
-            user.save()
-            return JSONResponse(user.data, status=status.HTTP_201_CREATED)
-        return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def generate_token(request):
