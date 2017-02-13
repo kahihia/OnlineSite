@@ -36,8 +36,11 @@ log = logging.getLogger('interpay')
 
 def main_page(request):
     # test()
-    if (models.Rule.objects.count == 0):
-        r = models.Rule(start_date=datetime.now().date(), end_date=datetime.now().date() + datetime.timedelta(days=100))
+    if (models.Rule.objects.count() == 0):
+        log.debug('1Initialising comission because no Rule objects exists')
+        r = models.Rule(start_date=datetime.datetime.now().date(), end_date=(datetime.datetime.now() + datetime.timedelta(days=100)).date())
+        r.save()
+        r = models.Rule(start_date=datetime.datetime.now().date(), cur_code='IRR', end_date=(datetime.datetime.now() + datetime.timedelta(days=100)).date())
         r.save()
     if request.user.is_authenticated():
         return home(request)
@@ -413,7 +416,7 @@ def recharge_account(request, **message):
 
             banker = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
             data = {"account_id": user_b_account.account_id, "amount": amnt, "banker_id": banker.id,
-                    "date": str(user_b_account.when_opened), "cur_code": cur}
+                    "date": str(datetime.datetime.utcnow()), "cur_code": cur}
 
             log.debug("new BankAccount object created and saved")
             zarinpal = zarinpal_payment_gate(request, amnt)
@@ -450,7 +453,7 @@ mobile = '09123456789'
 
 
 def zarinpal_payment_gate(request, amount):
-    call_back_url = 'http://test.rizpardakht.com/callback_handler/' + amount  # TODO : this should be changed to our website url
+    call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
                                            amount,
@@ -477,8 +480,7 @@ def zarinpal_callback_handler(request, amount):
         print "result2", result2
         if result2.Status == 100:
             res = 'Transaction success. RefID: ' + str(result2.RefID)
-            # TODO : place a logger here
-            # log.debug("new Deposit object created and saved")
+            log.debug("new Deposit object created and saved")
             data = new_connection.get(auth)
             a = ast.literal_eval(data)
             new_account = models.BankAccount.objects.get(account_id=a['account_id'])
@@ -651,7 +653,7 @@ def actual_convert(request):
             destination_account = temp_account
             break
     if not destination_account:
-        destination_account = BankAccount(name='usdaccount', owner=user_profile, method=BankAccount.DEBIT,
+        destination_account = BankAccount(name='wall_account', owner=user_profile, method=BankAccount.DEBIT,
                                           cur_code=currency,
                                           account_id=make_id())
     destination_account.save()
