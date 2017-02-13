@@ -4,6 +4,9 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
+ {% block flag %}
+
+ {% endblock %}
 <head>
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/bank_accounts.css' %}">

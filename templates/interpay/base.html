@@ -69,6 +69,7 @@
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
+
             function myFunction() {
                 var x = document.getElementById("demo");
                 if (x.className.indexOf("w3-show") == -1) {
@@ -133,8 +134,9 @@
 <body style="background: #f9f9f9 repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
-        <ul class="topnav" id="myTopnav">
+        <ul class="topnav">
             <h1  style="margin-top: 0% ; margin-bottom: 3%"> <a>
+              {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
@@ -146,6 +148,7 @@
                         <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
                     </a>
                 {% endifequal %}
+             {% endblock %}
                 <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px"></a>
             </h1>
      <span style="float: right; font-family: IRAN-web" id="welcome-btn" class="col-xs-4 col-md-2">
@@ -161,7 +164,7 @@
              {% else %}
         <div  id="sidebar1" class=" pull-right w3-navbar w3-hide-medium w3-hide-large w3-right">
     {% endifequal %}
-            <a  id="open" href="javascript:void(0);" onclick="myFunction1()">menu</a>
+            <a  id="open" href="javascript:void(0);" onclick="myFunction1()">{% trans "menu"%}</a>
         </div>
     </div>
     {% ifequal LANGUAGE_CODE 'en-gb' %}
@@ -213,6 +216,15 @@
                 <i class="fa fa-history sidebar-ent-items" aria-hidden="true"></i>{% trans " Transaction History" %}
                 </a>
             </li>
+                     <li class="sidebar-entry">
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a class="sidebar-links" href="/pay_user/">
+                {% else %}
+                    <a class="sidebar-links" href="/fa-ir/pay_user/">
+                {% endifequal %}
+                <i class="fa fa-cc-discover sidebar-ent-items" aria-hidden="true"></i>{% trans " Payment" %}
+                </a>
+             </li>
             <li class="sidebar-entry" >
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/bank-accounts">
@@ -249,14 +261,20 @@
     <div id="closeall">
         <nav id="demoo" class="w3-hide w3-hide-large w3-hide-medium w3-collapse">
           {% ifequal LANGUAGE_CODE 'en-gb' %}
-            <div id="sidebar" class="pull-left w3-table w3-animate-left">
+            <div id="sidebar" class="pull-left w3-table w3-animate-left" style="width: 30%">
            {% else %}
-           <div id="sidebar" class="pull-right w3-table w3-animate-right">
+           <div id="sidebar" class="pull-right w3-table w3-animate-right" style="width: 30%">
            {% endifequal %}
                 <div  id="sidebar-content">
                     <ul id="sidebar-entries">
-                        <li class=" pull-left w3-hide-medium w3-hide-large w3-right">
-                            <a  class="w3-closenav" id="close" href="javascript:void(0);" onclick="myFunction1()">Close &times;</a>
+                        <li class="  w3-hide-medium w3-hide-large">
+                          {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a  class="w3-closenav" id="close"  style="float:left" href="javascript:void(0);" onclick="myFunction1()">
+                          {% else %}
+                            <a  class=" pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="myFunction1()">
+                           {% endifequal %}
+                           {% trans "Close" %}
+                            </a>
                         </li>
                         <br>
                         <br>
@@ -302,6 +320,15 @@
                             {% trans " Transaction" %}
                             </a>
                         </li>
+                        <li class="sidebar-entry">
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a class="sidebar-links" href="/pay_user/">
+                {% else %}
+                    <a class="sidebar-links" href="/fa-ir/pay_user/">
+                {% endifequal %}
+               {% trans "Payment" %}
+                </a>
+                    </li>
                         <li class="sidebar-entry" >
                             {% ifequal LANGUAGE_CODE 'en-gb' %}
                                 <a class="sidebar-links" href="/bank-accounts">
@@ -360,19 +387,25 @@
             {% ifequal LANGUAGE_CODE 'en-gb' %}
             <ul class="w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #c9dedf">
               {% else %}
-                <ul class="w3-navbar pull-left w3-animate-left" style="width:30% ;float: right ;  background-color: #c9dedf">
+                <ul class="w3-navbar pull-left w3-animate-left" style="width:30% ; background-color: #c9dedf">
                  {% endifequal %}
                 <li  id="name"> {{ user.first_name }} {{ user.last_name }}</li>
                 <li  id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
                 <li  id="interpay-id">{% trans "InterPay ID" %}: </li>
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                 <li  id="logout">
                     <a    style="float: left" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
                 </li>
+                 {% else %}
+                 <li  id="logout">
+                    <a style="float: none" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
+                </li>
+              {% endifequal %}
             </ul>
         </div>
 
     <section  id="main-content-section">
-           <div id="cont-wrapper" class="w3-container" >
+           <div id="cont-wrapper">
                <div id="cont-header">
                    {% block cont-header %}
                    {% endblock %}

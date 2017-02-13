@@ -107,12 +107,7 @@
             var disable = false;
             $('input[type = text]').each(function () {
                 if ($(this).val() == "") {
-                    disable = false;
-                }
-            });
-             $('input[type = file]').each(function () {
-                if ($(this).val() == "") {
-                    disable = false;
+                    disable = true;
                 }
             });
             $('#continue-btn').prop('disabled', disable);
@@ -189,6 +184,13 @@
             closeOnConfirm: false,
             showLoaderOnConfirm: true,
         }, function () {
+            $.ajax({
+
+                error: function (xhr, ajaxOptions, thrownError) {
+              swal("Error deleting!", "Please try again", "error");
+               }
+
+                });
         });
     }
 
@@ -196,29 +198,24 @@
     {% endblock %}
 </script>
 <header>
-    <div class="top-bar">
-        <div class="container" style="color: white;">
-            <div id="logo-bar">
-                <img src="{% static 'interpay/images/logo.png' %}" style="width: 10%">
-                <!--The translation part is commented out until it's bug being fixed -->
-                <div id="translation-link">
-                    {% ifequal LANGUAGE_CODE 'en-gb' %}
-                        <a id="to-fa-link" href='/fa-ir{{ request.path }}'><img src="{% static 'interpay/images/irflag.png' %}"
-                                                                                style="width: 50%;cursor: pointer"></a>
-                        {% else %}
-                        <a id="to-en-link" class="trans-link" onclick="to_en()"><img src="{% static 'interpay/images/ukflag.png' %}"
-                                                                                     style="width: 50%;cursor: pointer"></a>
-                    {% endifequal %}
-                </div>
-            </div>
-            {#            <div class="row">#}
-            {#                <div id="number" class="col-sm-6 col-xs-4"></div>#}
-            {#                <div id="social" class="col-sm-6 col-xs-8"></div>#}
-            {#            </div>#}
-
-        </div>
-    </div>
-    <nav></nav>
+     <header>
+        <ul class="topnav" id="myTopnav">
+            <h1  style="margin-top: 0% ; margin-bottom: 3%"> <a>
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
+                    <p class="lang"> Fa/Eng</p>
+                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
+                    </a>
+                {% else %}
+                    <a id="to-en-link" class="trans-link" onclick="to_en()">
+                        <p class="lang" style="cursor: pointer"> Eng/Fa </p>
+                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                    </a>
+                {% endifequal %}
+                <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px"></a>
+            </h1>
+        </ul>
+    </header>
 
 </header>
 <section>
@@ -319,8 +316,8 @@
                             {{ profile_form.as_p }}
 {#                            <div class="g-recaptcha" data-sitekey="6LfHKRMUAAAAABhBgggT5PR293yWX8jSWamrxJCl"></div>#}
                             <div id="submit-btn-wrap" style="text-align: center">
-                                <input id="continue-btn" class="btn btn-success"  type="submit" name="continue"
-                                  {#       onclick="go()"#}
+                                <input id="continue-btn" class="btn btn-success"  type="button" name="continue"
+                                     onclick="go()"
                                        value="{% trans 'Continue >>' %}"/>
                             </div>
                             <div id="submit-btn-wrap" style="text-align: center; display:none;">

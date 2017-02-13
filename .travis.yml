@@ -18,7 +18,7 @@ python:
 
 env:
 
-  - DJANGO=1.10.3 DB=postgres
+#  - DJANGO=1.10.3 DB=postgres
 
   - DJANGO=1.10.3 DB=mysql
 
