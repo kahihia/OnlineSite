@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'session_security',
     'manager',
-    'captcha'
+    'captcha',
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 SITE_ID=1
@@ -263,3 +265,12 @@ EMAIL_HOST = 'auth.smtp.1and1.co.uk'
 EMAIL_HOST_USER = 'info@rizpal.com'
 EMAIL_HOST_PASSWORD = 'Arman_Naeimian'
 EMAIL_PORT = 587
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
