@@ -60,12 +60,14 @@
         }
     }
 
-.form-style-9{
-    max-width: 80%;
+
+
+ .form-style-9{
+    max-width: 40%;
     height: 20%;
     background: #FAFAFA;
+    margin-top: 5%;
     padding: 30px;
-    margin: 50px auto;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
     border-radius: 10px;
     border: 6px solid #305A72;

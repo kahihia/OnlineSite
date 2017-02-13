@@ -33,6 +33,25 @@
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
         <script src='https://www.google.com/recaptcha/api.js'></script>
         <script>
+       $(document).ready(function(){
+        var inf= $('#message').text();
+       if( $('#message').text().length!=42)
+       {
+             swal({
+
+            title: '<div>Successfully Created</div> <div style="color:orange; font-size: small"> Click on  your account Id if you want to go to your account </div><u></u> <a href="/wallets/{{ account_id }}">{{account_id}}</a> ',
+            type: 'info',
+            html: ' ' + 'and other HTML tags',
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            cancelButtonText: "Back to current wallet",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+            showConfirmButton: false,
+              });
+       }
+        });
        var unsaved = false;
        $(":input").change(function(){ //trigers change in all input fields including text type
        unsaved = false;
