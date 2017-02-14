@@ -98,7 +98,7 @@ class Rule(models.Model):
     credit_percent = models.FloatField(default=98)
 
     @staticmethod
-    def on_date(_date, _code='USD'):
+    def on_date_s(_date, _code='USD'):
         r = None
         try:
             # print _date, _code
@@ -184,8 +184,9 @@ class BankAccount(models.Model):
 
             # result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             # result += sum(x.amount for x in self.deposit_set.all())
-            result += sum(x.amount for x in self.deposit_set.filter(status=Deposit.COMPLETED))
-            result += sum(x.commission for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
+            dep_set = self.deposit_set.filter(status=Deposit.COMPLETED)
+            result += sum(x.amount for x in dep_set)
+            # result += sum(x.commission for x in dep_set)  No need to sum comission as amount = total - comission
             result += sum(x.amount for x in self.income_transfers.all())    #on_date_in(current_date, self))
 
             current_date += timedelta(days=1)
@@ -195,7 +196,16 @@ class BankAccount(models.Model):
         # result *= 1 - (rule.deposit_charge_percent * 0.01)
         return result
 
-   # @property
+    @property
+    def commission(self):
+            result = 0
+            dep_set = self.deposit_set.filter(status=Deposit.COMPLETED)
+            result += sum(x.commission for x in dep_set)
+            return result
+
+
+
+            # @property
     # def debt(self):
     #     assert self.method == self.CREDIT
     #     today = time.timezone.now()
@@ -256,6 +266,9 @@ class Deposit(models.Model):
     status = models.SmallIntegerField(default=COMPLETED)
     objects = OperationManager()
 
+    def total_amount(self):
+        return self.amount + self.commission
+
     def calculate_comission(self):
         #print datetime.datetime.strptime(self.date, 'Y-%m-%d').date()
         #print type(self.date)
@@ -264,7 +277,7 @@ class Deposit(models.Model):
         if type(self.date) is str:
             log.debug("Deposit object has a string date")
             thedate = datetime.strptime(self.date.__str__()[:11], '%Y-%m-%d').date()
-        rule = Rule.on_date(thedate, self.cur_code)
+        rule = Rule.on_date_s(thedate, self.cur_code)
         #print 'deposit comissiom,', rule.deposit_charge_percent
         # TODO check if comission less than 0.01
         self.commission = (rule.deposit_charge_percent * 0.01) * self.amount

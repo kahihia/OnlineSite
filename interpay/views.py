@@ -488,7 +488,7 @@ def zarinpal_callback_handler(request, amount):
             deposit = models.Deposit(account=new_account, amount=float(a['amount']),
                                      banker=new_banker,
                                      date=(datetime.datetime.strptime(a['date'].__str__()[:10], '%Y-%m-%d')),
-                                     cur_code=a['cur_code'], status=True,
+                                     cur_code=a['cur_code'],
                                      tracking_code=result2.RefID)
             # try:
             deposit.calculate_comission()  # automatically saves after calculating comission
@@ -672,8 +672,9 @@ def actual_convert(request):
                                           cur_code=currency,
                                           account_id=make_id())
     destination_account.save()
-    new_deposit = Deposit(account=destination_account, amount=converted_amount, banker=user_profile,
+    new_deposit = Deposit(account=destination_account, amount=float(converted_amount), banker=user_profile,
                           date=datetime.datetime.now(), cur_code=currency)
+    new_deposit.calculate_comission()
     new_deposit.save()
     conversion.deposit = new_deposit
     conversion.save()

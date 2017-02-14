@@ -80,7 +80,7 @@ class ConversionTestCase(TestCase):
         self.assertEqual(post_response.status_code, 200)
         accounts = BankAccount.objects.filter(owner__user__username="arman")
         self.assertEqual(accounts[0].balance, 900)
-        self.assertEqual(accounts[1].balance, 3900000)
+        self.assertEqual(accounts[1].balance, 3900000- accounts[1].commission)
 
 
 class LoginTestCase(TestCase):
@@ -174,8 +174,8 @@ class CallbackTestCase(TestCase):
         c.login(username='arman', password='1731')
         response = c.get('/fa-ir/top-up/')
         self.assertEqual(response.status_code, 200)
-        print "***************"
-        print response
+        # print "***************"
+        # print response
         post_response = c.get('/callback_handler/',
                                {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
                                 'mobile': '10'})
