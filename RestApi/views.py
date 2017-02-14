@@ -1,4 +1,4 @@
-from interpay.models import UserProfile, BankAccount, Deposit, MerchantOrder
+from interpay.models import UserProfile, BankAccount, Deposit
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import api_view
