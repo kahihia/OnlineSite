@@ -141,7 +141,7 @@
               <div id="message">
                           <a href="/wallets/{{ account_id }}">{{ message }}</a>
               </div>
-            <form method="post" action="../actual_convert/" id="sampleform" class="form-style-9">
+            <form method="post" action="/wallets/actual_convert/" id="sampleform" class="form-style-9">
                 {% csrf_token %}
 
                 <div  class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
@@ -151,7 +151,7 @@
                             {{ error }}
                         </div>
                         <label>{% trans 'Amount' %}: </label>
-                        <input id="amount" name="amount" type="text" placeholder="Amount"><br>
+                        <input id="amount" name="amount" type="text" placeholder={{ recommended }}><br>
                         <label>{% trans 'To Currency' %}: </label>
                         <select name="currency" id="currency">
                             <option>Select Currency...</option>

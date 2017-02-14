@@ -1,7 +1,10 @@
 /**
  * Created by Arman on 12/27/2016.
  //  */
+function goto()
+{
 
+}
 function convert(amount, index, from_code) {
     var currency_select = document.getElementById("currency_code" + index);
     var converted = document.getElementById("converted" + index);
@@ -22,4 +25,6 @@ function convert(amount, index, from_code) {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
+    var form =document.getElementById("convertButton"+ index);
+    form.style.display = "block";
 }
