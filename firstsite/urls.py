@@ -18,6 +18,11 @@ from django.contrib import admin
 from interpay import views
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic.base import TemplateView
+
+
+from rest_framework import routers
+from RestApi import views as restViews
+
 admin.autodiscover()
 urlpatterns = [
     url('^admin/', admin.site.urls),
@@ -27,6 +32,8 @@ urlpatterns = [
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'session_security/', include('session_security.urls')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^rest_framework/', include('RestApi.urls')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^pay_user/', views.pay_user),
     # url(r'^$', TemplateView.as_view(template_name="main_page.html")),
     # url(r'^home/', TemplateView.as_view(template_name="manager-home.html")),

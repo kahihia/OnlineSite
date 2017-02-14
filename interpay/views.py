@@ -48,7 +48,7 @@ def main_page(request):
 
 
 def test():
-    user = User.objects.get(username="arman71")
+    user = User.objects.get(username="arman")
     up = UserProfile.objects.get(user=user)
     ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
     ba.save()
@@ -639,14 +639,21 @@ def actual_convert(request):
     currency = request.POST.get('currency')
     account_id = request.POST.get('account_id')
     try:
-        amount = int(amount)
+        amount = float(amount)
     except ValueError:
         return render(request, "interpay/wallet.html",
                       {
                           'error': 'Please enter a valid number.',
                           'account': BankAccount.objects.get(account_id=account_id),
                       })
+
     cur_account = BankAccount.objects.get(account_id=account_id)
+    if cur_account.balance < amount:
+        return render(request, "interpay/wallet.html",
+                      {
+                          'error': 'Your balance is not sufficient.',
+                          'account': BankAccount.objects.get(account_id=account_id),
+                      })
     user_profile = models.UserProfile.objects.get(user=request.user)
     conversion = CurrencyConversion()
 

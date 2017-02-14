@@ -206,7 +206,7 @@ class CreateBankAccountForm(forms.ModelForm):
         model = BankAccount
         exclude = ['spectators', 'when_opened', 'owner', 'method']
         widgets = {
-            'name': forms.Select(choices=BANK_CHOICES,
+            'name': forms.Select(choices=sorted(BANK_CHOICES),
                                  attrs={'class': 'create_b_acc_form_field', 'id': 'bank_name', }),
             # TODO : these currency choices have to be customized and checked whether the related bank supports them.
             'cur_code': forms.Select(choices=CURRENCY_CHOICES,

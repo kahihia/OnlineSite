@@ -182,7 +182,8 @@ class BankAccount(models.Model):
             result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code, self))
             result -= sum(x.amount for x in self.outcome_transfers.all() )#.on_date_out(current_date, self))
 
-            result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
+            # result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
+            result += sum(x.amount for x in self.deposit_set.all())
             result += sum(x.commission for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             result += sum(x.amount for x in self.income_transfers.all())    #on_date_in(current_date, self))
 
@@ -239,6 +240,9 @@ class MoneyTransfer(models.Model):
 
 
 class Deposit(models.Model):
+    UNCOMPLETED = 1
+    PENDING = 2
+    COMPLETED = 3
     # Receiving money; Charging account.
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
     amount = models.FloatField(default=0)
@@ -248,7 +252,7 @@ class Deposit(models.Model):
     tracking_code = models.IntegerField(default='0')
 
     commission = models.FloatField(default=0)
-    status = models.BooleanField(default=False)
+    status = models.SmallIntegerField(default=UNCOMPLETED)
     objects = OperationManager()
 
     def calculate_comission(self):
