@@ -50,6 +50,7 @@ urlpatterns = [
     url(r'^wallets/$', views.wallets),
     url(r'^wallets/convert_currency/$', views.convert_currency),
     url(r'^wallets/(?P<wallet_id>\d+)/$', views.wallet),
+    url(r'^wallets/(?P<wallet_id>\d+)/recommended/$', views.wallet_recommended),
     url(r'^wallets/actual_convert/$', views.actual_convert),
     # url(r'^wallets/rials/$', views.convert_rial),
     # url(r'^wallets/euros/$', views.convert_euro),

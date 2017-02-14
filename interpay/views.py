@@ -624,6 +624,14 @@ def wallet(request, wallet_id):
     }
     return render(request, "interpay/wallet.html", context)
 
+@login_required()
+def wallet_recommended(request, wallet_id):
+    context = {
+        'account': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT),
+        'recommended': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT).balance,
+    }
+    return render(request, "interpay/wallet.html", context)
+
 
 @login_required()
 def actual_convert(request):
