@@ -183,7 +183,7 @@ class BankAccount(models.Model):
             result -= sum(x.amount for x in self.outcome_transfers.all() )#.on_date_out(current_date, self))
 
             # result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
-            result += sum(x.amount for x in self.deposit_set.all())
+            # result += sum(x.amount for x in self.deposit_set.all())
             result += sum(x.amount for x in self.deposit_set.filter(status=Deposit.COMPLETED))
             result += sum(x.commission for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             result += sum(x.amount for x in self.income_transfers.all())    #on_date_in(current_date, self))
