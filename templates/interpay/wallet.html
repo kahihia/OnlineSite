@@ -93,8 +93,6 @@
     </div>
 {% endblock %}
 {% block cont-body %}
-    <div id="" class="row">
-        <div id="tab-wrapper" style="margin-right: 0 !important;margin-left: 0 !important" class="row tab-wrapper">
 
             <table id="wal-tab">
                 <thead>
@@ -170,7 +168,63 @@
          <div style="display: none; width: 80%; height: 30%" class="alert alert-success" id='success'></div>
         </div>
         <hr>
-    </div>
+
+
+        <div class="table-responsive">
+                 <table id="wal-tab" class="table">
+                    <thead>
+                    <tr class="table-header-row">
+                        <th class="table-header-cell">
+                            {% trans 'Index' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Recharge ID' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Date' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Wallet Code' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Currency' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Card Type' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Amount' %}
+                        </th>
+                        <th class="table-header-cell">
+                            {% trans 'Status' %}
+                        </th>
+                        <th class="table-header-cell"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for d in deposit_set %}
+                        <tr>
+                            <td class="table-cell">{{ forloop.counter }}</td>
+                            <td class="table-cell">{{ d.id }}</td>
+                            <td class="table-cell">{{ d.date }}</td>
+                            <td class="table-cell">{{ d.account.account_id }}</td>
+                            <td class="table-cell">{{ d.cur_code }}</td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell">{{ d.amount }}</td>
+                            <td class="table-cell">
+                                {% ifequal d.status True %}
+                                Successful
+                                {% else %}
+                                 Failed
+                                {% endifequal %}
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                </div>
 {% endblock %}
 
 </body>

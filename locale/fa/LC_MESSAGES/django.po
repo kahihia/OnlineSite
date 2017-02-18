@@ -34,7 +34,7 @@ msgid "Wallets"
 msgstr " کیف پول من "
 
 #: .\interpay\templates\base.html:129
-msgid " Transaction History"
+msgid "  History"
 msgstr " پیشینه تراکنش "
 
 #: .\interpay\templates\base.html:302

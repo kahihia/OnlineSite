@@ -113,7 +113,7 @@ urlpatterns += i18n_patterns(
     # url(r'^retrieve_pass/(?P<token>\d+)/$', views.reset_password, name='reset_pass'),
     # url(r'^retrieve_pass/test/', views.retrieve_pass_test, name='retrieve_pass_test'),
     # url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
-
+    url(r'^pay_user/', views.pay_user),
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
     url(r'^$', views.main_page),
