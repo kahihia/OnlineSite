@@ -171,3 +171,7 @@ msgstr ""
 #: interpay/templates/wallets.html:69
 msgid "Wallet Description"
 msgstr ""
+
+#: interpay/templates/base.html:329
+msgid "Payment"
+msgstr "پرداخت"

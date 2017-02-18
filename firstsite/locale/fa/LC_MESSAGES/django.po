@@ -326,22 +326,22 @@ msgstr "کل موجودی حساب"
 msgid "Pay to user"
 msgstr "پرداخت به مشتری"
 
-#: .\interpay\templates\pay_user.html:44
+#: .\interpay\templates\pay_user.html:72
 msgid "currency"
 msgstr "واحد پول"
 
 #: .\interpay\templates\pay_user.html:44
 msgid "Destination Email:"
-msgstr ":میل مقصد"
+msgstr "میل مقصد"
 
-#: .\interpay\templates\pay_user.html:44
+#: .\interpay\templates\pay_user.html:104
 msgid "Destination Mobile Number:"
 msgstr "شماره موبایل مقصد"
 
-#: .\interpay\templates\pay_user.html:44
+#: .\interpay\templates\pay_user.html:116
 msgid "Comment:"
 msgstr "نظرات"
 
-#: .\interpay\templates\base.html:44
+#: .\interpay\templates\base.html:329
 msgid "Payment"
 msgstr "پرداخت"
