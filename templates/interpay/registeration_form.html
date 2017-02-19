@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         InterPay Iran
     </title>
@@ -17,7 +18,9 @@
     <link rel="stylesheet" href="{% static 'interpay/css/registeration_form.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+
     {% block CSS %}
+           <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
     {% endblock %}
 
     <!-- JS -->
@@ -105,7 +108,7 @@
     $('#continue-btn').attr('disabled', true);
          $('input').keyup (function () {
             var disable = false;
-            $('input[type = text]').each(function () {
+            $(":text, :password").each(function () {
                 if ($(this).val() == "") {
                     disable = true;
                 }
@@ -218,13 +221,15 @@
     </header>
 
 </header>
+
+
 <section>
     <div class="container">
         {% if registered %}
         {% if activated %}
         <div class="row">
             <div class="col-xs-12" id="reg-wrap-wrap-div">
-                <div class="form-wrapper" style="text-align: center">
+                <div class="form-wrapper" style="text-align: center; width:50%">
                     <strong>{{ thanks_msg }}</strong>
                     <hr>
                     <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>
@@ -339,7 +344,9 @@
             </div>
             {% endif %}
         </div>
+    </div>
 </section>
+
 {#TODO this part should be fixed ASAP#}
 {#<footer id="footer" class="footer">#}
 {#    <div id="footer-content">All rights reserved.</div>#}

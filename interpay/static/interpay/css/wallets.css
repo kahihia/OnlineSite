@@ -63,11 +63,9 @@
 
 
  .form-style-9{
-    max-width: 40%;
-    height: 20%;
     background: #FAFAFA;
     margin-top: 5%;
-    padding: 30px;
+    padding:3%;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
     border-radius: 10px;
     border: 6px solid #305A72;
