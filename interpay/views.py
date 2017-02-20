@@ -425,7 +425,7 @@ def recharge_account(request, **message):
             code = zarinpal['status']
             print code
             if code == 100:
-                log.debug("redirecting to ", zarinpal['ret'])
+                log.debug("redirecting to "+ zarinpal['ret'])
                 return redirect(zarinpal['ret'])
     recharge_form = RechargeAccountForm()
     try:
@@ -618,11 +618,28 @@ def wallets(request):
 
 
 @login_required()
-def wallet(request, wallet_id):
-    context = {
-        'account': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT),
-        'deposit_set': models.Deposit.objects.filter(banker=wallet_id),
-    }
+def wallet(request, wallet_id, recom=None):
+
+    # print "wallet function"
+    ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
+    # print recom
+
+    if request.method=="GET":
+        recom = request.GET.get("recom")
+    print recom
+    if recom ==None:
+        context = {
+            'account': ba,
+            'recommended': 0,
+            'deposit_set': models.Deposit.objects.filter(account=ba),
+        }
+    else:
+        context = {
+            'account': ba,
+            'recommended': ba.balance,
+            'deposit_set': models.Deposit.objects.filter(account=ba),
+        }
+
     return render(request, "interpay/wallet.html", context)
 
 @login_required()
@@ -637,55 +654,61 @@ def wallet_recommended(request, wallet_id):
 
 @login_required()
 def actual_convert(request):
-    amount = request.POST.get('amount')
-    currency = request.POST.get('currency')
-    account_id = request.POST.get('account_id')
-    try:
-        amount = float(amount)
-    except ValueError:
-        return render(request, "interpay/wallet.html",
-                      {
-                          'error': 'Please enter a valid number.',
-                          'account': BankAccount.objects.get(account_id=account_id),
-                      })
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        currency = request.POST.get('currency')
+        account_id = request.POST.get('account_id')
+        try:
+            amount = float(amount)
+        except ValueError:
+            return render(request, "interpay/wallet.html",
+                          {
+                              'error': 'Please enter a valid number.',
+                              'account': BankAccount.objects.get(account_id=account_id),
+                          })
 
-    cur_account = BankAccount.objects.get(account_id=account_id)
-    if cur_account.balance < amount:
-        return render(request, "interpay/wallet.html",
-                      {
-                          'error': 'Your balance is not sufficient.',
-                          'account': BankAccount.objects.get(account_id=account_id),
-                      })
-    user_profile = models.UserProfile.objects.get(user=request.user)
-    conversion = CurrencyConversion()
+        cur_account = BankAccount.objects.get(account_id=account_id)
+        if cur_account.balance < amount:
+            return render(request, "interpay/wallet.html",
+                          {
+                              'error': 'Your balance is not sufficient.',
+                              'account': BankAccount.objects.get(account_id=account_id),
+                          })
+        user_profile = models.UserProfile.objects.get(user=request.user)
+        conversion = CurrencyConversion()
 
-    new_withdraw = Withdraw(account=cur_account, amount=amount, banker=user_profile, date=datetime.datetime.now(),
-                            cur_code=cur_account.cur_code)
-    new_withdraw.save()
-    conversion.withdraw = new_withdraw
-    converted_amount = convert(amount, cur_account.cur_code, currency)
-    destination_account = ""
-    for temp_account in BankAccount.objects.filter(owner=user_profile):
-        if temp_account.cur_code == currency:
-            destination_account = temp_account
-            break
-    if not destination_account:
-        destination_account = BankAccount(name='wall_account', owner=user_profile, method=BankAccount.DEBIT,
-                                          cur_code=currency,
-                                          account_id=make_id())
-    destination_account.save()
-    new_deposit = Deposit(account=destination_account, amount=float(converted_amount), banker=user_profile,
-                          date=datetime.datetime.now(), cur_code=currency)
-    new_deposit.calculate_comission()
-    new_deposit.save()
-    conversion.deposit = new_deposit
-    conversion.save()
-    context = {
-        'account_id': destination_account.account_id.__str__(),
-        'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
-        'account': BankAccount.objects.get(account_id=account_id)
-    }
-    return render(request, "interpay/wallet.html", context)
+        new_withdraw = Withdraw(account=cur_account, amount=amount, banker=user_profile, date=datetime.datetime.now(),
+                                cur_code=cur_account.cur_code)
+        new_withdraw.save()
+        conversion.withdraw = new_withdraw
+        converted_amount = convert(amount, cur_account.cur_code, currency)
+        destination_account = ""
+        for temp_account in BankAccount.objects.filter(owner=user_profile):
+            if temp_account.cur_code == currency:
+                destination_account = temp_account
+                break
+        if not destination_account:
+            destination_account = BankAccount(name='wall_account', owner=user_profile, method=BankAccount.DEBIT,
+                                              cur_code=currency,
+                                              account_id=make_id())
+        destination_account.save()
+        new_deposit = Deposit(account=destination_account, amount=float(converted_amount), banker=user_profile,
+                              date=datetime.datetime.now(), cur_code=currency)
+        new_deposit.calculate_comission()
+        new_deposit.save()
+        conversion.deposit = new_deposit
+        conversion.save()
+        context = {
+            'account_id': destination_account.account_id.__str__(),
+            'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
+            'account': BankAccount.objects.get(account_id=account_id)
+        }
+        return render(request, "interpay/wallet.html", context)
+    else:
+        return render(request, "interpay/wallet.html",
+                          {
+                              'error': 'Invalid GET Request. Contact Admin',
+                          })
 
 
 @login_required()

@@ -119,8 +119,9 @@
                         </td>
                         <td class="table-cell">
                             <div id="converted{{ forloop.counter }}"></div>
-                            <form id="convertButton{{ forloop.counter }}" style="display: none" method="post" action="/wallets/{{ account.account_id }}/recommended/">
-                             {% csrf_token %}
+                            <form id="convertButton{{ forloop.counter }}" style="display: none" method="get" action="/wallets/{{ account.account_id }}/">
+                                <input type="hidden" name="recom" value="yes"/>
+                             {#% csrf_token %#}
                               <button  type="submit" onclick="goto()">Convert</button>
                             </form>
                         </td>
