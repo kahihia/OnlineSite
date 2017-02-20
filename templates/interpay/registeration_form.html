@@ -120,6 +120,7 @@
     function to_en() {
         var en_url = window.location.href.replace("/fa-ir/", "/");
         window.location.assign(en_url);
+        //window.location= "/en-gb";
     }
 
     function id_card_submit_btn() {
@@ -203,7 +204,7 @@
 <header>
      <header>
         <ul class="topnav" id="myTopnav">
-            <h1  style="margin-top: 0% ; margin-bottom: 3%"> <a>
+            <h1  style="margin-top: 0% ; margin-bottom: 3%">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
@@ -215,7 +216,7 @@
                         <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
                     </a>
                 {% endifequal %}
-                <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px"></a>
+                <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px">
             </h1>
         </ul>
     </header>
