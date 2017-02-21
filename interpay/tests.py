@@ -4,6 +4,10 @@ from currencies.models import Currency
 import unittest
 import datetime
 from django.conf import settings
+from rest_framework.test import force_authenticate, APIRequestFactory
+from django.test.client import encode_multipart, RequestFactory
+from django.core.urlresolvers import reverse, resolve
+import json
 
 
 # from interpay.models import CurrencyConversion
@@ -100,8 +104,47 @@ class LoginTestCase(TestCase):
         self.assertRedirects(response, '/home/')
 
 
+class APITestCase(TestCase):
+    def setUp(self):
+        print ("test started")
+        settings.DEBUG = True
+        user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+        up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
+                                        email='a@b.com', mobile_number='09102118797')
+
+    def test_cash_out(self):
+        factory = APIRequestFactory()
+        content = {'payeeEmail': 'a@b.com', 'orderAmount': '150', 'MerOrderRef': '500',
+                   'orderCurrencyCode': 'EUR', 'payeeMobile': '09102118797',
+                   'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
+        url = reverse('cash_out')
+        request = factory.post('/rest_framework/cash_out_order/', content, format='json')
+        user = User.objects.get(username='arman')
+        force_authenticate(request, user=user)
+        view = resolve(url).func
+        response = view(request)
+        data = json.loads(response.content)
+        self.assertEqual(data['status'], 'pending')
+        self.assertEqual(data['orderAmount'], '150')
+
+    def test_not_existing_user(self):
+        factory = APIRequestFactory()
+        content = {'payeeEmail': 'a@c.com', 'orderAmount': '150', 'MerOrderRef': '500',
+                   'orderCurrencyCode': 'EUR', 'payeeMobile': '09102118778',
+                   'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
+        url = reverse('cash_out')
+        request = factory.post('/rest_framework/cash_out_order/', content, format='json')
+        user = User.objects.get(username='arman')
+        force_authenticate(request, user=user)
+        view = resolve(url).func
+        response = view(request)
+        data = json.loads(response.content)
+        self.assertEqual(data['statusCode'], 3)
+        self.assertEqual(data['statusMessage'], 'No user with specified information.')
+
+
 class ForgetPassword(TestCase):
-    def test_fotgetpass(self):
+    def test_forgetpass(self):
         response = self.client.get("/login/")
         self.assertContains(response, 'Forgot password or account disabled')
 
@@ -177,9 +220,6 @@ class CallbackTestCase(TestCase):
         print "***************"
         print response
         post_response = c.get('/callback_handler/',
-                               {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
-                                'mobile': '10'})
+                              {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
+                               'mobile': '10'})
         self.assertEqual(post_response.status_code, 200)
-
-
-
