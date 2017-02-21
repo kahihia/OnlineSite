@@ -20,7 +20,7 @@ connection = None
 
 def connect_to_redis():
     global connection
-    connection = redis.StrictRedis(host='localhost', port=6379, db=0, password='interpass')
+    connection = redis.StrictRedis(host='localhost', port=6379, db=0)
     print connection.keys('*')
     print "connect to redis called"
 
