@@ -21,7 +21,8 @@ from django.contrib.auth.models import User
 from interpay.models import UserProfile, MoneyTransfer
 from django.core.mail import send_mail
 from interpay.Email import Email
-from django.conf import settings
+# from django.conf import settings
+from firstsite import settings
 import json
 import time
 import random
@@ -94,6 +95,7 @@ def register(request):
             request.session['mobile_no'] = mobile_no
             request.session['username'] = user_form.cleaned_data['username']
             request.session['password'] = user_form.cleaned_data['password']
+            # note that request.session['user_id'] variable refers to userProfile id
             request.session['user_id'] = models.UserProfile.objects.get(
                 user__username=user_form.cleaned_data['username']).id
             registered = True
@@ -137,8 +139,8 @@ def send_sms(request, mobile_no):
     # request.session['code'] = code #not needed anymore; this is checked from VerificationCodes table in database
     # redis_ds = ds.AuthCodeDataStructure()
     # redis_ds.set_code(mobile_no, code)
-    # p = api.ParsGreenSmsServiceClient()
-    # api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
+    p = api.ParsGreenSmsServiceClient()
+    api.ParsGreenSmsServiceClient.sendSms(p, code, mobile_no, request.session['user_id'])
     print("code:", code)
     user_profile = ''
     while 1:
@@ -161,10 +163,14 @@ def send_sms(request, mobile_no):
 
 @csrf_exempt
 def verify_user(request):
+    global new_connection
+    new_connection = settings.connect_to_redis()
     request.session['try_counter'] += 1
     print request.session['try_counter']
     if request.session['try_counter'] > 3:
         html = '<div><p>Oops! you tried for 3 times.<br>Please <a href="/register/">Register again.</a></p></div>'
+        new_connection.delete(request.session['user_id'])
+        print "user code with id = ", request.session['user_id'], " deleted"
         result = {'res': -1, 'html': html}
         return HttpResponse(json.dumps(result))
     if request.is_ajax():
@@ -173,6 +179,8 @@ def verify_user(request):
         user_prof = models.UserProfile.objects.get(id=request.session['user_id'])
         sent_code = models.VerificationCodes.objects.get(user=user_prof).user_code
         print entered_code, sent_code
+        # TODO: check if the expire time of the sent code has passed; so the condition
+        # is not satisfied even if the entered code is correct
         if int(entered_code) == sent_code:
             user_profile = models.UserProfile.objects.get(id=request.session['user_id'])
             user_profile.is_active = True
@@ -385,16 +393,22 @@ def make_id():
     return id
 
 
-new_connection = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
+# new_connection = redis.StrictRedis(host='localhost', port=6379, db=0,password='interpass')
+new_connection = settings.connection
 
 
 @login_required()
 def recharge_account(request, **message):
+    global new_connection
+    new_connection = settings.connect_to_redis()
     code = 0
+    msg_color = 0
     if message:
         emessage = message['message']
+        msg_color = 1
     else:
         emessage = ''
+
     recharge_form = RechargeAccountForm(data=request.POST)
     if request.method == 'POST':
         if recharge_form.is_valid():
@@ -420,7 +434,8 @@ def recharge_account(request, **message):
 
             log.debug("new BankAccount object created and saved")
             zarinpal = zarinpal_payment_gate(request, amnt)
-            new_connection.set(zarinpal['Authority'], data)
+            new_connection.set(zarinpal['Authority'], data)  # TODO: set proper TTL
+            print data, "cached in redis"
             log.debug("Connected to redis")
             code = zarinpal['status']
             print code
@@ -441,8 +456,10 @@ def recharge_account(request, **message):
     else:
         if code != 0:
             emessage = "Unknown ZarinPal Error"
+    print msg_color, "msg_color"
     return render(request, "interpay/top_up.html",
-                  {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage})
+                  {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage,
+                   'msg_color': msg_color})
 
 
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
@@ -527,7 +544,6 @@ def bank_accounts(request):
     mymessage = ''
     bank_account_form = CreateBankAccountForm(data=request.POST)
     if request.method == 'POST':
-        #        print bank_account_form.errors
         if bank_account_form.is_valid():
             cur = bank_account_form.cleaned_data['cur_code']
             bank_name = bank_account_form.cleaned_data['name']
@@ -588,7 +604,7 @@ def bank_accounts(request):
     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW)\
         .order_by('name')
     return render(request, "interpay/bank_accounts.html",
-                  {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form, 'emessage': mymessage})
+                  {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form, 'emessage': mymessage })
 
 
 @login_required

@@ -10,6 +10,14 @@
 <head>
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/top_up.css' %}">
+        <style>
+            {% ifequal msg_color 0 %}
+                #recharge-form-message-div {
+                    background-color: pink;
+                    border-radius: 5px;
+                }
+            {% endifequal %}
+        </style>
     {% endblock %}
     {% block JS %}
     {% endblock %}
