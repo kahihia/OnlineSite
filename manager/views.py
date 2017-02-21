@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import logout, login, authenticate
 from interpay.models import WithdrawalRequest, MoneyTransfer
+import requests
 
 
 def home(request):
@@ -8,7 +9,19 @@ def home(request):
         return render(request, 'manager/manager-home.html')
     elif request.method == 'GET':
         return render(request, 'manager/manager-login.html')
-    else:
+    elif not request.user.is_authenticated or not request.user.is_superuser:
+        return render(request, 'manager/manager-login.html', {
+            'error': 'Permission Denied.'
+        })
+    elif request.method == 'POST':
+        gcapcha = request.POST['g-recaptcha-response']
+        # post  https://www.google.com/recaptcha/api/siteverify
+        post_data = {'secret': '6LfHKRMUAAAAAJG-cEV-SPcophf8jyXvrcghDtur', 'response': gcapcha}
+        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=post_data)
+        content = response.json()
+
+        if not content['success']:
+            return render(request, "manager/manager-login.html", {'error': 'Captcha is not entered.'})
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -28,7 +41,7 @@ def withdrawal_requests(request):
         src_account = withdrawal.src_account
         dest_account = withdrawal.dest_account
         withdrawals = WithdrawalRequest.objects.all()
-        if src_account.balance< withdrawal.amount:
+        if src_account.balance < withdrawal.amount:
             return render(request, 'manager/manager-withdrawal-requests.html', {
                 'withdrawal_requests': withdrawals,
                 'error': 'Source account balance is not sufficient.',

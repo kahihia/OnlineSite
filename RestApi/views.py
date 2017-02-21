@@ -14,7 +14,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from interpay.views import make_id
 import datetime
-
+import json
+from django.utils import timezone
 
 class JSONResponse(HttpResponse):
     """
@@ -44,6 +45,8 @@ def get_status_message(code):
         return "success"
     elif code == 2:
         return "Invalid email or mobile number."
+    elif code == 3:
+        return "No user with specified information."
 
 
 @api_view(['GET', 'POST'])
@@ -93,7 +96,6 @@ def cash_out_order(request):
         response['orderAmount'] = order_amount
         response['totalAmount'] = order_amount
         response['merOrderRef'] = merchant_order_reference
-        print (payee_mobile)
         response['statusCode'] = check_validation(1)
         response['statusMessage'] = get_status_message(1)
         if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(mobile_number=payee_mobile):
@@ -119,13 +121,16 @@ def cash_out_order(request):
                     response['expiryDate'] = response['orderDate'] + datetime.timedelta(days=7)
                     response['status'] = "pending"
                     return JSONResponse(response)
-
                 else:
                     if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(
                             mobile_number=payee_mobile):
                         response['statusCode'] = check_validation(2)
                         response['statusMessage'] = get_status_message(2)
                         return JSONResponse(response)
+        else:
+            response['statusCode'] = check_validation(3)
+            response['statusMessage'] = get_status_message(3)
+            return JSONResponse(response)
     return HttpResponse('None.')
 
 
@@ -140,10 +145,14 @@ def cash_out_reversal(request):
         try:
             deposit = Deposit.objects.get(id=order_reference)
         except:
-            response['status_code'] = -2
-            response['status_message'] = "Invalid order reference number."
+            response['statusCode'] = -2
+            response['statusMessage'] = "Invalid order reference number."
             return JSONResponse(response)
         if deposit:
+            if deposit.status == Deposit.COMPLETED:
+                response['statusCode'] = -3
+                response['statusMessage'] = "Transaction was unsuccessful. Money has been withdrawn."
+                return JSONResponse(response)
             deposit.status = Deposit.REVERSED
             deposit.save()
             # merchant_order = MerchantOrder.objects.filter(number=merchant_order_reference)
@@ -165,141 +174,100 @@ def get_pending_orders(request):
     response = {}
     if request.method == "POST":
         data = JSONParser().parse(request)
-        payee_email = data['payeeEmail']
-        payee_mobile = data['payeeMobile']
-        order_amount = data['orderAmount']
-        merchant_order_reference = data['MerOrderRef']
-        currency = data['orderCurrencyCode']
-        response['orderAmount'] = order_amount
-        response['totalAmount'] = order_amount
-        response['merOrderRef'] = merchant_order_reference
-        print (payee_mobile)
-        response['statusCode'] = check_validation(1)
-        response['statusMessage'] = get_status_message(1)
-        if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(mobile_number=payee_mobile):
-            user = UserProfile.objects.get(email=payee_email)
-            if not user:
-                user = UserProfile.objects.get(mobile_number=payee_mobile)
-                response['statusCode'] = check_validation(2)
-                response['statusMessage'] = get_status_message(2)
-                return JSONResponse(response)
-            else:
-                if str(user.mobile_number) == str(payee_mobile):
-
-                    bank_account = BankAccount.objects.filter(owner=user, cur_code=currency)
-                    if bank_account:
-                        bank_account = bank_account[0]
-                    else:
-                        bank_account = BankAccount.objects.create(owner=user, method=BankAccount.DEBIT,
-                                                                  cur_code=currency,
-                                                                  account_id=make_id())
-                    deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING)
-                    response['orderReference'] = deposit.id
-                    response['orderDate'] = datetime.datetime.now()
-                    response['expiryDate'] = response['orderDate'] + datetime.timedelta(days=7)
-                    response['status'] = 1
-                    return JSONResponse(response)
-
-                else:
-                    if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(
-                            mobile_number=payee_mobile):
-                        response['statusCode'] = check_validation(2)
-                        response['statusMessage'] = get_status_message(2)
-                        return JSONResponse(response)
+        page = data['page']
+        size = data['size']
+        sort = data['sort']
+        deposit = ""
+        orders = []
+        if (page - 1) * size >= Deposit.objects.filter(status=Deposit.PENDING).__len__():
+            response['statusCode'] = -4
+            response['statusMessage'] = "There is no request in specified range."
+            return JSONResponse(response)
+        for order in Deposit.objects.filter(status=Deposit.PENDING)[(page - 1) * size:]:
+            current_order = {
+                'orderReference': order.id,
+                'merOrderRef': 1,
+                'orderAmount': order.amount,
+                'totalAmount': order.amount,
+                'orderDate': str(order.date),
+                'expiryDate': str(order.date + datetime.timedelta(days=7)),
+                'status': "Pending"
+            }
+            orders.append(current_order)
+            if orders.__len__() == size:
+                break
+        response['orders'] = json.dumps(orders)
+        response['statusCode'] = 1
+        response['statusMessage'] = "Success"
+        response['numberOfElements'] = orders.__len__()
+        return JSONResponse(response)
     return HttpResponse('None.')
 
 
+@api_view(['GET', 'POST'])
 def get_paid_orders(request):
     response = {}
     if request.method == "POST":
         data = JSONParser().parse(request)
-        payee_email = data['payeeEmail']
-        payee_mobile = data['payeeMobile']
-        order_amount = data['orderAmount']
-        merchant_order_reference = data['MerOrderRef']
-        currency = data['orderCurrencyCode']
-        response['orderAmount'] = order_amount
-        response['totalAmount'] = order_amount
-        response['merOrderRef'] = merchant_order_reference
-        print (payee_mobile)
-        response['statusCode'] = check_validation(1)
-        response['statusMessage'] = get_status_message(1)
-        if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(mobile_number=payee_mobile):
-            user = UserProfile.objects.get(email=payee_email)
-            if not user:
-                user = UserProfile.objects.get(mobile_number=payee_mobile)
-                response['statusCode'] = check_validation(2)
-                response['statusMessage'] = get_status_message(2)
-                return JSONResponse(response)
-            else:
-                if str(user.mobile_number) == str(payee_mobile):
-
-                    bank_account = BankAccount.objects.filter(owner=user, cur_code=currency)
-                    if bank_account:
-                        bank_account = bank_account[0]
-                    else:
-                        bank_account = BankAccount.objects.create(owner=user, method=BankAccount.DEBIT,
-                                                                  cur_code=currency,
-                                                                  account_id=make_id())
-                    deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING)
-                    response['orderReference'] = deposit.id
-                    response['orderDate'] = datetime.datetime.now()
-                    response['expiryDate'] = response['orderDate'] + datetime.timedelta(days=7)
-                    response['status'] = 1
-                    return JSONResponse(response)
-
-                else:
-                    if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(
-                            mobile_number=payee_mobile):
-                        response['statusCode'] = check_validation(2)
-                        response['statusMessage'] = get_status_message(2)
-                        return JSONResponse(response)
+        page = data['page']
+        size = data['size']
+        sort = data['sort']
+        deposit = ""
+        orders = []
+        if (page - 1) * size >= Deposit.objects.filter(status=Deposit.COMPLETED).__len__():
+            response['statusCode'] = -4
+            response['statusMessage'] = "There is no request in specified range."
+            return JSONResponse(response)
+        for order in Deposit.objects.filter(status=Deposit.COMPLETED)[(page - 1) * size:]:
+            current_order = {
+                'orderReference': order.id,
+                'merOrderRef': 1,
+                'orderAmount': order.amount,
+                'totalAmount': order.amount,
+                'orderDate': str(order.date),
+                'expiryDate': str(order.date + datetime.timedelta(days=7)),
+                'status': "Completed"
+            }
+            orders.append(current_order)
+        response['orders'] = json.dumps(orders)
+        # merchant_order = MerchantOrder.objects.filter(number=merchant_order_reference)
+        # deposit = merchant_order.deposit
+        response['statusCode'] = 1
+        response['statusMessage'] = "Success"
+        return JSONResponse(response)
     return HttpResponse('None.')
 
 
+@api_view(['GET', 'POST'])
 def get_expired_orders(request):
     response = {}
     if request.method == "POST":
         data = JSONParser().parse(request)
-        payee_email = data['payeeEmail']
-        payee_mobile = data['payeeMobile']
-        order_amount = data['orderAmount']
-        merchant_order_reference = data['MerOrderRef']
-        currency = data['orderCurrencyCode']
-        response['orderAmount'] = order_amount
-        response['totalAmount'] = order_amount
-        response['merOrderRef'] = merchant_order_reference
-        print (payee_mobile)
-        response['statusCode'] = check_validation(1)
-        response['statusMessage'] = get_status_message(1)
-        if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(mobile_number=payee_mobile):
-            user = UserProfile.objects.get(email=payee_email)
-            if not user:
-                user = UserProfile.objects.get(mobile_number=payee_mobile)
-                response['statusCode'] = check_validation(2)
-                response['statusMessage'] = get_status_message(2)
-                return JSONResponse(response)
-            else:
-                if str(user.mobile_number) == str(payee_mobile):
-
-                    bank_account = BankAccount.objects.filter(owner=user, cur_code=currency)
-                    if bank_account:
-                        bank_account = bank_account[0]
-                    else:
-                        bank_account = BankAccount.objects.create(owner=user, method=BankAccount.DEBIT,
-                                                                  cur_code=currency,
-                                                                  account_id=make_id())
-                    deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING)
-                    response['orderReference'] = deposit.id
-                    response['orderDate'] = datetime.datetime.now()
-                    response['expiryDate'] = response['orderDate'] + datetime.timedelta(days=7)
-                    response['status'] = 1
-                    return JSONResponse(response)
-
-                else:
-                    if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(
-                            mobile_number=payee_mobile):
-                        response['statusCode'] = check_validation(2)
-                        response['statusMessage'] = get_status_message(2)
-                        return JSONResponse(response)
+        page = data['page']
+        size = data['size']
+        sort = data['sort']
+        deposit = ""
+        orders = []
+        if (page - 1) * size >= Deposit.objects.filter(status=Deposit.PENDING).__len__():
+            response['statusCode'] = -4
+            response['statusMessage'] = "There is no request in specified range."
+            return JSONResponse(response)
+        for order in Deposit.objects.filter(status=Deposit.PENDING)[(page - 1) * size:]:
+            if order.date + datetime.timedelta(days=7) < timezone.now():
+                current_order = {
+                    'orderReference': order.id,
+                    'merOrderRef': 1,
+                    'orderAmount': order.amount,
+                    'totalAmount': order.amount,
+                    'orderDate': str(order.date),
+                    'expiryDate': str(order.date + datetime.timedelta(days=7)),
+                    'status': "Pending"
+                }
+                orders.append(current_order)
+        response['orders'] = json.dumps(orders)
+        # merchant_order = MerchantOrder.objects.filter(number=merchant_order_reference)
+        # deposit = merchant_order.deposit
+        response['statusCode'] = 1
+        response['statusMessage'] = "Success"
+        return JSONResponse(response)
     return HttpResponse('None.')
