@@ -27,9 +27,8 @@ env:
 
 install:
 
-  - pip install Django --use-mirrors
+  - pip install Django
   - pip install -r requirements.txt
-
 
 before_script:
 
