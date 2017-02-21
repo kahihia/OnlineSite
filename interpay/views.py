@@ -140,7 +140,7 @@ def send_sms(request, mobile_no):
     # redis_ds = ds.AuthCodeDataStructure()
     # redis_ds.set_code(mobile_no, code)
     p = api.ParsGreenSmsServiceClient()
-    api.ParsGreenSmsServiceClient.sendSms(p, code=code, mobile_no=mobile_no)
+    api.ParsGreenSmsServiceClient.sendSms(p, code, mobile_no, request.session['user_id'])
     print("code:", code)
     user_profile = ''
     while 1:
@@ -163,6 +163,8 @@ def send_sms(request, mobile_no):
 
 @csrf_exempt
 def verify_user(request):
+    global new_connection
+    new_connection = settings.connect_to_redis()
     request.session['try_counter'] += 1
     print request.session['try_counter']
     if request.session['try_counter'] > 3:
@@ -397,6 +399,8 @@ new_connection = settings.connection
 
 @login_required()
 def recharge_account(request, **message):
+    global new_connection
+    new_connection = settings.connect_to_redis()
     code = 0
     msg_color = 0
     if message:

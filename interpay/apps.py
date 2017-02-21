@@ -9,5 +9,5 @@ class InterpayConfig(AppConfig):
     verbose_name = "Interpay"
 
     def ready(self):
-        settings.connect_to_redis()
+        #settings.connect_to_redis()
         print "connect_to_redis initialized via interpay app"

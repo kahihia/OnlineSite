@@ -9,5 +9,5 @@ class ConversionConfig(AppConfig):
     verbose_name = "Conversion"
 
     def ready(self):
-        settings.connect_to_redis()
+        #settings.connect_to_redis()
         print "connect_to_redis initialized via conversion app"
