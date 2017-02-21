@@ -1,3 +1,4 @@
+from interpay import forms
 from django.test import TestCase, Client
 from interpay.models import User, UserProfile, BankAccount, Deposit, MoneyTransfer
 from currencies.models import Currency
@@ -180,6 +181,4 @@ class CallbackTestCase(TestCase):
                                {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
                                 'mobile': '10'})
         self.assertEqual(post_response.status_code, 200)
-
-
 

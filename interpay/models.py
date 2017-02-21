@@ -153,7 +153,7 @@ class BankAccount(models.Model):
     owner = models.ForeignKey(UserProfile, related_name='w_accounts')
     cur_code = models.CharField(_('cur_code'), max_length=3, default='IRR')
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
-    account_id = models.CharField(max_length=24, validators=[alphanumeric])
+    account_id = models.CharField(max_length=24)
 
     def total_value(self):
         t_value = Decimal(0)

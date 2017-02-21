@@ -1,8 +1,8 @@
 import logging
 import suds
 from django.shortcuts import redirect
-
-
+from interpay import models
+from firstsite import settings
 
 class ParsGreenSmsServiceClient:
     sendSmsURL = 'http://login.parsgreen.com/Api/SendSMS.asmx?WSDL'
@@ -23,8 +23,16 @@ class ParsGreenSmsServiceClient:
         self.retStr = []
 
     def sendSms(self, code, mobile_no):
+        c = settings.connection
         strArr = self.sendSmsClient.factory.create('ArrayOfString')
         strArr.string = [mobile_no]
+        user_profile_id = models.UserProfile.objects.get(mobile_number=mobile_no)
+        keys = c.keys(pattern='*')
+        for k in keys:
+            print 'key:', k, c.get(k)
+        c.set(user_profile_id.id, code)  # caching the code in redis
+        print code, "cached in redis"
+        c.expire(user_profile_id.id, 30*60)  # 30minutes
         code = str(code) + " is your InterPay code."
         print "sending sms done"
         self.sendSmsClient.service.SendGroupSmsSimple("765822D8-383F-444F-A363-3EC951448412", "", strArr, code,

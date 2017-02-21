@@ -214,6 +214,11 @@ class CreateBankAccountForm(forms.ModelForm):
         # 'account_id': forms.TextInput(
         #     attrs={'class': 'create_b_acc_form_field', 'placeholder': 'Enter your account No.'})}
 
+    def clean_account_id(self):
+        acc_id = self.cleaned_data['account_id']
+        if not acc_id.isdigit():
+            raise forms.ValidationError('Account number should be numeric only.')
+        return acc_id
 
 
 
