@@ -37,6 +37,7 @@ before_script:
   - echo 'Hello'
   - python manage.py makemigrations
   - python manage.py migrate
+  - sudo redis-server /etc/redis/redis.conf --port 6379
 
 after_script: echo 'Bye'
 
