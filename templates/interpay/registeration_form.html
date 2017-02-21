@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         InterPay Iran
     </title>
@@ -17,7 +18,9 @@
     <link rel="stylesheet" href="{% static 'interpay/css/registeration_form.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+
     {% block CSS %}
+           <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
     {% endblock %}
 
     <!-- JS -->
@@ -105,7 +108,7 @@
     $('#continue-btn').attr('disabled', true);
          $('input').keyup (function () {
             var disable = false;
-            $('input[type = text]').each(function () {
+            $(":text, :password").each(function () {
                 if ($(this).val() == "") {
                     disable = true;
                 }
@@ -117,6 +120,7 @@
     function to_en() {
         var en_url = window.location.href.replace("/fa-ir/", "/");
         window.location.assign(en_url);
+        //window.location= "/en-gb";
     }
 
     function id_card_submit_btn() {
@@ -200,7 +204,7 @@
 <header>
      <header>
         <ul class="topnav" id="myTopnav">
-            <h1  style="margin-top: 0% ; margin-bottom: 3%"> <a>
+            <h1  style="margin-top: 0% ; margin-bottom: 3%">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
@@ -212,19 +216,21 @@
                         <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
                     </a>
                 {% endifequal %}
-                <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px"></a>
+                <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px">
             </h1>
         </ul>
     </header>
 
 </header>
+
+
 <section>
     <div class="container">
         {% if registered %}
         {% if activated %}
         <div class="row">
             <div class="col-xs-12" id="reg-wrap-wrap-div">
-                <div class="form-wrapper" style="text-align: center">
+                <div class="form-wrapper" style="text-align: center; width:50%">
                     <strong>{{ thanks_msg }}</strong>
                     <hr>
                     <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>
@@ -249,7 +255,7 @@
                         <p><input name="code" id="verification-code" type="text" maxlength="6"
                                   class="registration-form-field"
                                   placeholder="Enter the code"></p>
-                        <p><input id="send-sms-btn" onclick="verify_user()" type="button" value="Submit and Sign Up"
+                        <p><input id="send-sms-btn" onclick="verify_user()" type="submit" value="Submit and Sign Up"
                                   class="registration-form-field btn btn-success"></p>
                     </div>
                 </div>
@@ -339,7 +345,9 @@
             </div>
             {% endif %}
         </div>
+    </div>
 </section>
+
 {#TODO this part should be fixed ASAP#}
 {#<footer id="footer" class="footer">#}
 {#    <div id="footer-content">All rights reserved.</div>#}

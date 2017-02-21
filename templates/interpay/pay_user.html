@@ -51,17 +51,37 @@
                 {% csrf_token %}
                 {#                <div class="row">#}
 
-
-                <div class="form-group col-lg-2" style="padding:0">
-                    <label style="display:block">
-                        Amount:
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                <div class="form-group col-lg-2" style="padding:0;">
+                 {% else %}
+                    <div class="form-group col-lg-2" style="padding:0; float:right">
+                {% endifequal %}
+                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+                   <label style="display:block">
+                {% else %}
+                    <label style="display:block ; float: right">
+                {% endifequal %}
+                    {% trans 'Amount' %}
                     </label>
-                    <input type="text" name="amount" id="amount" class="form-control" style="width:150px">
+                    {% ifequal LANGUAGE_CODE 'en-gb' %}
+                     <input type="text" name="amount" id="amount" class="form-control" style="width:150px;">
+                {% else %}
+                      <input type="text" name="amount" id="amount" class="form-control" style="width:150px; float:right">
+                {% endifequal %}
                 </div>
 
-                <div class="form-group" style="padding: 0">
-                    <label style="display:block">
-                        Currency:
+
+                  {% ifequal LANGUAGE_CODE 'en-gb' %}
+                   <div class="form-group" style="padding: 0">
+                {% else %}
+                     <div class="form-group" style="padding: 0;">
+                {% endifequal %}
+                      {% ifequal LANGUAGE_CODE 'en-gb' %}
+                   <label style="display:block">
+                {% else %}
+                    <label style="display:block ; float: right">
+                {% endifequal %}
+                         {% trans 'currency' %}
                     </label>
                     <select name="currency" class="form-control"  style="width:110px">
                         <option value="IRR">Rial</option>
@@ -76,24 +96,36 @@
                 {#                </div>#}
                 {#                <div class="row">#}
                 <div class="form-group">
+                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+                   <label style="display:block">
+                {% else %}
                     <label style="display:block">
-                        Destination Email:
+                {% endifequal %}
+                        {% trans 'Destination Email:' %}
                     </label>
                     <input type="text" name="email" id="email" class="form-control" style="width:300px">
                 </div>
                 {#                </div>#}
                 {#                <div class="row">#}
                 <div class="form-group ">
+                    {% ifequal LANGUAGE_CODE 'en-gb' %}
+                   <label style="display:block">
+                {% else %}
                     <label style="display:block">
-                        Destination Mobile Number:
+                {% endifequal %}
+                          {% trans 'Destination Mobile Number:' %}
                     </label>
                     <input type="text" name="mobile" id="mobile" class="form-control" style="width:300px">
                 </div>
                 {#                </div>#}
                 {#                <div class="row">#}
                 <div class="form-group ">
+                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+                   <label style="display:block">
+                {% else %}
                     <label style="display:block">
-                        Comment:
+                {% endifequal %}
+                    {% trans 'Comment:' %}
                     </label>
                     <textarea id="comment" name="comment" class="form-control" style="width:300px"></textarea>
                 </div>
