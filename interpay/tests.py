@@ -126,7 +126,7 @@ class APITestCase(TestCase):
                    'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
         data = self.make_request('/rest_framework/cash_out_order/', content, 'cash_out')
         self.assertEqual(data['statusCode'], 4)
-        self.assertEqual(data['statusMessage'], 'No user with specified information.')
+        self.assertEqual(data['statusMessage'], 'New user was created in system.')
 
     def test_get_order_status(self):
         self.cash_out_request()
