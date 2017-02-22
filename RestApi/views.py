@@ -17,6 +17,7 @@ import datetime
 import json
 from django.utils import timezone
 
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -47,6 +48,8 @@ def get_status_message(code):
         return "Invalid email or mobile number."
     elif code == 3:
         return "No user with specified information."
+    elif code == 4:
+        return "New user was created in system."
 
 
 @api_view(['GET', 'POST'])
@@ -128,8 +131,17 @@ def cash_out_order(request):
                         response['statusMessage'] = get_status_message(2)
                         return JSONResponse(response)
         else:
-            response['statusCode'] = check_validation(3)
-            response['statusMessage'] = get_status_message(3)
+            user = User.objects.create(username=payee_email, email=payee_email, password="123")
+            up = UserProfile.objects.create(user=user, password='123', national_code='1111111111', email=payee_email,
+                                            is_active=False, date_of_birth=datetime.datetime.now(),
+                                            mobile_number=payee_mobile)
+            account = BankAccount(owner=up, method=BankAccount.DEBIT, cur_code=currency, account_id=make_id())
+            account.save()
+            deposit = Deposit.objects.create(account=account, status=Deposit.PENDING, amount=order_amount,
+                                             cur_code=currency)
+
+            response['statusCode'] = check_validation(4)
+            response['statusMessage'] = get_status_message(4)
             return JSONResponse(response)
     return HttpResponse('None.')
 
