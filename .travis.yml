@@ -19,10 +19,10 @@ python:
 env:
 
 #  - DJANGO=1.10.3 DB=postgres
-
   - DJANGO=1.10.3 DB=mysql
 
-
+services:
+  - redis-server
 # Comand to install dependencies
 
 install:

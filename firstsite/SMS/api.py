@@ -28,9 +28,6 @@ class ParsGreenSmsServiceClient:
         strArr = self.sendSmsClient.factory.create('ArrayOfString')
         strArr.string = [mobile_no]
         # user_profile_id = models.UserProfile.objects.get(request.session['user_id'])
-        keys = c.keys(pattern='*')
-        for k in keys:
-            print 'key:', k, c.get(k)
         c.set(uuid, code)  # caching the code in redis
         print code, "cached in redis"
         c.expire(uuid, 30*60)  # 30minutes
