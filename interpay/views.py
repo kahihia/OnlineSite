@@ -266,6 +266,8 @@ def pay_user(request):
 
 
 def reset_password(request, token):
+    global new_connection
+    new_connection = settings.connect_to_redis()
     if request.method == "POST":
         birth_date = request.POST['birth_date']
         national_id = request.POST['national_id']
