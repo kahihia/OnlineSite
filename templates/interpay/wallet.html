@@ -39,13 +39,13 @@
        {
              swal({
 
-            title: '<div>Successfully Created</div> <div style="color:orange; font-size: small"> Click on  your account Id if you want to go to your account </div><u></u> <a href="/wallets/{{ account_id }}">{{account_id}}</a> ',
+            title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
             type: 'info',
             html: ' ' + 'and other HTML tags',
             type: "info",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
-            cancelButtonText: "Back to current wallet",
+            cancelButtonText: '{% trans 'back to current wallet'%}',
             closeOnConfirm: false,
             closeOnCancel: false,
             showConfirmButton: false,
@@ -67,8 +67,8 @@
         function formSubmitter(formTag,messageTag) {
 
             swal({
-             title: 'Conversion',
-             text: 'Your conversion is in process',
+             title: '{%  trans 'Conversion' %}',
+             text:  '{%  trans 'Your conversion is in process' %}',
              type: 'info',
              showConfirmButton: false,
               });
@@ -141,7 +141,7 @@
                           <a href="/wallets/{{ account_id }}">{{ message }}</a>
               </div>
 
-             <form method="post" action="../actual_convert/" id="sampleform" class="form-style-9 w3-hide-small w3-hide-medium" style="width:40% ; height: 20%;">
+             <form method="post" action="../actual_convert/" id="sampleform" class="form-style-9  w3-hide-small w3-hide-medium" style="width:40%">
                 {% csrf_token %}
 
                 <div  style="margin-left: 0 !important;margin-right: 0 !important;">
@@ -164,7 +164,61 @@
                         </select>
                         <input type="hidden" name="account_id" value="{{ account.account_id }}">
                         <br>
-                       <input value="Submit" type='button' onclick="formSubmitter('sampleform','success')">
+                       <input value="Submit" type='button' class="btn btn-default" onclick="formSubmitter('sampleform','success')">
+                    </div>
+                </div>
+            </form>
+             <form method="post" action="../actual_convert/" id="sampleform" class="form-style-9  w3-hide-large w3-hide-medium" style="width:98% ; ">
+                {% csrf_token %}
+
+                <div  style="margin-left: 0 !important;margin-right: 0 !important;">
+
+                    <div style="margin-right:0px;width:300px;margin-left: 10px " >
+                        <div id="error" style="color:red">
+                            {{ error }}
+                        </div>
+                        <label>{% trans 'Amount' %}: </label>
+
+                        <input  id="amount" name="amount" type="text" value={{ recommended }}><br>
+                        <label>{% trans 'To Currency' %}: </label>
+                        <select name="currency" id="currency">
+                            <option value="EUR" selected="selected">Default EURO</option>
+                            {% for curr in CURRENCIES %}
+                                <option value="{{ curr.code }}">
+                                    {{ curr.symbol }} {{ curr.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="account_id" value="{{ account.account_id }}">
+                        <br>
+                       <input value="Submit" type='button' class="btn btn-default" onclick="formSubmitter('sampleform','success')">
+                    </div>
+                </div>
+            </form>
+             <form method="post" action="../actual_convert/" id="sampleform" class="form-style-9  w3-hide-large w3-hide-small" style="width:70% ;">
+                {% csrf_token %}
+
+                <div  style="margin-left: 0 !important;margin-right: 0 !important;">
+
+                    <div style="margin-right:0px;width:300px;margin-left: 10px " >
+                        <div id="error" style="color:red">
+                            {{ error }}
+                        </div>
+                        <label>{% trans 'Amount' %}: </label>
+
+                        <input  class="form-control" id="amount" name="amount" type="text" value={{ recommended }}><br>
+                        <label>{% trans 'To Currency' %}: </label>
+                        <select name="currency" id="currency">
+                            <option value="EUR" selected="selected">Default EURO</option>
+                            {% for curr in CURRENCIES %}
+                                <option value="{{ curr.code }}">
+                                    {{ curr.symbol }} {{ curr.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input  type="hidden" name="account_id" value="{{ account.account_id }}">
+                        <br>
+                       <input value="Submit" type='button' class="btn btn-default" onclick="formSubmitter('sampleform','success')">
                     </div>
                 </div>
             </form>

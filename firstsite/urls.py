@@ -59,6 +59,8 @@ urlpatterns = [
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^edit/$', views.edit, name='edit'),
+    url(r'^name/$', views.name, name='name'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
 
@@ -103,6 +105,7 @@ urlpatterns += i18n_patterns(
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^edit/$', views.edit, name='edit'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^verif/$', views.verify_user, name='verif'),

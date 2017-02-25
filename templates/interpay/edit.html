@@ -1,0 +1,97 @@
+{% extends "interpay/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+ {% block JS %}
+<script>
+      $(document).ready(function(){
+                $("#edit").click(function(){
+                    $("#edit").hide();
+                    $("#first_name").show();
+                    $("#edit_name").show();
+                });
+             $("#edit2").click(function(){
+                    $("#edit2").hide();
+                    $("#last_name").show();
+                    $("#edit_lastname").show();
+                });
+           $("#edit3").click(function(){
+                    $("#edit3").hide();
+                    $("#national_id").show();
+                    $("#edit_national_id").show();
+                });
+           $("#edit4").click(function(){
+                    $("#edit4").hide();
+                    $("#username").show();
+                    $("#edit_username").show();
+                });
+           $("#edit5").click(function(){
+                    $("#edit5").hide();
+                    $("#photo").show();
+                    $("#edit_photo").show();
+                });
+
+       });
+
+     function edit_name() {
+        var postUrl = "/name/";
+        name = $("#name").val();
+        $.ajax({
+            url: postUrl,
+            type: 'POST',
+            data: {'name': name},
+            traditional: true,
+            dataType: 'html',
+            success: function (result) {
+                var data = JSON.parse(result);
+
+            }
+
+        });
+    }
+
+</script>
+{% endblock %}
+<html lang="en">
+ {% block flag %}
+
+ {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <h3 class="page-title">{% block title %}{% trans 'General' %}{% endblock %}</h3>
+    </title>
+</head>
+<body>
+{% block cont-header %}
+    <div>
+        <h3 class="page-title">
+            {% trans 'Edit Your profile' %}
+        </h3>
+    </div>
+{% endblock %}
+{% block cont-body %}
+   <div>
+    <i id="edit" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> First name <input id="first_name" type="text" name="fname" style="display: none"><br>
+    <input id="edit_name"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_name()" >
+   </div>
+    <div>
+    <i id="edit2" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> Last name <input id="last_name" type="text" name="fname" style="display: none"><br>
+    <input id="edit_lastname"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_last_name()" >
+   </div>
+    <div>
+    <i id="edit3" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> National id code <input id="national_id" type="text" name="fname" style="display: none"><br>
+    <input id="edit_national_id"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_national_id()" >
+   </div>
+   <div>
+    <i id="edit4" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> username <input id="username" type="text" name="fname" style="display: none"><br>
+    <input id="edit_username"  style="display:none" type="button" class="w3-button" value="save" onclick="username()" >
+   </div>
+    <div>
+    <i id="edit5" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> Photo <input id="photo" type="file" name="fname" style="display: none"><br>
+    <input id="edit_photo"  style="display:none" type="button" class="w3-button" value="save" onclick="username()" >
+   </div>
+
+{% endblock %}
+</body>
+</html>

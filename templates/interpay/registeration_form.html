@@ -120,6 +120,12 @@
     function to_en() {
         var en_url = window.location.href.replace("/fa-ir/", "/");
         window.location.assign(en_url);
+        document.lang= "en"
+        //window.location= "/en-gb";
+    }
+
+    function to_FA() {
+        document.lang= "fa"
         //window.location= "/en-gb";
     }
 
@@ -206,7 +212,7 @@
         <ul class="topnav" id="myTopnav">
             <h1  style="margin-top: 0% ; margin-bottom: 3%">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
+                    <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
                     <p class="lang"> Fa/Eng</p>
                         <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
                     </a>
