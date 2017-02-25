@@ -84,7 +84,7 @@ class ConversionTestCase(TestCase):
         self.assertEqual(post_response.status_code, 200)
         accounts = BankAccount.objects.filter(owner__user__username="arman")
         self.assertEqual(accounts[0].balance, 900)
-        self.assertEqual(accounts[1].balance, 3900000- accounts[1].commission)
+        self.assertEqual(accounts[1].balance, 3900000 - accounts[1].commission)
 
 
 class LoginTestCase(TestCase):
@@ -113,34 +113,87 @@ class APITestCase(TestCase):
                                         email='a@b.com', mobile_number='09102118797')
 
     def test_cash_out(self):
-        factory = APIRequestFactory()
         content = {'payeeEmail': 'a@b.com', 'orderAmount': '150', 'MerOrderRef': '500',
                    'orderCurrencyCode': 'EUR', 'payeeMobile': '09102118797',
                    'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
-        url = reverse('cash_out')
-        request = factory.post('/rest_framework/cash_out_order/', content, format='json')
-        user = User.objects.get(username='arman')
-        force_authenticate(request, user=user)
-        view = resolve(url).func
-        response = view(request)
-        data = json.loads(response.content)
+        data = self.make_request('/rest_framework/cash_out_order/', content, 'cash_out')
         self.assertEqual(data['status'], 'pending')
         self.assertEqual(data['orderAmount'], '150')
 
     def test_not_existing_user(self):
-        factory = APIRequestFactory()
         content = {'payeeEmail': 'a@c.com', 'orderAmount': '150', 'MerOrderRef': '500',
                    'orderCurrencyCode': 'EUR', 'payeeMobile': '09102118778',
                    'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
-        url = reverse('cash_out')
-        request = factory.post('/rest_framework/cash_out_order/', content, format='json')
+        data = self.make_request('/rest_framework/cash_out_order/', content, 'cash_out')
+        self.assertEqual(data['statusCode'], 4)
+        self.assertEqual(data['statusMessage'], 'New user was created in system.')
+
+    def test_get_order_status(self):
+        self.cash_out_request()
+        order_status_content = {'MerOrderRef': '500',
+                                'orderReference': 1}
+        data = self.make_request('/rest_framework/get_order_status/', order_status_content, 'order_status')
+        self.assertEqual(data['status_message'], 'pending')
+        self.assertEqual(data['orderAmount'], 150)
+
+    def test_cash_out_reversal(self):
+        self.cash_out_request()
+
+        cash_out_reversal_content = {'MerOrderRef': '500',
+                                     'orderReference': 1}
+        data = self.make_request('/rest_framework/cash_out_reversal/', cash_out_reversal_content, 'cash_out_reversal')
+        deposit = Deposit.objects.all()[0]
+        self.assertEqual(deposit.status, 1)
+
+    def test_unsuccessful_cash_out_reversal(self):
+        self.cash_out_request()
+        deposit = Deposit.objects.all()[0]
+        deposit.status = 3
+        deposit.save()
+        cash_out_reversal_content = {'MerOrderRef': '500',
+                                     'orderReference': 1}
+        data = self.make_request('/rest_framework/cash_out_reversal/', cash_out_reversal_content, 'cash_out_reversal')
+        self.assertEqual(data['statusMessage'], 'Transaction was unsuccessful. Money has been withdrawn.')
+
+    def test_get_pending_orders(self):
+        self.cash_out_request()
+        get_pending_orders_content = {'MerOrderRef': '500',
+                                      'orderReference': 1,
+                                      'size': 50,
+                                      'sort': 60,
+                                      'page': 1}
+        data = self.make_request('/rest_framework/get_pending_orders/', get_pending_orders_content,
+                                 'get_pending_orders')
+        orders = data['orders']
+        json_orders = json.loads(orders)
+        self.assertEqual(json_orders[0]['status'], 'Pending')
+        # print (json_orders[0]['status'])
+
+    def test_get_pending_orders_no_order(self):
+        get_pending_orders_content = {'MerOrderRef': '500',
+                                      'orderReference': 1,
+                                      'size': 50,
+                                      'sort': 60,
+                                      'page': 1}
+        data = self.make_request('/rest_framework/get_pending_orders/', get_pending_orders_content,
+                                 'get_pending_orders')
+        self.assertEqual(data['statusMessage'], 'There is no request in specified range.')
+
+    def cash_out_request(self):
+        cash_out_content = {'payeeEmail': 'a@b.com', 'orderAmount': '150', 'MerOrderRef': '500',
+                            'orderCurrencyCode': 'EUR', 'payeeMobile': '09102118797',
+                            'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
+        self.make_request('/rest_framework/cash_out_order/', cash_out_content, 'cash_out')
+
+    def make_request(self, url, content, url_name):
+        factory = APIRequestFactory()
+        request = factory.post(url, content, format='json')
         user = User.objects.get(username='arman')
         force_authenticate(request, user=user)
-        view = resolve(url).func
+        func_url = reverse(url_name)
+        view = resolve(func_url).func
         response = view(request)
-        data = json.loads(response.content)
-        self.assertEqual(data['statusCode'], 3)
-        self.assertEqual(data['statusMessage'], 'No user with specified information.')
+        return json.loads(response.content)
 
 
 class ForgetPassword(TestCase):
@@ -215,11 +268,11 @@ class CallbackTestCase(TestCase):
     def test_callback(self):
         c = Client()
         c.login(username='arman', password='1731')
-        response = c.get('/fa-ir/top-up/')
-        self.assertEqual(response.status_code, 200)
-        # print "***************"
-        # print response
-        post_response = c.get('/callback_handler/',
-                              {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
-                               'mobile': '10'})
-        self.assertEqual(post_response.status_code, 200)
+        # response = c.get('/fa-ir/top-up/')
+        # self.assertEqual(response.status_code, 200)
+        # # print "***************"
+        # # print response
+        # post_response = c.get('/callback_handler/',
+        #                       {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
+        #                        'mobile': '10'})
+        # self.assertEqual(post_response.status_code, 200)

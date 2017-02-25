@@ -19,24 +19,23 @@ python:
 env:
 
 #  - DJANGO=1.10.3 DB=postgres
-
   - DJANGO=1.10.3 DB=mysql
 
-
+services:
+  - redis-server
 # Comand to install dependencies
 
 install:
 
-  - pip install Django --use-mirrors
+  - pip install Django
+  - pip install -r requirements.txt
 
-  - pip install -r requirements.txt --use-mirrors
+before_script:
 
-
-
-before_script: 
   - echo 'Hello'
   - python manage.py makemigrations
   - python manage.py migrate
+  - sudo redis-server /etc/redis/redis.conf --port 6379
 
 after_script: echo 'Bye'
 

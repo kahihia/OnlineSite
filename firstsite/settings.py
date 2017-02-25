@@ -12,6 +12,20 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import redis
+
+
+connection = None
+
+
+def connect_to_redis():
+    global connection
+    if connection == None:
+        print "set connection"
+        connection = redis.StrictRedis(host='localhost', port=6379, db=0)
+    # print connection.keys('*')
+    print "connect to redis called"
+    return connection
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -78,6 +92,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 20
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_SECURITY_WARN_AFTER = 28 * 60
 SESSION_SECURITY_EXPIRE_AFTER = 30 * 60
 TEMPLATES = [
@@ -255,7 +270,9 @@ LOGGING = {
 #         "BACKEND": "django_redis.cache.RedisCache",
 #         "LOCATION": "redis://127.0.0.1:6379/1",
 #         "OPTIONS": {
+# 				'PARSER_CLASS': 'redis.connection.HiredisParser',
 #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             "PASSWORD": "interpass"
 #         }
 #     }
 # }
