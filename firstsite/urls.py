@@ -60,7 +60,7 @@ urlpatterns = [
     url(r'^general/', views.general, name='general'),
     url(r'^register/$', views.register, name='register'),
     url(r'^edit/$', views.edit, name='edit'),
-    url(r'^name/$', views.name, name='name'),
+    #url(r'^name/$', views.name, name='name'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
 
