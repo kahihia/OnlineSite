@@ -122,6 +122,11 @@ def register(request):
                        'registered': registered,
                        'thanks_msg': thanks_msg, 'redirect_to_home_msg': redirect_to_home_msg, 'activated': activated})
 
+@login_required()
+def edit(request):
+   return render(request, "interpay/edit.html")
+
+
 
 @login_required()
 def trans_history(request):
@@ -347,11 +352,11 @@ def user_login(request):
 
         if user:
             if user.is_active and user_profile.is_active:
-                login(request, user, None)
-                if request.LANGUAGE_CODE == 'en-gb':
+                 login(request, user, None)
+                 if request.LANGUAGE_CODE == 'en-gb':
                     return HttpResponseRedirect('/home/')
-                else:
-                    return HttpResponseRedirect('/fa-ir' + request.path)
+                 else:
+                    return HttpResponseRedirect('/fa-ir/home')
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
                     en_acc_disabled_msg = "Your account is disabled."
@@ -643,16 +648,6 @@ def wallet(request, wallet_id, recom=None):
     return render(request, "interpay/wallet.html", context)
 
 @login_required()
-def wallet_recommended(request, wallet_id):
-    context = {
-        'account': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT),
-        'recommended': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT).balance,
-        'deposit_set': models.Deposit.objects.filter(banker=wallet_id),
-    }
-    return render(request, "interpay/wallet.html", context)
-
-
-@login_required()
 def actual_convert(request):
     if request.method == 'POST':
         amount = request.POST.get('amount')
@@ -740,7 +735,21 @@ def random_code_gen():
     verif_code = randint(100000, 999999)
     return verif_code
 
-    # class RegistrationView(CreateView):
+#@login_required()
+#def name(request):
+        #if request.is_ajax():
+            #entered_name = request.POST.get('name', False)
+            #user_profile = models.UserProfile.objects.get(user=request.user)
+            #user_profile.email=  entered_name
+            #user_profile.is_active = True
+            #user_profile.save()
+            #return render(request, "interpay/edit.html")
+
+
+
+
+
+                # class RegistrationView(CreateView):
     #     template_name = '../templates/registeration_form.html'
     #     user_form = UserForm
     #     registration_form = RegistrationForm
