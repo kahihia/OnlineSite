@@ -768,7 +768,7 @@ def edit_profile(request):
           if request.POST['action'] == 'change_last_name':
                 entered_last_name = request.POST.get('last_name')
                 user_profile = models.UserProfile.objects.get(user__username=request.user)
-                user_profile.user.first_name = entered_last_name
+                user_profile.user.last_name = entered_last_name
                 user_profile.user.save()
                 html = '<strong>Your last name has changed successfully</strong><hr>'
                 result = {'html': html}

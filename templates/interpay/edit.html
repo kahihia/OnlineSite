@@ -45,6 +45,7 @@
             dataType: 'html',
             success: function (result) {
                  var data = JSON.parse(result);
+                 $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#inner_first_name").replaceWith(name);
                  $("#edit").show();
@@ -66,6 +67,7 @@ function edit_last_name(){
             dataType: 'html',
             success: function (result) {
                  var data = JSON.parse(result);
+                 $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#inner_last_name").replaceWith(last_name);
                  $("#last_name").hide();
@@ -87,6 +89,7 @@ function edit_national_id(){
             dataType: 'html',
             success: function (result) {
                  var data = JSON.parse(result);
+                 $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#national_id").hide();
                  $("#edit_national_id").hide();
@@ -108,6 +111,7 @@ function edit_national_id(){
             dataType: 'html',
             success: function (result) {
                  var data = JSON.parse(result);
+                 $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#photo").hide();
                  $("#edit_photo").hide();
@@ -128,6 +132,7 @@ function edit_username(){
             dataType: 'html',
             success: function (result) {
                  var data = JSON.parse(result);
+                 $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#inner_username").replaceWith(username);
                  $("#username").hide();
