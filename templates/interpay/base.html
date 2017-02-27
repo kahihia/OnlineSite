@@ -166,7 +166,7 @@
                 {% else %}
                     <a class="sidebar-links w3-hide-small" style="color: white" href="/fa-ir/edit">
                 {% endifequal %}
-          {{ user.username }}{% trans "'s Profile" %}</a>
+          <span id = "inner_username">{{ user.username }}</span><span> {{ user_profile.national_code }}</span>{% trans "'s Profile" %}</a>
       </div>
         </ul>
     </header>
@@ -386,7 +386,7 @@
                  {% endifequal %}
                     <a href="javascript:void(0);" onclick="myFunction()">☰</a>
                 </li>
-                <li  class="w3-hide-small" id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</li>
+                <li  class="w3-hide-small" id="name">{% trans "Name" %}: <span id="inner_first_name">{{ user.first_name }}</span> <span id="inner_last_name"> {{ user.last_name }} </span> </li>
                 <li  class="w3-hide-small" id="Email">{% trans "Email" %}: {{user.email}}</li>
                 <li  class="w3-hide-small" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
                 <li  class="w3-hide-small" id="interpay-id">{% trans "InterPay ID" %}: </li>
