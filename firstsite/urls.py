@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^wallets/(?P<wallet_id>\d+)/$', views.wallet),
     url(r'^wallets/(?P<wallet_id>\d+)/(?P<recom>\w+)/$', views.wallet),
     url(r'^wallets/actual_convert/$', views.actual_convert),
-    # url(r'^wallets/rials/$', views.convert_rial),
+    url(r'^wallets/withdraw_pending_deposit/$', views.withdraw_pending_deposit),
     # url(r'^wallets/euros/$', views.convert_euro),
     # url(r'^wallets/pounds/$', views.convert_pound),
     url(r'^trans-history/', views.trans_history),
@@ -67,7 +67,9 @@ urlpatterns = [
     url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
 
     url(r'^retrieve_pass/(?P<token>\d+)/$', views.reset_password, name='reset_pass'),
-    url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
+
+    url(r'^activate_account/(?P<token>\d+)/$', views.activate_account, name='activate_account'),
+    # url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
 
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),

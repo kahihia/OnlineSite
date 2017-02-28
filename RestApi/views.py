@@ -16,6 +16,8 @@ from interpay.views import make_id
 import datetime
 import json
 from django.utils import timezone
+from interpay.Email import Email
+from smtplib import SMTPRecipientsRefused
 
 
 class JSONResponse(HttpResponse):
@@ -31,8 +33,8 @@ class JSONResponse(HttpResponse):
 
 def generate_token(request):
     user = User.objects.get(username='arman')
-    # token = Token.objects.create(user=user)
-    token = Token.objects.get(user=user)
+    token = Token.objects.create(user=user)
+    # token = Token.objects.get(user=user)
     print(token.key)
     return HttpResponse(token.key)
 
@@ -118,7 +120,7 @@ def cash_out_order(request):
                         bank_account = BankAccount.objects.create(owner=user, method=BankAccount.DEBIT,
                                                                   cur_code=currency,
                                                                   account_id=make_id())
-                    deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING)
+                    deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING, cur_code=currency)
                     response['orderReference'] = deposit.id
                     response['orderDate'] = datetime.datetime.now()
                     response['expiryDate'] = response['orderDate'] + datetime.timedelta(days=7)
@@ -142,6 +144,16 @@ def cash_out_order(request):
 
             response['statusCode'] = check_validation(4)
             response['statusMessage'] = get_status_message(4)
+
+            email_sender = Email.Email(user.email)
+            error_message = ""
+            sent = ""
+            try:
+                sent = email_sender.send_account_activation_email(user.email)
+            except SMTPRecipientsRefused:
+                error_message = "Invalid Email"
+
+
             return JSONResponse(response)
     return HttpResponse('None.')
 

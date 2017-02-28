@@ -39,9 +39,11 @@ def main_page(request):
     # test()
     if (models.Rule.objects.count() == 0):
         log.debug('1Initialising comission because no Rule objects exists')
-        r = models.Rule(start_date=datetime.datetime.now().date(), end_date=(datetime.datetime.now() + datetime.timedelta(days=100)).date())
+        r = models.Rule(start_date=datetime.datetime.now().date(),
+                        end_date=(datetime.datetime.now() + datetime.timedelta(days=100)).date())
         r.save()
-        r = models.Rule(start_date=datetime.datetime.now().date(), cur_code='IRR', end_date=(datetime.datetime.now() + datetime.timedelta(days=100)).date())
+        r = models.Rule(start_date=datetime.datetime.now().date(), cur_code='IRR',
+                        end_date=(datetime.datetime.now() + datetime.timedelta(days=100)).date())
         r.save()
     if request.user.is_authenticated():
         return home(request)
@@ -282,8 +284,6 @@ def reset_password(request, token):
             })
         user = User.objects.get(id=int(user_id))
         user_profile = UserProfile.objects.get(user=user)
-        print (user_profile.mobile_number + " " + user_profile.national_code)
-        print (user_profile.date_of_birth.date())
         if user_profile.mobile_number != mobile_number:
             return render(request, 'interpay/reset_password.html', {
                 'error': 'mobile number is not valid.'
@@ -326,6 +326,38 @@ def retrieve_pass(request):
         if error_message:
             return HttpResponse(error_message)
         return HttpResponse("No such user")
+
+
+def activate_account(request, token):
+    global new_connection
+    new_connection = settings.connect_to_redis()
+    if request.method == 'POST':
+        birth_date = request.POST['birth_date']
+        national_id = request.POST['national_id']
+        mobile_number = request.POST['mobile_number']
+        new_password = request.POST['new_password']
+        re_new_password = request.POST['re_new_password']
+        user_id = request.POST['user']
+        user = User.objects.get(id=user_id)
+        up = UserProfile.objects.get(user=user)
+        up.date_of_birth = birth_date
+        up.national_code = national_id
+        up.mobile_number = mobile_number
+        up.is_active = True
+        up.save()
+        if new_password != re_new_password:
+            return render(request, 'interpay/reset_password.html', {
+                'error': 'Both fields must match. '
+            })
+        user.set_password(new_password)
+        user.save()
+        return render(request, 'interpay/index.html')
+    if request.method == "GET":
+        data = new_connection.get(token)
+        data = ast.literal_eval(data)
+        user = User.objects.get(id=int(data['user_id']))
+        return render(request, 'interpay/activate_account.html', {'user': user})
+        # return render(request, 'interpay/activate_account.html')
 
 
 def user_login(request):
@@ -442,7 +474,7 @@ def recharge_account(request, **message):
             code = zarinpal['status']
             print code
             if code == 100:
-                log.debug("redirecting to "+ zarinpal['ret'])
+                log.debug("redirecting to " + zarinpal['ret'])
                 return redirect(zarinpal['ret'])
     recharge_form = RechargeAccountForm()
     try:
@@ -532,14 +564,6 @@ def zarinpal_callback_handler(request, amount):
         return recharge_account(request, message="Transaction failed or canceled by you.")
 
 
-# @login_required()
-# def (request):
-#     print 'post', request.POST
-#     user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
-#     deposit_set = models.Deposit.objects.filter(banker=user_profile)
-#     return render(request, "top_up.html", {'deposit_set': deposit_set})
-
-
 @login_required()
 def bank_accounts(request):
     user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
@@ -603,10 +627,10 @@ def bank_accounts(request):
                     # for other_account in BankAccount.objects.filter(owner=account.owner, method='Debit')
 
     bank_account_form = CreateBankAccountForm()
-    bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW)\
+    bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW) \
         .order_by('name')
     return render(request, "interpay/bank_accounts.html",
-                  {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form, 'emessage': mymessage })
+                  {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form, 'emessage': mymessage})
 
 
 @login_required
@@ -637,15 +661,14 @@ def wallets(request):
 
 @login_required()
 def wallet(request, wallet_id, recom=None):
-
     # print "wallet function"
     ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
     # print recom
 
-    if request.method=="GET":
+    if request.method == "GET":
         recom = request.GET.get("recom")
     print recom
-    if recom ==None:
+    if recom == None:
         context = {
             'account': ba,
             'recommended': 0,
@@ -660,6 +683,7 @@ def wallet(request, wallet_id, recom=None):
 
     return render(request, "interpay/wallet.html", context)
 
+
 @login_required()
 def wallet_recommended(request, wallet_id):
     context = {
@@ -669,6 +693,28 @@ def wallet_recommended(request, wallet_id):
     }
     return render(request, "interpay/wallet.html", context)
 
+
+@login_required()
+def withdraw_pending_deposit(request):
+    if request.method == 'POST':
+        print ('entered post')
+        deposit_id = request.POST.get('deposit_id')
+        deposit = Deposit.objects.get(id=deposit_id)
+        deposit.status = Deposit.COMPLETED
+        deposit.save()
+        account = deposit.account
+
+        context = {
+            'account_id': account.id,
+            'transaction_status': 'Requested amount was withdrawn successfully.',
+            'account': account,
+            'deposit_set': Deposit.objects.filter(account=account),
+            'deposit_id': deposit.id,
+            'withdraw_set': Withdraw.objects.filter(account=account),
+        }
+
+        return render(request, 'interpay/wallet.html', context)
+    return HttpResponseRedirect('../')
 
 @login_required()
 def actual_convert(request):
@@ -684,8 +730,14 @@ def actual_convert(request):
                               'error': 'Please enter a valid number.',
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
-
+        if amount <= 0:
+            return render(request, "interpay/wallet.html",
+                          {
+                              'error': 'Entered Number should be greater that zero.',
+                              'account': BankAccount.objects.get(account_id=account_id),
+                          })
         cur_account = BankAccount.objects.get(account_id=account_id)
+
         if cur_account.balance < amount:
             return render(request, "interpay/wallet.html",
                           {
@@ -719,14 +771,15 @@ def actual_convert(request):
         context = {
             'account_id': destination_account.account_id.__str__(),
             'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
-            'account': BankAccount.objects.get(account_id=account_id)
+            'account': BankAccount.objects.get(account_id=account_id),
+            'deposit_set': models.Deposit.objects.filter(account=cur_account),
         }
         return render(request, "interpay/wallet.html", context)
     else:
         return render(request, "interpay/wallet.html",
-                          {
-                              'error': 'Invalid GET Request. Contact Admin',
-                          })
+                      {
+                          'error': 'Invalid GET Request. Contact Admin',
+                      })
 
 
 @login_required()
