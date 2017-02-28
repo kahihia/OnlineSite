@@ -127,16 +127,21 @@
 
 #name {
     float: left;
-    width: 25%;
+    width: 20%;
 }
 
 #login-id {
-    width: 35%;
+    width: 15%;
 }
 
 #interpay-id {
     float: left;
-    width: 25%;
+    width: 10%;
+}
+
+#Email{
+    float: left;
+    width: 35%;
 }
 
 #logout {

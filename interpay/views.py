@@ -126,6 +126,11 @@ def register(request):
                        'registered': registered,
                        'thanks_msg': thanks_msg, 'redirect_to_home_msg': redirect_to_home_msg, 'activated': activated})
 
+@login_required()
+def edit(request):
+   return render(request, "interpay/edit.html")
+
+
 
 @login_required()
 def trans_history(request):
@@ -389,11 +394,11 @@ def user_login(request):
 
         if user:
             if user.is_active and user_profile.is_active:
-                login(request, user, None)
-                if request.LANGUAGE_CODE == 'en-gb':
+                 login(request, user, None)
+                 if request.LANGUAGE_CODE == 'en-gb':
                     return HttpResponseRedirect('/home/')
-                else:
-                    return HttpResponseRedirect('/fa-ir' + request.path)
+                 else:
+                    return HttpResponseRedirect('/fa-ir/home')
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
                     en_acc_disabled_msg = "Your account is disabled."
@@ -811,7 +816,59 @@ def random_code_gen():
     verif_code = randint(100000, 999999)
     return verif_code
 
-    # class RegistrationView(CreateView):
+
+@csrf_exempt
+def edit_profile(request):
+        if request.is_ajax():
+          if request.POST['action'] == 'change_name':
+            entered_name = request.POST.get('name')
+            user_profile = models.UserProfile.objects.get(user__username=request.user)
+            user_profile.user.first_name = entered_name
+            user_profile.user.save()
+            html = '<strong>Your name has changed successfully</strong><hr>'
+            result = {'html': html}
+            return HttpResponse(json.dumps(result))
+          if request.POST['action'] == 'change_last_name':
+                entered_last_name = request.POST.get('last_name')
+                user_profile = models.UserProfile.objects.get(user__username=request.user)
+                user_profile.user.last_name = entered_last_name
+                user_profile.user.save()
+                html = '<strong>Your last name has changed successfully</strong><hr>'
+                result = {'html': html}
+                return HttpResponse(json.dumps(result))
+          if request.POST['action'] == 'change_national_id':
+                entered_naional_id = request.POST.get('national_id')
+                user_profile = models.UserProfile.objects.get(user__username=request.user)
+                user_profile.national_code = entered_naional_id
+                user_profile.save()
+                html = '<strong>Your National id has changed successfully</strong><hr>'
+                result = {'html': html}
+                return HttpResponse(json.dumps(result))
+          if request.POST['action'] == 'change_national_photo':
+              entered_national_photo = request.POST.get('national_photo')
+              user_profile = models.UserProfile.objects.get(user__username=request.user)
+              user_profile.national_card_photo = entered_national_photo
+              user_profile.save()
+              html = '<strong>Your National photo has changed successfully</strong><hr>'
+              result = {'html': html}
+              return HttpResponse(json.dumps(result))
+          if request.POST['action'] == 'change_username':
+                entered_username = request.POST.get('username')
+                user_profile = models.UserProfile.objects.get(user__username=request.user)
+                user_profile.user.username = entered_username
+                user_profile.user.save()
+                html = '<strong>Your username has changed successfully</strong><hr>'
+                result = {'html': html}
+                return HttpResponse(json.dumps(result))
+
+
+
+
+
+
+
+
+                    # class RegistrationView(CreateView):
     #     template_name = '../templates/registeration_form.html'
     #     user_form = UserForm
     #     registration_form = RegistrationForm

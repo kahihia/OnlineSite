@@ -80,7 +80,7 @@
             {% block main-cont %}
 
                 <div class="col-xs-12" style="text-align: center  ">
-                    <h3 style="margin-top: 40px; font-family: IRAN-web">{% trans 'Welcome to Interpay Iran' %}- Launching First Quarter 2017</h3>
+                    <h3 style="margin-top: 40px; font-family: IRAN-web" >{% trans 'Welcome to Interpay Iran' %}- Launching First Quarter  {% ifequal LANGUAGE_CODE 'en-gb' %}<span style="font-family: Times New Roman, Times, serif">2017 {% else %}2017 {%  endifequal %}</span></h3>
 
                     <div class="form-wrapper" id="login-form-wrapper">
                         <div id="login-box-hdr" style="font-size: larger"><i class="fa fa-sign-in"
@@ -98,7 +98,11 @@
                             {% endif %}
                         {% endblock %}</div>
                         <hr>
-                        <form id="login_form" method="post" action="/login/">
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                         <form id="login_form" method="post" action="/login/">
+                        {% else %}
+                          <form id="login_form" method="post" action="/fa-ir/login/">
+                        {% endifequal %}
                             {% csrf_token %}
                             <div id="username-div"><input class="login-form-field" type="text" name="username"
                                                           id="username" value=""

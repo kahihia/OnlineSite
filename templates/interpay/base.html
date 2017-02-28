@@ -68,7 +68,9 @@
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
+            function profileFunction(){
 
+            }
             function myFunction() {
                 var x = document.getElementById("demo");
                 if (x.className.indexOf("w3-show") == -1) {
@@ -141,7 +143,7 @@
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
         <ul class="topnav">
-            <h1  style="margin-top: 0% ; margin-bottom: 3%">
+            <h1  style="margin-top: 0% ; margin-bottom: 2%">
               {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
@@ -157,10 +159,15 @@
              {% endblock %}
                 <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px">
             </h1>
-     <span style="float: right; font-family: IRAN-web" id="welcome-btn" class="col-xs-4 col-md-2">
-        {{ user.username }}{% trans "'s Profile" %}
-          <i class="fa fa-sort-down" aria-hidden="true"></i>
-      </span>
+     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-6 col-md-3">
+
+         {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a class="sidebar-links w3-hide-small" style="color: white" href="/edit">
+                {% else %}
+                    <a class="sidebar-links w3-hide-small" style="color: white" href="/fa-ir/edit">
+                {% endifequal %}
+          <span id = "inner_username">{{ user.username }}</span><span> {{ user_profile.national_code }}</span>{% trans "'s Profile" %}</a>
+      </div>
         </ul>
     </header>
 
@@ -379,7 +386,8 @@
                  {% endifequal %}
                     <a href="javascript:void(0);" onclick="myFunction()">☰</a>
                 </li>
-                <li  class="w3-hide-small" id="name">{% trans "Name" %}: {{ user.first_name }} {{ user.last_name }}</li>
+                <li  class="w3-hide-small" id="name">{% trans "Name" %}: <span id="inner_first_name">{{ user.first_name }}</span> <span id="inner_last_name"> {{ user.last_name }} </span> </li>
+                <li  class="w3-hide-small" id="Email">{% trans "Email" %}: {{user.email}}</li>
                 <li  class="w3-hide-small" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
                 <li  class="w3-hide-small" id="interpay-id">{% trans "InterPay ID" %}: </li>
                 <li  class="w3-hide-small" id="logout">
@@ -396,6 +404,7 @@
                 <ul class="w3-navbar pull-left w3-animate-left" style="width:30% ; background-color: #c9dedf">
                  {% endifequal %}
                 <li  id="name"> {{ user.first_name }} {{ user.last_name }}</li>
+                <li  id="Email">{% trans "Email" %}: {{ user.email }}</li>
                 <li  id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
                 <li  id="interpay-id">{% trans "InterPay ID" %}: </li>
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
