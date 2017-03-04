@@ -41,3 +41,15 @@ class Email:
         if user:
             return user[0]
         return False
+
+    def send_account_activation_email(self, email):
+        new_token = self.generate_token()
+        subject = "Account Activation"
+        text_content = "In order to activate your account, please click on the below link: "
+        html_content = render_to_string('interpay/account_activation_email.html', {
+            'token': new_token
+        })
+        mail = EmailMultiAlternatives(subject, text_content, 'info@rizpal.com', [email])
+        mail.attach_alternative(html_content, "text/html")
+        code = mail.send()
+        return code

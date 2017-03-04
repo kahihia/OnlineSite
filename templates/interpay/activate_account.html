@@ -1,0 +1,105 @@
+{% extends 'interpay/registeration_form.html' %}
+{% load staticfiles %}
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>InterPay Iran</title>
+    {% block CSS %}
+        <link rel="stylesheet" href="{% static 'interpay/css/index.css' %}">
+    {% endblock %}
+
+</head>
+<body>
+<header>
+    <div class="top-bar">
+        <div class="container" style="color: white;">
+            <b>{% block header_title %}
+                Welcome to InterPay Iran (Rizpardakht)
+            {% endblock %}</b>
+
+            <div class="row">
+                <div id="number" class="col-sm-6 col-xs-4"></div>
+                <div id="social" class="col-sm-6 col-xs-8"></div>
+            </div>
+        </div>
+    </div>
+    <nav></nav>
+</header>
+<section>
+    <div class="container">
+        <div class="row">
+            {% block main-cont %}
+
+                <div class="col-xs-12" style="text-align: center  ">
+
+                    <div class="form-wrapper" id="login-form-wrapper">
+                        <form method="post" action="/activate_account/1/">
+                            {% csrf_token %}
+                            <div id="login-box-hdr" style="font-size: larger"><i class="fa fa-sign-in"
+                                                                                 style="padding-right: 5px"
+                                                                                 aria-hidden="true"></i>
+                                {% trans 'Personal Information' %}
+                            </div>
+                            <hr>
+                            <label>Birth Date: </label>
+                            <div id="username-div"><input style="width:150px" class="login-form-field" type="date"
+                                                          name="birth_date"
+                                                          id="birth_date"/>
+                            </div>
+                            <label>National ID: </label>
+                            <div id="username-div"><input class="login-form-field" type="text" name="national_id"
+                                                          id="national_id" value=""
+                                                          placeholder="National ID" size="50"/>
+                            </div>
+                            <label>Mobile Number: </label>
+                            <div id="password-div"><input class="login-form-field" type="text"
+                                                          name="mobile_number"
+                                                          id="mobile_number" value=""
+                                                          placeholder="Mobile Number" size="50"/>
+                            </div>
+
+{#                            <div>#}
+{#                              {% trans 'Reset Password' %}#}
+{#                            </div>#}
+                            <div>{% block message %}
+                                {% if msg %}
+
+                                    <div class="form-msg"
+                                         style="padding: 10px 5px;color: red;font-size: small;margin-top: 5px"><i
+                                            class="fa fa-exclamation-triangle" style="color: red"
+                                            aria-hidden="true"></i> {{ msg }}</div>
+                                {% endif %}
+                            {% endblock %}</div>
+                            <hr>
+
+
+                            <label>New Password: </label>
+                            <div id="username-div"><input class="login-form-field" type="password" name="new_password"
+                                                          id="new_password" value=""
+                                                          placeholder="Username" size="50"/>
+                            </div>
+                            <label>Re-New Password: </label>
+                            <div id="password-div"><input class="login-form-field" type="password"
+                                                          name="re_new_password"
+                                                          id="re_new_password" value=""
+                                                          placeholder="Password" size="50"/>
+                            </div>
+
+
+                            <input type="hidden" name="user" value="{{ user.id }}">
+                            <input
+                                    class="btn btn-info" type="submit"
+                                    value="{% trans 'Activate Account' %}"/>
+                        </form>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

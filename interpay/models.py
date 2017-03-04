@@ -17,12 +17,13 @@ from collections import defaultdict
 from currencies.utils import convert
 from django.db import models
 from decimal import Decimal
-#import convert
+# import convert
 import random
 import time
 import logging
 
 log = logging.getLogger('interpay')
+
 
 class Manager(BaseUserManager):
     def create_user(self, USERNAME_FIELD, email, password):
@@ -106,7 +107,8 @@ class Rule(models.Model):
 
         except Rule.DoesNotExist:
             log.info('Warning: default comission rule is being used')
-            r = Rule(cur_code=_code, start_date=datetime.now().date(), end_date=(datetime.now() + timedelta(days=1)).date())
+            r = Rule(cur_code=_code, start_date=datetime.now().date(),
+                     end_date=(datetime.now() + timedelta(days=1)).date())
 
         return r
 
@@ -180,14 +182,14 @@ class BankAccount(models.Model):
             # print 'count of sets fix withdraw outcome then deposit'
 
             result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code, self))
-            result -= sum(x.amount for x in self.outcome_transfers.all() )#.on_date_out(current_date, self))
+            result -= sum(x.amount for x in self.outcome_transfers.all())  # .on_date_out(current_date, self))
 
             # result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             # result += sum(x.amount for x in self.deposit_set.all())
             dep_set = self.deposit_set.filter(status=Deposit.COMPLETED)
             result += sum(x.amount for x in dep_set)
             # result += sum(x.commission for x in dep_set)  No need to sum comission as amount = total - comission
-            result += sum(x.amount for x in self.income_transfers.all())    #on_date_in(current_date, self))
+            result += sum(x.amount for x in self.income_transfers.all())  # on_date_in(current_date, self))
 
             current_date += timedelta(days=1)
             break
@@ -198,33 +200,31 @@ class BankAccount(models.Model):
 
     @property
     def commission(self):
-            result = 0
-            dep_set = self.deposit_set.filter(status=Deposit.COMPLETED)
-            result += sum(x.commission for x in dep_set)
-            return result
+        result = 0
+        dep_set = self.deposit_set.filter(status=Deposit.COMPLETED)
+        result += sum(x.commission for x in dep_set)
+        return result
 
 
 
-            # @property
-    # def debt(self):
-    #     assert self.method == self.CREDIT
-    #     today = time.timezone.now()
-    #     rule = Rule.on_date(self.when_opened)
-    #     result = 0
-    #     current_date = self.when_opened
-    #     while current_date <= today:
-    #         result += sum(x.amount for x in self.withdraw_set.on_date(current_date))
-    #         result += sum(x.amount for x in self.outcome_transfers.on_date(current_date))
-    #         result -= sum(x.amount for x in self.deposit_set.on_date(current_date))
-    #         result -= sum(x.amount for x in self.income_transfers.on_date(current_date))
-    #         result *= rule.credit_percent
-    #         current_date += timedelta(days=1)
-    #     return result
+        # @property
+        # def debt(self):
+        #     assert self.method == self.CREDIT
+        #     today = time.timezone.now()
+        #     rule = Rule.on_date(self.when_opened)
+        #     result = 0
+        #     current_date = self.when_opened
+        #     while current_date <= today:
+        #         result += sum(x.amount for x in self.withdraw_set.on_date(current_date))
+        #         result += sum(x.amount for x in self.outcome_transfers.on_date(current_date))
+        #         result -= sum(x.amount for x in self.deposit_set.on_date(current_date))
+        #         result -= sum(x.amount for x in self.income_transfers.on_date(current_date))
+        #         result *= rule.credit_percent
+        #         current_date += timedelta(days=1)
+        #     return result
 
 
 class OperationManager(models.Manager):
-
-
     def on_date_c(self, ts, cc, bk=False):
         print self.filter(date__gte=ts).count()
         if bk:
@@ -234,6 +234,7 @@ class OperationManager(models.Manager):
 
     def on_date_out(self, date, act):
         return (super(OperationManager, self).get_queryset()).filter(date__gte=date, sender=act)
+
     def on_date_in(self, date, act):
         return (super(OperationManager, self).get_queryset()).filter(date__gte=date, receiver=act)
 
@@ -263,26 +264,33 @@ class Deposit(models.Model):
     tracking_code = models.IntegerField(default='0')
 
     commission = models.FloatField(default=0)
-    status = models.SmallIntegerField(default=COMPLETED)
+    status = models.IntegerField(default=COMPLETED)
     objects = OperationManager()
 
     def total_amount(self):
         return self.amount + self.commission
 
     def calculate_comission(self):
-        #print datetime.datetime.strptime(self.date, 'Y-%m-%d').date()
-        #print type(self.date)
+        # print datetime.datetime.strptime(self.date, 'Y-%m-%d').date()
+        # print type(self.date)
         # http://127.0.0.1:8000/
         thedate = self.date
         if type(self.date) is str:
             log.debug("Deposit object has a string date")
             thedate = datetime.strptime(self.date.__str__()[:11], '%Y-%m-%d').date()
         rule = Rule.on_date_s(thedate, self.cur_code)
-        #print 'deposit comissiom,', rule.deposit_charge_percent
+        # print 'deposit comissiom,', rule.deposit_charge_percent
         # TODO check if comission less than 0.01
         self.commission = (rule.deposit_charge_percent * 0.01) * self.amount
         self.amount = self.amount - self.commission
-        self.save();
+        self.save()
+
+    # def __str__(self):
+    #     if self.account.owner.user.first_name or self.account.owner.user.last_name:
+    #         return self.account.owner.user.first_name + " " + self.account.owner.user.last_name
+    #     else:
+    #         return self.account.id
+
 
 class Withdraw(models.Model):
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
@@ -307,7 +315,7 @@ class WithdrawalRequest(models.Model):
     date = models.DateTimeField(auto_now=True)
     amount = models.IntegerField()
 
-#
-# class MerchantOrder(models.Model):
-#     number = models.CharField(max_length=20)
-#     deposit = models.ForeignKey(Deposit)
+    #
+    # class MerchantOrder(models.Model):
+    #     number = models.CharField(max_length=20)
+    #     deposit = models.ForeignKey(Deposit)
