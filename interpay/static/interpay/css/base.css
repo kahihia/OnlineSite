@@ -8,12 +8,12 @@
 }
 
 .flag {
-        height:1%;
-        width:2%;
+        height:26%;
+        width:3%;
 }
 @media screen and (min-width: 800px) {
     .flag {
-       height:1.5%;
+       height:25%;
        width:1.53%;
     }
 }
@@ -72,10 +72,7 @@
 
 }
 
-#welcome-btn {
-    background: #2e6589;
-    color: white;
-}
+
 
 
 #sidebar {
@@ -181,6 +178,17 @@
     color: rgb(46, 98, 164);
 }
 
+.topnav {
+
+     height: 5%;
+}
+
+@media screen and (min-width: 800px) {
+    .topnav {
+        height: 7%;
+    }
+}
+
 ul.topnav {
   list-style-type: none;
   margin: 0;
@@ -189,42 +197,17 @@ ul.topnav {
   background-color: #438eb9;
 }
 
-ul.topnav span {float: left;}
 
-ul.topnav span a {
-  display: inline-block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  transition: 0.3s;
-  font-size: 17px;
-}
-
-ul.topnav span a:hover {background-color: #555;}
-
-ul.topnav sapn.icon {display: none;}
 
 @media screen and (max-width:680px) {
-  ul.topnav sapn:not(:first-child) {display: none;}
-  ul.topnav sapn.icon {
-    float: right;
-    display: inline-block;
-  }
+
 }
 
 @media screen and (max-width:680px) {
   ul.topnav.responsive {position: relative;}
-  ul.topnav.responsive sapn.icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
+
   ul.topnav.responsive li {
     float: none;
     display: inline;
   }
-  ul.topnav.responsive sapn a {
-      display: block;
-      text-align: left;
-  }}
+  }
