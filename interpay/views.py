@@ -62,19 +62,20 @@ def test():
 
 
 def register(request):
-    print ("test")
     registered = False
     if request.method == 'POST':
-        print ("pooost")
         user_form = UserForm(data=request.POST)
         registration_form = RegistrationForm(data=request.POST)
-
-        # gcapcha = request.POST['g-recaptcha-response']
-        # post_data = {'secret': '6LfHKRMUAAAAAJG-cEV-SPcophf8jyXvrcghDtur', 'response': gcapcha}
-        # response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=post_data)
-        # content = response.json()
-        # if not content['success']:
-        #     return render(request, "interpay/registeration_form.html", {'error': 'Captcha is not entered.'})
+        if not settings.DEBUG:
+            gcapcha = request.POST['g-recaptcha-response']
+            # post  https://www.google.com/recaptcha/api/siteverify
+            post_data = {'secret': '6LfHKRMUAAAAAJG-cEV-SPcophf8jyXvrcghDtur', 'response': gcapcha}
+            response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=post_data)
+            content = response.json()
+            if not content['success']:
+                return render(request, "interpay/registeration_form.html",
+                              {'error': 'Captcha is not entered.', 'user_form': user_form,
+                               'profile_form': registration_form, })
 
         if user_form.is_valid() and registration_form.is_valid():
             user = user_form.save()
@@ -86,7 +87,6 @@ def register(request):
             # user_profile.date_of_birth = user_profile.cleaned_data['date_of_birth']
             user_profile.password = user.password
             user_profile.user = user
-
             if 'picture' in request.FILES:
                 user_profile.picture = request.FILES['picture']
             if 'national_card_photo' in request.FILES:
@@ -126,10 +126,10 @@ def register(request):
                        'registered': registered,
                        'thanks_msg': thanks_msg, 'redirect_to_home_msg': redirect_to_home_msg, 'activated': activated})
 
+
 @login_required()
 def edit(request):
-   return render(request, "interpay/edit.html")
-
+    return render(request, "interpay/edit.html")
 
 
 @login_required()
@@ -394,10 +394,10 @@ def user_login(request):
 
         if user:
             if user.is_active and user_profile.is_active:
-                 login(request, user, None)
-                 if request.LANGUAGE_CODE == 'en-gb':
+                login(request, user, None)
+                if request.LANGUAGE_CODE == 'en-gb':
                     return HttpResponseRedirect('/home/')
-                 else:
+                else:
                     return HttpResponseRedirect('/fa-ir/home')
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
@@ -608,7 +608,7 @@ def bank_accounts(request):
                                                                               method=BankAccount.WITHDRAW)
                         return render(request, 'interpay/bank_accounts.html',
                                       {'error': 'No debit account.', 'bank_accounts_set': bank_accounts_set,
-                                       'form': bank_account_form, 'emessage': mymessage})
+                                       'form': bank_account_form, 'emessage': mymessage, 'account_id': account_id})
 
                     bank_account_form = CreateBankAccountForm()
                     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile,
@@ -616,7 +616,6 @@ def bank_accounts(request):
 
                     src_account = debit_accounts[0]
                     if src_account.balance < amount:
-                        print ('error')
                         return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,
                                                                                'form': bank_account_form,
                                                                                'emessage': mymessage,
@@ -629,7 +628,6 @@ def bank_accounts(request):
                                                                            'emessage': mymessage,
                                                                            'success_message': 'Your request successfully saved.',
                                                                            'account_id': account_id})
-                    # for other_account in BankAccount.objects.filter(owner=account.owner, method='Debit')
 
     bank_account_form = CreateBankAccountForm()
     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW) \
@@ -720,6 +718,7 @@ def withdraw_pending_deposit(request):
 
         return render(request, 'interpay/wallet.html', context)
     return HttpResponseRedirect('../')
+
 
 @login_required()
 def actual_convert(request):
@@ -819,8 +818,8 @@ def random_code_gen():
 
 @csrf_exempt
 def edit_profile(request):
-        if request.is_ajax():
-          if request.POST['action'] == 'change_name':
+    if request.is_ajax():
+        if request.POST['action'] == 'change_name':
             entered_name = request.POST.get('name')
             user_profile = models.UserProfile.objects.get(user__username=request.user)
             user_profile.user.first_name = entered_name
@@ -828,38 +827,38 @@ def edit_profile(request):
             html = '<strong>Your name has changed successfully</strong><hr>'
             result = {'html': html}
             return HttpResponse(json.dumps(result))
-          if request.POST['action'] == 'change_last_name':
-                entered_last_name = request.POST.get('last_name')
-                user_profile = models.UserProfile.objects.get(user__username=request.user)
-                user_profile.user.last_name = entered_last_name
-                user_profile.user.save()
-                html = '<strong>Your last name has changed successfully</strong><hr>'
-                result = {'html': html}
-                return HttpResponse(json.dumps(result))
-          if request.POST['action'] == 'change_national_id':
-                entered_naional_id = request.POST.get('national_id')
-                user_profile = models.UserProfile.objects.get(user__username=request.user)
-                user_profile.national_code = entered_naional_id
-                user_profile.save()
-                html = '<strong>Your National id has changed successfully</strong><hr>'
-                result = {'html': html}
-                return HttpResponse(json.dumps(result))
-          if request.POST['action'] == 'change_national_photo':
-              entered_national_photo = request.POST.get('national_photo')
-              user_profile = models.UserProfile.objects.get(user__username=request.user)
-              user_profile.national_card_photo = entered_national_photo
-              user_profile.save()
-              html = '<strong>Your National photo has changed successfully</strong><hr>'
-              result = {'html': html}
-              return HttpResponse(json.dumps(result))
-          if request.POST['action'] == 'change_username':
-                entered_username = request.POST.get('username')
-                user_profile = models.UserProfile.objects.get(user__username=request.user)
-                user_profile.user.username = entered_username
-                user_profile.user.save()
-                html = '<strong>Your username has changed successfully</strong><hr>'
-                result = {'html': html}
-                return HttpResponse(json.dumps(result))
+        if request.POST['action'] == 'change_last_name':
+            entered_last_name = request.POST.get('last_name')
+            user_profile = models.UserProfile.objects.get(user__username=request.user)
+            user_profile.user.last_name = entered_last_name
+            user_profile.user.save()
+            html = '<strong>Your last name has changed successfully</strong><hr>'
+            result = {'html': html}
+            return HttpResponse(json.dumps(result))
+        if request.POST['action'] == 'change_national_id':
+            entered_naional_id = request.POST.get('national_id')
+            user_profile = models.UserProfile.objects.get(user__username=request.user)
+            user_profile.national_code = entered_naional_id
+            user_profile.save()
+            html = '<strong>Your National id has changed successfully</strong><hr>'
+            result = {'html': html}
+            return HttpResponse(json.dumps(result))
+        if request.POST['action'] == 'change_national_photo':
+            entered_national_photo = request.POST.get('national_photo')
+            user_profile = models.UserProfile.objects.get(user__username=request.user)
+            user_profile.national_card_photo = entered_national_photo
+            user_profile.save()
+            html = '<strong>Your National photo has changed successfully</strong><hr>'
+            result = {'html': html}
+            return HttpResponse(json.dumps(result))
+        if request.POST['action'] == 'change_username':
+            entered_username = request.POST.get('username')
+            user_profile = models.UserProfile.objects.get(user__username=request.user)
+            user_profile.user.username = entered_username
+            user_profile.user.save()
+            html = '<strong>Your username has changed successfully</strong><hr>'
+            result = {'html': html}
+            return HttpResponse(json.dumps(result))
 
 
 
@@ -868,42 +867,42 @@ def edit_profile(request):
 
 
 
-                    # class RegistrationView(CreateView):
-    #     template_name = '../templates/registeration_form.html'
-    #     user_form = UserForm
-    #     registration_form = RegistrationForm
-    #     model = UserProfile
-    #     registered = False
-    #
-    #     def post(self, request, *args, **kwargs):
-    #         print("post called")
-    #         user_form = UserForm(data=request.POST)
-    #         registration_form = RegistrationForm(data=request.POST)
-    #         return self.my_form_valid(user_form)
-    #
-    #     def my_form_valid(self, user_form, request):
-    #         print("is valid called")
-    #         user = user_form.save()
-    #         user.set_password(user.password)
-    #         user.save()
-    #
-    #         user_profile = self.registration_form.save(commit=False)
-    #         user_profile.email = user_form.cleaned_data['email']
-    #         user_profile.password = user.password
-    #
-    #         if user.is_active:
-    #             user_profile.is_active = True
-    #         user_profile.user = user
-    #
-    #         if 'picture' in request.FILES:
-    #             user_profile.picture = request.FILES['picture']
-    #         user_profile.save()
-    #         self.registered = True
-    #
-    #         new_user = authenticate(username=user_form.cleaned_data['username'],
-    #                                 password=user_form.cleaned_data['password'], )
-    #         login(request, new_user)
-    #
-    #     def get(self):
-    #         user_form = UserForm()
-    #         registration_form = RegistrationForm()
+            # class RegistrationView(CreateView):
+            #     template_name = '../templates/registeration_form.html'
+            #     user_form = UserForm
+            #     registration_form = RegistrationForm
+            #     model = UserProfile
+            #     registered = False
+            #
+            #     def post(self, request, *args, **kwargs):
+            #         print("post called")
+            #         user_form = UserForm(data=request.POST)
+            #         registration_form = RegistrationForm(data=request.POST)
+            #         return self.my_form_valid(user_form)
+            #
+            #     def my_form_valid(self, user_form, request):
+            #         print("is valid called")
+            #         user = user_form.save()
+            #         user.set_password(user.password)
+            #         user.save()
+            #
+            #         user_profile = self.registration_form.save(commit=False)
+            #         user_profile.email = user_form.cleaned_data['email']
+            #         user_profile.password = user.password
+            #
+            #         if user.is_active:
+            #             user_profile.is_active = True
+            #         user_profile.user = user
+            #
+            #         if 'picture' in request.FILES:
+            #             user_profile.picture = request.FILES['picture']
+            #         user_profile.save()
+            #         self.registered = True
+            #
+            #         new_user = authenticate(username=user_form.cleaned_data['username'],
+            #                                 password=user_form.cleaned_data['password'], )
+            #         login(request, new_user)
+            #
+            #     def get(self):
+            #         user_form = UserForm()
+            #         registration_form = RegistrationForm()
