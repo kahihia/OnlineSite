@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" media="all and (max-width: 1024px)" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
@@ -68,10 +68,7 @@
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
-            function profileFunction(){
-
-            }
-            function myFunction() {
+            function sidebarfun() {
                 var x = document.getElementById("demo");
                 if (x.className.indexOf("w3-show") == -1) {
                     x.className += " w3-show";
@@ -86,7 +83,7 @@
                  alert("no")
              }
 */            }
-            function myFunction1() {
+            function sidebarfunc1() {
                 var x = document.getElementById("demoo");
                 var y = document.getElementById("sidebar1");
                 var z = document.getElementById("cont-body");
@@ -159,14 +156,16 @@
              {% endblock %}
                 <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px">
             </h1>
-     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-6 col-md-3">
+     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
 
          {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <a class="sidebar-links w3-hide-small" style="color: white" href="/edit">
+                    <a class="sidebar-links" style="color: white" href="/edit">
                 {% else %}
-                    <a class="sidebar-links w3-hide-small" style="color: white" href="/fa-ir/edit">
+                    <a class="sidebar-links" style="color: white" href="/fa-ir/edit">
                 {% endifequal %}
-          <span id = "inner_username">{{ user.username }}</span><span> {{ user_profile.national_code }}</span>{% trans "'s Profile" %}</a>
+     <div style="float: right ; padding-right: 4%">
+          <span id = "inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></a>
+     </div>
       </div>
         </ul>
     </header>
@@ -177,7 +176,7 @@
              {% else %}
         <div  id="sidebar1" class=" pull-right w3-navbar w3-hide-medium w3-hide-large w3-right">
     {% endifequal %}
-            <a  id="open" href="javascript:void(0);" onclick="myFunction1()">{% trans "menu"%}</a>
+            <a  id="open" href="javascript:void(0);" onclick="sidebarfunc1()">{% trans "menu"%}</a>
         </div>
     </div>
     {% ifequal LANGUAGE_CODE 'en-gb' %}
@@ -282,9 +281,9 @@
                     <ul id="sidebar-entries">
                         <li class="  w3-hide-medium w3-hide-large">
                           {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a  class="w3-closenav" id="close"  style="float:left" href="javascript:void(0);" onclick="myFunction1()">
+                            <a  class="w3-closenav" id="close"  style="float:left" href="javascript:void(0);" onclick="sidebarfunc1()">
                           {% else %}
-                            <a  class=" pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="myFunction1()">
+                            <a  class=" pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="sidebarfunc1()">
                            {% endifequal %}
                            {% trans "Close" %}
                             </a>
@@ -384,7 +383,7 @@
                 {% else %}
                 <li class="w3-hide-medium w3-hide-large w3-opennav w3-left">
                  {% endifequal %}
-                    <a href="javascript:void(0);" onclick="myFunction()">☰</a>
+                    <a href="javascript:void(0);" onclick="sidebarfun()">☰</a>
                 </li>
                 <li  class="w3-hide-small" id="name">{% trans "Name" %}: <span id="inner_first_name">{{ user.first_name }}</span> <span id="inner_last_name"> {{ user.last_name }} </span> </li>
                 <li  class="w3-hide-small" id="Email">{% trans "Email" %}: {{user.email}}</li>
