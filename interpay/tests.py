@@ -125,24 +125,24 @@ class WithdrawalRequestTestCase(TestCase):
         self.assertEqual(response.context['error'], "No debit account.")
 
 
-class RegistrationTestCase(TestCase):
-    def setUp(self):
-        print ("test started")
-        settings.DEBUG = True
-        user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
-        up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
-                                        email='a@b.com', mobile_number='09102118797')
-
-    def test_sign_up(self):
-        c = Client()
-
-        response = c.post('/register/',
-                          {'username': 'ali', 'first_name': 'Ali', 'last_name': 'Alavi', 'email': 'ali@gmail.com',
-                           'password': '1731', 'confirm_password': '1731', 'date_of_birth': datetime.date(1920, 1, 1),
-                           'country': 'AF',
-                           'national_code': '0440282322', 'mobile_number': '09125779876'})
-        user = UserProfile.objects.all()
-        self.assertEqual(user.__len__(), 2)
+# class RegistrationTestCase(TestCase):
+#     def setUp(self):
+#         print ("test started")
+#         settings.DEBUG = True
+#         user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+#         up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
+#                                         email='a@b.com', mobile_number='09102118797')
+#
+#     def test_sign_up(self):
+#         c = Client()
+#
+#         response = c.post('/register/',
+#                           {'username': 'ali', 'first_name': 'Ali', 'last_name': 'Alavi', 'email': 'ali@gmail.com',
+#                            'password': '1731', 'confirm_password': '1731', 'date_of_birth': datetime.date(1920, 1, 1),
+#                            'country': 'AF',
+#                            'national_code': '0440282322', 'mobile_number': '09125779876'})
+#         user = UserProfile.objects.all()
+#         self.assertEqual(user.__len__(), 2)
 
 
 class APITestCase(TestCase):
