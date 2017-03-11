@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from interpay.forms import RegistrationForm, UserForm, CaptchaForm
 from django.views.decorators.csrf import csrf_exempt
+from Validation.Validation import Validation
 from firstsite.SMS import ds, api
 from interpay import models
 from smtplib import SMTPRecipientsRefused
@@ -23,6 +24,7 @@ from django.core.mail import send_mail
 from interpay.Email import Email
 # from django.conf import settings
 from firstsite import settings
+# from periodically.decorators import *
 import json
 import time
 import random
@@ -31,12 +33,44 @@ import ast
 import datetime
 import logging
 import requests
+import BeautifulSoup
+import xml.sax
 
 log = logging.getLogger('interpay')
 
 
+# @every(seconds=10)
+def temp():
+    response = requests.get('http://kajex.com/')
+    soup = BeautifulSoup.BeautifulSoup(response.content)
+    table = soup.findAll("table", {"id": "arz_table"})[0]
+    x = 0
+    buy_price = ""
+    sell_price = ""
+    for td in table.findAll('td'):
+        if td.string == "EUR":
+            x += 1
+            continue
+        if x == 1:
+            buy_price = td.contents[0]
+            x += 1
+            continue
+        if x == 2:
+            sell_price = td.contents[0]
+            break
+    try:
+        sell_price = int(sell_price)
+        buy_price = int(buy_price)
+    except:
+        return HttpResponse("An error was occured.")
+
+    main_price = (sell_price + buy_price) / 2
+    print (main_price)
+
+
 def main_page(request):
     # test()
+    temp()
     if (models.Rule.objects.count() == 0):
         log.debug('1Initialising comission because no Rule objects exists')
         r = models.Rule(start_date=datetime.datetime.now().date(),
@@ -51,6 +85,7 @@ def main_page(request):
 
 
 def test():
+    print ("test executed")
     user = User.objects.get(username="arman")
     up = UserProfile.objects.get(user=user)
     ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
@@ -218,11 +253,18 @@ def pay_user(request):
             comment = ""
         if not amount:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
-        if not amount.isdigit():
-            return render(request, 'interpay/pay_user.html', {'error': 'Please enter a valid number for amount.'})
+
+        try:
+            amount = float(amount)
+        except ValueError:
+            return render(request, "interpay/pay_user.html",
+                          {'error': Validation.check_validation('invalid_amount')})
+
+        # if not amount.isdigit():
+        #     return render(request, 'interpay/pay_user.html', {'error': Validation.check_validation('invalid_amount')})
         if int(amount) <= 0:
             return render(request, 'interpay/pay_user.html',
-                          {'error': 'Please enter a number greater than zero for amount.'})
+                          {'error': Validation.check_validation('non_positive')})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
@@ -257,7 +299,8 @@ def pay_user(request):
             # d = Deposit(account=src_account, amount=1000.00, banker=UserProfile.objects.get(user=request.user), date=datetime.datetime.now(), cur_code='USD')
             # d.save()
             if src_account.balance < int(amount):
-                return render(request, 'interpay/pay_user.html', {'error': 'Your balance is less than entered amount.'})
+                return render(request, 'interpay/pay_user.html',
+                              {'error': Validation.check_validation('insufficient_balance')})
             if destination_account:
                 MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
                                              date=datetime.datetime.now(),
@@ -731,13 +774,13 @@ def actual_convert(request):
         except ValueError:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': 'Please enter a valid number.',
+                              'error': Validation.check_validation('invalid_amount'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         if amount <= 0:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': 'Entered Number should be greater that zero.',
+                              'error': Validation.check_validation('non_positive'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         cur_account = BankAccount.objects.get(account_id=account_id)
@@ -745,7 +788,7 @@ def actual_convert(request):
         if cur_account.balance < amount:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': 'Your balance is not sufficient.',
+                              'error': Validation.check_validation('insufficient_balance'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         user_profile = models.UserProfile.objects.get(user=request.user)
