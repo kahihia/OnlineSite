@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from interpay.forms import RegistrationForm, UserForm, CaptchaForm
 from django.views.decorators.csrf import csrf_exempt
-from interpay import Validation
+from interpay.Validation import Validation
 from firstsite.SMS import ds, api
 from interpay import models
 from smtplib import SMTPRecipientsRefused
@@ -258,13 +258,13 @@ def pay_user(request):
             amount = float(amount)
         except ValueError:
             return render(request, "interpay/pay_user.html",
-                          {'error': Validation.check_validation('invalid_amount')})
+                          {'error': Validation.Validation.check_validation('invalid_amount')})
 
         # if not amount.isdigit():
         #     return render(request, 'interpay/pay_user.html', {'error': Validation.check_validation('invalid_amount')})
         if int(amount) <= 0:
             return render(request, 'interpay/pay_user.html',
-                          {'error': Validation.check_validation('non_positive')})
+                          {'error': Validation.Validation.check_validation('non_positive')})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
@@ -300,7 +300,7 @@ def pay_user(request):
             # d.save()
             if src_account.balance < int(amount):
                 return render(request, 'interpay/pay_user.html',
-                              {'error': Validation.check_validation('insufficient_balance')})
+                              {'error': Validation.Validation.check_validation('insufficient_balance')})
             if destination_account:
                 MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
                                              date=datetime.datetime.now(),
@@ -774,13 +774,13 @@ def actual_convert(request):
         except ValueError:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': Validation.check_validation('invalid_amount'),
+                              'error': Validation.Validation.check_validation('invalid_amount'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         if amount <= 0:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': Validation.check_validation('non_positive'),
+                              'error': Validation.Validation.check_validation('non_positive'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         cur_account = BankAccount.objects.get(account_id=account_id)
@@ -788,7 +788,7 @@ def actual_convert(request):
         if cur_account.balance < amount:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': Validation.check_validation('insufficient_balance'),
+                              'error': Validation.Validation.check_validation('insufficient_balance'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         user_profile = models.UserProfile.objects.get(user=request.user)
