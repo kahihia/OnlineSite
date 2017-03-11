@@ -53,11 +53,7 @@ class PaymentTestCase(TestCase):
         post_response = c.post('/pay_user/',
                                {'currency': 'USD', 'amount': 1500, 'email': 'b@c.com', 'comment': 'new payment',
                                 'mobile': '10'})
-        # print (post_response.context['error'],'fasdfasdf')
-        # print (dest_account.)
-        self.assertEqual(post_response.context['error'], 'Your balance is less than entered amount.')
-        # cr2 = Currency.objects.create(code="IRR", name="rial", factor=39000)
-        # cr2.save()
+        self.assertEqual(post_response.context['error'], 'Your balance is not sufficient.')
 
 
 class ConversionTestCase(TestCase):
