@@ -53,11 +53,7 @@ class PaymentTestCase(TestCase):
         post_response = c.post('/pay_user/',
                                {'currency': 'USD', 'amount': 1500, 'email': 'b@c.com', 'comment': 'new payment',
                                 'mobile': '10'})
-        # print (post_response.context['error'],'fasdfasdf')
-        # print (dest_account.)
-        self.assertEqual(post_response.context['error'], 'Your balance is less than entered amount.')
-        # cr2 = Currency.objects.create(code="IRR", name="rial", factor=39000)
-        # cr2.save()
+        self.assertEqual(post_response.context['error'], 'Your balance is not sufficient.')
 
 
 class ConversionTestCase(TestCase):
@@ -102,6 +98,47 @@ class LoginTestCase(TestCase):
         #     print 'ignoring captcha exception for now'
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/home/')
+
+
+class WithdrawalRequestTestCase(TestCase):
+    def setUp(self):
+        settings.DEBUG = True
+        user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+        up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
+                                        email='a@b.com', mobile_number='09102118797')
+        ba = BankAccount.objects.create(account_id="123", owner=up, cur_code='USD', method=BankAccount.WITHDRAW)
+
+    def test_no_debit(self):
+        c = Client()
+        c.login(username='arman', password='1731')
+        account = BankAccount.objects.all()
+        account_id = account[0].account_id
+        response = c.post('/bank-accounts/',
+                          {
+                              'account_id': account_id,
+                              'amount': 100
+                          })
+        self.assertEqual(response.context['error'], "No debit account.")
+
+
+# class RegistrationTestCase(TestCase):
+#     def setUp(self):
+#         print ("test started")
+#         settings.DEBUG = True
+#         user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+#         up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
+#                                         email='a@b.com', mobile_number='09102118797')
+#
+#     def test_sign_up(self):
+#         c = Client()
+#
+#         response = c.post('/register/',
+#                           {'username': 'ali', 'first_name': 'Ali', 'last_name': 'Alavi', 'email': 'ali@gmail.com',
+#                            'password': '1731', 'confirm_password': '1731', 'date_of_birth': datetime.date(1920, 1, 1),
+#                            'country': 'AF',
+#                            'national_code': '0440282322', 'mobile_number': '09125779876'})
+#         user = UserProfile.objects.all()
+#         self.assertEqual(user.__len__(), 2)
 
 
 class APITestCase(TestCase):

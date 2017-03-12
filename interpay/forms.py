@@ -73,7 +73,7 @@ class UserForm(forms.ModelForm):
 
 class RegistrationForm(forms.ModelForm):
     date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1920, 2013)))
-    captcha = CaptchaField()
+    # captcha = CaptchaField()
     class Meta:
         model = UserProfile
         exclude = ['user', 'password', 'email', 'is_active', 'date_joined', 'picture']
