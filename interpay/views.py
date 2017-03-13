@@ -763,15 +763,6 @@ def wallet(request, wallet_id, recom=None):
     return render(request, "interpay/wallet.html", context)
 
 
-@login_required()
-def wallet_recommended(request, wallet_id):
-    context = {
-        'account': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT),
-        'recommended': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT).balance,
-        'deposit_set': models.Deposit.objects.filter(banker=wallet_id),
-    }
-    return render(request, "interpay/wallet.html", context)
-
 
 @login_required()
 def withdraw_pending_deposit(request):
