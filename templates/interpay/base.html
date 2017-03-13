@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
-<meta name="viewport" content="width=device-width, initial-scale=1" xmlns="http://www.w3.org/1999/html">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" media="all and (max-width: 1024px)" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
@@ -68,7 +68,22 @@
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
-            function sidebarfun() {
+           function change(x) {
+              x.style.visibility = "hidden";
+              var y = document.getElementById("group_username");
+              y.style.display = "block"
+
+
+           }
+
+          function normalImg(x) {
+              x.style.visibility = "visible";
+              var y = document.getElementById("group_username");
+              y.style.display = "none"
+
+             }
+
+          function sidebarfun() {
                 var x = document.getElementById("demo");
                 if (x.className.indexOf("w3-show") == -1) {
                     x.className += " w3-show";
@@ -136,7 +151,7 @@
         window.location.assign(en_url);
     }
 </script>
-<body style="background: #f9f9f9 repeat-y 50% 0;">
+<body style="background: #FEFCEF repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
         <ul class="topnav">
@@ -154,18 +169,29 @@
                     </a>
                 {% endifequal %}
              {% endblock %}
-                <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px">
-            </h1>
-     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
-
-         {% ifequal LANGUAGE_CODE 'en-gb' %}
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" style="color: white" href="/edit">
                 {% else %}
                     <a class="sidebar-links" style="color: white" href="/fa-ir/edit">
-                {% endifequal %}
-     <div style="float: right ; padding-right: 4%">
-          <span id = "inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></a>
-     </div>
+                {% endifequal%}
+
+                 <div style="float: right ; padding-right: 2% ; padding-bottom: 3px; margin-bottom: 1px; padding-top: 4px; margin-top: 4px">
+                      <span  id="group_username" style="  padding: 5px; overflow: hidden; width: 40px;height: 40px;border-radius: 50%; background-color:#6C3D0C; display: none; float: inherit; font-family: IRAN-web; font-size: x-small " class="col-xs-4 col-md-2">
+                      <span style=" display:inline; color: white"><span id="inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></span>
+                      </span>
+
+                <image onmouseover="change(this)" onmouseout="normalImg(this)" style="display: inline-block; width: 40px;height: 40px;border-radius: 50%;background-repeat: no-repeat;background-position: center center;
+                background-size: cover;" src = "/static/interpay/media/{{user.UserProfile.national_card_photo}}"/> </span>{#  <span id = "inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></a>#}
+
+                 </div>
+
+                <img src="{% static 'interpay/images/rizpal.png' %}"  style=" padding-top: 2px; margin-left: 5px; width:56px; height: 50px; float:left ; margin-top:0px">
+                 <img src="{% static 'interpay/images/logo.png' %}"  style=" padding-left: 10px; padding-top: 20px; width:100px; height: 58px; float:left ; margin-top:0px">
+
+            </h1>
+     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
+
+
       </div>
         </ul>
     </header>
@@ -243,8 +269,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/bank-accounts">
                 {% endifequal %}
-
-                <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i>{% trans " Bank Accounts" %}
+                <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i>{% trans " withdrawals " %}
                 </a>
             </li>
             <li class="sidebar-entry">
@@ -265,6 +290,7 @@
                 <i class="fa fa-bullseye sidebar-ent-items" aria-hidden="true"></i>{% trans " General" %}
                 </a>
             </li>
+
         </ul>
     </div>
     </div>
@@ -332,7 +358,7 @@
                              {% trans " Transaction" %}
                             </a>
                         </li>
-                        <li class="sidebar-entry">
+                <li class="sidebar-entry">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/pay_user/">
                 {% else %}
@@ -340,17 +366,16 @@
                 {% endifequal %}
                {% trans 'Payment' %}
                 </a>
-                    </li>
-                        <li class="sidebar-entry" >
+               </li>
+                   <li class="sidebar-entry" >
                             {% ifequal LANGUAGE_CODE 'en-gb' %}
                                 <a class="sidebar-links" href="/bank-accounts">
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/bank-accounts">
                             {% endifequal %}
-
-                            {% trans "Accounts" %}
+                            {% trans "Withdrawals" %}
                             </a>
-                        </li>
+                   </li>
                         <li class="sidebar-entry">
                             {% ifequal LANGUAGE_CODE 'en-gb' %}
                                 <a class="sidebar-links" href="/reports">
@@ -390,32 +415,32 @@
                 <li  class="w3-hide-small" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
                 <li  class="w3-hide-small" id="interpay-id">{% trans "InterPay ID" %}: </li>
                 <li  class="w3-hide-small" id="logout">
-                    <a id="logout-link" href="/logout">
+                    <a style="padding-top: 3px; padding-bottom: 3px; margin-bottom: 3px" id="logout-link" href="/logout">
                         <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
                     </a>
                 </li>
             </div>
         </div>
-        <div id="demo" class="w3-hide w3-hide-large w3-hide-medium">
+        <div id="demo" class=" sidebar_res w3-hide w3-hide-large w3-hide-medium">
             {% ifequal LANGUAGE_CODE 'en-gb' %}
-            <ul class="w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #c9dedf">
+            <ul class=" sidebar_res_entries w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #FED7A0">
               {% else %}
-                <ul class="w3-navbar pull-left w3-animate-left" style="width:30% ; background-color: #c9dedf">
+                <ul class="w3-navbar pull-left w3-animate-left" style="width:30%; background-color: #FED7A0"">
                  {% endifequal %}
-                <li  id="name"> {{ user.first_name }} {{ user.last_name }}</li>
-                <li  id="Email">{% trans "Email" %}: {{ user.email }}</li>
-                <li  id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
-                <li  id="interpay-id">{% trans "InterPay ID" %}: </li>
+                <li   class="sidebar-res_entry" id="name"> {{ user.first_name }} {{ user.last_name }}</li>
+                <li   class="sidebar-res_entry" id="Email">{% trans "Email" %}: {{ user.email }}</li>
+                <li   class="sidebar-res_entry" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
+                <li   class="sidebar-res_entry" id="interpay-id">{% trans "InterPay ID" %}: </li>
+                <li   class="sidebar-res_entry" id="logout">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                <li  id="logout">
-                    <a    style="float: left" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
-                </li>
+                    <a    style="float: left" class="sidebar_res_links" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true">
                  {% else %}
-                 <li  id="logout">
-                    <a style="float: none" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %} </a>
+                    <a style="float: none"    class="sidebar_res_links" id="logout-link" href="/logout" class="fa fa-power-off" aria-hidden="true">
+                  {% endifequal %}
+                {% trans "Logout" %} </a>
                 </li>
-              {% endifequal %}
             </ul>
+          </ul>
         </div>
 
     <section  id="main-content-section">

@@ -2,7 +2,7 @@
     width: 121px;
     padding: 8px;
     text-align: center;
-    background-color: #ede9e9;
+    background-color: #F9F4EF;
     border: solid #DDD 1px;
     /*font-weight: bold;*/
     color: #707070;
@@ -13,14 +13,14 @@
     border: 1px solid #ddd;
     /*background-color: #f9f9f9;*/
     text-align: left;
-    background-color: #e5edef;
+    background-color: #F9F4EF;
     color: #393939;
     vertical-align: middle;
     font-size: 13px;
 }
 
 #trans-his-tab-searchbar {
-    background-color: #eff3f8;
+    background-color: #FEF5EA;
     padding: 10px 20px 20px;
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -31,7 +31,7 @@
     border-top: 1px solid #DDD;
     padding-top: 15px;
     padding-bottom: 15px;
-    background-color: #eff3f8;
+    background-color: #FEF5EA;
     border-bottom: 1px solid #DDD;
 }
 

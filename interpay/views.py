@@ -101,8 +101,7 @@ def set_rates(request):
 
 
 def main_page(request):
-    # rate_temp()
-    # cache_write()
+    # test()
     if (models.Rule.objects.count() == 0):
         log.debug('1Initialising comission because no Rule objects exists')
         r = models.Rule(start_date=datetime.datetime.now().date(),

@@ -6,8 +6,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block flag %}
 
     {% endblock %}
@@ -206,7 +208,7 @@
                     <th class="table-header-cell">
                         {% trans 'Recharge ID' %}
                     </th>
-                    <th class="table-header-cell">
+                    <th class="table-header-cell" style="width: 15%">
                         {% trans 'Date' %}
                     </th>
                     <th class="table-header-cell">
@@ -236,8 +238,8 @@
                 {% for d in deposit_set %}
                     <tr>
                         <td class="table-cell">{{ forloop.counter }}</td>
-                        <td class="table-cell">{{ d.id }}</td>
-                        <td class="table-cell">{{ d.date }}</td>
+                        <td width="6%" class="table-cell" >{{ d.id }}</td>
+                        <td width="15%" class="table-cell">{{ d.date }}</td>
                         <td class="table-cell">{{ d.account.account_id }}</td>
                         <td class="table-cell">{{ d.cur_code }}</td>
                         <td class="table-cell"></td>
