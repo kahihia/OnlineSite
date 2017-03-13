@@ -205,81 +205,74 @@
 }
 
 
-
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-.topnav{
-    height: 5%;
-}
-}
-
-/* Smartphones (landscape) ----------- */
-@media only screen and (min-width : 321px) {
-.topnav {
-    height: 9%;
-}
-}
-
-/* Smartphones (portrait) ----------- */
-@media only screen and (max-width : 320px) {
-.topnav{
-    height: 9%;
-}
-}
-
-/* iPads (portrait and landscape) ----------- */
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
-.topnav{
-    height: 6%;
-}
-}
-
-/* iPads (landscape) ----------- */
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
-.topnav{
-    height: 6%;
-}
-}
-
-/* iPads (portrait) ----------- */
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
-.topnav{
-    height: 4%;
-}
-}
-/**********
-iPad 3
-**********/
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio : 2) {
-.topnav{
-    height: 2%;
-}
-}
-
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio : 2) {
-.topnav{
-    height: 5%;
-}
-}
-/* Desktops and laptops ----------- */
-@media only screen  and (min-width : 1224px) {
-.topnav{
-    height: 7%;
-}
-}
-
-ul.topnav {
-  list-style-type: none;
-  margin: 0;
+@media only screen and (min-width : 300px) {
+ul.topnav{
+    height: 8%;
+    list-style-type: none;
+   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #898787;
 }
-
-
-
-@media screen and (max-width:680px) {
-
 }
+
+@media only screen and (min-width : 400px)  {
+ul.topnav{
+    height: 4%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 790px)  {
+ul.topnav{
+    height: 3.5%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 1000px)  {
+ul.topnav{
+    height: 7%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 1500px)  {
+ul.topnav{
+    height: 5%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen  {
+ul.topnav{
+    height: 8%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+
+
 
 @media screen and (max-width:680px) {
   ul.topnav.responsive {position: relative;}

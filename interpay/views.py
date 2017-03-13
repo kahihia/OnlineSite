@@ -70,7 +70,6 @@ def temp():
 
 def main_page(request):
     # test()
-    temp()
     if (models.Rule.objects.count() == 0):
         log.debug('1Initialising comission because no Rule objects exists')
         r = models.Rule(start_date=datetime.datetime.now().date(),
