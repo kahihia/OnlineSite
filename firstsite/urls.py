@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^rest_framework/', include('RestApi.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^pay_user/', views.pay_user),
+    url(r'^set_currency_rates/', views.set_rates),
     # url(r'^$', TemplateView.as_view(template_name="main_page.html")),
     # url(r'^home/', TemplateView.as_view(template_name="manager-home.html")),
     # url(r'^wallets/', TemplateView.as_view(template_name="wallets.html")),

@@ -20,11 +20,11 @@ from currencies.utils import convert
 from suds.client import Client
 from django.contrib.auth.models import User
 from interpay.models import UserProfile, MoneyTransfer
-from django.core.mail import send_mail
 from interpay.Email import Email
-# from django.conf import settings
 from firstsite import settings
-# from periodically.decorators import *
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+from currencies.models import Currency
 import json
 import time
 import random
@@ -40,7 +40,8 @@ log = logging.getLogger('interpay')
 
 
 # @every(seconds=10)
-def temp():
+
+def get_currency_rate(currency):
     response = requests.get('http://kajex.com/')
     soup = BeautifulSoup.BeautifulSoup(response.content)
     table = soup.findAll("table", {"id": "arz_table"})[0]
@@ -48,7 +49,7 @@ def temp():
     buy_price = ""
     sell_price = ""
     for td in table.findAll('td'):
-        if td.string == "EUR":
+        if td.string == currency:
             x += 1
             continue
         if x == 1:
@@ -65,12 +66,43 @@ def temp():
         return HttpResponse("An error was occured.")
 
     main_price = (sell_price + buy_price) / 2
-    print (main_price)
+    return main_price
+
+
+def set_rates(request):
+    euro_rate = get_currency_rate("EUR")
+    dollar_rate = get_currency_rate("USD")
+
+    dollar_to_euro_ratio = float(dollar_rate) / (euro_rate * 1.00)
+    dollar_to_euro_ratio = float("{0:.2f}".format(dollar_to_euro_ratio))
+    dollar = Currency.objects.get(code='USD')
+    dollar.factor = dollar_to_euro_ratio
+    dollar.save()
+
+    rial = Currency.objects.get(code='IRR')
+    rial.factor = euro_rate
+    rial.save()
+    return HttpResponse("Successful")
+
+
+# @cache_page(20)
+# def cache_test(request):
+#     print ("entered cache test")
+#     return HttpResponse(2 * 4 + 6)
+#
+#
+# def cache_write(request):
+#     cache.set('my_key', 'test message', 20)
+#     return HttpResponse("write")
+#
+#
+# def cache_read(request):
+#     return HttpResponse(cache.get('my_key'))
 
 
 def main_page(request):
-    # test()
-    temp()
+    # rate_temp()
+    # cache_write()
     if (models.Rule.objects.count() == 0):
         log.debug('1Initialising comission because no Rule objects exists')
         r = models.Rule(start_date=datetime.datetime.now().date(),
@@ -694,8 +726,10 @@ class HomeView(TemplateView):
     template_name = 'interpay/home.html'
 
 
+@cache_page(60)
 @login_required()
 def wallets(request):
+    print ("entered wallet")
     user_profile = models.UserProfile.objects.get(user=request.user)
     context = {
 
@@ -800,7 +834,7 @@ def actual_convert(request):
         conversion.withdraw = new_withdraw
         converted_amount = convert(amount, cur_account.cur_code, currency)
         destination_account = ""
-        for temp_account in BankAccount.objects.filter(owner=user_profile):
+        for temp_account in BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT):
             if temp_account.cur_code == currency:
                 destination_account = temp_account
                 break
