@@ -119,9 +119,9 @@ def test():
     print ("test executed")
     user = User.objects.get(username="arman")
     up = UserProfile.objects.get(user=user)
-    ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
-    ba.save()
-    # ba = BankAccount.objects.get(owner=up, cur_code='USD')
+    # ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
+    # ba.save()
+    ba = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT,cur_code='IRR')[0]
     # ba.delete()
     d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='IRR')
     d.save()
@@ -742,25 +742,24 @@ def wallets(request):
 def wallet(request, wallet_id, recom=None):
     # print "wallet function"
     ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
-    # print recom
-
     if request.method == "GET":
         recom = request.GET.get("recom")
-    print recom
-    if recom == None:
+        if recom is None:
+            recommended = 0
+        else:
+            recommended = ba.balance
+        transaction_list = []
+        for item1 in Deposit.objects.filter(account=ba):
+            transaction_list.append(item1)
+        for item2 in Withdraw.objects.filter(account=ba):
+            transaction_list.append(item2)
+        transaction_list.sort(key=lambda x: x.date)
         context = {
             'account': ba,
-            'recommended': 0,
-            'deposit_set': models.Deposit.objects.filter(account=ba),
+            'recommended': recommended,
+            'list': transaction_list
         }
-    else:
-        context = {
-            'account': ba,
-            'recommended': ba.balance,
-            'deposit_set': models.Deposit.objects.filter(account=ba),
-        }
-
-    return render(request, "interpay/wallet.html", context)
+        return render(request, "interpay/wallet.html", context)
 
 
 @login_required()
