@@ -124,7 +124,6 @@ urlpatterns += i18n_patterns(
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
     url(r'^$', views.main_page),
     url(r'^callback_handler/([0-9]*)', views.zarinpal_callback_handler, name='callback_handler'),
-    url(r'^contact.html/$', views.contact, name='contact'),
     url (r'^info/$', views.info),
 )
 
