@@ -1,0 +1,363 @@
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        InterPay Iran
+    </title>
+
+    <!-- Web Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin' rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
+    <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static 'interpay/css/registeration_form.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'interpay/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'interpay/css/settings.css' type="text/css"%}">
+
+    {% block CSS %}
+           <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
+    {% endblock %}
+
+    <!-- JS -->
+
+    {% block JS %}
+        <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+        <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
+        <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+
+        <script src="{%  static 'interpay/js/jquery.min.js' %}"></script>
+        <script src="{% static 'interpay/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'interpay/js/jquery.themepunch.tools.min.js' %}"></script>
+        <script src="{% static 'interpay/js/jquery.themepunch.revolution.js' %} "></script>
+        <script src="{% static 'interpay/js/one.app.js'%} "></script>
+        <script src="{% static 'interpay/js/revolution-slider.js' %}"></script>
+    {% endblock %}
+
+ {% block style %}
+    <style>
+
+    #login  {
+
+     border: 1px solid #cccccc;
+	margin: 10px;
+	padding: 2px;
+	text-decoration: none;
+        text-align: center;
+}
+        {% ifequal LANGUAGE_CODE 'fa-ir' %}
+
+            .form-wrapper {
+                text-align: right !important;
+                font-family: "IRAN-web";
+            }
+
+            #reg-wrap-wrap-div{
+             font-family: "IRAN-web";
+            }
+
+        {% endifequal %}
+    </style>
+
+    {% endblock %}
+</head>
+
+<body id="body" data-spy="scroll" data-target="interpay" style="background: #f9f9f9">
+<script>
+    $(document).ready(function () {
+        $("#national_code").keydown(function (event) {
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    // Allow: Ctrl+A
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    // Allow: home, end, left, right
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $("#mob_no").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $("#verification-code").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
+    $('#continue-btn').attr('disabled', true);
+         $('input').keyup (function () {
+            var disable = false;
+            $(":text, :password").each(function () {
+                if ($(this).val() == "") {
+                    disable = true;
+                }
+            });
+            $('#continue-btn').prop('disabled', disable);
+        });
+    });
+
+    function to_en() {
+        var en_url = window.location.href.replace("/fa-ir/", "/");
+        window.location.assign(en_url);
+        document.lang= "en"
+        //window.location= "/en-gb";
+    }
+
+    function to_FA() {
+        document.lang= "fa"
+        //window.location= "/en-gb";
+    }
+    {% block script %}
+
+    {% endblock %}
+</script>
+
+<nav class="interpay navbar navbar-default navbar-fixed-top" role="navigation">
+            <ul class="topnav" id="myTopnav">
+                <h1  style="margin-top: 0% ; margin-bottom: 3%">
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
+                    <p class="lang"> Fa/Eng</p>
+                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
+                    </a>
+                {% else %}
+                    <a id="to-en-link" class="trans-link" onclick="to_en()">
+                        <p class="lang" style="cursor: pointer"> Eng/Fa </p>
+                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                    </a>
+                {% endifequal %}
+                <img src="{% static 'interpay/images/logo.png' %}"  style="width:10%; float:left ; margin-top:0px">
+            </h1>
+        </ul>
+            <div class="top-contact-block">
+                <a href="/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+            </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+
+                <div class="menu-container">
+                    <ul class="nav navbar-nav">
+                        <li class="page-scroll home">
+                            <a href="index.html">{% trans 'SERVICES' %}</a>
+                        </li>
+                        <li class="nav navbar-nav">
+                            <a href="index.html">{% trans 'CONTACT' %}</a>
+                        </li>
+                        <li class="nav navbar-nav">
+                            <a href="index.html">{% trans 'ABOUT US' %}</a>
+                        </li>
+                        </ul>
+                    </div>
+        </div>
+
+    </nav>
+    <section id="intro" class="intro-section">
+        <div class="fullscreenbanner-container">
+            <div class="fullscreenbanner">
+                <ul>
+                    <!-- SLIDE 1 -->
+                    <li data-transition="curtain-1" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
+                        <!-- MAIN IMAGE -->
+                       <!--
+                       <img src="Content/HomePages/images/slider/slider01.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+-->
+
+                        <!-- LAYERS -->
+                        <div class="tp-caption rs-caption-1 sft start"
+                             data-x="center"
+                             data-hoffset="0"
+                             data-y="10"
+                             data-speed="800"
+                             data-start="1000"
+                             data-easing="Back.easeInOut"
+                             data-endspeed="300">
+                            {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                                                            اولین سامانه پرداخت آنلاین رسمی با حمایت بین المللی
+                            {% else %}
+                             FIRST OFFICIAL ONLINE PAYMENT SYSTEM WITH INTERNATIONAL SUPPORT
+                            {% endifequal %}
+                        </div>
+
+                        <!-- LAYER -->
+                    <div class="tp-caption rs-caption-2 sft"
+                             data-x="center"
+                             data-hoffset="0"
+                             data-y="150"
+                             data-speed="1000"
+                             data-start="2000"
+                             data-easing="Power4.easeOut"
+                             data-endspeed="300"
+                             data-endeasing="Power1.easeIn"
+                             data-captionhidden="off"
+                             style="z-index: 6">
+                            {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                            آسان
+                            {% else %}
+                             Easy
+                            {% endifequal %}
+                        </div>
+
+                        <div class="tp-caption rs-caption-2 sft"
+                             data-x="center"
+                             data-hoffset="0"
+                             data-y="220"
+                             data-speed="1000"
+                             data-start="3000"
+                             data-easing="Power4.easeOut"
+                             data-endspeed="300"
+                             data-endeasing="Power1.easeIn"
+                             data-captionhidden="off"
+                             style="z-index: 6">
+                             {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                                 بهبود امنیت
+                            {% else %}
+                            Enhances Security
+                            {% endifequal %}
+                        </div>
+
+                        <div class="tp-caption rs-caption-2 sft"
+                             data-x="center"
+                             data-hoffset="0"
+                             data-y="290"
+                             data-speed="1000"
+                             data-start="4000"
+                             data-easing="Power4.easeOut"
+                             data-endspeed="300"
+                             data-endeasing="Power1.easeIn"
+                             data-captionhidden="off"
+                             style="z-index: 6">
+                            {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                            بهبود بازده گردش کار
+                            {% else %}
+                            Improved Workflow Efficiencies
+                            {% endifequal %}
+                        </div>
+
+
+
+                    </li>
+
+
+                </ul>
+                <div class="tp-bannertimer tp-bottom"></div>
+                <div class="tp-dottedoverlay twoxtwo"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="clearfix"></div>
+
+<!--
+                    <div class="col-md-6">
+                        <ul class="list-inline footer-social pull-right">
+                            <li>
+                                <a data-placement="top" data-toggle="tooltip" class="fb tooltips" data-original-title="Facebook" href="https://www.facebook.com/interpayafrica/?ref=m_notif">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-placement="top" data-toggle="tooltip" class="tw tooltips" data-original-title="Twitter" href="https://twitter.com/interpayafrica">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-placement="top" data-toggle="tooltip" class="gp tooltips" data-original-title="linkedin" href="https://www.linkedin.com/company/interpayafrica">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Social Links -->
+                </div>
+            </div>
+        </div><!--/copyright-->
+    </div>
+    <!-- Footer simple END -->
+
+
+    <!-- JS Global Compulsory -->
+
+
+    <!-- JS Implementing Plugins -->
+    <!-- <script src="Scripts/homejs/back-to-top.js"></script> -->
+    <!-- <script src="Scripts/homejs/smoothScroll.js"></script> -->
+    <!-- <script src="Scripts/homejs/jquery.easing.min.js"></script> -->
+    <!-- <script src="Scripts/homejs/pace/pace.min.js"></script> -->
+    <!-- <script src="Scripts/homejs/jquery.parallax.js"></script> -->
+    <!--  <script src="Scripts/homejs/counter/waypoints.min.js"></script> -->
+    <!-- <script src="Scripts/homejs/counter/jquery.counterup.js"></script> -->
+    <!--  <script src="Scripts/homejs/client-slider/carousel-slider.js"></script> -->
+    <!--<script src="Scripts/homejs/pace-loader.js"></script> -->
+    <!-- <script src="Scripts/homejs/client-slider/carouselscript.js"></script> -->
+
+
+    <script>
+        jQuery(document).ready(function () {
+            App.init();
+            App.initParallaxBg();
+            RevolutionSlider.initRSfullScreen();
+        });
+    </script>
+
+    </body>
+
+
+
+{#        {% ifequal LANGUAGE_CODE 'fa-ir' %}#}
+{#            <font face="B-Nazanin" color="blue">#}
+{#                            اولین سامانه پرداخت آنلاین رسمی با حمایت بین المللی#}
+{#            </font>#}
+{#        {% else %}#}
+{#            <font face="Times New Roman" color="blue">#}
+{#                First Official Online Payment System with International Support#}
+{#            </font>#}
+{#        {% endifequal %}#}
+{##}
+{#    </marquee>#}
+{#   </p>#}
+
+
+
+{#<h2>#}
+{#    <p align="center">#}
+{#    Enhances Security, Improved Workflow Efficiencies and Minimize Overdue Payments#}
+{#    </p>#}
+{#</h2>#}
