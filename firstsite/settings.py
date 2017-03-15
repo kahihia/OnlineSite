@@ -206,8 +206,8 @@ LANGUAGES = (
     ('en-gb', _ut('English')),
     ('fa-ir',_ut('Persian')),
 )
-MEDIA_ROOT = 'media/'
-MEDIA_URL = '/media/'
+MEDIA_ROOT = 'interpay/static/interpay/media/'
+MEDIA_URL = '/interpay/static/interpay/media/'
 STATIC_URL = '/static/'
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
@@ -264,7 +264,16 @@ LOGGING = {
         },
     }
 }
-#
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'c:/foo/bar',
+    }
+}
+
+
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",

@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from interpay.forms import RegistrationForm, UserForm, CaptchaForm
 from django.views.decorators.csrf import csrf_exempt
-from Validation import Validation
+from interpay.Validation import Validation
 from firstsite.SMS import ds, api
 from interpay import models
 from smtplib import SMTPRecipientsRefused
@@ -20,11 +20,11 @@ from currencies.utils import convert
 from suds.client import Client
 from django.contrib.auth.models import User
 from interpay.models import UserProfile, MoneyTransfer
-from django.core.mail import send_mail
 from interpay.Email import Email
-# from django.conf import settings
 from firstsite import settings
-# from periodically.decorators import *
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+from currencies.models import Currency
 import json
 import time
 import random
@@ -40,7 +40,8 @@ log = logging.getLogger('interpay')
 
 
 # @every(seconds=10)
-def temp():
+
+def get_currency_rate(currency):
     response = requests.get('http://kajex.com/')
     soup = BeautifulSoup.BeautifulSoup(response.content)
     table = soup.findAll("table", {"id": "arz_table"})[0]
@@ -48,7 +49,7 @@ def temp():
     buy_price = ""
     sell_price = ""
     for td in table.findAll('td'):
-        if td.string == "EUR":
+        if td.string == currency:
             x += 1
             continue
         if x == 1:
@@ -65,12 +66,42 @@ def temp():
         return HttpResponse("An error was occured.")
 
     main_price = (sell_price + buy_price) / 2
-    print (main_price)
+    return main_price
+
+
+def set_rates(request):
+    euro_rate = get_currency_rate("EUR")
+    dollar_rate = get_currency_rate("USD")
+
+    dollar_to_euro_ratio = float(dollar_rate) / (euro_rate * 1.00)
+    dollar_to_euro_ratio = float("{0:.2f}".format(dollar_to_euro_ratio))
+    dollar = Currency.objects.get(code='USD')
+    dollar.factor = dollar_to_euro_ratio
+    dollar.save()
+
+    rial = Currency.objects.get(code='IRR')
+    rial.factor = euro_rate
+    rial.save()
+    return HttpResponse("Successful")
+
+
+# @cache_page(20)
+# def cache_test(request):
+#     print ("entered cache test")
+#     return HttpResponse(2 * 4 + 6)
+#
+#
+# def cache_write(request):
+#     cache.set('my_key', 'test message', 20)
+#     return HttpResponse("write")
+#
+#
+# def cache_read(request):
+#     return HttpResponse(cache.get('my_key'))
 
 
 def main_page(request):
     # test()
-    temp()
     if (models.Rule.objects.count() == 0):
         log.debug('1Initialising comission because no Rule objects exists')
         r = models.Rule(start_date=datetime.datetime.now().date(),
@@ -88,9 +119,9 @@ def test():
     print ("test executed")
     user = User.objects.get(username="arman")
     up = UserProfile.objects.get(user=user)
-    ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
-    ba.save()
-    # ba = BankAccount.objects.get(owner=up, cur_code='USD')
+    # ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
+    # ba.save()
+    ba = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT,cur_code='IRR')[0]
     # ba.delete()
     d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='IRR')
     d.save()
@@ -258,13 +289,13 @@ def pay_user(request):
             amount = float(amount)
         except ValueError:
             return render(request, "interpay/pay_user.html",
-                          {'error': Validation.check_validation('invalid_amount')})
+                          {'error': Validation.Validation.check_validation('invalid_amount')})
 
         # if not amount.isdigit():
         #     return render(request, 'interpay/pay_user.html', {'error': Validation.check_validation('invalid_amount')})
         if int(amount) <= 0:
             return render(request, 'interpay/pay_user.html',
-                          {'error': Validation.check_validation('non_positive')})
+                          {'error': Validation.Validation.check_validation('non_positive')})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
@@ -300,7 +331,7 @@ def pay_user(request):
             # d.save()
             if src_account.balance < int(amount):
                 return render(request, 'interpay/pay_user.html',
-                              {'error': Validation.check_validation('insufficient_balance')})
+                              {'error': Validation.Validation.check_validation('insufficient_balance')})
             if destination_account:
                 MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
                                              date=datetime.datetime.now(),
@@ -694,8 +725,10 @@ class HomeView(TemplateView):
     template_name = 'interpay/home.html'
 
 
+@cache_page(60)
 @login_required()
 def wallets(request):
+    print ("entered wallet")
     user_profile = models.UserProfile.objects.get(user=request.user)
     context = {
 
@@ -709,25 +742,24 @@ def wallets(request):
 def wallet(request, wallet_id, recom=None):
     # print "wallet function"
     ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
-    # print recom
-
     if request.method == "GET":
         recom = request.GET.get("recom")
-    print recom
-    if recom == None:
+        if recom is None:
+            recommended = 0
+        else:
+            recommended = ba.balance
+        transaction_list = []
+        for item1 in Deposit.objects.filter(account=ba):
+            transaction_list.append(item1)
+        for item2 in Withdraw.objects.filter(account=ba):
+            transaction_list.append(item2)
+        transaction_list.sort(key=lambda x: x.date)
         context = {
             'account': ba,
-            'recommended': 0,
-            'deposit_set': models.Deposit.objects.filter(account=ba),
+            'recommended': recommended,
+            'list': transaction_list
         }
-    else:
-        context = {
-            'account': ba,
-            'recommended': ba.balance,
-            'deposit_set': models.Deposit.objects.filter(account=ba),
-        }
-
-    return render(request, "interpay/wallet.html", context)
+        return render(request, "interpay/wallet.html", context)
 
 
 @login_required()
@@ -774,13 +806,13 @@ def actual_convert(request):
         except ValueError:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': Validation.check_validation('invalid_amount'),
+                              'error': Validation.Validation.check_validation('invalid_amount'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         if amount <= 0:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': Validation.check_validation('non_positive'),
+                              'error': Validation.Validation.check_validation('non_positive'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         cur_account = BankAccount.objects.get(account_id=account_id)
@@ -788,7 +820,7 @@ def actual_convert(request):
         if cur_account.balance < amount:
             return render(request, "interpay/wallet.html",
                           {
-                              'error': Validation.check_validation('insufficient_balance'),
+                              'error': Validation.Validation.check_validation('insufficient_balance'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         user_profile = models.UserProfile.objects.get(user=request.user)
@@ -800,7 +832,7 @@ def actual_convert(request):
         conversion.withdraw = new_withdraw
         converted_amount = convert(amount, cur_account.cur_code, currency)
         destination_account = ""
-        for temp_account in BankAccount.objects.filter(owner=user_profile):
+        for temp_account in BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT):
             if temp_account.cur_code == currency:
                 destination_account = temp_account
                 break
