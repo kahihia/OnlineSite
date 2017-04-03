@@ -46,7 +46,7 @@ urlpatterns = [
     # url(r'^login/$', views.user_login, name='login'),
     # url(r'^logout/$', views.user_logout, name='logout'),
 
-    url(r'^login/$', views.main_page),
+    url(r'^first/$', views.main_page),
     url(r'^home/', views.home),
     url(r'^wallets/$', views.wallets),
     url(r'^wallets/convert_currency/$', views.convert_currency),
@@ -98,7 +98,7 @@ urlpatterns += i18n_patterns(
     url(r'^admin/', admin.site.urls),
     url(r'session_security/', include('session_security.urls')),
 
-    url(r'^login/$', views.main_page),
+    url(r'^first/$', views.main_page),
     url(r'^home/', views.home),
     url('^manager/', include('manager.urls')),
     url(r'^wallets/$', views.wallets),
@@ -122,7 +122,7 @@ urlpatterns += i18n_patterns(
     url(r'^pay_user/', views.pay_user),
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
-    url(r'^login/$', views.main_page),
+    url(r'^first/$', views.main_page),
     url(r'^callback_handler/([0-9]*)', views.zarinpal_callback_handler, name='callback_handler'),
     url(r'^$', views.info, name='info'),
 )
