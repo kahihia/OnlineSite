@@ -264,7 +264,16 @@ LOGGING = {
         },
     }
 }
-#
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'c:/foo/bar',
+    }
+}
+
+
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",

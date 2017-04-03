@@ -4,9 +4,9 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
- {% block flag %}
+{% block flag %}
 
- {% endblock %}
+{% endblock %}
 <head>
     {% block CSS %}
         <link rel="stylesheet" href="{% static 'interpay/css/top_up.css' %}">
@@ -81,7 +81,7 @@
                         {{ form.errors }}
                     </p>
                 {% endif %}
-                {% ifnotequal emessage ''%}
+                {% ifnotequal emessage '' %}
                     <div class="form-group" id="recharge-form-message-div">
                         <div id="recharge-form-message">
                             {#                    {% ifnotequal code 0 %}#}
@@ -147,7 +147,7 @@
         <h3 class="page-title">{% trans 'Recharge Wallet History' %}</h3>
     </div>
 
-                <div id="wal-tab-searchbar" class="row ">
+    <div id="wal-tab-searchbar" class="row ">
                 <span id="display-records" class="col-sm-6">
                     <i class="fa fa-eye" aria-hidden="true">
                         <select>
@@ -162,70 +162,72 @@
                         </select>
                     </i>
                 </span>
-                    <span id="search" class="col-sm-6">
+        <span id="search" class="col-sm-6">
                     <i class="fa fa-search" aria-hidden="true">
                             <input type="text" id="search-txtbox">
                     </i>
                 </span>
-                </div>
-             <div class="table-responsive">
-                 <table id="wal-tab" class="table">
-                    <thead>
-                    <tr class="table-header-row">
-                        <th class="table-header-cell">
-                            {% trans 'Index' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Recharge ID' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Date' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Wallet Code' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Currency' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Card Type' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Amount' %}
-                        </th>
-                        <th class="table-header-cell">
-                            {% trans 'Status' %}
-                        </th>
-                        <th class="table-header-cell"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for d in deposit_set %}
-                        <tr>
-                            <td class="table-cell">{{ forloop.counter }}</td>
-                            <td class="table-cell">{{ d.id }}</td>
-                            <td class="table-cell">{{ d.date }}</td>
-                            <td class="table-cell">{{ d.account.account_id }}</td>
-                            <td class="table-cell">{{ d.cur_code }}</td>
-                            <td class="table-cell"></td>
-                            <td class="table-cell">{{ d.amount }}</td>
-                            <td class="table-cell">
-                                {% ifequal d.status True %}
-                                Successful
-                                {% else %}
-                                 Failed
-                                {% endifequal %}
+    </div>
+    <div class="table-responsive">
+        <table id="wal-tab" class="table">
+            <thead>
+            <tr class="table-header-row">
+                <th class="table-header-cell">
+                    {% trans 'Index' %}
+                </th>
+                <th class="table-header-cell">
+                    {% trans 'Recharge ID' %}
+                </th>
+                <th class="table-header-cell">
+                    {% trans 'Date' %}
+                </th>
+                <th class="table-header-cell">
+                    {% trans 'Wallet Code' %}
+                </th>
+                <th class="table-header-cell">
+                    {% trans 'Currency' %}
+                </th>
+                <th class="table-header-cell">
+                    {% trans 'Card Type' %}
+                </th>
+                <th class="table-header-cell">
+                    {% trans 'Amount' %}
+                </th>
+                <th class="table-header-cell">
+                    {% trans 'Status' %}
+                </th>
+                <th class="table-header-cell"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for d in deposit_set %}
+                <tr>
+                    <td class="table-cell">{{ forloop.counter }}</td>
+                    <td class="table-cell">{{ d.id }}</td>
+                    <td class="table-cell">{{ d.date }}</td>
+                    <td class="table-cell">{{ d.account.account_id }}</td>
+                    <td class="table-cell">{{ d.cur_code }}</td>
+                    <td class="table-cell"></td>
+                    <td class="table-cell">{{ d.amount }}</td>
+                    <td class="table-cell">
+                        {% if d.status == 1 %}
+                            Reversed
+                        {% elif d.status == 2 %}
+                            Pending
+                        {% elif d.status == 3 %}
+                            Completed
+                        {% endif %}
 
-                            </td>
-                        </tr>
-                    {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
 
-                    </tbody>
-                </table>
-                </div>
-                <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
-                    <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
-                </div>
+            </tbody>
+        </table>
+    </div>
+    <div id="wal-tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
+        <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
+    </div>
 
 
 {% endblock %}

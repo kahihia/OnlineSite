@@ -3,82 +3,219 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-15 17:09+0330\n"
+"POT-Creation-Date: 2017-03-13 18:13+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\interpay\templates\base.html:57
+#: interpay/models.py:97 interpay/models.py:156 interpay/models.py:250
+#: interpay/models.py:263 interpay/models.py:300
+msgid "cur_code"
+msgstr ""
+
+#: interpay/models.py:154 templates/interpay/top_up.html:182
+#: templates/interpay/wallet.html:212 templates/interpay/wallet.html:286
+#: templates/manager/manager-withdrawal-requests.html:53
+msgid "Date"
+msgstr "تاریخ"
+
+#: templates/interpay/activate_account.html:44
+#: templates/interpay/reset_password.html:45
+msgid "Personal Information"
+msgstr ""
+
+#: templates/interpay/activate_account.html:95
+#, fuzzy
+#| msgid " Bank Accounts"
+msgid "Activate Account"
+msgstr " حسابهای بانکی "
+
+#: templates/interpay/bank_accounts.html:23
+#, fuzzy
+#| msgid "My Bank Accounts"
+msgid "Bank Accounts"
+msgstr "حسابهای بانکی من"
+
+#: templates/interpay/bank_accounts.html:95
+msgid "My Financial Accounts"
+msgstr "حسابهای مالی من"
+
+#: templates/interpay/bank_accounts.html:105
+msgid "Creating a Bank Account"
+msgstr "ایجاد حساب بانکی جدید"
+
+#: templates/interpay/bank_accounts.html:136
+msgid "Bank"
+msgstr "بانک"
+
+#: templates/interpay/bank_accounts.html:142
+#: templates/interpay/bank_accounts.html:206
+#: templates/interpay/top_up.html:188 templates/interpay/wallet.html:218
+#: templates/interpay/wallet.html:292
+#| msgid "currency"
+msgid "Currency"
+msgstr "واحد پول"
+
+#: templates/interpay/bank_accounts.html:148
+#: templates/interpay/bank_accounts.html:203
+msgid "Account Number"
+msgstr "شماره حساب"
+
+#: templates/interpay/bank_accounts.html:156
+msgid "Done"
+msgstr "ایجاد حساب"
+
+#: templates/interpay/bank_accounts.html:159
+msgid "Cancel"
+msgstr "انصراف"
+
+#: templates/interpay/bank_accounts.html:165
+msgid "My Bank Accounts"
+msgstr "حسابهای بانکی من"
+
+#: templates/interpay/bank_accounts.html:194
+#: templates/interpay/top_up.html:176 templates/interpay/wallet.html:206
+#: templates/interpay/wallet.html:280
+msgid "Index"
+msgstr "ردیف"
+
+#: templates/interpay/bank_accounts.html:197
+#: templates/interpay/trans_history.html:74
+msgid "Bank Name"
+msgstr "بانک"
+
+#: templates/interpay/bank_accounts.html:200
+msgid "Account Owner"
+msgstr "صاحب حساب"
+
+#: templates/interpay/bank_accounts.html:209
+#: templates/interpay/wallet.html:230
+msgid "Withdraw"
+msgstr ""
+
+#: templates/interpay/bank_accounts.html:212
+msgid "Message"
+msgstr ""
+
+#: templates/interpay/base.html:139 templates/manager/manager-base.html:115
 msgid "Home Page "
 msgstr "صفحه اصلی"
 
-#: .\interpay\templates\base.html:78
+#: templates/interpay/base.html:180 templates/manager/manager-base.html:149
 msgid "'s Profile"
 msgstr " حساب کاربری "
 
-#: .\interpay\templates\base.html:109
+#: templates/interpay/base.html:205
+msgid "menu"
+msgstr " صفحات"
+
+#: templates/interpay/base.html:221 templates/interpay/base.html:325
+#: templates/manager/manager-base.html:177
+#: templates/manager/manager-base.html:266
 msgid "Home"
 msgstr " صفحه اصلی "
 
-#: .\interpay\templates\base.html:119
+#: templates/interpay/base.html:226 templates/interpay/base.html:330
 msgid "Wallets"
 msgstr " کیف پول من "
 
-#: .\interpay\templates\base.html:129
-msgid "  History"
-msgstr " پیشینه تراکنش "
+#: templates/interpay/base.html:236 templates/interpay/base.html:340
+#: templates/interpay/wallet.html:93 templates/interpay/wallets.html:34
+msgid "Wallet Info"
+msgstr "کیف پول من"
 
-#: .\interpay\templates\base.html:302
-msgid " Transaction"
-msgstr "تراکنش "
+#: templates/interpay/base.html:244 templates/interpay/base.html:348
+#: templates/interpay/top_up.html:26
+msgid "Top Up by Credit Card"
+msgstr "افزایش اعتبار کیف پول"
 
-#: .\interpay\templates\base.html:140
+#: templates/interpay/base.html:254 templates/interpay/trans_history.html:24
+msgid "Transaction History"
+msgstr "پیشینه تراکنش"
+
+#: templates/interpay/base.html:263 templates/interpay/base.html:367
+msgid "Payment"
+msgstr "پرداخت"
+
+#: templates/interpay/base.html:272 templates/interpay/base.html:376
+msgid "Withdrawals"
+msgstr "حسابهای بانکی"
+
+#: templates/interpay/base.html:281 templates/interpay/base.html:385
 msgid " Reports"
 msgstr " گزارش های مالی "
 
-#: .\interpay\templates\base.html:151
+#: templates/interpay/base.html:290 templates/interpay/base.html:394
 msgid " General"
 msgstr " اطلاعات عمومی حساب"
 
-#: .\interpay\templates\base.html:160
+#: templates/interpay/base.html:314
+msgid "Close"
+msgstr " بستن "
+
+#: templates/interpay/base.html:358
+msgid " Transaction"
+msgstr "تراکنش "
+
+#: templates/interpay/base.html:413 templates/manager/manager-base.html:285
 msgid "Name"
 msgstr "نام "
 
-#: .\interpay\templates\base.html:161
+#: templates/interpay/base.html:414 templates/interpay/base.html:431
+msgid "Email"
+msgstr ""
+
+#: templates/interpay/base.html:415 templates/interpay/base.html:432
+#: templates/manager/manager-base.html:286
+#: templates/manager/manager-base.html:302
 msgid "Login ID"
 msgstr "شناسه ورود"
 
-#: .\interpay\templates\base.html:162
+#: templates/interpay/base.html:416 templates/interpay/base.html:433
+#: templates/manager/manager-base.html:287
+#: templates/manager/manager-base.html:303
 msgid "InterPay ID"
 msgstr "شناسه interpay"
 
-#: .\interpay\templates\base.html:165
+#: templates/interpay/base.html:419 templates/interpay/base.html:440
+#: templates/manager/manager-base.html:290
+#: templates/manager/manager-base.html:305
 msgid "Logout"
 msgstr " خروج "
 
-#: .\interpay\templates\general.html:9 .\interpay\templates\general.html:16
+#: templates/interpay/edit.html:155 templates/interpay/general.html:12
+#: templates/interpay/general.html:19
 msgid "General"
 msgstr "اطلاعات عمومی حساب"
 
-#: .\interpay\templates\general.html:21 .\interpay\templates\reports.html:27
+#: templates/interpay/edit.html:162
+msgid "Edit Your profile"
+msgstr ""
+
+#: templates/interpay/forgot_password.html:50
+#: templates/interpay/index.html:131 templates/manager/manager-login.html:123
+msgid "Login"
+msgstr "ورود"
+
+#: templates/interpay/general.html:24 templates/interpay/reports.html:27
 msgid ""
 "This page is still under construction ... . we will be at your service soon."
 msgstr "این صفحه همچنان در دست آماده سازی است. از شکیبایی شما سپاسگزاریم."
 
-#: .\interpay\templates\home.html:20
+#: templates/interpay/home.html:20
 msgid "Welcome to interpay"
 msgstr "به ریزپرداخت خوش آمدید"
 
-#: .\interpay\templates\home.html:26
+#: templates/interpay/home.html:26
 msgid ""
 "Interpay is an online electronic service which provides a safe and secure "
 "platform for business transactions and e-commerce. No matter you are the "
@@ -88,286 +225,297 @@ msgstr ""
 "اینترپی یک بستر آنلاین است که به شما اجازه می دهد تا در محیطی امن و به راحتی "
 "تراکنش های مالی و خریدهای اینترتی خود را انجام دهید."
 
-#: .\interpay\templates\index.html:37
-
-#| msgid "Welcome to interpay"
+#: templates/interpay/index.html:83 templates/manager/manager-login.html:81
 msgid "Welcome to Interpay Iran"
 msgstr "به ریزپرداخت خوش آمدید"
 
-#: .\interpay\templates\index.html:42
-
-#| msgid "Welcome to interpay"
+#: templates/interpay/index.html:89
 msgid "Login to Interpay"
 msgstr "ورود به سایت"
 
-#: .\interpay\templates\index.html:69
-msgid "Don't have an account yet?"
-msgstr ""
-
-#: .\interpay\templates\index.html:70
-msgid "Create One!"
-msgstr "یک حساب جدید بسازید"
-
-#: .\interpay\templates\registeration_form.html:79
-msgid "Thank You for Registering!"
-msgstr "حساب کاربری شما با موفقیت ساخته شد!"
-
-#: .\interpay\templates\registeration_form.html:80
-msgid "Launch to your homepage"
-msgstr "صفحه اصلی خود را ببینید"
-
-#: .\interpay\templates\registeration_form.html:93
-msgid "New User Registration"
-msgstr "ساخت حساب کاربری"
-
-#: .\interpay\templates\registeration_form.html:113
-msgid "Already have an account?"
-msgstr "در این سایت حساب کاربری دارم."
-
-#: .\interpay\templates\registeration_form.html:114
-msgid "Sign In!"
-msgstr "ورود به سایت"
-
-#: .\interpay\templates\reports.html:11
-msgid "Reports"
-msgstr "گزارش مالی"
-
-#: .\interpay\templates\reports.html:22
-msgid "Wallet Report"
-msgstr "کیف پول من"
-
-#: .\interpay\templates\trans_history.html:10
-msgid "Transaction History "
-msgstr "پیشینه تراکنش"
-
-#: .\interpay\templates\trans_history.html:20
-msgid "Transaction History"
-msgstr "پیشینه تراکنش"
-
-#: .\interpay\templates\trans_history.html:66
-msgid "Transaction Date"
-msgstr "تاریخ تراکنش"
-
-#: .\interpay\templates\trans_history.html:69
-msgid "Bank Name"
-msgstr "بانک"
-
-#: .\interpay\templates\trans_history.html:72
-msgid "Wallet Holder Name"
-msgstr "صاحب حساب"
-
-#: .\interpay\templates\trans_history.html:75
-msgid "Activity"
-msgstr "نوع فعالیت "
-
-#: .\interpay\templates\trans_history.html:78
-msgid "Index Number"
-msgstr "شماره در لیست"
-
-#: .\interpay\templates\trans_history.html:81
-msgid "Interpay ID"
-msgstr "شناسه interpay"
-
-#: .\interpay\templates\trans_history.html:84
-msgid "Transaction Desc."
-msgstr "توضیحات"
-
-#: .\interpay\templates\trans_history.html:87
-msgid "Amount"
-msgstr "مقدار"
-
-#: .\interpay\templates\trans_history.html:110
-#: .\interpay\templates\wallets.html:91
-msgid "My total stock in"
-msgstr "کل نقدینگی من در واحد "
-
-#: .\interpay\templates\trans_history.html:110
-#: .\interpay\templates\wallets.html:91
-msgid "USD"
-msgstr "دلار"
-
-#: .\interpay\templates\wallets.html:11
-
-#| msgid "Wallet Info"
-msgid "Wallet Info "
-msgstr "کیف پول من"
-
-#: .\interpay\templates\wallets.html:22
-msgid "Wallet Info"
-msgstr "کیف پول من"
-
-#: .\interpay\templates\wallets.html:54
-msgid "Wallet Code"
-msgstr "شماره حساب"
-
-#: .\interpay\templates\wallets.html:57
-msgid "Wallet Type"
-msgstr "نوع حساب"
-
-#: .\interpay\templates\wallets.html:60
-msgid "Currency Name"
-msgstr "نام ارز"
-
-#: .\interpay\templates\wallets.html:63
-msgid "Currency Symbol"
-msgstr "نماد واحد ارز"
-
-#: .\interpay\templates\wallets.html:66
-msgid "Balance"
-msgstr "مانده ارز"
-
-#: .\interpay\templates\wallets.html:69
-msgid "Wallet Description"
-msgstr "توضیحات"
-
-#: .\interpay\templates\base.html:145
-msgid "Top Up by Credit Card"
-msgstr "افزایش اعتبار کیف پول"
-
-#: .\interpay\templates\top_up.html:66
-msgid "Payment Type"
-msgstr "نوع درگاه پرداخت"
-
-#: .\interpay\templates\top_up.html:56
-msgid "Recharge wallet using credit card"
-msgstr "افزایش اعتبار کیف پول با استفاده از کارت اعتباری"
-
-#: .\interpay\templates\top_up.html:93
-msgid "Recharge Amount"
-msgstr "مبلغ"
-
-#: .\interpay\templates\top_up.html:104
-msgid "Charge"
-msgstr "افزایش اعتبار"
-
-#: .\interpay\templates\top_up.html:109
-msgid "Reset"
-msgstr "ریست"
-
-#: .\interpay\templates\top_up.html:118
-msgid "Recharge Wallet History"
-msgstr "پیشینه ی افزایش اعتبار حساب"
-
-#: .\interpay\templates\top_up.html:148
-msgid "Recharge ID"
-msgstr "شناسه تراکنش"
-
-#: .\interpay\templates\top_up.html:151
-msgid "Date"
-msgstr "تاریخ"
-
-
-#: .\interpay\templates\top_up.html:160
-msgid "Card Type"
-msgstr "نوع کارت"
-
-#: .\interpay\templates\top_up.html:166
-msgid "Status"
-msgstr "وضعیت"
-
-#: .\interpay\templates\home.html:13
-msgid "Home Page"
-msgstr "صفحه اصلی"
-
-#: .\interpay\templates\base.html:173
-msgid " Bank Accounts"
-msgstr " حسابهای بانکی "
-
-#: .\interpay\templates\base.html:173
-msgid "Accounts"
-msgstr " حساب ها "
-
-#: .\interpay\templates\base.html:173
-msgid "menu"
-msgstr " صفحات"
-
-
-#: .\interpay\templates\base.html:173
-msgid "Close"
-msgstr " بستن "
-
-
-#: .\interpay\templates\index.html:108
+#: templates/interpay/index.html:134
 msgid "Forgot password or account disabled ?"
 msgstr "در ورود به سایت مشکل دارم"
 
-#: .\interpay\templates\index.html:105
-msgid "Login"
-msgstr "ورود"
+#: templates/interpay/index.html:138
+msgid "Don't have an account yet?"
+msgstr ""
 
-#: .\interpay\templates\bank_accounts.html:78
-msgid "My Financial Accounts"
-msgstr "حسابهای مالی من"
+#: templates/interpay/index.html:144
+msgid "Create One!"
+msgstr "یک حساب جدید بسازید"
 
-#: .\interpay\templates\bank_accounts.html:87
-msgid "Creating a Bank Account"
-msgstr "ایجاد حساب بانکی جدید"
-
-#: .\interpay\templates\bank_accounts.html:111
-msgid "Bank"
-msgstr "بانک"
-
-#: .\interpay\templates\bank_accounts.html:123
-msgid "Account Number"
-msgstr "شماره حساب"
-
-#: .\interpay\templates\bank_accounts.html:131
-msgid "Done"
-msgstr "ایجاد حساب"
-
-#: .\interpay\templates\bank_accounts.html:134
-msgid "Cancel"
-msgstr "انصراف"
-
-#: .\interpay\templates\bank_accounts.html:140
-msgid "My Bank Accounts"
-msgstr "حسابهای بانکی من"
-
-#: .\interpay\templates\bank_accounts.html:167
-msgid "Index"
-msgstr "ردیف"
-
-
-#: .\interpay\templates\bank_accounts.html:173
-msgid "Account Owner"
-msgstr "صاحب حساب"
-
-#: .\interpay\templates\bank_accounts.html:182
-msgid "Total Inventory"
-msgstr "کل موجودی حساب"
-
-#: .\interpay\templates\wallets.html:80
-msgid "Conversion"
-msgstr "تبدیل واحد ارز"
-
-#: .\interpay\templates\wallets.html:83
-msgid "Converted Value"
-msgstr "مقدار تبدیل شده"
-
-#: .\interpay\templates\wallet.html:89
-msgid "To Currency"
-msgstr "تبدیل ارز به واحد"
-
-#: .\interpay\templates\pay_user.html:44
+#: templates/interpay/pay_user.html:44
 msgid "Pay to user"
 msgstr "پرداخت به مشتری"
 
-#: .\interpay\templates\pay_user.html:72
+#: templates/interpay/pay_user.html:64 templates/interpay/top_up.html:194
+#: templates/interpay/trans_history.html:92 templates/interpay/wallet.html:167
+#: templates/interpay/wallet.html:224 templates/interpay/wallet.html:298
+#: templates/manager/manager-withdrawal-requests.html:56
+msgid "Amount"
+msgstr "مقدار"
+
+#: templates/interpay/pay_user.html:84
 msgid "currency"
 msgstr "واحد پول"
 
-#: .\interpay\templates\pay_user.html:90
+#: templates/interpay/pay_user.html:104
 msgid "Destination Email:"
 msgstr "میل مقصد"
 
-#: .\interpay\templates\pay_user.html:104
+#: templates/interpay/pay_user.html:116
 msgid "Destination Mobile Number:"
 msgstr "شماره موبایل مقصد"
 
-#: .\interpay\templates\pay_user.html:116
+#: templates/interpay/pay_user.html:128
 msgid "Comment:"
 msgstr "نظرات"
 
-#: .\interpay\templates\base.html:329
-msgid "Payment"
-msgstr "پرداخت"
+#: templates/interpay/registeration_form.html:243
+#: templates/interpay/registeration_form.html:250
+msgid "Launch to your homepage"
+msgstr "صفحه اصلی خود را ببینید"
+
+#: templates/interpay/registeration_form.html:270
+msgid "Did'nt get any code? Re-send a code."
+msgstr ""
+
+#: templates/interpay/registeration_form.html:320
+msgid "New User Registration"
+msgstr "ساخت حساب کاربری"
+
+#: templates/interpay/registeration_form.html:345
+msgid "Continue >>"
+msgstr ""
+
+#: templates/interpay/registeration_form.html:349
+#, fuzzy
+#| msgid "Sign In!"
+msgid "Sign Up"
+msgstr "ورود به سایت"
+
+#: templates/interpay/registeration_form.html:359
+msgid "Already have an account?"
+msgstr "در این سایت حساب کاربری دارم."
+
+#: templates/interpay/registeration_form.html:360
+msgid "Sign In!"
+msgstr "ورود به سایت"
+
+#: templates/interpay/reports.html:14
+msgid "Reports"
+msgstr "گزارش مالی"
+
+#: templates/interpay/reports.html:22
+msgid "Wallet Report"
+msgstr "کیف پول من"
+
+#: templates/interpay/reset_password.html:69
+msgid "Reset Password"
+msgstr ""
+
+#: templates/interpay/reset_password.html:111
+msgid "Save"
+msgstr ""
+
+#: templates/interpay/reset_password.html:113
+msgid "Go to Login Page"
+msgstr "ورود"
+
+#: templates/interpay/top_up.html:67
+msgid "Recharge wallet using credit card"
+msgstr "افزایش اعتبار کیف پول با استفاده از کارت اعتباری"
+
+#: templates/interpay/top_up.html:95
+msgid "Payment Type"
+msgstr "نوع درگاه پرداخت"
+
+#: templates/interpay/top_up.html:114 templates/interpay/wallet.html:108
+#: templates/interpay/wallets.html:70
+msgid "Wallet Type"
+msgstr "نوع حساب"
+
+#: templates/interpay/top_up.html:122
+msgid "Recharge Amount"
+msgstr "مبلغ"
+
+#: templates/interpay/top_up.html:133
+msgid "Charge"
+msgstr "افزایش اعتبار"
+
+#: templates/interpay/top_up.html:138
+msgid "Reset"
+msgstr "ریست"
+
+#: templates/interpay/top_up.html:147
+msgid "Recharge Wallet History"
+msgstr "پیشینه ی افزایش اعتبار حساب"
+
+#: templates/interpay/top_up.html:179 templates/interpay/wallet.html:209
+#: templates/interpay/wallet.html:283
+msgid "Recharge ID"
+msgstr "شناسه تراکنش"
+
+#: templates/interpay/top_up.html:185 templates/interpay/wallet.html:105
+#: templates/interpay/wallet.html:215 templates/interpay/wallet.html:289
+#: templates/interpay/wallets.html:67
+msgid "Wallet Code"
+msgstr "شماره حساب"
+
+#: templates/interpay/top_up.html:191 templates/interpay/wallet.html:221
+#: templates/interpay/wallet.html:295
+msgid "Card Type"
+msgstr "نوع کارت"
+
+#: templates/interpay/top_up.html:197 templates/interpay/wallet.html:227
+#: templates/interpay/wallet.html:301
+#: templates/manager/manager-withdrawal-requests.html:50
+msgid "Status"
+msgstr "وضعیت"
+
+#: templates/interpay/trans_history.html:14
+msgid "Transaction History "
+msgstr "پیشینه تراکنش"
+
+#: templates/interpay/trans_history.html:71
+msgid "Transaction Date"
+msgstr "تاریخ تراکنش"
+
+#: templates/interpay/trans_history.html:77
+msgid "Wallet Holder Name"
+msgstr "صاحب حساب"
+
+#: templates/interpay/trans_history.html:80
+msgid "Activity"
+msgstr "نوع فعالیت "
+
+#: templates/interpay/trans_history.html:83
+msgid "Index Number"
+msgstr "شماره در لیست"
+
+#: templates/interpay/trans_history.html:86
+msgid "Interpay ID"
+msgstr "شناسه interpay"
+
+#: templates/interpay/trans_history.html:89
+msgid "Transaction Desc."
+msgstr "توضیحات"
+
+#: templates/interpay/wallet.html:18 templates/interpay/wallets.html:17
+msgid "Wallet Info "
+msgstr "کیف پول من"
+
+#: templates/interpay/wallet.html:44
+msgid "Successfully Created"
+msgstr ""
+
+#: templates/interpay/wallet.html:44
+msgid "Click on  your account Id if you want to go to your account"
+msgstr ""
+
+#: templates/interpay/wallet.html:50
+msgid "back to current wallet"
+msgstr ""
+
+#: templates/interpay/wallet.html:72 templates/interpay/wallets.html:85
+msgid "Conversion"
+msgstr "تبدیل واحد ارز"
+
+#: templates/interpay/wallet.html:73
+msgid "Your conversion is in process"
+msgstr ""
+
+#: templates/interpay/wallet.html:111 templates/interpay/wallets.html:73
+msgid "Currency Name"
+msgstr "نام ارز"
+
+#: templates/interpay/wallet.html:114 templates/interpay/wallets.html:76
+msgid "Currency Symbol"
+msgstr "نماد واحد ارز"
+
+#: templates/interpay/wallet.html:117 templates/interpay/wallets.html:79
+msgid "Balance"
+msgstr "مانده ارز"
+
+#: templates/interpay/wallet.html:120 templates/interpay/wallets.html:82
+msgid "Wallet Description"
+msgstr "توضیحات"
+
+#: templates/interpay/wallet.html:170
+msgid "To Currency"
+msgstr "تبدیل ارز به واحد"
+
+#: templates/interpay/wallet.html:233
+#, fuzzy
+#| msgid " Transaction"
+msgid "Transaction"
+msgstr "تراکنش "
+
+#: templates/interpay/wallets.html:88
+msgid "Converted Value"
+msgstr "مقدار تبدیل شده"
+
+#: templates/interpay/wallets.html:131
+msgid "My total stock in"
+msgstr "کل نقدینگی من در واحد "
+
+#: templates/interpay/wallets.html:131
+msgid "USD"
+msgstr "دلار"
+
+#: templates/manager/manager-base.html:210
+msgid " Withdrawal Requests"
+msgstr ""
+
+#: templates/manager/manager-login.html:87
+#, fuzzy
+#| msgid "Login to Interpay"
+msgid "Login to Manager Panel"
+msgstr "ورود به سایت"
+
+#: templates/manager/manager-withdrawal-requests.html:11
+#: templates/manager/manager-withdrawal-requests.html:29
+msgid "Withdrawal Requests"
+msgstr ""
+
+#: templates/manager/manager-withdrawal-requests.html:41
+msgid "Row"
+msgstr ""
+
+#: templates/manager/manager-withdrawal-requests.html:44
+#, fuzzy
+#| msgid "Accounts"
+msgid "Source Account"
+msgstr " حساب ها "
+
+#: templates/manager/manager-withdrawal-requests.html:47
+#, fuzzy
+#| msgid "Creating a Bank Account"
+msgid "Destination Account"
+msgstr "ایجاد حساب بانکی جدید"
+
+#: templates/manager/manager-withdrawal-requests.html:59
+msgid "Confirm"
+msgstr ""
+
+#: templates/manager/manager-withdrawal-requests.html:62
+#, fuzzy
+#| msgid "Transaction Date"
+msgid "Transaction Status"
+msgstr "تاریخ تراکنش"
+
+#~ msgid " withdrawals "
+#~ msgstr "حسابهای بانکی"
+
+#~ msgid "  History"
+#~ msgstr " پیشینه تراکنش "
+
+#~ msgid "Thank You for Registering!"
+#~ msgstr "حساب کاربری شما با موفقیت ساخته شد!"
+
+#~ msgid "Home Page"
+#~ msgstr "صفحه اصلی"
+
+#~ msgid "Total Inventory"
+#~ msgstr "کل موجودی حساب"
