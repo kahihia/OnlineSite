@@ -1,8 +1,9 @@
 {% extends "interpay/base.html" %}
 {% load staticfiles %}
+{% load static %}
 {% load i18n %}
 <!DOCTYPE html>
- {% block JS %}
+{% block JS %}
 <script>
       $(document).ready(function(){
                 $("#edit").click(function(){
@@ -100,13 +101,15 @@ function edit_national_id(){
         });
     }
 
-  function edit_photo(){
+  function editphoto(){
         var postUrl = "/edit_profile/";
-        national_photo = $("#photo").val();
+       // filename = $("#photo").val();
+       // var national_photo = filename.replace(/^.*\\/, "");
+       alert("negar")
         $.ajax({
             url: postUrl,
             type: 'POST',
-            data: {'national_photo': national_photo, action :'change_national_photo'},
+            data: {action :'change_national_photo'},
             traditional: true,
             dataType: 'html',
             success: function (result) {
@@ -165,7 +168,7 @@ function edit_username(){
 {% endblock %}
 {% block cont-body %}
    <div style="color: #67b168" id="success_name"> </div>
-   <div>
+   <div id="manage_edit">
     <i id="edit" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> First name <input id="first_name" type="text" name="fname" style="display: none"><br>
     <input id="edit_name"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_name()" >
    </div>
@@ -181,10 +184,20 @@ function edit_username(){
     <i id="edit4" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> username <input id="username" type="text" name="fname" style="display: none"><br>
     <input id="edit_username"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_username()" >
    </div>
+    <!--
     <div>
-    <i id="edit5" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> Photo <input id="photo" type="file" name="fname" style="display: none"><br>
-    <input id="edit_photo"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_photo()" >
+    <i id="edit5" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> Photo
+        <form  style=" display: none" name="national" id="photo" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <p>
+        <input id="id_image" type="file" class="" name="image">
+    </p>
+     <br>
+    <input id="edit_photo"  type="button" class="w3-button" value="save" onclick="editphoto()" >
+   </form>
+
+
    </div>
+   -->
 
 {% endblock %}
 </body>

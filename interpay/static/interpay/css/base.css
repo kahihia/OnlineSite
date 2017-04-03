@@ -205,20 +205,9 @@
 }
 
 
-@media only screen and (min-width : 300px) {
+@media only screen and ( max-width: 390px){
 ul.topnav{
-    height: 8%;
-    list-style-type: none;
-   margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #898787;
-}
-}
-
-@media only screen and (min-width : 400px)  {
-ul.topnav{
-    height: 4%;
+    height: 10%;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -227,18 +216,7 @@ ul.topnav{
 }
 }
 
-@media only screen and (min-width : 790px)  {
-ul.topnav{
-    height: 3.5%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #898787;
-}
-}
-
-@media only screen and (min-width : 1000px)  {
+@media only screen and (min-width : 700px) and ( max-width: 800px) {
 ul.topnav{
     height: 7%;
     list-style-type: none;
@@ -249,9 +227,9 @@ ul.topnav{
 }
 }
 
-@media only screen and (min-width : 1500px)  {
+@media only screen and (min-width: 800px)  and ( max-width: 900px) {
 ul.topnav{
-    height: 5%;
+    height: 3.5%;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -260,7 +238,18 @@ ul.topnav{
 }
 }
 
-@media only screen  {
+@media only screen and (min-width : 1000px ) and ( max-width: 1450px)  {
+ul.topnav{
+    height: 5.5%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 1500px)  {
 ul.topnav{
     height: 8%;
     list-style-type: none;
@@ -270,7 +259,6 @@ ul.topnav{
     background-color: #898787;
 }
 }
-
 
 
 
