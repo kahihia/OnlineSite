@@ -122,7 +122,6 @@ urlpatterns += i18n_patterns(
     url(r'^pay_user/', views.pay_user),
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
-    url(r'^first/$', views.main_page),
     url(r'^callback_handler/([0-9]*)', views.zarinpal_callback_handler, name='callback_handler'),
     url(r'^$', views.info, name='info'),
 )
