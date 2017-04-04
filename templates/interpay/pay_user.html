@@ -90,11 +90,6 @@
                         <option value="GBP">Pound</option>
                     </select>
                 </div>
-                {#                </div>#}
-                {#                <div class="row">#}
-
-                {#                </div>#}
-                {#                <div class="row">#}
                 <div class="form-group">
                      {% ifequal LANGUAGE_CODE 'en-gb' %}
                    <label style="display:block">
@@ -103,6 +98,11 @@
                 {% endifequal %}
                         {% trans 'Destination Email:' %}
                     </label>
+
+                    <form style="display: none" method="get" action="../info/">
+                        <button  type="submit" onclick="goto()">Reviews detail</button>
+                    </form>
+
                     <input type="text" name="email" id="email" class="form-control" style="width:300px">
                 </div>
                 {#                </div>#}
@@ -139,7 +139,7 @@
                 <input type="button"
                        id="confirm"
                        onclick="fill_modal()"
-                       value="Confirm"
+                       value="{% trans 'Confirm' %}"
                        data-toggle="modal"
                        data-target="#myModal"
                        class="btn btn-info">
