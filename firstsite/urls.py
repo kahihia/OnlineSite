@@ -65,7 +65,6 @@ urlpatterns = [
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
 
-
     url(r'^verif/$', views.verify_user, name='verif'),
     url(r'^sms/$', views.send_sms, name='sms'),
     url(r'^retrieve_pass/$', views.retrieve_pass, name='retrieve_pass'),
@@ -78,7 +77,7 @@ urlpatterns = [
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
     url(r'^callback_handler/([0-9]*)', views.zarinpal_callback_handler, name='callback_handler'),
-    url(r'^$', views.info, name='info'),
+
 ]
 
 urlpatterns += i18n_patterns(

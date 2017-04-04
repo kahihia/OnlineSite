@@ -99,12 +99,44 @@
                         {% trans 'Destination Email:' %}
                     </label>
 
-                    <form style="display: none" method="get" action="../info/">
-                        <button  type="submit" onclick="goto()">Reviews detail</button>
-                    </form>
+
 
                     <input type="text" name="email" id="email" class="form-control" style="width:300px">
                 </div>
+
+
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modalconvert">Reviews Detail</button>
+                <div class="modal fade" id="Modalconvert" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Reviews Detail</h4>
+                            </div>
+                            <div class="modal-body">
+                                    <div style="margin-left: 0 !important;margin-right: 0 !important;">
+                                        <div style="margin-right:0px;width:300px;margin-left: 10px ">
+                                            <label> 10000 reviews </label>
+                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
+                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
+                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
+                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
+                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
+
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
                 {#                </div>#}
                 {#                <div class="row">#}
                 <div class="form-group ">

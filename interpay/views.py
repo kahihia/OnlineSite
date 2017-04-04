@@ -574,9 +574,10 @@ def recharge_account(request, **message):
         if code != 0:
             emessage = "Unknown ZarinPal Error"
     print msg_color, "msg_color"
+    deposit_num= models.Deposit.objects.count();
     return render(request, "interpay/top_up.html",
                   {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage,
-                   'msg_color': msg_color})
+                   'msg_color': msg_color, 'deposit_num': deposit_num})
 
 
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
