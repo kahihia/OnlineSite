@@ -1,9 +1,9 @@
 {% extends 'interpay/base.html' %}
+{% load filters %}
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
 {% load currency %}
-{% load filters %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,88 +42,88 @@
 
 
 
-{#        <script>#}
-{#            $(document).ready(function () {#}
-{#                var inf = $('#message').text();#}
-{#                if ($('#message').text().length != 14) {#}
-{#                    swal({#}
-{##}
-{#                        title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a#}
-{#                        {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}" > {{account_id}}#}
-{#                        {% else %}  href="/fa-ir/wallets/{{ account_id }}" >{{account_id}}#}
-{#                        {% endifequal %}</ a> ',#}
-{#                    type: 'info',#}
-{#                            html#}
-{#                :#}
-{#                    ' ' + 'and other HTML tags',#}
-{#                            type#}
-{#                :#}
-{#                    "info",#}
-{#                            showCancelButton#}
-{#                :#}
-{#                    true,#}
-{#                            confirmButtonColor#}
-{#                :#}
-{#                    "#DD6B55",#}
-{#                            cancelButtonText#}
-{#                :#}
-{#                    '{% trans 'back to current wallet'%}',#}
-{#                            closeOnConfirm#}
-{#                :#}
-{#                    false,#}
-{#                            closeOnCancel#}
-{#                :#}
-{#                    false,#}
-{#                            showConfirmButton#}
-{#                :#}
-{#                    false,#}
-{#                })#}
-{#                    ;#}
-{#                }#}
-{#            });#}
-{#            var unsaved = false;#}
-{#            $(":input").change(function () { //trigers change in all input fields including text type#}
-{#                unsaved = false;#}
-{#            });#}
-{##}
-{#            function unloadPage() {#}
-{#                if (unsaved) {#}
-{#                    return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";#}
-{#                }#}
-{#            }#}
-{##}
-{#            window.onbeforeunload = unloadPage;#}
-{#            function formSubmitter(formTag, messageTag) {#}
-{##}
-{#                swal({#}
-{#                    title: '{%  trans 'Conversion' %}',#}
-{#                    text: '{%  trans 'Your conversion is in process' %}',#}
-{#                    type: 'info',#}
-{#                    showConfirmButton: false,#}
-{#                });#}
-{#                document.getElementById("success").style.display = "block";#}
-{#                document.getElementById(messageTag).innerHTML = "You have changed currency";#}
-{#                document.getElementById("sampleform").style.display = "none";#}
-{#                setTimeout("time()", 1000);#}
-{#            }#}
-{#            function time() {#}
-{#                document.getElementById("sampleform").submit();#}
-{#            }#}
-{##}
-{#        </script>#}
+        {#        <script>#}
+        {#            $(document).ready(function () {#}
+        {#                var inf = $('#message').text();#}
+        {#                if ($('#message').text().length != 14) {#}
+        {#                    swal({#}
+        {##}
+        {#                        title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a#}
+        {#                        {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}" > {{account_id}}#}
+        {#                        {% else %}  href="/fa-ir/wallets/{{ account_id }}" >{{account_id}}#}
+        {#                        {% endifequal %}</ a> ',#}
+        {#                    type: 'info',#}
+        {#                            html#}
+        {#                :#}
+        {#                    ' ' + 'and other HTML tags',#}
+        {#                            type#}
+        {#                :#}
+        {#                    "info",#}
+        {#                            showCancelButton#}
+        {#                :#}
+        {#                    true,#}
+        {#                            confirmButtonColor#}
+        {#                :#}
+        {#                    "#DD6B55",#}
+        {#                            cancelButtonText#}
+        {#                :#}
+        {#                    '{% trans 'back to current wallet'%}',#}
+        {#                            closeOnConfirm#}
+        {#                :#}
+        {#                    false,#}
+        {#                            closeOnCancel#}
+        {#                :#}
+        {#                    false,#}
+        {#                            showConfirmButton#}
+        {#                :#}
+        {#                    false,#}
+        {#                })#}
+        {#                    ;#}
+        {#                }#}
+        {#            });#}
+        {#            var unsaved = false;#}
+        {#            $(":input").change(function () { //trigers change in all input fields including text type#}
+        {#                unsaved = false;#}
+        {#            });#}
+        {##}
+        {#            function unloadPage() {#}
+        {#                if (unsaved) {#}
+        {#                    return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";#}
+        {#                }#}
+        {#            }#}
+        {##}
+        {#            window.onbeforeunload = unloadPage;#}
+        {#            function formSubmitter(formTag, messageTag) {#}
+        {##}
+        {#                swal({#}
+        {#                    title: '{%  trans 'Conversion' %}',#}
+        {#                    text: '{%  trans 'Your conversion is in process' %}',#}
+        {#                    type: 'info',#}
+        {#                    showConfirmButton: false,#}
+        {#                });#}
+        {#                document.getElementById("success").style.display = "block";#}
+        {#                document.getElementById(messageTag).innerHTML = "You have changed currency";#}
+        {#                document.getElementById("sampleform").style.display = "none";#}
+        {#                setTimeout("time()", 1000);#}
+        {#            }#}
+        {#            function time() {#}
+        {#                document.getElementById("sampleform").submit();#}
+        {#            }#}
+        {##}
+        {#        </script>#}
 
 
 
 
         <script>
-      $(document).ready(function(){
-       var inf= $('#message').text();
+            $(document).ready(function () {
+                var inf = $('#message').text();
       if( $('#message').text().length!=14)
       {
-            swal({
+                    swal({
 
            title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
-           type: 'info',
+                    type: 'info',
            html: ' ' + 'and other HTML tags',
            type: "info",
            showCancelButton: true,
@@ -133,38 +133,38 @@
            closeOnCancel: false,
            showConfirmButton: false,
              });
-      }
-       });
-      var unsaved = false;
-      $(":input").change(function(){ //trigers change in all input fields including text type
-      unsaved = false;
-         });
+                }
+            });
+            var unsaved = false;
+            $(":input").change(function () { //trigers change in all input fields including text type
+                unsaved = false;
+            });
 
-           function unloadPage() {
-               if (unsaved) {
-                   return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
-               }
-           }
+            function unloadPage() {
+                if (unsaved) {
+                    return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
+                }
+            }
 
-       window.onbeforeunload = unloadPage;
-       function formSubmitter(formTag,messageTag) {
+            window.onbeforeunload = unloadPage;
+            function formSubmitter(formTag, messageTag) {
 
-           swal({
-            title: '{%  trans 'Conversion' %}',
-            text:  '{%  trans 'Your conversion is in process' %}',
-            type: 'info',
-            showConfirmButton: false,
-             });
-           document.getElementById("success").style.display = "block";
-           document.getElementById(messageTag).innerHTML = "You have changed currency";
-           document.getElementById("sampleform").style.display = "none";
-           setTimeout("time()", 1000);
-       }
-         function time() {
-               document.getElementById("sampleform").submit();
-           }
+                swal({
+                    title: '{%  trans 'Conversion' %}',
+                    text: '{%  trans 'Your conversion is in process' %}',
+                    type: 'info',
+                    showConfirmButton: false,
+                });
+                document.getElementById("success").style.display = "block";
+                document.getElementById(messageTag).innerHTML = "You have changed currency";
+                document.getElementById("sampleform").style.display = "none";
+                setTimeout("time()", 1000);
+            }
+            function time() {
+                document.getElementById("sampleform").submit();
+            }
 
-       </script>
+        </script>
 
 
 
@@ -302,14 +302,14 @@
                     <th class="table-header-cell" style="width: 15%">
                         {% trans 'Date' %}
                     </th>
+                    {#                    <th class="table-header-cell">#}
+                    {#                        {% trans 'Wallet Code' %}#}
+                    {#                    </th>#}
+                    {#                    <th class="table-header-cell">#}
+                    {#                        {% trans 'Currency' %}#}
+                    {#                    </th>#}
                     <th class="table-header-cell">
-                        {% trans 'Wallet Code' %}
-                    </th>
-                    <th class="table-header-cell">
-                        {% trans 'Currency' %}
-                    </th>
-                    <th class="table-header-cell">
-                        {% trans 'Card Type' %}
+                        {% trans 'Type' %}
                     </th>
                     <th class="table-header-cell">
                         {% trans 'Amount' %}
@@ -328,22 +328,27 @@
                 <tbody>
                 {% for d in list %}
                     <tr>
-                        <td class="table-cell">{{ forloop.counter }}</td>
-                        <td width="6%" class="table-cell">{{ d.id }}</td>
-                        <td width="15%" class="table-cell">{{ d.date }}</td>
-                        <td class="table-cell">{{ d.account.account_id }}</td>
-                        <td class="table-cell">{{ d.cur_code }}</td>
-                        <td class="table-cell"></td>
+                        <td width="6%" class="table-cell" style="text-align: center">{{ forloop.counter }}</td>
+                        <td width="10%" class="table-cell" style="text-align: center">{{ d.id }}</td>
+                        <td width="15%" class="table-cell" style="text-align: center">{{ d.date }}</td>
+                        {#                        <td class="table-cell">{{ d.account.account_id }}</td>#}
+                        {#                        <td class="table-cell">{{ d.cur_code }}</td>#}
+                        <td class="table-cell" width="15%" style="text-align: center">
+{#                            {% if d|get_transaction_type == "money_transfer" %}#}
+                                {{ d|get_transfer_type:user}}
+{#                            {% endif %}#}
+{#                            {{ d.id }}#}
+                        </td>
                         {% if d|get_transaction_type == "deposit" %}
                             <td class="table-cell">{{ d.amount }}<span style="float:right; color:lime"
                                                                        class="glyphicon glyphicon-triangle-top green"></span>
                             </td>
                         {% else %}
                             <td class="table-cell">- {{ d.amount }}<span style="float:right; color:red"
-                                                                        class="glyphicon glyphicon-triangle-bottom red"></span>
+                                                                         class="glyphicon glyphicon-triangle-bottom red"></span>
                             </td>
                         {% endif %}
-                        <td class="table-cell">
+                        <td class="table-cell" style="text-align: center">
                             {% if d|get_transaction_type == "deposit" %}
                                 {% if d.status == 1 %}
                                     Reversed

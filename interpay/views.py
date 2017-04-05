@@ -1,7 +1,10 @@
 from interpay.forms import RegistrationForm, UserForm, RechargeAccountForm, CreateBankAccountForm
 from django.shortcuts import render, render_to_response, redirect
+# from groupcache.decorators import cache_tagged_page
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.vary import vary_on_headers
 from django.http import HttpResponseRedirect, HttpResponse
+from django.utils.cache import get_cache_key
 from django.views import View
 from django.views.generic import TemplateView, CreateView
 from interpay.forms import RegistrationForm, UserForm
@@ -25,6 +28,7 @@ from firstsite import settings
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from currencies.models import Currency
+from django.db.models import Q
 import json
 import time
 import random
@@ -121,7 +125,7 @@ def test():
     up = UserProfile.objects.get(user=user)
     # ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
     # ba.save()
-    ba = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT,cur_code='IRR')[0]
+    ba = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT, cur_code='IRR')[0]
     # ba.delete()
     d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='IRR')
     d.save()
@@ -725,8 +729,9 @@ class HomeView(TemplateView):
     template_name = 'interpay/home.html'
 
 
-@cache_page(60)
 @login_required()
+@cache_page(60)
+@vary_on_headers('User-Agent', 'Cookie')
 def wallets(request):
     print ("entered wallet")
     user_profile = models.UserProfile.objects.get(user=request.user)
@@ -742,6 +747,7 @@ def wallets(request):
 def wallet(request, wallet_id, recom=None):
     # print "wallet function"
     ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
+    up = ba.owner
     if request.method == "GET":
         recom = request.GET.get("recom")
         if recom is None:
@@ -753,11 +759,15 @@ def wallet(request, wallet_id, recom=None):
             transaction_list.append(item1)
         for item2 in Withdraw.objects.filter(account=ba):
             transaction_list.append(item2)
+        # for item3 in MoneyTransfer.objects.filter(Q(sender__owner=up) | Q(receiver__owner=up)):
+        for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)):
+            transaction_list.append(item3)
         transaction_list.sort(key=lambda x: x.date)
         context = {
             'account': ba,
             'recommended': recommended,
-            'list': transaction_list
+            'list': transaction_list,
+            'user': up
         }
         return render(request, "interpay/wallet.html", context)
 
