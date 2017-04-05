@@ -450,13 +450,15 @@ def activate_account(request, token):
 def user_login(request):
     if request.method == 'GET':
         next = request.GET.get("next")
-        if not next :
+        if not next:
             next = "/home/"
     if request.get_full_path() == "/login/?next=/home/":
         return render(request, 'interpay/index.html',
                       {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
     if request.method == 'POST':
         next = request.POST.get("next")
+        if not next:
+            next = "/home/"
         username = request.POST['username']
         password = request.POST['password']
         if not settings.DEBUG:
@@ -484,7 +486,7 @@ def user_login(request):
                     return HttpResponseRedirect(next)
                     # return HttpResponseRedirect('/home/')
                 else:
-                    return HttpResponseRedirect('/fa-ir/'+next)
+                    return HttpResponseRedirect('/fa-ir/' + next)
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
                     en_acc_disabled_msg = "Your account is disabled."
