@@ -448,14 +448,17 @@ def activate_account(request, token):
 
 
 def user_login(request):
+    if request.method == 'GET':
+        next = request.GET.get("next")
+        if not next :
+            next = "/home/"
     if request.get_full_path() == "/login/?next=/home/":
         return render(request, 'interpay/index.html',
                       {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
     if request.method == 'POST':
-        print ("user login")
+        next = request.POST.get("next")
         username = request.POST['username']
         password = request.POST['password']
-        print (settings.DEBUG, "debug")
         if not settings.DEBUG:
             gcapcha = request.POST['g-recaptcha-response']
             # post  https://www.google.com/recaptcha/api/siteverify
@@ -478,9 +481,10 @@ def user_login(request):
             if user.is_active and user_profile.is_active:
                 login(request, user, None)
                 if request.LANGUAGE_CODE == 'en-gb':
-                    return HttpResponseRedirect('/home/')
+                    return HttpResponseRedirect(next)
+                    # return HttpResponseRedirect('/home/')
                 else:
-                    return HttpResponseRedirect('/fa-ir/home')
+                    return HttpResponseRedirect('/fa-ir/'+next)
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
                     en_acc_disabled_msg = "Your account is disabled."
@@ -497,7 +501,7 @@ def user_login(request):
                 fa_wrong_info_msg = u'??? ?????? ?? ??? ???? ???? ??? ?????? ???.'
                 return render(request, 'interpay/index.html', {'msg': fa_wrong_info_msg})
     else:
-        return render(request, 'interpay/index.html', {})
+        return render(request, 'interpay/index.html', {'next': next})
 
 
 START_TIME = 0x0
@@ -912,7 +916,7 @@ def random_code_gen():
 def handle_uploaded_file(f, filename):
     dir = os.path.dirname(filename)
     if not os.path.exists(dir):
-     os.makedirs(dir)
+        os.makedirs(dir)
     destination = open(filename, 'wb+')
     for chunk in f.chunks():
         destination.write(chunk)
@@ -948,56 +952,56 @@ def edit_profile(request):
             return HttpResponse(json.dumps(result))
 
         if request.POST['action'] == 'change_username':
-                entered_username = request.POST.get('username')
-                user_profile = models.UserProfile.objects.get(user__username=request.user)
-                user_profile.user.username = entered_username
-                user_profile.user.save()
-                html = '<strong>Your username has changed successfully</strong><hr>'
-                result = {'html': html}
-                return HttpResponse(json.dumps(result))
+            entered_username = request.POST.get('username')
+            user_profile = models.UserProfile.objects.get(user__username=request.user)
+            user_profile.user.username = entered_username
+            user_profile.user.save()
+            html = '<strong>Your username has changed successfully</strong><hr>'
+            result = {'html': html}
+            return HttpResponse(json.dumps(result))
 
-                #if request.POST['action'] == 'change_national_photo':
-            #form_edit = RegistrationForm_edit(request.POST, request.FILES)
-            #print form_edit
-            #if form_edit.is_valid():
-                #newphoto = form_edit.save(commit=False)
-                #print newphoto
-                #print request.FILES
-                #newphoto.national_card_photo = request.FILES['national_card_photo']
-                #newphoto.save()
-                #print newphoto.national_card_photo
-            #html = '<strong>Your National photo has changed successfully</strong><hr>'
-            #result = {'html': html}
-            #return HttpResponse(json.dumps(result))
-
-
-
-            #entered_naional_photo = request.POST.get('national_photo')
-            #full_filename = os.path.join(settings.MEDIA_ROOT+"nationalCardScan/",entered_naional_photo)
-            #registration_form_edit = RegistrationForm_edit(data=request.POST)
+            # if request.POST['action'] == 'change_national_photo':
+            # form_edit = RegistrationForm_edit(request.POST, request.FILES)
+            # print form_edit
+            # if form_edit.is_valid():
+            # newphoto = form_edit.save(commit=False)
+            # print newphoto
+            # print request.FILES
+            # newphoto.national_card_photo = request.FILES['national_card_photo']
+            # newphoto.save()
+            # print newphoto.national_card_photo
+            # html = '<strong>Your National photo has changed successfully</strong><hr>'
+            # result = {'html': html}
+            # return HttpResponse(json.dumps(result))
 
 
-            #uploaded_filename = request.FILES[' national_photo'].name
-            #print(uploaded_filename)
+
+            # entered_naional_photo = request.POST.get('national_photo')
+            # full_filename = os.path.join(settings.MEDIA_ROOT+"nationalCardScan/",entered_naional_photo)
+            # registration_form_edit = RegistrationForm_edit(data=request.POST)
+
+
+            # uploaded_filename = request.FILES[' national_photo'].name
+            # print(uploaded_filename)
             # save the uploaded file inside that folder.
-            #full_filename = os.path.join(settings.MEDIA_ROOT, folder, national_photo)
-            #print(full_filename)
+            # full_filename = os.path.join(settings.MEDIA_ROOT, folder, national_photo)
+            # print(full_filename)
 
 
-            #fout = open(full_filename, 'wb+')
-            #file_content = ContentFile(request.FILES['national_photo'].read())
-            #newdoc = handle_uploaded_file(request.FILES['national_photo'],full_filename)
-            #print newdoc
-            #print "you in"
-            #newdoc.save()
+            # fout = open(full_filename, 'wb+')
+            # file_content = ContentFile(request.FILES['national_photo'].read())
+            # newdoc = handle_uploaded_file(request.FILES['national_photo'],full_filename)
+            # print newdoc
+            # print "you in"
+            # newdoc.save()
 
             # Iterate through the chunks.
-            #for chunk in file_content.chunks():
-             #   fout.write(chunk)
+            # for chunk in file_content.chunks():
+            #   fout.write(chunk)
             # fout.close()
-            #user_profile = models.UserProfile.objects.get(user__username=request.user)
-            #user_profile.national_card_photo = full_filename
-            #user_profile.save()
+            # user_profile = models.UserProfile.objects.get(user__username=request.user)
+            # user_profile.national_card_photo = full_filename
+            # user_profile.save()
 
 
 
