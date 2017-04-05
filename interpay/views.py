@@ -12,7 +12,7 @@ from interpay.forms import RegistrationForm, UserForm
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from interpay.forms import RegistrationForm, RegistrationForm_edit, UserForm, CaptchaForm
+from interpay.forms import RegistrationForm, UserForm, CaptchaForm
 from django.views.decorators.csrf import csrf_exempt
 from interpay.Validation import Validation
 from firstsite.SMS import ds, api

@@ -70,11 +70,11 @@ class UserForm(forms.ModelForm):
         #     send_mail(datas['email_subject'], message, 'yourdomain <no-reply@yourdomain.com>', [datas['email']],
         #               fail_silently=False)
 
-class RegistrationForm_edit(forms.ModelForm):
+#class RegistrationForm_edit(forms.ModelForm):
 
-    class Meta:
-        model = UserProfile
-        exclude = ['date_of_birth', 'user', 'password', 'email', 'is_active', 'date_joined', 'country', 'national_code' , 'mobile_number']
+  #  class Meta:
+  #      model = UserProfile
+  #      exclude = ['date_of_birth', 'user', 'password', 'email', 'is_active', 'date_joined', 'country', 'national_code' , 'mobile_number']
 
 class RegistrationForm(forms.ModelForm):
     date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1920, 2013)))
