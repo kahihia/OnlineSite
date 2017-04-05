@@ -1,0 +1,13 @@
+.manage_edit
+{
+
+    padding: 3px;
+    padding: 5px 5px;
+    font-size: 24px;
+    font-weight: 100;
+    color: #5B5955;
+    text-decoration: none;
+    display: block;
+    overflow-wrap: break-word;
+    border-bottom: 1px solid #E7AC4C;
+}

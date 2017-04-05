@@ -1,3 +1,7 @@
+import os
+
+from django.core.files.base import ContentFile
+
 from interpay.forms import RegistrationForm, UserForm, RechargeAccountForm, CreateBankAccountForm
 from django.shortcuts import render, render_to_response, redirect
 # from groupcache.decorators import cache_tagged_page
@@ -891,6 +895,10 @@ def reports(request):
     return render(request, "interpay/reports.html")
 
 
+def info(request):
+    return render(request, "interpay/info.html")
+
+
 @login_required()
 def general(request):
     return render(request, "interpay/general.html")
@@ -899,6 +907,16 @@ def general(request):
 def random_code_gen():
     verif_code = randint(100000, 999999)
     return verif_code
+
+
+def handle_uploaded_file(f, filename):
+    dir = os.path.dirname(filename)
+    if not os.path.exists(dir):
+     os.makedirs(dir)
+    destination = open(filename, 'wb+')
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
 
 
 @csrf_exempt
@@ -928,23 +946,58 @@ def edit_profile(request):
             html = '<strong>Your National id has changed successfully</strong><hr>'
             result = {'html': html}
             return HttpResponse(json.dumps(result))
-        if request.POST['action'] == 'change_national_photo':
-            entered_national_photo = request.POST.get('national_photo')
-            user_profile = models.UserProfile.objects.get(user__username=request.user)
-            user_profile.national_card_photo = entered_national_photo
-            user_profile.save()
-            html = '<strong>Your National photo has changed successfully</strong><hr>'
-            result = {'html': html}
-            return HttpResponse(json.dumps(result))
-        if request.POST['action'] == 'change_username':
-            entered_username = request.POST.get('username')
-            user_profile = models.UserProfile.objects.get(user__username=request.user)
-            user_profile.user.username = entered_username
-            user_profile.user.save()
-            html = '<strong>Your username has changed successfully</strong><hr>'
-            result = {'html': html}
-            return HttpResponse(json.dumps(result))
 
+        if request.POST['action'] == 'change_username':
+                entered_username = request.POST.get('username')
+                user_profile = models.UserProfile.objects.get(user__username=request.user)
+                user_profile.user.username = entered_username
+                user_profile.user.save()
+                html = '<strong>Your username has changed successfully</strong><hr>'
+                result = {'html': html}
+                return HttpResponse(json.dumps(result))
+
+                #if request.POST['action'] == 'change_national_photo':
+            #form_edit = RegistrationForm_edit(request.POST, request.FILES)
+            #print form_edit
+            #if form_edit.is_valid():
+                #newphoto = form_edit.save(commit=False)
+                #print newphoto
+                #print request.FILES
+                #newphoto.national_card_photo = request.FILES['national_card_photo']
+                #newphoto.save()
+                #print newphoto.national_card_photo
+            #html = '<strong>Your National photo has changed successfully</strong><hr>'
+            #result = {'html': html}
+            #return HttpResponse(json.dumps(result))
+
+
+
+            #entered_naional_photo = request.POST.get('national_photo')
+            #full_filename = os.path.join(settings.MEDIA_ROOT+"nationalCardScan/",entered_naional_photo)
+            #registration_form_edit = RegistrationForm_edit(data=request.POST)
+
+
+            #uploaded_filename = request.FILES[' national_photo'].name
+            #print(uploaded_filename)
+            # save the uploaded file inside that folder.
+            #full_filename = os.path.join(settings.MEDIA_ROOT, folder, national_photo)
+            #print(full_filename)
+
+
+            #fout = open(full_filename, 'wb+')
+            #file_content = ContentFile(request.FILES['national_photo'].read())
+            #newdoc = handle_uploaded_file(request.FILES['national_photo'],full_filename)
+            #print newdoc
+            #print "you in"
+            #newdoc.save()
+
+            # Iterate through the chunks.
+            #for chunk in file_content.chunks():
+             #   fout.write(chunk)
+            # fout.close()
+            #user_profile = models.UserProfile.objects.get(user__username=request.user)
+            #user_profile.national_card_photo = full_filename
+            #user_profile.save()
 
 
 
