@@ -574,7 +574,7 @@ def recharge_account(request, **message):
         if code != 0:
             emessage = "Unknown ZarinPal Error"
     print msg_color, "msg_color"
-    deposit_num= models.Deposit.objects.count();
+    deposit_num= deposit_set.count();
     return render(request, "interpay/top_up.html",
                   {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage,
                    'msg_color': msg_color, 'deposit_num': deposit_num})
@@ -888,6 +888,18 @@ def reports(request):
 
 def info(request):
     return render(request, "interpay/info.html")
+
+
+def about(request):
+    return render(request, "interpay/about.html")
+
+
+def contact(request):
+    return render(request, "interpay/contact.html")
+
+
+def services(request):
+    return render(request, "interpay/services.html")
 
 
 @login_required()

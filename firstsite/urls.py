@@ -77,7 +77,10 @@ urlpatterns = [
     url(r'^top-up/', views.recharge_account, name='recharge_account'),
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
     url(r'^callback_handler/([0-9]*)', views.zarinpal_callback_handler, name='callback_handler'),
-
+    url(r'^$', views.info, name='info'),
+    url(r'^about/', views.about, name='about'),
+    url(r'^contact/', views.contact, name='contact'),
+    url(r'^services/', views.services, name='services'),
 ]
 
 urlpatterns += i18n_patterns(
@@ -123,5 +126,8 @@ urlpatterns += i18n_patterns(
     url(r'^bank-accounts/', views.bank_accounts, name='bank_accounts'),
     url(r'^callback_handler/([0-9]*)', views.zarinpal_callback_handler, name='callback_handler'),
     url(r'^$', views.info, name='info'),
+    url(r'^about/', views.about, name='about'),
+    url(r'^contact/', views.contact, name='contact'),
+    url(r'^services/', views.services, name='services'),
 )
 

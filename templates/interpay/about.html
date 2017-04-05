@@ -1,0 +1,25 @@
+
+{% extends 'interpay/top_bar.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>
+            About us
+        </title>
+    </head>
+
+    <body>
+        {% block cont-body %}
+            <img src="{% static 'interpay/images/ictlogo.png' %}">
+            <h2>our service is supported by sharif university ...  </h2>
+        {% endblock %}
+    </body>
+</html>
+
+
+
+
