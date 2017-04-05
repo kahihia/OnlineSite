@@ -91,12 +91,20 @@
 
                {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <div class="form-group" style="float: left ; margin-right: 3%">
+                <div class="form-group">
+                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+                   <label style="display:block">
                 {% else %}
                     <div class="form-group" style="float: right ; margin-left: 3%">
                 {% endifequal %}
                     <label style="display:block">
                           {% trans 'Destination Email:' %}
                     </label>
+
+                    <form style="display: none" method="get" action="../info/">
+                        <button  type="submit" onclick="goto()">Reviews detail</button>
+                    </form>
+
                     <input type="text" name="email" id="email" class="form-control" style="width:300px">
                 </div>
 
@@ -124,7 +132,7 @@
                 <input type="button"
                        id="confirm"
                        onclick="fill_modal()"
-                       value="Confirm"
+                       value="{% trans 'Confirm' %}"
                        data-toggle="modal"
                        data-target="#myModal"
                        class="btn btn-info">

@@ -885,6 +885,10 @@ def reports(request):
     return render(request, "interpay/reports.html")
 
 
+def info(request):
+    return render(request, "interpay/info.html")
+
+
 @login_required()
 def general(request):
     return render(request, "interpay/general.html")
