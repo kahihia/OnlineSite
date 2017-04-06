@@ -171,20 +171,19 @@
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" style="color: white" href="/edit">
                 {% else %}
-                    <a class="sidebar-links" style="color: white" href="/fa-ir/edit">
+                  <a class="sidebar-links" style="color: white" href="/fa-ir/edit">
                 {% endifequal%}
 
-                 <div class="edit">
+                   <div class="edit">
                       <span class="inner_edit" onmouseover="change(this)" onmouseout="normal(this)" id="group_username">
                       <span id="profile_name" style=" display:inline; color: white; display: inline-block; word-wrap: break-word; text-align: center ; font-size: 120%; font-size-adjust: inherit "><span id="inner_username"> {{ user.username }} </span><span id="finishing">{% trans "Profile" %}</span></span>
                       <span id="edited" style =" color: white ;display: none ; word-wrap: break-word; text-align: center ; font-size:small; font-size-adjust: inherit"> edit profile</span>
                       </span>
-
-               <!-- <image onmouseover="change(this)" onmouseout="normalImg(this)" style="display: inline-block; width: 40px;height: 40px;border-radius: 50%;background-repeat: no-repeat;background-position: center center;
-                background-size: cover;" src = "/static/interpay/media/{{user.UserProfile.national_card_photo}}"/> </span>{#  <span id = "inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></a>#}
-                --->
-                 </div>
-            </a>
+                       <!-- <image onmouseover="change(this)" onmouseout="normalImg(this)" style="display: inline-block; width: 40px;height: 40px;border-radius: 50%;background-repeat: no-repeat;background-position: center center;
+                       background-size: cover;" src = "/static/interpay/media/{{user.UserProfile.national_card_photo}}"/> </span>{#  <span id = "inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></a>#}
+                         --->
+                   </div>
+                 </a>
 
                 <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
                 <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
