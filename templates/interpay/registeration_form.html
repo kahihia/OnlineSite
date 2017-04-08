@@ -207,12 +207,13 @@
     {% block script %}
     {% endblock %}
 </script>
-<header>
-     <header>
-        <ul class="topnav" id="myTopnav">
-            <h1  style="margin-top: 0% ; margin-bottom: 3%">
+<div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
+    <header>
+        <ul class="topnav">
+            <h1  style="margin-top: 0% ; margin-bottom: 2%">
+              {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
+                    <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
                         <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
                     </a>
@@ -222,14 +223,17 @@
                         <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
                     </a>
                 {% endifequal %}
-                 <img src="{% static 'interpay/images/rizpal.png' %}"  style=" padding-top: 2px; margin-left: 5px; width:56px; height: 50px; float:left ; margin-top:0px">
-                 <img src="{% static 'interpay/images/logo.png' %}"  style=" padding-left: 10px; padding-top: 20px; width:100px; height: 58px; float:left ; margin-top:0px">
+             {% endblock %}
+                <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
+                <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
+
             </h1>
+     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
+
+
+      </div>
         </ul>
     </header>
-
-</header>
-
 
 <section>
     <div class="container">
@@ -370,5 +374,7 @@
 {#<footer id="footer" class="footer">#}
 {#    <div id="footer-content">All rights reserved.</div>#}
 {#</footer>#}
+</div>
 </body>
+
 </html>

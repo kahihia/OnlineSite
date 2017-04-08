@@ -70,6 +70,11 @@ class UserForm(forms.ModelForm):
         #     send_mail(datas['email_subject'], message, 'yourdomain <no-reply@yourdomain.com>', [datas['email']],
         #               fail_silently=False)
 
+#class RegistrationForm_edit(forms.ModelForm):
+
+  #  class Meta:
+  #      model = UserProfile
+  #      exclude = ['date_of_birth', 'user', 'password', 'email', 'is_active', 'date_joined', 'country', 'national_code' , 'mobile_number']
 
 class RegistrationForm(forms.ModelForm):
     date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1920, 2013)))
@@ -79,13 +84,14 @@ class RegistrationForm(forms.ModelForm):
         exclude = ['user', 'password', 'email', 'is_active', 'date_joined', 'picture']
         widgets = {
             'national_code': forms.TextInput(
-                attrs={'class': 'registration-form-field', 'placeholder': 'National Code', 'id': 'national_code', }),
+                attrs={'class': 'registration-form-field', 'placeholder': _('National Code'), 'id': 'national_code', }),
             'country': forms.Select(attrs={'class': 'registration-form-field', 'placeholder': 'Country'}),
             'mobile_number': forms.TextInput(
                 attrs={'name': 'mobile_no', 'class': 'registration-form-field',
-                       'placeholder': 'Mobile (Example: 09121234567)',
+                       'placeholder': _('Mobile (Example: 09121234567)'),
                        'id': 'mob_no'}),
         }
+
 
     def clean_national_code(self):
         national_code = self.cleaned_data['national_code']

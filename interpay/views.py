@@ -1,7 +1,14 @@
+import os
+
+from django.core.files.base import ContentFile
+
 from interpay.forms import RegistrationForm, UserForm, RechargeAccountForm, CreateBankAccountForm
 from django.shortcuts import render, render_to_response, redirect
+# from groupcache.decorators import cache_tagged_page
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.vary import vary_on_headers
 from django.http import HttpResponseRedirect, HttpResponse
+from django.utils.cache import get_cache_key
 from django.views import View
 from django.views.generic import TemplateView, CreateView
 from interpay.forms import RegistrationForm, UserForm
@@ -25,6 +32,7 @@ from firstsite import settings
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from currencies.models import Currency
+from django.db.models import Q
 import json
 import time
 import random
@@ -119,9 +127,9 @@ def test():
     print ("test executed")
     user = User.objects.get(username="arman")
     up = UserProfile.objects.get(user=user)
-    ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
-    ba.save()
-    # ba = BankAccount.objects.get(owner=up, cur_code='USD')
+    # ba = BankAccount(name='usdaccount', owner=up, method=BankAccount.DEBIT, cur_code='IRR', account_id=make_id())
+    # ba.save()
+    ba = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT, cur_code='IRR')[0]
     # ba.delete()
     d = Deposit(account=ba, amount=1000.00, banker=up, date=datetime.datetime.now(), cur_code='IRR')
     d.save()
@@ -440,14 +448,19 @@ def activate_account(request, token):
 
 
 def user_login(request):
+    if request.method == 'GET':
+        next = request.GET.get("next")
+        if not next:
+            next = "/home/"
     if request.get_full_path() == "/login/?next=/home/":
         return render(request, 'interpay/index.html',
                       {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
     if request.method == 'POST':
-        print ("user login")
+        next = request.POST.get("next")
+        if not next:
+            next = "/home/"
         username = request.POST['username']
         password = request.POST['password']
-        print (settings.DEBUG, "debug")
         if not settings.DEBUG:
             gcapcha = request.POST['g-recaptcha-response']
             # post  https://www.google.com/recaptcha/api/siteverify
@@ -470,9 +483,10 @@ def user_login(request):
             if user.is_active and user_profile.is_active:
                 login(request, user, None)
                 if request.LANGUAGE_CODE == 'en-gb':
-                    return HttpResponseRedirect('/home/')
+                    return HttpResponseRedirect(next)
+                    # return HttpResponseRedirect('/home/')
                 else:
-                    return HttpResponseRedirect('/fa-ir/home')
+                    return HttpResponseRedirect('/fa-ir/' + next)
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
                     en_acc_disabled_msg = "Your account is disabled."
@@ -489,7 +503,7 @@ def user_login(request):
                 fa_wrong_info_msg = u'??? ?????? ?? ??? ???? ???? ??? ?????? ???.'
                 return render(request, 'interpay/index.html', {'msg': fa_wrong_info_msg})
     else:
-        return render(request, 'interpay/index.html', {})
+        return render(request, 'interpay/index.html', {'next': next})
 
 
 START_TIME = 0x0
@@ -725,8 +739,9 @@ class HomeView(TemplateView):
     template_name = 'interpay/home.html'
 
 
-@cache_page(60)
 @login_required()
+@cache_page(60)
+@vary_on_headers('User-Agent', 'Cookie')
 def wallets(request):
     print ("entered wallet")
     user_profile = models.UserProfile.objects.get(user=request.user)
@@ -742,25 +757,29 @@ def wallets(request):
 def wallet(request, wallet_id, recom=None):
     # print "wallet function"
     ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
-    # print recom
-
+    up = ba.owner
     if request.method == "GET":
         recom = request.GET.get("recom")
-    print recom
-    if recom == None:
+        if recom is None:
+            recommended = 0
+        else:
+            recommended = ba.balance
+        transaction_list = []
+        for item1 in Deposit.objects.filter(account=ba):
+            transaction_list.append(item1)
+        for item2 in Withdraw.objects.filter(account=ba):
+            transaction_list.append(item2)
+        # for item3 in MoneyTransfer.objects.filter(Q(sender__owner=up) | Q(receiver__owner=up)):
+        for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)):
+            transaction_list.append(item3)
+        transaction_list.sort(key=lambda x: x.date)
         context = {
             'account': ba,
-            'recommended': 0,
-            'deposit_set': models.Deposit.objects.filter(account=ba),
+            'recommended': recommended,
+            'list': transaction_list,
+            'user': up
         }
-    else:
-        context = {
-            'account': ba,
-            'recommended': ba.balance,
-            'deposit_set': models.Deposit.objects.filter(account=ba),
-        }
-
-    return render(request, "interpay/wallet.html", context)
+        return render(request, "interpay/wallet.html", context)
 
 
 
@@ -873,6 +892,10 @@ def reports(request):
     return render(request, "interpay/reports.html")
 
 
+def info(request):
+    return render(request, "interpay/info.html")
+
+
 @login_required()
 def general(request):
     return render(request, "interpay/general.html")
@@ -881,6 +904,16 @@ def general(request):
 def random_code_gen():
     verif_code = randint(100000, 999999)
     return verif_code
+
+
+def handle_uploaded_file(f, filename):
+    dir = os.path.dirname(filename)
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    destination = open(filename, 'wb+')
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
 
 
 @csrf_exempt
@@ -910,14 +943,7 @@ def edit_profile(request):
             html = '<strong>Your National id has changed successfully</strong><hr>'
             result = {'html': html}
             return HttpResponse(json.dumps(result))
-        if request.POST['action'] == 'change_national_photo':
-            entered_national_photo = request.POST.get('national_photo')
-            user_profile = models.UserProfile.objects.get(user__username=request.user)
-            user_profile.national_card_photo = entered_national_photo
-            user_profile.save()
-            html = '<strong>Your National photo has changed successfully</strong><hr>'
-            result = {'html': html}
-            return HttpResponse(json.dumps(result))
+
         if request.POST['action'] == 'change_username':
             entered_username = request.POST.get('username')
             user_profile = models.UserProfile.objects.get(user__username=request.user)
@@ -927,6 +953,48 @@ def edit_profile(request):
             result = {'html': html}
             return HttpResponse(json.dumps(result))
 
+            # if request.POST['action'] == 'change_national_photo':
+            # form_edit = RegistrationForm_edit(request.POST, request.FILES)
+            # print form_edit
+            # if form_edit.is_valid():
+            # newphoto = form_edit.save(commit=False)
+            # print newphoto
+            # print request.FILES
+            # newphoto.national_card_photo = request.FILES['national_card_photo']
+            # newphoto.save()
+            # print newphoto.national_card_photo
+            # html = '<strong>Your National photo has changed successfully</strong><hr>'
+            # result = {'html': html}
+            # return HttpResponse(json.dumps(result))
+
+
+
+            # entered_naional_photo = request.POST.get('national_photo')
+            # full_filename = os.path.join(settings.MEDIA_ROOT+"nationalCardScan/",entered_naional_photo)
+            # registration_form_edit = RegistrationForm_edit(data=request.POST)
+
+
+            # uploaded_filename = request.FILES[' national_photo'].name
+            # print(uploaded_filename)
+            # save the uploaded file inside that folder.
+            # full_filename = os.path.join(settings.MEDIA_ROOT, folder, national_photo)
+            # print(full_filename)
+
+
+            # fout = open(full_filename, 'wb+')
+            # file_content = ContentFile(request.FILES['national_photo'].read())
+            # newdoc = handle_uploaded_file(request.FILES['national_photo'],full_filename)
+            # print newdoc
+            # print "you in"
+            # newdoc.save()
+
+            # Iterate through the chunks.
+            # for chunk in file_content.chunks():
+            #   fout.write(chunk)
+            # fout.close()
+            # user_profile = models.UserProfile.objects.get(user__username=request.user)
+            # user_profile.national_card_photo = full_filename
+            # user_profile.save()
 
 
 

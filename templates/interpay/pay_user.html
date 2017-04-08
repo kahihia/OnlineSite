@@ -52,7 +52,7 @@
                 {#                <div class="row">#}
 
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                <div class="form-group col-lg-2" style="padding:0;">
+                    <div class="form-group col-lg-2" style="padding:0;">
                  {% else %}
                     <div class="form-group col-lg-2" style="padding:0; float:right">
                 {% endifequal %}
@@ -71,18 +71,16 @@
                 </div>
 
 
-                  {% ifequal LANGUAGE_CODE 'en-gb' %}
-                   <div class="form-group" style="padding: 0">
-                {% else %}
-                     <div class="form-group" style="padding: 0;">
-                {% endifequal %}
-                      {% ifequal LANGUAGE_CODE 'en-gb' %}
+
+                 <div class="form-group" style="padding: 0">
+
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                    <label style="display:block">
                 {% else %}
                     <label style="display:block ; float: right">
                 {% endifequal %}
                          {% trans 'currency' %}
-                    </label>
+                 </label>
                     <select name="currency" class="form-control"  style="width:110px">
                         <option value="IRR">Rial</option>
                         <option value="USD">Dollar</option>
@@ -90,41 +88,33 @@
                         <option value="GBP">Pound</option>
                     </select>
                 </div>
-                {#                </div>#}
-                {#                <div class="row">#}
 
-                {#                </div>#}
-                {#                <div class="row">#}
-                <div class="form-group">
-                     {% ifequal LANGUAGE_CODE 'en-gb' %}
-                   <label style="display:block">
+               {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <div class="form-group" style="float: left ; margin-right: 3%">
                 {% else %}
-                    <label style="display:block">
+                    <div class="form-group" style="float: right ; margin-left: 3%">
                 {% endifequal %}
-                        {% trans 'Destination Email:' %}
+                    <label style="display:block">
+                          {% trans 'Destination Email:' %}
                     </label>
+
+                    <form style="display: none" method="get" action="../info/">
+                        <button  type="submit" onclick="goto()">Reviews detail</button>
+                    </form>
+
                     <input type="text" name="email" id="email" class="form-control" style="width:300px">
                 </div>
-                {#                </div>#}
-                {#                <div class="row">#}
+
                 <div class="form-group ">
-                    {% ifequal LANGUAGE_CODE 'en-gb' %}
                    <label style="display:block">
-                {% else %}
-                    <label style="display:block">
-                {% endifequal %}
                           {% trans 'Destination Mobile Number:' %}
                     </label>
                     <input type="text" name="mobile" id="mobile" class="form-control" style="width:300px">
                 </div>
                 {#                </div>#}
                 {#                <div class="row">#}
-                <div class="form-group ">
-                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+                <div class="form-group">
                    <label style="display:block">
-                {% else %}
-                    <label style="display:block">
-                {% endifequal %}
                     {% trans 'Comment:' %}
                     </label>
                     <textarea id="comment" name="comment" class="form-control" style="width:300px"></textarea>
@@ -139,7 +129,7 @@
                 <input type="button"
                        id="confirm"
                        onclick="fill_modal()"
-                       value="Confirm"
+                       value="{% trans 'Confirm' %}"
                        data-toggle="modal"
                        data-target="#myModal"
                        class="btn btn-info">
