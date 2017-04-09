@@ -69,18 +69,17 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
            function change(x) {
-              x.style.visibility = "hidden";
-              var y = document.getElementById("group_username");
-              y.style.display = "block"
-
-
+              var y = document.getElementById("edited");
+              var z = document.getElementById("profile_name");
+              y.style.display = "block";
+              z.style.display = "none";
            }
 
-          function normalImg(x) {
-              x.style.visibility = "visible";
-              var y = document.getElementById("group_username");
+          function normal(x){
+              var y = document.getElementById("edited");
               y.style.display = "none"
-
+              var z = document.getElementById("profile_name");
+              z.style.display = "block";
              }
 
           function sidebarfun() {
@@ -172,18 +171,19 @@
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" style="color: white" href="/edit">
                 {% else %}
-                    <a class="sidebar-links" style="color: white" href="/fa-ir/edit">
+                  <a class="sidebar-links" style="color: white" href="/fa-ir/edit">
                 {% endifequal%}
 
-                 <div style="float: right ; padding-right: 2% ; padding-bottom: 3px; margin-bottom: 1px; padding-top: 4px; margin-top: 4px">
-                      <span  id="group_username" style="  padding: 5px; overflow: hidden; width: 40px;height: 40px;border-radius: 50%; background-color:#6C3D0C; display: none; float: inherit; font-family: IRAN-web; font-size: x-small " class="col-xs-4 col-md-2">
-                      <span style=" display:inline; color: white"><span id="inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></span>
+                   <div class="edit">
+                      <span class="inner_edit" onmouseover="change(this)" onmouseout="normal(this)" id="group_username">
+                      <span id="profile_name" style=" display:inline; color: white; display: inline-block; word-wrap: break-word; text-align: center ; font-size: 120%; font-size-adjust: inherit "><span id="inner_username"> {{ user.username }} </span><span id="finishing">{% trans "Profile" %}</span></span>
+                      <span id="edited" style =" color: white ;display: none ; word-wrap: break-word; text-align: center ; font-size:small; font-size-adjust: inherit"> edit profile</span>
                       </span>
-
-                <image onmouseover="change(this)" onmouseout="normalImg(this)" style="display: inline-block; width: 40px;height: 40px;border-radius: 50%;background-repeat: no-repeat;background-position: center center;
-                background-size: cover;" src = "/static/interpay/media/{{user.UserProfile.national_card_photo}}"/> </span>{#  <span id = "inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></a>#}
-
-                 </div>
+                       <!-- <image onmouseover="change(this)" onmouseout="normalImg(this)" style="display: inline-block; width: 40px;height: 40px;border-radius: 50%;background-repeat: no-repeat;background-position: center center;
+                       background-size: cover;" src = "/static/interpay/media/{{user.UserProfile.national_card_photo}}"/> </span>{#  <span id = "inner_username">{{ user.username }}</span><span>{% trans "'s Profile" %}</span></a>#}
+                         --->
+                   </div>
+                 </a>
 
                 <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
                 <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
@@ -410,22 +410,28 @@
                  {% endifequal %}
                     <a href="javascript:void(0);" onclick="sidebarfun()">☰</a>
                 </li>
+                 {% ifequal LANGUAGE_CODE 'en-gb' %}
+                <li  class="w3-hide-small" id="logout" style="float: right">
+                {% else %}
+                 <li  class="w3-hide-small" id="logout" style="float: left">
+                {% endifequal %}
+                  <a style="padding-top: 3px; padding-bottom: 3px; margin-bottom: 3px" id="logout-link" href="/logout">
+
+                        <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
+                    </a>
+                </li>
                 <li  class="w3-hide-small" id="name">{% trans "Name" %}: <span id="inner_first_name">{{ user.first_name }}</span> <span id="inner_last_name"> {{ user.last_name }} </span> </li>
                 <li  class="w3-hide-small" id="Email">{% trans "Email" %}: {{user.email}}</li>
                 <li  class="w3-hide-small" id="login-id">{% trans "Login ID" %}: {{ user.id }}</li>
                 <li  class="w3-hide-small" id="interpay-id">{% trans "InterPay ID" %}: </li>
-                <li  class="w3-hide-small" id="logout">
-                    <a style="padding-top: 3px; padding-bottom: 3px; margin-bottom: 3px" id="logout-link" href="/logout">
-                        <i class="fa fa-power-off" aria-hidden="true"> {% trans "Logout" %}</i>
-                    </a>
-                </li>
             </div>
+
         </div>
         <div id="demo" class=" sidebar_res w3-hide w3-hide-large w3-hide-medium">
             {% ifequal LANGUAGE_CODE 'en-gb' %}
             <ul class=" sidebar_res_entries w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #FED7A0">
               {% else %}
-                <ul class="w3-navbar pull-left w3-animate-left" style="width:30%; background-color: #FED7A0"">
+                <ul class="w3-navbar pull-left w3-animate-left" style="width:30%; background-color: #FED7A0">
                  {% endifequal %}
                 <li   class="sidebar-res_entry" id="name"> {{ user.first_name }} {{ user.last_name }}</li>
                 <li   class="sidebar-res_entry" id="Email">{% trans "Email" %}: {{ user.email }}</li>

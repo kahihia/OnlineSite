@@ -104,6 +104,7 @@
                           <form id="login_form" method="post" action="/fa-ir/login/">
                         {% endifequal %}
                             {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ next }}">
                             <div id="username-div"><input class="login-form-field" type="text" name="username"
                                                           id="username" value=""
                                                           placeholder="Username" size="50"/>

@@ -1,14 +1,18 @@
 {% extends 'interpay/top_bar.html' %}
-{% load staticfiles %}
+
 {% load i18n %}
 {% load static %}
+{% load staticfiles %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-    <head>
-        <title>
-            Interpay Iran
-        </title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        InterPay Iran
+    </title>
 
  {% block style %}
     <style>
@@ -21,6 +25,18 @@
 	text-decoration: none;
         text-align: center;
 }
+        {% ifequal LANGUAGE_CODE 'fa-ir' %}
+
+            .form-wrapper {
+                text-align: right !important;
+                font-family: "IRAN-web";
+            }
+
+            #reg-wrap-wrap-div{
+             font-family: "IRAN-web";
+            }
+
+        {% endifequal %}
     </style>
 
     {% endblock %}
