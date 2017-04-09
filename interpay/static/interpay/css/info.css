@@ -1,0 +1,297 @@
+.form-wrapper {
+    margin-top: 30px;
+    padding: 20px;
+    border: 0 ridge rgb(238, 238, 255);
+    width: 75%;
+    box-shadow: 3px 1px 6px rgb(239, 239, 239);
+    display: inline-block;
+    text-align: left;
+    background-color: #e1e1e2;
+    border-radius: 3%;
+
+}
+
+@media screen and (min-width: 800px) {
+    .form-wrapper {
+        margin-top: 30px;
+        padding: 20px;
+        border: 0 ridge rgb(238, 238, 255);
+        width: 40%;
+        box-shadow: 3px 1px 6px rgb(239, 239, 239);
+        display: inline-block;
+        text-align: left;
+        background-color: #e1e1e2;
+        border-radius: 3%;
+
+    }
+}
+
+.top-bar {
+    background-color: #898787;
+    padding: 5px 0 5px 15px;
+    line-height: 10px;
+    border-radius: 0;
+    margin-bottom: 0;
+    height: 17%;
+}
+
+.registration-form-field {
+    width: 100%;
+    padding-left: 7px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+}
+
+#reg-wrap-wrap-div {
+    text-align: center;
+}
+
+/*TODO this part should be changed and implemented in a neat way.*/
+/*label {*/
+    /*display: none !important;*/
+/*}*/
+
+label[for=id_date_of_birth_day] {
+    display: inline-block !important;
+    font-weight: 500;
+}
+
+/*label[for=id_national_card_photo] {*/
+    /*display: inline-block !important;*/
+    /*font-weight: 500;*/
+/*}*/
+
+/*TODO this task should be done in a correct and neat way. */
+span.helptext {
+    display: none !important;
+}
+
+/*TODO this part isn't working. fix it.*/
+.registeration-form-field:before {
+    content: "* ";
+}
+
+#submit-btn #continue-btn {
+    width: 35%;
+    margin: 20px auto 10px;
+}
+
+#footer {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    bottom: 0;
+    background-color: #e1e1e1;
+    text-align: center;
+    font-size: x-small;
+    color: #585858;
+}
+
+#footer-content {
+    padding-top: 7px;
+}
+
+.form-msg {
+    padding: 10px 5px;
+    color: red;
+    font-size: small;
+    margin-top: 5px
+}
+
+.login-register-div {
+    margin-bottom: 30px;
+    margin-top: 15px;
+}
+
+#translation-link {
+    float: right;
+    width: 5%;
+    padding: 13px;
+    font-size: 12px;
+    text-align: center;
+}
+
+
+
+input#id_national_card_photo  {
+        width: 100%;
+        length: 10%;
+        background: #CB840F;
+        border:1px solid #B7760B;
+        position:relative;
+        color:#ffffff;
+        border-radius:2px;
+        text-align:center;
+        float:left;
+        cursor:pointer
+}
+@media screen and (min-width: 800px) {
+    input#id_national_card_photo  {
+        padding:5px 10px;
+        background: #CB840F;
+        border:1px solid #B7760B;
+        position:relative;
+        color:#ffffff;
+        border-radius:2px;
+        text-align:center;
+        float:left;
+        cursor:pointer
+    }
+}
+
+.flag {
+        height:1%;
+        width:2%;
+}
+@media screen and (min-width: 800px) {
+    .flag {
+       height:1.5%;
+       width:1.53%;
+    }
+}
+.lang {
+        margin-right: 1%;
+        float:right;
+        font-size: 45%;
+        color: white;
+}
+@media screen and (min-width: 800px) {
+    .lang {
+      margin-right: 1%;
+      float:right;
+      font-size: 40%;
+      color: white;
+    }
+}
+
+
+@media only screen and (min-width : 300px) {
+ul.topnav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 9%;
+        background-color: #898787;
+  }
+}
+
+@media only screen and (min-width : 400px) {
+ul.topnav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 4%;
+        background-color: #898787;
+  }
+}
+
+@media only screen and (min-width : 790px)  {
+ul.topnav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 3.5%;
+        background-color: #898787;
+  }
+}
+
+@media only screen and (min-width : 1000px) {
+ul.topnav {
+      list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 7%;
+        background-color: #898787;
+  }
+}
+
+@media only screen and (min-width : 1500px)  {
+ul.topnav {
+      list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 5%;
+        background-color: #898787;
+  }
+}
+@media only screen  {
+        ul.topnav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 10%;
+        background-color: #898787;
+  }
+}
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio : 2) {
+ul.topnav {
+      list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 5%;
+        background-color: #898787;
+  }
+}
+/* Desktops and laptops ----------- */
+@media only screen  and (min-width : 1224px) {
+ul.topnav {
+      list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 7%;
+        background-color: #898787;
+  }
+}
+
+
+
+ul.topnav span {float: left;}
+
+ul.topnav span a {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+ul.topnav span a:hover {background-color: #555;}
+
+ul.topnav sapn.icon {display: none;}
+
+@media screen and (max-width:680px) {
+  ul.topnav sapn:not(:first-child) {display: none;}
+  ul.topnav sapn.icon {
+    float: right;
+    display: inline-block;
+  }
+}
+
+@media screen and (max-width:680px) {
+  ul.topnav.responsive {position: relative;}
+  ul.topnav.responsive sapn.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.topnav.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.topnav.responsive sapn a {
+      display: block;
+      text-align: left;
+  }}
+
+
