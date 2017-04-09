@@ -1,28 +1,5 @@
-{% load static %}
+
 
 .page-title {
    color: #39461F;
-}
-
-
-.container {
-    position:relative;
-    height:20px;
-    width:120px;
-}
-
-.container div {
-    position:absolute;
-    background-image: url("{% static 'interpay/images/reviews.png'%}");
-}
-
-.container .bg-image {
-   opacity:0.2;
-    height:20px;
-    width:20px;
-}
-
-.container div.highlight-region {
-    height:20px;
-    width:10px;
 }

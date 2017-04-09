@@ -1,0 +1,54 @@
+{% extends 'interpay/top_bar.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>
+            Contact
+        </title>
+    </head>
+
+    <body>
+        {% block cont-body %}
+
+            <section id="intro" class="intro-section">
+                <div class="fullscreenbanner-container">
+                    <div class="fullscreenbanner">
+                        <ul>
+
+                        <li data-transition="curtain-1" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
+                            <div class="tp-caption rs-caption-1 sft start"
+                             data-x="center"
+                             data-hoffset="0"
+                             data-y="10"
+                             data-speed="0"
+                             data-start="0"
+{#                             data-easing="Back.easeInOut"#}
+                             data-endspeed="1000">
+                            {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                                                          خدمات ما
+                            {% else %}
+                             OUR SERVICES ...
+                            {% endifequal %}
+                        </div>
+</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <div class="clearfix"></div>
+
+            <script>
+        jQuery(document).ready(function () {
+            App.init();
+            App.initParallaxBg();
+            RevolutionSlider.initRSfullScreen();
+        });
+    </script>
+        {% endblock %}
+    </body>
+</html>

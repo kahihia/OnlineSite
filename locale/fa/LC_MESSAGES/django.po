@@ -505,6 +505,31 @@ msgstr "تایید"
 msgid "Transaction Status"
 msgstr "تاریخ تراکنش"
 
+#: templates/interpay/info.html:171
+msgid "LOGIN"
+msgstr "ورود"
+
+#: templates/interpay/info.html:178
+msgid "SERVICES"
+msgstr "خدمات"
+
+#: templates/interpay/info.html:181
+msgid "CONTACT"
+msgstr "ارتباط با ما"
+
+#: templates/interpay/info.html:184
+msgid "ABOUT US"
+msgstr "درباره ما"
+
+#: .\interpay\templates\contact.html:51
+msgid "Title"
+msgstr "عنوان"
+
+#: .\interpay\templates\contact.html:78
+msgid "Send"
+msgstr "ارسال"
+
+
 #~ msgid " withdrawals "
 #~ msgstr "حسابهای بانکی"
 

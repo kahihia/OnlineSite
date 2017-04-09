@@ -959,6 +959,25 @@ def edit_profile(request):
                 result = {'html': html}
                 return HttpResponse(json.dumps(result))
 
+
+def contact_email(request):
+    email = request.POST.get('email', False)
+    email_sender = Email.Email(email)
+    error_message = ""
+    sent = ""
+    try:
+        sent = email_sender.send_email()
+    except SMTPRecipientsRefused:
+        error_message = "Invalid Email"
+
+        if sent == 1:
+            return HttpResponse("Email Send Successfully")
+        else:
+            if error_message:
+                return HttpResponse(error_message)
+        return HttpResponse("No such user")
+
+
                 #if request.POST['action'] == 'change_national_photo':
             #form_edit = RegistrationForm_edit(request.POST, request.FILES)
             #print form_edit

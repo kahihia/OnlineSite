@@ -52,7 +52,7 @@
                 {#                <div class="row">#}
 
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                <div class="form-group col-lg-2" style="padding:0;">
+                    <div class="form-group col-lg-2" style="padding:0;">
                  {% else %}
                     <div class="form-group col-lg-2" style="padding:0; float:right">
                 {% endifequal %}
@@ -71,18 +71,16 @@
                 </div>
 
 
-                  {% ifequal LANGUAGE_CODE 'en-gb' %}
-                   <div class="form-group" style="padding: 0">
-                {% else %}
-                     <div class="form-group" style="padding: 0;">
-                {% endifequal %}
-                      {% ifequal LANGUAGE_CODE 'en-gb' %}
+
+                 <div class="form-group" style="padding: 0">
+
+                {% ifequal LANGUAGE_CODE 'en-gb' %}
                    <label style="display:block">
                 {% else %}
                     <label style="display:block ; float: right">
                 {% endifequal %}
                          {% trans 'currency' %}
-                    </label>
+                 </label>
                     <select name="currency" class="form-control"  style="width:110px">
                         <option value="IRR">Rial</option>
                         <option value="USD">Dollar</option>
@@ -90,73 +88,33 @@
                         <option value="GBP">Pound</option>
                     </select>
                 </div>
-                <div class="form-group">
-                     {% ifequal LANGUAGE_CODE 'en-gb' %}
-                   <label style="display:block">
+
+               {% ifequal LANGUAGE_CODE 'en-gb' %}
+                    <div class="form-group" style="float: left ; margin-right: 3%">
                 {% else %}
-                    <label style="display:block">
+                    <div class="form-group" style="float: right ; margin-left: 3%">
                 {% endifequal %}
-                        {% trans 'Destination Email:' %}
+                    <label style="display:block">
+                          {% trans 'Destination Email:' %}
                     </label>
 
-
+{#                    <form style="display: none" method="get" action="../info/">#}
+{#                        <button  type="submit" onclick="goto()">Reviews detail</button>#}
+{#                    </form>#}
 
                     <input type="text" name="email" id="email" class="form-control" style="width:300px">
                 </div>
 
-
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modalconvert">Reviews Detail</button>
-                <div class="modal fade" id="Modalconvert" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Reviews Detail</h4>
-                            </div>
-                            <div class="modal-body">
-                                    <div style="margin-left: 0 !important;margin-right: 0 !important;">
-                                        <div style="margin-right:0px;width:300px;margin-left: 10px ">
-                                            <label> 10000 reviews </label>
-                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
-                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
-                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
-                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
-                                            <img src="{% static 'interpay/images/reviews.png' %}"  style=" float:right ; margin-top:0px;cursor: pointer">
-
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-                {#                </div>#}
-                {#                <div class="row">#}
                 <div class="form-group ">
-                    {% ifequal LANGUAGE_CODE 'en-gb' %}
                    <label style="display:block">
-                {% else %}
-                    <label style="display:block">
-                {% endifequal %}
                           {% trans 'Destination Mobile Number:' %}
                     </label>
                     <input type="text" name="mobile" id="mobile" class="form-control" style="width:300px">
                 </div>
                 {#                </div>#}
                 {#                <div class="row">#}
-                <div class="form-group ">
-                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+                <div class="form-group">
                    <label style="display:block">
-                {% else %}
-                    <label style="display:block">
-                {% endifequal %}
                     {% trans 'Comment:' %}
                     </label>
                     <textarea id="comment" name="comment" class="form-control" style="width:300px"></textarea>
@@ -216,6 +174,25 @@
         </div>
 
     </div>
+
+
+
+{#    <div id="write_review_box" class="start_review">#}
+{#        <div id="rating_field">#}
+{#            <div id="js">#}
+{#                <div id="rating">#}
+{#                    <div class="star_rating_big" title="0.0 star rating">#}
+{#                        <div class="star rating w0" >#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div id="rating_bubble"></div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <a href="/online-business-review#walmart.com_(Walmart.com)" id="write_review_prompt">Start your review of <strong>Walmart.com</strong></a>#}
+{#        <div class="clear"></div>#}
+{#    </div>#}
+
 {% endblock %}
 
 </body>
