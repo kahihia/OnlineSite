@@ -662,9 +662,30 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom:50px;
 }
 
+.rs-caption-3 {
+  font-size: 30px;
+  font-family: Raleway;
+  font-weight: 100;
+  color: #fff;
+  text-align:right ;
+  margin-bottom:10px;
+  direction: rtl;
+}
+
+.rs-caption-4 {
+  font-size: 30px;
+  font-family: Raleway;
+  font-weight: 100;
+  color: #fff;
+  text-align:left ;
+  direction: ltr;
+}
+
 @media (max-width: 768px) {
   .rs-caption-1,
-  .rs-caption-2
+  .rs-caption-2,
+  .rs-caption-3,
+  .rs-caption-4
   {
     font-weight: normal;
   }
