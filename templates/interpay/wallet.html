@@ -36,102 +36,22 @@
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
         <script src='https://www.google.com/recaptcha/api.js'></script>
 
-
-
-
-
-
-
-        {#        <script>#}
-        {#            $(document).ready(function () {#}
-        {#                var inf = $('#message').text();#}
-        {#                if ($('#message').text().length != 14) {#}
-        {#                    swal({#}
-        {##}
-        {#                        title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a#}
-        {#                        {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}" > {{account_id}}#}
-        {#                        {% else %}  href="/fa-ir/wallets/{{ account_id }}" >{{account_id}}#}
-        {#                        {% endifequal %}</ a> ',#}
-        {#                    type: 'info',#}
-        {#                            html#}
-        {#                :#}
-        {#                    ' ' + 'and other HTML tags',#}
-        {#                            type#}
-        {#                :#}
-        {#                    "info",#}
-        {#                            showCancelButton#}
-        {#                :#}
-        {#                    true,#}
-        {#                            confirmButtonColor#}
-        {#                :#}
-        {#                    "#DD6B55",#}
-        {#                            cancelButtonText#}
-        {#                :#}
-        {#                    '{% trans 'back to current wallet'%}',#}
-        {#                            closeOnConfirm#}
-        {#                :#}
-        {#                    false,#}
-        {#                            closeOnCancel#}
-        {#                :#}
-        {#                    false,#}
-        {#                            showConfirmButton#}
-        {#                :#}
-        {#                    false,#}
-        {#                })#}
-        {#                    ;#}
-        {#                }#}
-        {#            });#}
-        {#            var unsaved = false;#}
-        {#            $(":input").change(function () { //trigers change in all input fields including text type#}
-        {#                unsaved = false;#}
-        {#            });#}
-        {##}
-        {#            function unloadPage() {#}
-        {#                if (unsaved) {#}
-        {#                    return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";#}
-        {#                }#}
-        {#            }#}
-        {##}
-        {#            window.onbeforeunload = unloadPage;#}
-        {#            function formSubmitter(formTag, messageTag) {#}
-        {##}
-        {#                swal({#}
-        {#                    title: '{%  trans 'Conversion' %}',#}
-        {#                    text: '{%  trans 'Your conversion is in process' %}',#}
-        {#                    type: 'info',#}
-        {#                    showConfirmButton: false,#}
-        {#                });#}
-        {#                document.getElementById("success").style.display = "block";#}
-        {#                document.getElementById(messageTag).innerHTML = "You have changed currency";#}
-        {#                document.getElementById("sampleform").style.display = "none";#}
-        {#                setTimeout("time()", 1000);#}
-        {#            }#}
-        {#            function time() {#}
-        {#                document.getElementById("sampleform").submit();#}
-        {#            }#}
-        {##}
-        {#        </script>#}
-
-
-
-
         <script>
-            $(document).ready(function () {
-                var inf = $('#message').text();
-      if( $('#message').text().length!=14)
-      {
+         $(document).ready(function () {
+          var inf = $('#message').text();
+          if( $('#message').text().length!=14)
+            {
                     swal({
-
-           title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
+              title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
                     type: 'info',
-           html: ' ' + 'and other HTML tags',
-           type: "info",
-           showCancelButton: true,
-           confirmButtonColor: "#DD6B55 ",
-           cancelButtonText: '{% trans 'back to current wallet'%}',
-           closeOnConfirm: false,
-           closeOnCancel: false,
-           showConfirmButton: false,
+               html: ' ' + 'and other HTML tags',
+               type: "info",
+               showCancelButton: true,
+               confirmButtonColor: "#DD6B55 ",
+               cancelButtonText: '{% trans 'back to current wallet'%}',
+               closeOnConfirm: false,
+               closeOnCancel: false,
+               showConfirmButton: false,
              });
                 }
             });
@@ -139,16 +59,13 @@
             $(":input").change(function () { //trigers change in all input fields including text type
                 unsaved = false;
             });
-
             function unloadPage() {
                 if (unsaved) {
                     return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
                 }
             }
-
             window.onbeforeunload = unloadPage;
             function formSubmitter(formTag, messageTag) {
-
                 swal({
                     title: '{%  trans 'Conversion' %}',
                     text: '{%  trans 'Your conversion is in process' %}',
@@ -163,18 +80,7 @@
             function time() {
                 document.getElementById("sampleform").submit();
             }
-
         </script>
-
-
-
-
-
-
-
-
-
-
     {% endblock %}
 </head>
 <body>
@@ -186,8 +92,6 @@
     </div>
 {% endblock %}
 {% block cont-body %}
-
-
     <div class="table-responsive">
         <table id="wal-tab" class="table">
             <thead>
@@ -224,19 +128,15 @@
                 <td class="table-cell">{{ account.balance }}</td>
                 <td class="table-cell">{{ account.name }}</td>
             </tr>
-
             </tbody>
         </table>
     </div>
     <div id="message">
         <a href="/wallets/{{ account_id }}">{{ message }}</a>
     </div>
-
-
     <div id="error" style="color:red">
         {{ error }}
     </div>
-
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modalconvert">convert</button>
     <div class="modal fade" id="Modalconvert" role="dialog">
         <div class="modal-dialog">
@@ -248,12 +148,9 @@
                 <div class="modal-body">
                     <form method="post" action="../actual_convert/" id="sampleform">
                         {% csrf_token %}
-
                         <div style="margin-left: 0 !important;margin-right: 0 !important;">
-
                             <div style="margin-right:0px;width:300px;margin-left: 10px ">
                                 <label>{% trans 'Amount' %}: </label>
-
                                 <input id="amount" name="amount" type="text" value={{ recommended }}><br>
                                 <label>{% trans 'To Currency' %}: </label>
                                 <select name="currency" id="currency">
@@ -275,14 +172,10 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
-
         </div>
     </div>
-
-
     <div style="display: none; width: 80%; height: 30%" class="alert alert-success" id='success'></div>
     <hr>
-
     <form action="../withdraw_pending_deposit/" method="post">
         {% csrf_token %}
         <div class="table-responsive">
@@ -373,21 +266,14 @@
                         </td>
                     </tr>
                 {% endfor %}
-
                 </tbody>
             </table>
         </div>
         <div id="message">
             <a href="/wallets/{{ account_id }}">{{ message }}</a>
         </div>
-
         </div>
     </form>
-
-
 {% endblock %}
-
 </body>
-
 </html>
-
