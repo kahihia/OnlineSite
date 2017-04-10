@@ -34,84 +34,6 @@
         <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
-        <script src='https://www.google.com/recaptcha/api.js'></script>
-
-
-
-
-
-
-
-        {#        <script>#}
-        {#            $(document).ready(function () {#}
-        {#                var inf = $('#message').text();#}
-        {#                if ($('#message').text().length != 14) {#}
-        {#                    swal({#}
-        {##}
-        {#                        title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a#}
-        {#                        {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}" > {{account_id}}#}
-        {#                        {% else %}  href="/fa-ir/wallets/{{ account_id }}" >{{account_id}}#}
-        {#                        {% endifequal %}</ a> ',#}
-        {#                    type: 'info',#}
-        {#                            html#}
-        {#                :#}
-        {#                    ' ' + 'and other HTML tags',#}
-        {#                            type#}
-        {#                :#}
-        {#                    "info",#}
-        {#                            showCancelButton#}
-        {#                :#}
-        {#                    true,#}
-        {#                            confirmButtonColor#}
-        {#                :#}
-        {#                    "#DD6B55",#}
-        {#                            cancelButtonText#}
-        {#                :#}
-        {#                    '{% trans 'back to current wallet'%}',#}
-        {#                            closeOnConfirm#}
-        {#                :#}
-        {#                    false,#}
-        {#                            closeOnCancel#}
-        {#                :#}
-        {#                    false,#}
-        {#                            showConfirmButton#}
-        {#                :#}
-        {#                    false,#}
-        {#                })#}
-        {#                    ;#}
-        {#                }#}
-        {#            });#}
-        {#            var unsaved = false;#}
-        {#            $(":input").change(function () { //trigers change in all input fields including text type#}
-        {#                unsaved = false;#}
-        {#            });#}
-        {##}
-        {#            function unloadPage() {#}
-        {#                if (unsaved) {#}
-        {#                    return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";#}
-        {#                }#}
-        {#            }#}
-        {##}
-        {#            window.onbeforeunload = unloadPage;#}
-        {#            function formSubmitter(formTag, messageTag) {#}
-        {##}
-        {#                swal({#}
-        {#                    title: '{%  trans 'Conversion' %}',#}
-        {#                    text: '{%  trans 'Your conversion is in process' %}',#}
-        {#                    type: 'info',#}
-        {#                    showConfirmButton: false,#}
-        {#                });#}
-        {#                document.getElementById("success").style.display = "block";#}
-        {#                document.getElementById(messageTag).innerHTML = "You have changed currency";#}
-        {#                document.getElementById("sampleform").style.display = "none";#}
-        {#                setTimeout("time()", 1000);#}
-        {#            }#}
-        {#            function time() {#}
-        {#                document.getElementById("sampleform").submit();#}
-        {#            }#}
-        {##}
-        {#        </script>#}
-
 
 
 
@@ -166,15 +88,6 @@
 
         </script>
 
-
-
-
-
-
-
-
-
-
     {% endblock %}
 </head>
 <body>
@@ -192,7 +105,7 @@
         <table id="wal-tab" class="table">
             <thead>
             <tr class="table-header-row">
-                <th class="table-header-cell">
+                <th class="table-header-cell" style="width:15%">
                     {% trans 'Wallet Code' %}
                 </th>
                 <th class="table-header-cell">
@@ -217,12 +130,12 @@
             </thead>
             <tbody>
             <tr>
-                <td class="table-cell">{{ account.account_id }} </td>
-                <td class="table-cell">user</td>
-                <td class="table-cell"></td>
-                <td class="table-cell">{{ account.cur_code }}</td>
-                <td class="table-cell">{{ account.balance }}</td>
-                <td class="table-cell">{{ account.name }}</td>
+                <td class="table-cell" style="width:15%; text-align: center">{{ account.account_id }} </td>
+                <td class="table-cell" style="text-align: center">user</td>
+                <td class="table-cell" style="text-align: center"></td>
+                <td class="table-cell" style="text-align: center">{{ account.cur_code }}</td>
+                <td class="table-cell" style="text-align: center">{{ account.balance }}</td>
+                <td class="table-cell" style="text-align: center">{{ account.name }}</td>
             </tr>
 
             </tbody>
@@ -293,18 +206,9 @@
                     <th class="table-header-cell">
                         {% trans 'Index' %}
                     </th>
-                    <th class="table-header-cell">
-                        {% trans 'Recharge ID' %}
-                    </th>
                     <th class="table-header-cell" style="width: 15%">
                         {% trans 'Date' %}
                     </th>
-                    {#                    <th class="table-header-cell">#}
-                    {#                        {% trans 'Wallet Code' %}#}
-                    {#                    </th>#}
-                    {#                    <th class="table-header-cell">#}
-                    {#                        {% trans 'Currency' %}#}
-                    {#                    </th>#}
                     <th class="table-header-cell">
                         {% trans 'Type' %}
                     </th>
@@ -315,7 +219,13 @@
                         {% trans 'Status' %}
                     </th>
                     <th class="table-header-cell">
-                        {% trans 'Withdraw' %}
+                        {% trans 'Description' %}
+                    </th>
+                    {#                    <th class="table-header-cell">#}
+                    {#                        {% trans 'Source/Destination' %}#}
+                    {#                    </th>#}
+                    <th class="table-header-cell">
+                        {% trans 'International' %}
                     </th>
                     <th class="table-header-cell">
                         {% trans 'Transaction' %}
@@ -326,15 +236,15 @@
                 {% for d in list %}
                     <tr>
                         <td width="6%" class="table-cell" style="text-align: center">{{ forloop.counter }}</td>
-                        <td width="10%" class="table-cell" style="text-align: center">{{ d.id }}</td>
+                        {#                        <td width="10%" class="table-cell" style="text-align: center">{{ d.id }}</td>#}
                         <td width="15%" class="table-cell" style="text-align: center">{{ d.date }}</td>
                         {#                        <td class="table-cell">{{ d.account.account_id }}</td>#}
                         {#                        <td class="table-cell">{{ d.cur_code }}</td>#}
                         <td class="table-cell" width="15%" style="text-align: center">
-{#                            {% if d|get_transaction_type == "money_transfer" %}#}
-                                {{ d|get_transfer_type:user}}
-{#                            {% endif %}#}
-{#                            {{ d.id }}#}
+                            {#                            {% if d|get_transaction_type == "money_transfer" %}#}
+                            {{ d|get_transfer_type:user}}
+                            {#                            {% endif %}#}
+                            {#                            {{ d.id }}#}
                         </td>
                         {% if d|get_transaction_type == "deposit" %}
                             <td class="table-cell">{{ d.amount }}<span style="float:right; color:lime"
@@ -354,6 +264,14 @@
                                 {% elif d.status == 3 %}
                                     Completed
                                 {% endif %}
+                            {% endif %}
+                        </td>
+                        <td class="table-cell">
+                            {% if d|get_transaction_type == "money_transfer" %}
+                                <div class="my_tooltip">
+                                    {{ d|get_payment_sender_receiver:user}}
+                                    <span class="my_tooltiptext">{{ d.comment }}</span>
+                                </div>
                             {% endif %}
                         </td>
                         <td class="table-cell">

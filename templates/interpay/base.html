@@ -5,7 +5,7 @@
 <link rel="stylesheet" media="all and (max-width: 1024px)" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="{% static 'interpay/jquery/jquery-1.10.2.js'%}"></script>
 {% include 'session_security/all.html' %}
 <!-- -->
 <html lang="en">

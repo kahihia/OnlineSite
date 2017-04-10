@@ -5,3 +5,4 @@ from interpay import models
 admin.site.register(models.UserProfile)
 admin.site.register(models.CommonUser)
 admin.site.register(models.Deposit)
+admin.site.register(models.CurrencyReserve)
