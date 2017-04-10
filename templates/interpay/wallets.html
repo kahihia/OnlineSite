@@ -41,8 +41,12 @@
 {% block cont-header %}
     <div>
         <h3 class="page-title">
-            {% trans 'Wallet Info' %}
+            {% trans 'Wallets Overview' %}
         </h3>
+        <div class="isa_info" style="background-color: #DCDCDC;">
+          <i class="fa fa-info-circle"></i>
+           {% trans 'may take up to 1 minute to be updated, please refresh to get latest information.' %}
+        </div>
     </div>
 {% endblock %}
 {% block cont-body %}
