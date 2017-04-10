@@ -597,7 +597,11 @@ mobile = '09123456789'
 
 
 def zarinpal_payment_gate(request, amount):
-    call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+    if request.LANGUAGE_CODE == 'en-gb':
+     call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+    else:
+      call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + amount  # TODO : this should be changed to our website url
+
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
                                            amount,
