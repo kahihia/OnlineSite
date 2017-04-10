@@ -584,9 +584,10 @@ def recharge_account(request, **message):
         if code != 0:
             emessage = "Unknown ZarinPal Error"
     print msg_color, "msg_color"
+    deposit_num= deposit_set.count();
     return render(request, "interpay/top_up.html",
                   {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage,
-                   'msg_color': msg_color})
+                   'msg_color': msg_color, 'deposit_num': deposit_num})
 
 
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
@@ -597,7 +598,11 @@ mobile = '09123456789'
 
 
 def zarinpal_payment_gate(request, amount):
-    call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+    if request.LANGUAGE_CODE == 'en-gb':
+     call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+    else:
+      call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + amount  # TODO : this should be changed to our website url
+
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
                                            amount,
@@ -923,6 +928,18 @@ def info(request):
     return render(request, "interpay/info.html")
 
 
+def about(request):
+    return render(request, "interpay/about.html")
+
+
+def contact(request):
+    return render(request, "interpay/contact.html")
+
+
+def services(request):
+    return render(request, "interpay/services.html")
+
+
 @login_required()
 def general(request):
     return render(request, "interpay/general.html")
@@ -980,6 +997,38 @@ def edit_profile(request):
             result = {'html': html}
             return HttpResponse(json.dumps(result))
 
+
+def contact_email(request):
+    email = request.POST.get('email', False)
+    email_sender = Email.Email(email)
+    error_message = ""
+    sent = ""
+    try:
+        sent = email_sender.send_email()
+    except SMTPRecipientsRefused:
+        error_message = "Invalid Email"
+
+        if sent == 1:
+            return HttpResponse("Email Send Successfully")
+        else:
+            if error_message:
+                return HttpResponse(error_message)
+        return HttpResponse("No such user")
+
+
+                #if request.POST['action'] == 'change_national_photo':
+            #form_edit = RegistrationForm_edit(request.POST, request.FILES)
+            #print form_edit
+            #if form_edit.is_valid():
+                #newphoto = form_edit.save(commit=False)
+                #print newphoto
+                #print request.FILES
+                #newphoto.national_card_photo = request.FILES['national_card_photo']
+                #newphoto.save()
+                #print newphoto.national_card_photo
+            #html = '<strong>Your National photo has changed successfully</strong><hr>'
+            #result = {'html': html}
+            #return HttpResponse(json.dumps(result))
             # if request.POST['action'] == 'change_national_photo':
             # form_edit = RegistrationForm_edit(request.POST, request.FILES)
             # print form_edit
