@@ -1,0 +1,181 @@
+{% extends 'interpay/top_bar.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>
+            Contact
+        </title>
+    </head>
+
+    <body>
+        {% block cont-body %}
+        <script>
+            {% block script %}
+                function fill_contact() {
+                    var email = document.getElementById("email");
+                    var title = document.getElementById("title");
+                    var comment = document.getElementById("comment");
+                }
+            {% endblock %}
+        </script>
+
+            <section id="intro" class="intro-section">
+                <div class="fullscreenbanner-container">
+                    <div class="fullscreenbanner">
+                        <ul>
+
+                        <li data-transition="curtain-1" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
+                        {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                            <div class="tp-caption rs-caption-3 sft start"
+                                 data-x="right"
+                                 data-hoffset="0"
+                                 data-y="1"
+                                 data-speed="0"
+                                 data-start="0"
+                                 data-easing="Back.easeInOut"
+                                 data-endspeed="1000">
+
+                                                         ما آماده ی پاسخگویی به سوالات شما در رابطه با سرویس ریزپرداخت در اولین فرصت هستیم
+
+                            <br>
+                            در صورتی که نیاز به اضافه کردن مشخصه ای در سرویس ریزپرداخت دارید، حتماً به ما اطلاع بدهید
+                            <br>
+                            ما تمام تلاشمان را در خصوص فراهم آوردن آن برای شما خواهیم کرد
+<br><br><br>
+
+                                <div>
+                                    <form method="post" action="/contact/">
+                                        {% csrf_token %}
+                                        <table style="width:100%">
+                                            <tr>
+                                                <th>
+                                                    <font color="#f0f8ff" >{% trans 'Title' %} </font>
+                                                </th>
+                                                <th>
+                                                    <input type="text" name="title" id="title" class="form-control" style="width:200px; float:right">
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                               <font color="#f0f8ff" > {% trans 'Email' %}</font>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="email" id="email" class="form-control" style="width:300px; float:right">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <font color="#f0f8ff" >  {% trans 'Comment:' %} </font>
+                                                </td>
+                                                <td>
+                                                    <textarea id="comment" name="comment" class="form-control" style="width:300px" rows="7"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="button"
+                                                    id="confirm"
+                                                    onclick="fill_contact()"
+                                                    value="{% trans 'Send' %}"
+{#                                               data-toggle="modal"#}
+{#                                               data-target="#myModal"#}
+                                                    class="btn btn-info">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
+                            {% else %}
+
+                            <div class="tp-caption rs-caption-4 sft start"
+                                 data-x="center"
+                                 data-hoffset="0"
+                                 data-y="1"
+                                 data-speed="0"
+                                 data-start="0"
+                                 data-easing="Back.easeInOut"
+                                 data-endspeed="1000">
+
+                            We are here to answer any questions you may have about our service.
+                                <br>
+                            Reach out to us and we'll respond as soon as we can.
+                                <br>
+                            Even if there is something you have always wanted to experience and can't find it on Interpay, let us know.
+                            <br>
+                            We promise we'll do our best to find it for you and send you there.
+                            <br> <br>
+
+
+                                <div>
+                                    <form method="post" action="/first/">
+                                        {% csrf_token %}
+                                        <table style="width:100%">
+                                            <tr>
+                                                <th>
+                                                    <font color="#f0f8ff" >{% trans 'Title' %} </font>
+                                                </th>
+                                                <th>
+                                                    <input type="text" name="title" id="title" class="form-control" style="width:200px;">
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <font color="#f0f8ff" >{% trans 'Email' %}</font>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="email" id="email" class="form-control" style="width:300px">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <font color="#f0f8ff" > {% trans 'Comment:' %} </font>
+                                                </td>
+                                                <td>
+                                                    <textarea id="comment" name="comment" class="form-control" style="width:300px" rows="7"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="button"
+                                                            id="send"
+                                                            value="{% trans 'Send' %}"
+                                                            class="btn btn-info"
+                                                            onclick="fill_contact()">
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endifequal %}
+
+
+
+
+
+
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <div class="clearfix"></div>
+
+            <script>
+        jQuery(document).ready(function () {
+            App.init();
+            App.initParallaxBg();
+            RevolutionSlider.initRSfullScreen();
+        });
+    </script>
+        {% endblock %}
+    </body>
+</html>
