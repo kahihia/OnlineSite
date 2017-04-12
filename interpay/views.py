@@ -286,15 +286,16 @@ def verify_user(request):
 
 @login_required()
 def pay_user(request):
+    if request.LANGUAGE_CODE == 'en-gb':
+        langStr = ""
+    else:
+        langStr = '/' +request.LANGUAGE_CODE
+
     if request.method == "POST":
         up = ""
         currency = request.POST['currency']
         amount = request.POST['amount']
         comment = request.POST['comment']
-        if request.LANGUAGE_CODE == 'en-gb':
-            langStr=""
-        else:
-            langStr=request.LANGUAGE_CODE+'/'
 
         if not comment:
             comment = ""
@@ -347,14 +348,14 @@ def pay_user(request):
                 MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
                                              date=datetime.datetime.now(),
                                              amount=amount, comment=comment, cur_code=currency)
-                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.'})
+                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.', 'langStr': langStr})
             else:
                 return render(request, 'interpay/pay_user.html',
                               {'error': 'No destination account with this currency.'})
         else:
             return render(request, 'interpay/pay_user.html',
                           {'error': 'You do not have any account in this currency. '})
-    return render(request, "interpay/pay_user.html")
+    return render(request, "interpay/pay_user.html",{'langStr': langStr})
 
 
 def reset_password(request, token):

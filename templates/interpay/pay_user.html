@@ -120,8 +120,8 @@
         <button id="googleplay" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  onclick="apear(this.id)" >{% trans "Google play" %}</button>
         <button id="other" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  onclick="apear(this.id)">{% trans "Other Payments" %}</button>
         </div>
-         <br><br>
-            <form id="pay" method="post" action="/pay_user/" style="display: none;">
+         <br>
+            <form id="pay" method="post" action="{{ langStr  }}/pay_user/" style="display: none;">
                 {% csrf_token %}
                 {#                <div class="row">#}
 
@@ -159,7 +159,6 @@
                         <option value="IRR">Rial</option>
                         <option value="USD">Dollar</option>
                         <option value="EUR">Euro</option>
-                        <option value="GBP">Pound</option>
                     </select>
                 </div>
 
