@@ -486,7 +486,7 @@ def user_login(request):
                     return HttpResponseRedirect(next)
                     # return HttpResponseRedirect('/home/')
                 else:
-                    return HttpResponseRedirect('/fa-ir/' + next)
+                    return HttpResponseRedirect('/fa-ir' + next)
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
                     en_acc_disabled_msg = "Your account is disabled."
@@ -786,15 +786,6 @@ def wallet(request, wallet_id, recom=None):
         }
         return render(request, "interpay/wallet.html", context)
 
-
-@login_required()
-def wallet_recommended(request, wallet_id):
-    context = {
-        'account': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT),
-        'recommended': BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT).balance,
-        'deposit_set': models.Deposit.objects.filter(banker=wallet_id),
-    }
-    return render(request, "interpay/wallet.html", context)
 
 
 @login_required()
