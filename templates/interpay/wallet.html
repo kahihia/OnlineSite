@@ -233,11 +233,11 @@
                             {#                            {% endif %}#}
                             {#                            {{ d.id }}#}
                         </td>
-                        {% if d|get_transaction_type == "deposit" %}
+                        {% if d|get_is_deposit:user%}
                             <td class="table-cell">{{ d.amount }}<span style="float:right; color:lime"
                                                                        class="glyphicon glyphicon-triangle-top green"></span>
                             </td>
-                        {% else %}
+                        {% elif d|get_is_withdraw:user%}
                             <td class="table-cell">- {{ d.amount }}<span style="float:right; color:red"
                                                                          class="glyphicon glyphicon-triangle-bottom red"></span>
                             </td>

@@ -39,3 +39,27 @@ def get_payment_sender_receiver(payment, user):
         return payment.receiver.owner.user.first_name + " " + payment.receiver.owner.user.last_name
     elif payment.receiver.owner == user:
         return payment.sender.owner.user.first_name + " " + payment.sender.owner.user.last_name
+
+
+@register.filter()
+def get_is_deposit(transaction, user):
+    if get_transaction_type(transaction) == "deposit":
+        return True
+    if get_transfer_type(transaction, user) == "Payment Deposit":
+        return True
+    if get_transfer_type(transaction, user) == "Conversion Deposit":
+        return True
+    if get_transfer_type(transaction, user) == "Top Up Deposit":
+        return True
+    return False
+
+
+@register.filter()
+def get_is_withdraw(transaction, user):
+    if get_transaction_type(transaction) == "withdraw":
+        return True
+    if get_transfer_type(transaction, user) == "Payment Withdraw":
+        return True
+    if get_transfer_type(transaction, user) == "Conversion Withdraw":
+        return True
+    return False

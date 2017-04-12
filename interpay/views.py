@@ -784,7 +784,8 @@ def wallet(request, wallet_id, recom=None):
         for item2 in Withdraw.objects.filter(account=ba):
             transaction_list.append(item2)
         # for item3 in MoneyTransfer.objects.filter(Q(sender__owner=up) | Q(receiver__owner=up)):
-        for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)):
+        for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)).filter(
+                        Q(receiver=ba) | Q(sender=ba)):
             transaction_list.append(item3)
         transaction_list.sort(key=lambda x: x.date)
         context = {
