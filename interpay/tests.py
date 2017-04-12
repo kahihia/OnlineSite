@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.test import TestCase, Client
 from interpay.models import User, UserProfile, BankAccount, Deposit, MoneyTransfer
 from currencies.models import Currency
+from interpay.models import CurrencyReserve
 import unittest
 import datetime
 from django.conf import settings
@@ -72,6 +73,7 @@ class ConversionTestCase(TestCase):
         cr1.save()
         cr2 = Currency.objects.create(code="IRR", name="rial", factor=39000)
         cr2.save()
+        CurrencyReserve.objects.create(currency="IRR", recharge_date=datetime.datetime.now(), on_recharge_amount=4000000)
 
     def test_conversion(self):
         c = Client()
