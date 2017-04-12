@@ -486,7 +486,7 @@ def user_login(request):
                     return HttpResponseRedirect(next)
                     # return HttpResponseRedirect('/home/')
                 else:
-                    return HttpResponseRedirect('/fa-ir/' + next)
+                    return HttpResponseRedirect('/fa-ir' + next)
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
                     en_acc_disabled_msg = "Your account is disabled."
