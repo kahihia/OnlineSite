@@ -16,10 +16,41 @@
         <script>
             {% block script %}
                 function fill_contact() {
-                    var email = document.getElementById("email");
-                    var title = document.getElementById("title");
-                    var comment = document.getElementById("comment");
-                }
+
+                    var title=document.getElementById("title");
+                    var email=document.getElementById("email");
+                    var comment=document.getElementById("comment");
+
+                    var postUrl = "/retrieve_pass/";
+                    $.ajax({
+                        url: postUrl,
+                        type: 'POST',
+                        data: {
+                            'subject': title,
+                            'email':email,
+                            'text_content':comment,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        traditional: true,
+                        dataType: 'html',
+                        success: function (result) {
+                            if (result == "Invalid Email") {
+                                swal(result, "Your Email is not valid. Contact support.", "error");
+                            }
+                            else if (result == "No such user") {
+                                swal(result, "There is no user with this email.", "error");
+                            } else {
+                                swal(result, "A new password was sent to your email.", "success");
+                            }
+                        },
+                        swal({
+                            title: "Password Retrieval",
+                            closeOnConfirm: false,
+{#                animation: "slide-from-top",#}
+                            inputPlaceholder: "Email"
+                         });
+                });
+
             {% endblock %}
         </script>
 
@@ -142,6 +173,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td>
+{#                                                    <a href="{% url 'contact' %}" class='btn btn-info' onclick="fill_contact()">Send</a>#}
                                                     <input type="button"
                                                             id="send"
                                                             value="{% trans 'Send' %}"
@@ -155,10 +187,6 @@
                                 </div>
                             </div>
                         {% endifequal %}
-
-
-
-
 
 
                         </li>
