@@ -78,6 +78,9 @@ def get_currency_rate(currency):
 
 
 def set_rates(request):
+    if not request.user.is_authenticated() or not request.user.is_superuser:
+        return HttpResponse("Error")
+
     euro_rate = get_currency_rate("EUR")
     dollar_rate = get_currency_rate("USD")
 
@@ -288,22 +291,22 @@ def pay_user(request):
         currency = request.POST['currency']
         amount = request.POST['amount']
         comment = request.POST['comment']
+        if request.LANGUAGE_CODE == 'en-gb':
+            langStr=""
+        else:
+            langStr=request.LANGUAGE_CODE+'/'
+
         if not comment:
             comment = ""
         if not amount:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
 
-        try:
-            amount = float(amount)
-        except ValueError:
+        v = Validation.Validation()
+        er=v.check_value(amount)
+        if not er == Validation.Validation.OK:
             return render(request, "interpay/pay_user.html",
-                          {'error': Validation.Validation.check_validation('invalid_amount')})
+                          {'error': v.get_errormessage(er), 'langStr': langStr})
 
-        # if not amount.isdigit():
-        #     return render(request, 'interpay/pay_user.html', {'error': Validation.check_validation('invalid_amount')})
-        if int(amount) <= 0:
-            return render(request, 'interpay/pay_user.html',
-                          {'error': Validation.Validation.check_validation('non_positive')})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
