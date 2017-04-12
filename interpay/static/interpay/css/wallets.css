@@ -48,27 +48,47 @@
 
 }
 
-    @media only screen and (max-device-width: 480px) {
+@media only screen and (max-device-width: 480px) {
 
-        #tab-wrapper {
-            /*width: 700px;*/
-        }
-
-        #wal-tab-searchbar {
-            /*background-color: red;*/
-
-        }
+    #tab-wrapper {
+        /*width: 700px;*/
     }
 
+    #wal-tab-searchbar {
+        /*background-color: red;*/
 
+    }
+}
 
- .form-style-9{
+.form-style-9 {
     background: #FAFAFA;
     margin-top: 1%;
-    padding:3%;
+    padding: 3%;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
     border-radius: 10px;
     border: 6px solid #305A72;
 }
 
+.my_tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
 
+.my_tooltip .my_tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.my_tooltip:hover .my_tooltiptext {
+    visibility: visible;
+}
