@@ -216,15 +216,8 @@
 
 
                     <div class="container">
-                        {#                        <h2>Basic Modal Example</h2>#}
-                        <!-- Trigger the modal with a button -->
-                        {#                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">#}
-                        {#                            Open Modal#}
-                        {#                        </button>#}
-
-                        <!-- Modal -->
                         <div class="modal fade" id="myModal" role="dialog">
-                            <div class="modal-dialog" style="width:300px">
+                            <div class="modal-dialog" style="width:420px">
 
                                 <!-- Modal content-->
                                 <div class="modal-content">
@@ -233,14 +226,30 @@
                                         <h4 class="modal-title">Withdrawal Request</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <label>Amount:</label>
-                                        <input type="text" id="amount" name="amount">
-                                        <input type="hidden" id="account_id" name="account_id">
+                                        {% if irr_account %}
+                                            <div>
+                                                <label>Source Wallet:</label>
+                                                {{ irr_account.account_id }}
+                                            </div>
+                                            <div>
+                                                <label>Balance:</label>
+                                                {{ irr_account.balance }} Rials
+                                            </div>
+                                            <label>Deduction Amount:</label>
+                                            <input type="text" id="amount" name="amount" >
+                                            <input type="hidden" id="account_id" name="account_id">
+                                        {% else %}
+                                            <div style="color:red">
+                                                {% trans  'This transaction is not possible, because you do not have any wallets in rial.' %}
+                                            </div>
+                                        {% endif %}
 
                                     </div>
 
                                     <div class="modal-footer">
-                                        <input type="submit" class="btn btn-default" style="float: left;">
+                                        {% if irr_account %}
+                                            <input type="submit" class="btn btn-default" style="float: left;">
+                                        {% endif %}
                                         <button type="button" class="btn btn-default" data-dismiss="modal"
                                                 style="float: left;">Close
                                         </button>

@@ -580,3 +580,6 @@ msgstr "تاریخ تراکنش"
 
 #~ msgid "Total Inventory"
 #~ msgstr "کل موجودی حساب"
+
+msgid "This transaction is not possible, because you do not have any wallets in rial."
+msgstr " این تراکنش امکان پذیر نیست چون شما کیف پولی با واحد ریال ندارید."
