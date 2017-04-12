@@ -194,9 +194,12 @@ class BankAccount(models.Model):
             current_date += timedelta(days=1)
             break
 
-            #   print current_date
+            #   print
         # result *= 1 - (rule.deposit_charge_percent * 0.01)
-        return result
+        if self.cur_code=='IRR':
+            return round(result, 0)
+        else:
+            return round(result, 2)
 
     @property
     def commission(self):

@@ -140,8 +140,8 @@
      <nav class="interpay navbar navbar-default navbar-fixed-top" role="navigation">
         <ul class="topnav" id="myTopnav">
             <h1  style="margin-top: 0% ; margin-bottom: 3%">
-                {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
+                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+               <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
                     <p class="lang"> Fa/Eng</p>
                         <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
                     </a>
@@ -156,20 +156,38 @@
             </h1>
         </ul>
         <div class="top-contact-block">
+            {% ifequal LANGUAGE_CODE 'en-gb' %}
                 <a href="/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+            {% else %}
+            <a href="/fa-ir/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+            {% endifequal %}
         </div>
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <div class="menu-container">
                 <ul class="nav navbar-nav">
                     <li class="page-scroll home">
-                        <a href="/services/">{% trans 'SERVICES' %}</a>
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a href="/services/">{% trans 'SERVICES' %}</a>
+                        {% else %}
+                            <a href="/fa-ir/services/">{% trans 'SERVICES' %}</a>
+                        {% endifequal %}
+                    </li>
+
+                    <li class="nav navbar-nav">
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a href="/contact/"> {% trans 'CONTACT' %}</a>
+                            {% else %}
+                                <a href="/fa-ir/contact/"> {% trans 'CONTACT' %}</a>
+                        {% endifequal %}
+
                     </li>
                     <li class="nav navbar-nav">
-                        <a href="/contact/">{% trans 'CONTACT' %}</a>
-                    </li>
-                    <li class="nav navbar-nav">
-                        <a href="/about/">{% trans 'ABOUT US' %}</a>
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a href="/about/">{% trans 'ABOUT US' %}</a>
+                        {% else %}
+                            <a href="/fa-ir/about/">{% trans 'ABOUT US' %}</a>
+                        {% endifequal %}
                     </li>
                 </ul>
             </div>
