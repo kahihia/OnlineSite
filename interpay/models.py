@@ -288,11 +288,11 @@ class Deposit(models.Model):
         self.amount = self.amount - self.commission
         self.save()
 
-    # def __str__(self):
-    #     if self.account.owner.user.first_name or self.account.owner.user.last_name:
-    #         return self.account.owner.user.first_name + " " + self.account.owner.user.last_name
-    #     else:
-    #         return self.account.id
+        # def __str__(self):
+        #     if self.account.owner.user.first_name or self.account.owner.user.last_name:
+        #         return self.account.owner.user.first_name + " " + self.account.owner.user.last_name
+        #     else:
+        #         return self.account.id
 
 
 class Withdraw(models.Model):
@@ -322,3 +322,25 @@ class WithdrawalRequest(models.Model):
     # class MerchantOrder(models.Model):
     #     number = models.CharField(max_length=20)
     #     deposit = models.ForeignKey(Deposit)
+
+
+class CurrencyReserve(models.Model):
+    currency = models.CharField(max_length=50, unique=True)
+    recharge_date = models.DateTimeField(null=False, blank=False, default=datetime.now())
+    on_recharge_amount = models.FloatField(null=False, blank=False, default=0)
+
+    @property
+    def reserve(self):
+        # today = datetime.today()
+        temp_recharge_date = self.recharge_date
+        result = self.on_recharge_amount
+        conversion_deposits = []
+        for item in CurrencyConversion.objects.filter(deposit__date__gte=temp_recharge_date,
+                                                      deposit__cur_code=self.currency):
+            conversion_deposits.append(item)
+
+        result -= sum(x.amount for x in conversion_deposits)
+        return result
+
+    def __str__(self):
+        return self.currency

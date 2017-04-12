@@ -21,7 +21,7 @@ from interpay.Validation import Validation
 from firstsite.SMS import ds, api
 from interpay import models
 from smtplib import SMTPRecipientsRefused
-from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest
+from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest, CurrencyReserve
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -598,7 +598,11 @@ mobile = '09123456789'
 
 
 def zarinpal_payment_gate(request, amount):
-    call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+    if request.LANGUAGE_CODE == 'en-gb':
+     call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+    else:
+      call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + amount  # TODO : this should be changed to our website url
+
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
                                            amount,
@@ -816,12 +820,31 @@ def withdraw_pending_deposit(request):
     return HttpResponseRedirect('../')
 
 
+def check_currency_reserve(currency, amount):
+    print (currency)
+    try:
+        current_currency = CurrencyReserve.objects.get(currency=currency)
+        print (current_currency.reserve)
+    except:
+        return False
+    if current_currency.reserve < amount:
+        return False
+    return True
+
+
 @login_required()
 def actual_convert(request):
     if request.method == 'POST':
         amount = request.POST.get('amount')
         currency = request.POST.get('currency')
         account_id = request.POST.get('account_id')
+        cur_account = BankAccount.objects.get(account_id=account_id)
+        if not check_currency_reserve(currency, convert(amount, cur_account.cur_code, currency)):
+            return render(request, "interpay/wallet.html",
+                          {
+                              'error': 'This transaction is not possible now. Please try later.',
+                              'account': BankAccount.objects.get(account_id=account_id),
+                          })
         try:
             amount = float(amount)
         except ValueError:
@@ -836,7 +859,6 @@ def actual_convert(request):
                               'error': Validation.Validation.check_validation('non_positive'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
-        cur_account = BankAccount.objects.get(account_id=account_id)
 
         if cur_account.balance < amount:
             return render(request, "interpay/wallet.html",
