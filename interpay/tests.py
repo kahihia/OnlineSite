@@ -1,3 +1,6 @@
+from django.contrib.staticfiles import finders
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.http import HttpResponse
 from django.test import TestCase, Client
 from interpay.models import User, UserProfile, BankAccount, Deposit, MoneyTransfer
 from currencies.models import Currency
@@ -315,3 +318,10 @@ class CallbackTestCase(TestCase):
         #                       {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
         #                        'mobile': '10'})
         # self.assertEqual(post_response.status_code, 200)
+
+class Teststaticfiles(TestCase):
+    def test_responsive(self):
+        abs_path = finders.find('../static/interpay/css/base.css')
+        self.assertTrue(staticfiles_storage.exists(abs_path))
+        test_file = open('../OnlineSite/interpay/static/interpay/css/base.css', 'rb')
+        self.assertIs('@media only screen and (min-width : 420px) and ( max-width: 900px)' in test_file.read(), True)
