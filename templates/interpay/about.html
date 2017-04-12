@@ -1,0 +1,96 @@
+{% extends 'interpay/top_bar.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>
+            ABout US
+        </title>
+    </head>
+
+    <body>
+        {% block cont-body %}
+
+            <section id="intro" class="intro-section">
+                <div class="fullscreenbanner-container">
+                    <div class="fullscreenbanner">
+                        <ul>
+
+                        <li data-transition="curtain-1" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
+                        {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                            <div class="tp-caption rs-caption-3 sft start"
+                                 data-x="right"
+                                 data-hoffset="0"
+                                 data-y="1"
+                                 data-speed="0"
+                                 data-start="0"
+                                 data-easing="Back.easeInOut"
+                                 data-endspeed="1000">
+
+                                                           سرویس ریزپرداخت ایران در سال 2016 توسعه داده شده است
+                            <br>
+                            ریزپرداخت یک روش پرداخت الکترونیکی است که انجام تراکنش ها و تجارت الکترونیک را ساده تر و امن می کند
+                            <br>
+                            این سرویس توسط دانشگاه صنعتی شریف و بنیاد ملی نخبگان حمایت می شود
+                            <br><br>
+                            <img src="{% static 'interpay/images/ictlogo.png' %}">
+                            <br><br><br>
+                            <p> <font color="blue"> آدرس: </font><font color="#f0f8ff"> تهران، خیابان آزادی، بلوار شهید اکبری، خیابان قاسمی، کوچه گلستان، پلاک3</font>
+                            <br>
+                            <font color="blue"> ایمیل: </font> <font color="#f0f8ff"> info@rizpal.com و info@rizpardakht.con</font>
+                            <br>
+                            <font color="blue"> تلفن: </font> <font color="#f0f8ff"> 02166029164 </font>
+                            </p>
+
+
+                            </div>
+                            {% else %}
+
+                            <div class="tp-caption rs-caption-4 sft start"
+                                 data-x="center"
+                                 data-hoffset="0"
+                                 data-y="1"
+                                 data-speed="0"
+                                 data-start="0"
+                                 data-easing="Back.easeInOut"
+                                 data-endspeed="1000">
+
+                            This payment system was deployed in 2016 to provide better way for our users to make international payments.
+                                <br>
+                            We use the latest technologies including Agile and Continues Integration.
+                                <br>
+                            If you have any suggestion, please contact us.
+                            <br><br>
+                            <p><font color="blue">Visit us at:</font> <font color="#f0f8ff"> Tehran, Azadi street, Akbari Blvb. , Ghasemi street, Golestan alley, No. 3</font>
+                            <br>
+                             <font color="blue"> Email:</font> <font color="#f0f8ff">info@rizpal.com    ,info@rizpardakht.com </font>
+                            <br>
+                            <font color="blue">Phone: </font> <font color="#f0f8ff"> 021-66029164 </font>
+                            </p>
+
+
+
+                            </div>
+                        {% endifequal %}
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <div class="clearfix"></div>
+
+            <script>
+        jQuery(document).ready(function () {
+            App.init();
+            App.initParallaxBg();
+            RevolutionSlider.initRSfullScreen();
+        });
+    </script>
+        {% endblock %}
+    </body>
+</html>

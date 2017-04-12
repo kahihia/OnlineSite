@@ -21,7 +21,7 @@ from interpay.Validation import Validation
 from firstsite.SMS import ds, api
 from interpay import models
 from smtplib import SMTPRecipientsRefused
-from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest
+from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest, CurrencyReserve
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -584,9 +584,10 @@ def recharge_account(request, **message):
         if code != 0:
             emessage = "Unknown ZarinPal Error"
     print msg_color, "msg_color"
+    deposit_num= deposit_set.count();
     return render(request, "interpay/top_up.html",
                   {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage,
-                   'msg_color': msg_color})
+                   'msg_color': msg_color, 'deposit_num': deposit_num})
 
 
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
@@ -819,12 +820,31 @@ def withdraw_pending_deposit(request):
     return HttpResponseRedirect('../')
 
 
+def check_currency_reserve(currency, amount):
+    print (currency)
+    try:
+        current_currency = CurrencyReserve.objects.get(currency=currency)
+        print (current_currency.reserve)
+    except:
+        return False
+    if current_currency.reserve < amount:
+        return False
+    return True
+
+
 @login_required()
 def actual_convert(request):
     if request.method == 'POST':
         amount = request.POST.get('amount')
         currency = request.POST.get('currency')
         account_id = request.POST.get('account_id')
+        cur_account = BankAccount.objects.get(account_id=account_id)
+        if not check_currency_reserve(currency, convert(amount, cur_account.cur_code, currency)):
+            return render(request, "interpay/wallet.html",
+                          {
+                              'error': 'This transaction is not possible now. Please try later.',
+                              'account': BankAccount.objects.get(account_id=account_id),
+                          })
         try:
             amount = float(amount)
         except ValueError:
@@ -839,7 +859,6 @@ def actual_convert(request):
                               'error': Validation.Validation.check_validation('non_positive'),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
-        cur_account = BankAccount.objects.get(account_id=account_id)
 
         if cur_account.balance < amount:
             return render(request, "interpay/wallet.html",
@@ -909,6 +928,18 @@ def info(request):
     return render(request, "interpay/info.html")
 
 
+def about(request):
+    return render(request, "interpay/about.html")
+
+
+def contact(request):
+    return render(request, "interpay/contact.html")
+
+
+def services(request):
+    return render(request, "interpay/services.html")
+
+
 @login_required()
 def general(request):
     return render(request, "interpay/general.html")
@@ -966,6 +997,38 @@ def edit_profile(request):
             result = {'html': html}
             return HttpResponse(json.dumps(result))
 
+
+def contact_email(request):
+    email = request.POST.get('email', False)
+    email_sender = Email.Email(email)
+    error_message = ""
+    sent = ""
+    try:
+        sent = email_sender.send_email()
+    except SMTPRecipientsRefused:
+        error_message = "Invalid Email"
+
+        if sent == 1:
+            return HttpResponse("Email Send Successfully")
+        else:
+            if error_message:
+                return HttpResponse(error_message)
+        return HttpResponse("No such user")
+
+
+                #if request.POST['action'] == 'change_national_photo':
+            #form_edit = RegistrationForm_edit(request.POST, request.FILES)
+            #print form_edit
+            #if form_edit.is_valid():
+                #newphoto = form_edit.save(commit=False)
+                #print newphoto
+                #print request.FILES
+                #newphoto.national_card_photo = request.FILES['national_card_photo']
+                #newphoto.save()
+                #print newphoto.national_card_photo
+            #html = '<strong>Your National photo has changed successfully</strong><hr>'
+            #result = {'html': html}
+            #return HttpResponse(json.dumps(result))
             # if request.POST['action'] == 'change_national_photo':
             # form_edit = RegistrationForm_edit(request.POST, request.FILES)
             # print form_edit

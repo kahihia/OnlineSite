@@ -100,11 +100,11 @@ msgstr "صاحب حساب"
 #: templates/interpay/bank_accounts.html:209
 #: templates/interpay/wallet.html:230
 msgid "Withdraw"
-msgstr ""
+msgstr "حساب بانکی"
 
 #: templates/interpay/bank_accounts.html:212
 msgid "Message"
-msgstr ""
+msgstr " پیام"
 
 #: templates/interpay/base.html:139 templates/manager/manager-base.html:115
 msgid "Home Page "
@@ -497,13 +497,38 @@ msgstr "ایجاد حساب بانکی جدید"
 
 #: templates/manager/manager-withdrawal-requests.html:59
 msgid "Confirm"
-msgstr ""
+msgstr "تایید"
 
 #: templates/manager/manager-withdrawal-requests.html:62
 #, fuzzy
 #| msgid "Transaction Date"
 msgid "Transaction Status"
 msgstr "تاریخ تراکنش"
+
+#: templates/interpay/info.html:171
+msgid "LOGIN"
+msgstr "ورود"
+
+#: templates/interpay/info.html:178
+msgid "SERVICES"
+msgstr "خدمات"
+
+#: templates/interpay/info.html:181
+msgid "CONTACT"
+msgstr "ارتباط با ما"
+
+#: templates/interpay/info.html:184
+msgid "ABOUT US"
+msgstr "درباره ما"
+
+#: .\interpay\templates\contact.html:51
+msgid "Title"
+msgstr "عنوان"
+
+#: .\interpay\templates\contact.html:78
+msgid "Send"
+msgstr "ارسال"
+
 
 #~ msgid " withdrawals "
 #~ msgstr "حسابهای بانکی"

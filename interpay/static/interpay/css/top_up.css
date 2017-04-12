@@ -50,6 +50,7 @@
     padding: 10px 20px 20px;
     margin-left: 0 !important;
     margin-right: 0 !important;
+    height: 10%;
 
 }
 
@@ -60,6 +61,7 @@
 
 .page-title {
     color: rgb(46, 98, 164);
+    /*color: rgb(0, 0, 0);*/
 }
 
 #id_currency, #id_amount {
