@@ -337,7 +337,7 @@ class CurrencyReserve(models.Model):
         conversion_deposits = []
         for item in CurrencyConversion.objects.filter(deposit__date__gte=temp_recharge_date,
                                                       deposit__cur_code=self.currency):
-            conversion_deposits.append(item)
+            conversion_deposits.append(item.deposit)
 
         result -= sum(x.amount for x in conversion_deposits)
         return result
