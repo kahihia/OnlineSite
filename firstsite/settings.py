@@ -41,11 +41,11 @@ OPENEXCHANGERATES_APP_ID = "444ee7425aa646c0a789ef4a900013ee"
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True
-
 ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['127.0.0.1']
 
 
-# ALLOWED_HOSTS = ['.rizpardakht.com','www.rizpardakht.com']
+#ALLOWED_HOSTS = ['.rizpardakht.com','www.rizpardakht.com']
 
 
 # Application definition
@@ -199,7 +199,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, "interpay/static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 from django.utils.translation import ugettext_lazy as _ut
 LANGUAGES = (
@@ -216,7 +216,7 @@ LOGIN_URL = '/login/'
 LOGOUT_URL = '/login/'
 # serverset change sepehr to salman
 STATICFILES_DIRS = [
-    '/home/sepehr/firstsite/interpay/static',
+    os.path.join(BASE_DIR, 'interpay/static'),
 ]
 prefix_default_language = False
 LOGGING = {
@@ -236,7 +236,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': "../OnlineSite/interpay/static/example.log",
+            'filename': os.path.join(BASE_DIR, 'interpay/static/server.log'),
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
