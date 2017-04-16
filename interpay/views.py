@@ -624,6 +624,8 @@ def zarinpal_payment_gate(request, amount):
 
 
 def zarinpal_callback_handler(request, amount):
+    global new_connection
+    new_connection = settings.connect_to_redis()
     client = Client(ZARINPAL_WEBSERVICE)
     if request.GET.get('Status') == 'OK':
         auth = request.GET.get('Authority')
