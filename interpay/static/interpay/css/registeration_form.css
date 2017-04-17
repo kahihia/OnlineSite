@@ -177,7 +177,7 @@ input#id_national_card_photo  {
     padding-bottom: 2%;
 }
  .interpay{
-    padding-top: 3%;
+    padding-top: 2%;
     margin-left: 1%;
     width:17%;
     height: 80%;
@@ -185,9 +185,30 @@ input#id_national_card_photo  {
     margin-top:1.2%;
 }
 
+ .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+  .inner_edit  {
+      padding: 5px;
+      overflow: hidden;
+      width: 75%;
+      height: 85%;
+      border-radius: 50%;
+      background-color:#696969;
+      float: inherit;
+      font-family: IRAN-web;
+      font-size: x-small
+  }
+
 }
 
-@media only screen and (min-width : 420px) and ( max-width: 1100px) {
+@media only screen and (min-width : 420px) and ( max-width: 800px) {
 .rizpal{
     padding-top: 1%;
     margin-left: 1%;
@@ -206,32 +227,206 @@ input#id_national_card_photo  {
     margin-top:1%;
 
 }
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small;
+        margin-top: 0.7%;
+
+    }
+}
+@media only screen and (min-width : 800px) and ( max-width: 1100px) {
+.rizpal{
+    padding-top: 7px;
+    margin-left: 1%;
+    width:5%;
+    height: 94%;
+    float:left ;
+    padding-bottom: 8px;
+    margin-bottom: 1px;
+}
+ .interpay{
+    padding-top: 2px;
+    margin-left: 0.5%;
+    width:9%;
+    height: 77%;
+    float:left ;
+    margin-top: 9px;
+
+}
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small;
+        margin-top: 0.7%;
+
+    }
 }
 
-@media only screen and (min-width: 1100px)   {
+@media only screen and (min-width: 1100px) and (max-width: 1400px)  {
     .rizpal {
-        padding-top: 0.5%;
+        padding-top: 7px;
         margin-top: 0%;
         margin-left: 1%;
         width:3%;
         height: 98%;
         float:left ;
         margin-top:0px;
-        padding-bottom: 0.5%;
-        margin-bottom: 0.9%;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
     }
 
     .interpay {
-        padding-top: 0.5%;
+        padding-top: 2px;
         margin-left: 0.5%;
         width:6%;
         height: 77%;
         float:left ;
-        margin-top: 0.8%;
+        margin-top: 9px;
     }
 
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small
+
+    }
 }
 
+@media only screen and (min-width: 1400px) and (max-width: 1700px)   {
+    .rizpal {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width: 3%;
+        height: 100%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small
+
+    }
+}
+
+@media only screen and (min-width: 1700px)   {
+    .rizpal {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width:2.5%;
+        height: 100%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small
+
+    }
+}
 
 
 
@@ -241,7 +436,7 @@ input#id_national_card_photo  {
 
 @media only screen and ( max-width: 420px){
 ul.topnav{
-    height: 8%;
+    height: 40px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -252,7 +447,7 @@ ul.topnav{
 
 @media only screen and (min-width : 420px) and ( max-width: 900px) {
 ul.topnav{
-    height: 7%;
+    height: 40px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -263,7 +458,7 @@ ul.topnav{
 
 @media only screen and (min-width: 900px)  and ( max-width: 1400px) {
 ul.topnav{
-    height: 7%;
+     height: 50px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -274,9 +469,20 @@ ul.topnav{
 
 
 
-@media only screen and (min-width : 1400px)  {
+@media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
 ul.topnav{
-    height: 8%;
+    height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 1700px){
+ul.topnav{
+    height: 50px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -287,14 +493,6 @@ ul.topnav{
 
 
 
-@media screen and (max-width:680px) {
-  ul.topnav.responsive {position: relative;}
-
-  ul.topnav.responsive li {
-    float: none;
-    display: inline;
-  }
-  }
 
 ul.topnav span {float: left;}
 

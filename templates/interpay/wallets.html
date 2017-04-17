@@ -7,8 +7,7 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="{% static 'interpay/bootstrap/js/bootstrap.min.js' %}"></script>
+  <link rel="stylesheet" href="interpay/bootstrap/js/bootstrap.min.js">
     {% block flag %}
         
     {% endblock %}
@@ -115,10 +114,11 @@
                                     onchange="convert({{ account.balance }},{{ forloop.counter }},'{{ account.cur_code }}');">
                                 <option>Currency...</option>
                                 {% for curr in CURRENCIES %}
-                                    <option value="{{ curr.code }}"
-                                    >
+                                   {% if  account.cur_code != curr.code %}
+                                    <option value="{{ curr.code }}">
                                         {{ curr.symbol }} {{ curr.name }}
                                     </option>
+                                  {% endif %}
                                 {% endfor %}
                             </select>
                         </td>
@@ -138,15 +138,17 @@
                                     {% csrf_token %}
                                     <div style="margin-left: 0 !important;margin-right: 0 !important;">
                                      <div style="margin-right:0px;width:300px;margin-left: 10px ">
-                                        <label>{% trans 'Amount' %}: {{ account.cur_code }}</label>
+                                        <label>{% trans 'Amount' %} ({{ account.cur_code }}) :</label>
                                         <input id="amount" name="amount" type="text" value="{{ account.balance }}"><br>
                                         <label>{% trans 'To Currency' %}: </label>
                                         <select name="currency" id="currency">
                                          <option value="EUR" selected="selected">Default EURO</option>
                                          {% for curr in CURRENCIES %}
+                                          {% if  account.cur_code != curr.code %}
                                           <option value="{{ curr.code }}">
                                             {{ curr.symbol }} {{ curr.name }}
                                           </option>
+                                           {% endif %}
                                          {% endfor %}
                                 </select>
                                 <input type="hidden" name="account_id" value="{{ account.account_id }}">

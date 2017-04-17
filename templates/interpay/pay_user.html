@@ -81,7 +81,7 @@
              }
         }
 
-        function fill_modal(x) {
+        function fill_modal() {
                 var email = document.getElementById("email");
                 var mobile = document.getElementById("mobile");
                 var comment = document.getElementById("comment");
@@ -115,13 +115,13 @@
                     {% if success %}{{ success }}{% endif %}
         </div>
         <div>
-        <button id="gre" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green"   style="margin-left:2%"   onclick="apear(this.id)">{% trans "Pay"%}GRE</button>
+        <button id="gre" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green"   style="margin-left:1%"   onclick="apear(this.id)">{% trans "Pay"%}GRE</button>
         <button id="university" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  onclick="apear(this.id)"> {% trans "University Fees" %}</button>
-        <button id="googleplay" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  onclick="apear(this.id)" >{% trans "Google play" %}</button>
+        <button id="googleplay" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  style="margin-left:1%"  onclick="apear(this.id)" >{% trans "Google play" %}</button>
         <button id="other" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  onclick="apear(this.id)">{% trans "Other Payments" %}</button>
         </div>
-         <br>
-            <form id="pay" method="post" action="{{ langStr  }}/pay_user/" style="display: none;">
+         <br><br>
+            <form id="pay" method="post" action="/pay_user/" style="display: none;">
                 {% csrf_token %}
                 {#                <div class="row">#}
 
