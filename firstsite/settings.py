@@ -213,7 +213,7 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 LOGIN_URL = '/login/'
-LOGOUT_URL = '/login/'
+LOGOUT_URL = '/logout/'
 # serverset change sepehr to salman
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'interpay/static'),
