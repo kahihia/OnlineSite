@@ -155,17 +155,18 @@
                  <img src="{% static 'interpay/images/logo.png' %}"  style=" padding-left: 10px; padding-top: 20px; width:100px; height: 58px; float:left ; margin-top:0px">
             </h1>
         </ul>
-        <div class="top-contact-block">
-            {% ifequal LANGUAGE_CODE 'en-gb' %}
-                <a href="/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
-            {% else %}
-            <a href="/fa-ir/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
-            {% endifequal %}
-        </div>
 
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
+
+        <div class="navbar-collapse">
             <div class="menu-container">
-                <ul class="nav navbar-nav">
+               <ul class="nav navbar-nav">
+                    <li class="active">
+                      {% ifequal LANGUAGE_CODE 'en-gb' %}
+                       <a href="/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+                      {% else %}
+                       <a href="/fa-ir/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+                      {% endifequal %}
+                    </li>
                     <li class="page-scroll home">
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
                             <a href="/services/">{% trans 'SERVICES' %}</a>
