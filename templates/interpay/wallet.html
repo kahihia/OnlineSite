@@ -183,9 +183,11 @@
                                 <select name="currency" id="currency">
                                     <option value="EUR" selected="selected">Default(EURO)</option>
                                     {% for curr in CURRENCIES %}
+                                        {% if  account.cur_code != curr.code %}
                                         <option value="{{ curr.code }}">
                                             {{ curr.symbol }} {{ curr.name }}
                                         </option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                                 <input type="hidden" name="account_id" value="{{ account.account_id }}">
