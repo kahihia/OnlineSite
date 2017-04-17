@@ -39,13 +39,13 @@ SECRET_KEY = '_=qlig@6jvf%qpp5+#+ts9m$!5!zl^ioi7pfsw1y%_h50$kcdd'
 OPENEXCHANGERATES_APP_ID = "444ee7425aa646c0a789ef4a900013ee"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
+#serverset DEBUG must be present and set to False
 DEBUG = True
-ALLOWED_HOSTS = []
-#ALLOWED_HOSTS = ['127.0.0.1']
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
-#ALLOWED_HOSTS = ['.rizpardakht.com','www.rizpardakht.com']
+#ALLOWED_HOSTS = ['.rizpardakht.com','www.rizpardakht.com', '.rizpal.com']
 
 
 # Application definition
@@ -269,7 +269,7 @@ LOGGING = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': 'c:/foo/bar',
+        'LOCATION': os.path.join(BASE_DIR, 'cache'),
     }
 }
 
