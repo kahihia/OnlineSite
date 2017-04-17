@@ -7,17 +7,133 @@
  {% block flag %}
 
 {% endblock %}
+
 <head>
-    <script type="text/javascript" src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
-    {% block CSS %}
-        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/home.css' %}">
+
+    {% block JS %}
+        <script type="text/javascript" src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+        <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
+        <script src="{% static 'interpay/js/sweetalert2.js' %}"></script>
+{#        <script src="{% static 'interpay/js/jquery-ui.min.js' %}"></script>#}
+{#        <script src="{% static 'interpay/js/master.min.1491918053.js' %}"></script>#}
     {% endblock %}
+
+{% block CSS %}
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/home.css' %}">
+        <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+{% endblock %}
+
+{% block js %}
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}
+
     <meta charset="UTF-8">
-    {#    <title>{% block title %}#}
-    {#        {% trans 'Home Page' %}#}
-    {#    {% endblock %}</title>#}
+{% block head %}
+<script>
+var loader = true;
+(function(a,b){if(typeof module!="undefined"&&module.exports){module.exports=b()}else{if(typeof define=="function"&&define.amd){define(b)}else{this[a]=b()}}})("$script",function(){var o=document,l=o.getElementsByTagName("head")[0],r="string",i=false,k="push",e="readyState",p="onreadystatechange",j={},a={},d={},c={},n,q;function h(f,u){for(var t=0,s=f.length;t<s;++t){if(!u(f[t])){return i}}return 1}function m(f,s){h(f,function(t){s(t);return 1})}function b(z,v,t){z=z[k]?z:[z];var s=v&&v.call,u=s?v:t,f=s?z.join(""):v,w=z.length;function x(A){return A.call?A():j[A]}function y(){if(!--w){j[f]=1;u&&u();for(var A in d){h(A.split("|"),x)&&!m(d[A],x)&&(d[A]=[])}}}setTimeout(function(){m(z,function A(C,B){if(C===null){return y()}if(!B&&!/^https?:\/\//.test(C)&&n){C=(C.indexOf(".js")===-1)?n+C+".js":n+C}if(c[C]){if(f){a[f]=1}return(c[C]==2)?y():setTimeout(function(){A(C,true)},0)}c[C]=1;if(f){a[f]=1}g(C,y)})},0);return b}function g(u,t){var s=o.createElement("script"),f;s.onload=s.onerror=s[p]=function(){if((s[e]&&!(/^c/.test(s[e])))||f){return}s.onload=s[p]=null;f=1;c[u]=2;t()};s.async=1;s.src=q?u+(u.indexOf("?")===-1?"?":"&")+q:u;l.insertBefore(s,l.lastChild)}b.get=g;b.order=function(f,u,s){(function t(v){v=f.shift();!f.length?b(v,u,s):b(v,t)}())};b.path=function(f){n=f};b.urlArgs=function(f){q=f};b.ready=function(u,s,t){u=u[k]?u:[u];var f=[];!m(u,function(v){j[v]||f[k](v)})&&h(u,function(v){return j[v]})?s():!function(v){d[v]=d[v]||[];d[v][k](s);t&&t(f)}(u.join("|"));return b};b.done=function(f){b([null],f)};return b});</script>
+<link rel="stylesheet" href="https://static1.sitejabber.com/css/sj-combined.min.1491512207.css"/>
+<style>html { display:none; }</style>
+
+<script>
+if (self == top) {
+document.documentElement.style.display = 'block';
+} else {
+top.location = self.location;
+}
+</script>
+
+    <script src="https://static2.sitejabber.com/js/html5shiv.min.1476819401.js"></script>
+
+
+
+<script>
+(function(w) {
+    function loadJS()
+    {
+         //Google Tag Manager
+         //(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+         //new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        // j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        // '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        // })(window,document,'script','dataLayer','GTM-PRGXBK');
+
+        // Facebook Retargeting Pixel
+        // !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        // n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        // n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        // t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        // document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+        // fbq('init', '105781903176235');
+        // fbq('track', "PageView");
+
+        // Rollbar
+        var _rollbarConfig = {
+            accessToken: '4c6129297bd24db5a7a0b44d56271dca',
+            captureUncaught: true,
+            captureUnhandledRejections: true,
+            payload: {
+                environment: 'production',
+                person: {
+                    id: 0               }
+            }
+        };
+
+
+        // !function(r){function e(t){if(o[t])return o[t].exports;var n=o[t]={exports:{},id:t,loaded:!1};return r[t].call(n.exports,n,n.exports,e),n.loaded=!0,n.exports}var o={};return e.m=r,e.c=o,e.p="",e(0)}([function(r,e,o){"use strict";var t=o(1).Rollbar,n=o(2);_rollbarConfig.rollbarJsUrl=_rollbarConfig.rollbarJsUrl||"https://d37gvrvc0wt4s1.cloudfront.net/js/v1.9/rollbar.min.js";var a=t.init(window,_rollbarConfig),i=n(a,_rollbarConfig);a.loadFull(window,document,!_rollbarConfig.async,_rollbarConfig,i)},function(r,e){"use strict";function o(r){return function(){try{return r.apply(this,arguments)}catch(e){try{console.error("[Rollbar]: Internal error",e)}catch(o){}}}}function t(r,e,o){window._rollbarWrappedError&&(o[4]||(o[4]=window._rollbarWrappedError),o[5]||(o[5]=window._rollbarWrappedError._rollbarContext),window._rollbarWrappedError=null),r.uncaughtError.apply(r,o),e&&e.apply(window,o)}function n(r){var e=function(){var e=Array.prototype.slice.call(arguments,0);t(r,r._rollbarOldOnError,e)};return e.belongsToShim=!0,e}function a(r){this.shimId=++c,this.notifier=null,this.parentShim=r,this._rollbarOldOnError=null}function i(r){var e=a;return o(function(){if(this.notifier)return this.notifier[r].apply(this.notifier,arguments);var o=this,t="scope"===r;t&&(o=new e(this));var n=Array.prototype.slice.call(arguments,0),a={shim:o,method:r,args:n,ts:new Date};return window._rollbarShimQueue.push(a),t?o:void 0})}function l(r,e){if(e.hasOwnProperty&&e.hasOwnProperty("addEventListener")){var o=e.addEventListener;e.addEventListener=function(e,t,n){o.call(this,e,r.wrap(t),n)};var t=e.removeEventListener;e.removeEventListener=function(r,e,o){t.call(this,r,e&&e._wrapped?e._wrapped:e,o)}}}var c=0;a.init=function(r,e){var t=e.globalAlias||"Rollbar";if("object"==typeof r[t])return r[t];r._rollbarShimQueue=[],r._rollbarWrappedError=null,e=e||{};var i=new a;return o(function(){if(i.configure(e),e.captureUncaught){i._rollbarOldOnError=r.onerror,r.onerror=n(i);var o,a,c="EventTarget,Window,Node,ApplicationCache,AudioTrackList,ChannelMergerNode,CryptoOperation,EventSource,FileReader,HTMLUnknownElement,IDBDatabase,IDBRequest,IDBTransaction,KeyOperation,MediaController,MessagePort,ModalWindow,Notification,SVGElementInstance,Screen,TextTrack,TextTrackCue,TextTrackList,WebSocket,WebSocketWorker,Worker,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload".split(",");for(o=0;o<c.length;++o)a=c[o],r[a]&&r[a].prototype&&l(i,r[a].prototype)}return e.captureUnhandledRejections&&(i._unhandledRejectionHandler=function(r){var e=r.reason,o=r.promise,t=r.detail;!e&&t&&(e=t.reason,o=t.promise),i.unhandledRejection(e,o)},r.addEventListener("unhandledrejection",i._unhandledRejectionHandler)),r[t]=i,i})()},a.prototype.loadFull=function(r,e,t,n,a){var i=function(){var e;if(void 0===r._rollbarPayloadQueue){var o,t,n,i;for(e=new Error("rollbar.js did not load");o=r._rollbarShimQueue.shift();)for(n=o.args,i=0;i<n.length;++i)if(t=n[i],"function"==typeof t){t(e);break}}"function"==typeof a&&a(e)},l=!1,c=e.createElement("script"),p=e.getElementsByTagName("script")[0],d=p.parentNode;c.crossOrigin="",c.src=n.rollbarJsUrl,c.async=!t,c.onload=c.onreadystatechange=o(function(){if(!(l||this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState)){c.onload=c.onreadystatechange=null;try{d.removeChild(c)}catch(r){}l=!0,i()}}),d.insertBefore(c,p)},a.prototype.wrap=function(r,e){try{var o;if(o="function"==typeof e?e:function(){return e||{}},"function"!=typeof r)return r;if(r._isWrap)return r;if(!r._wrapped){r._wrapped=function(){try{return r.apply(this,arguments)}catch(e){throw"string"==typeof e&&(e=new String(e)),e._rollbarContext=o()||{},e._rollbarContext._wrappedSource=r.toString(),window._rollbarWrappedError=e,e}},r._wrapped._isWrap=!0;for(var t in r)r.hasOwnProperty(t)&&(r._wrapped[t]=r[t])}return r._wrapped}catch(n){return r}};for(var p="log,debug,info,warn,warning,error,critical,global,configure,scope,uncaughtError,unhandledRejection".split(","),d=0;d<p.length;++d)a.prototype[p[d]]=i(p[d]);r.exports={Rollbar:a,_rollbarWindowOnError:t}},function(r,e){"use strict";r.exports=function(r,e){return function(o){if(!o&&!window._rollbarInitialized){var t=window.RollbarNotifier,n=e||{},a=n.globalAlias||"Rollbar",i=window.Rollbar.init(n,r);i._processShimQueue(window._rollbarShimQueue||[]),window[a]=i,window._rollbarInitialized=!0,t.processPayloads()}}}}]);
+
+        // Sitejabber Code
+        $script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js', 'jquery');
+        $script.ready('jquery', function() {
+            $script('https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js', 'jqueryui');
+                });
+        $script.ready('jqueryui', function() {
+            $script('https://static1.sitejabber.com/js/master.min.1491918053.js', 'app');
+        });
+
+    }
+
+    if (w.addEventListener) { w.addEventListener("load", loadJS, false); }
+    else if (w.attachEvent) { w.attachEvent("onload", loadJS); }
+}
+(window));
+
+// Google Analytics code
+// (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+// (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+// m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+// })
+// (window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+// var userId = '';
+// if (userId)
+    // ga('create', 'UA-2969930-1', 'auto', { 'userId': userId, 'siteSpeedSampleRate': 100 });
+// else
+    // ga('create', 'UA-2969930-1', 'auto', { 'siteSpeedSampleRate': 100 });
+
+// ga('require', 'displayfeatures');
+// ga('require', 'linkid', 'linkid.js');
+
+// var customGAData = [{key: 'dimension1', value: 0}, {key: 'dimension8', value: 'web'}];
+
+// for (var i in customGAData)
+// {
+    // var o = customGAData[i];
+    // if (o.value !== '')
+        // ga('set', o.key, o.value);
+// }
+
+// ga('send', 'pageview');
+</script>
+
+<script>$script.ready('app', function() {app.setConfig({ratingText1: 'Roll over the stars, then click to rate.', ratingText2: 'Doesn\'t get any worse than this. Stay away!', ratingText3: 'You would not recommend it.', ratingText4: 'You thought it was very average.', ratingText5: 'You thought it was good.', ratingText6: 'You love it so much you want to tell the entire world!', rating: 0, orderId: 'N/A', autocompleteUrl: '/url-autocomplete/', checkOrderUrl: '/check-order-id/', serviceRating: 0, valueRating: 0, shippingRating: 0, returnsRating: 0, qualityRating: 0, videoReviewEnabled: false, scriptLoaderEnabled: true, videoAppId: 'a-87c7db10-f740-0131-cd12-12313914f10b', videoMaxLength: 300, videoUuid: '', mode: '', photos: 0, addReviewsUrl: '/add-reviews', registerDialogUrl: 'https://www.sitejabber.com/registration-dialog', checkExistingReviewUrl: '/check-existing-review'});app.reviewsAdd();}) </script>
+{% endblock %}
 </head>
 <body>
+
 <script>
     {% block script %}
         function fill_modal() {
@@ -36,8 +152,13 @@
             modal_amount.innerHTML = amount.value
 
         }
+        function review_modal() {
+        }
     {% endblock %}
 </script>
+
+
+
 
 {% block cont-header %}
     <div id="welcome-msg" style="font-family: IRAN-web">
@@ -98,10 +219,6 @@
                           {% trans 'Destination Email:' %}
                     </label>
 
-{#                    <form style="display: none" method="get" action="../info/">#}
-{#                        <button  type="submit" onclick="goto()">Reviews detail</button>#}
-{#                    </form>#}
-
                     <input type="text" name="email" id="email" class="form-control" style="width:300px">
                 </div>
 
@@ -110,9 +227,92 @@
                           {% trans 'Destination Mobile Number:' %}
                     </label>
                     <input type="text" name="mobile" id="mobile" class="form-control" style="width:300px">
+
+                </div >
+
+                <input type="button"
+                       id="confirm"
+                       onclick="review_modal()"
+                       value="{% trans 'Review Details' %}"
+                       data-toggle="modal"
+                       data-target="#ReviewModal"
+                       class="btn btn-info">
+
+                <div class="modal fade" id="ReviewModal" role="dialog">
+                    <div class="modal-dialog" style="width:300px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Review Details</h4>
+                            </div>
+                            <div class="modal-body">
+{#<div id="container">#}
+{#    <div id="content_container">#}
+{#        <div id="content">#}
+{#            <div id="flashMessageJs" class="message" style="display:none;">#}
+{#            </div>#}
+            <!-- <script type="text/javascript">$script.ready('jquery', function() {$script.order(['https://static3.sitejabber.com/js/fileuploader.min.1476819401.js', 'https://static3.sitejabber.com/js/upload.min.1476819401.js'], 'uploadHelper');});</script> -->
+{#            <style>ul.qq-upload-list {display:none;}</style>#}
+{#            <div id="add_review">#}
+{#                <div id="content_wrapper">#}
+{#                    <div id="main_column">#}
+{#                        <div id="add_review_form">#}
+{#                             <form method="post" accept-charset="utf-8" id="ReviewAddForm" novalidate="novalidate" action="/online-business-review">#}
+{#                                 <div style="display:none;">#}
+{#                                    <input type="hidden" name="_method" value="POST"/>#}
+{#                                </div>#}
+{#                                <div id="website_field" class="">#}
+{#                                    <div class="input text">#}
+                                        <div id="UrlAddress"/> </div>
+{#                                    </div>#}
+{#                                </div>#}
+
+                                <div id="rating_field">
+                                    <div class="clear"></div>
+
+                                    <div id="js">
+                                        <div id="rating">
+                                            <div class="star_rating_big" title="0.0 star rating">
+                                                <div class="star rating w0" >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p id="rating_text"></p>
+                                        <div id="rating_bubble"></div>
+                                        <div class="clear"></div>
+                                        <div class="required">
+                                            <span class="validator error"></span>
+                                            <div id="rating-error" class="validator-error" for="rating" generated="true" style="display: none;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+{#                                <button class="button orange not_alone " id="review_submit_button" type="submit">Submit your review</button>#}
+
+                                <!-- changes -->
+{#                            </form>#}
+                            <div class="clear"></div>
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        </div>#}
+{#    </div>#}
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-default" style="float: left;">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"
+                                            style="float: left;">Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {#                </div>#}
-                {#                <div class="row">#}
+
+
+
                 <div class="form-group">
                    <label style="display:block">
                     {% trans 'Comment:' %}
@@ -126,6 +326,8 @@
                 <div style="color: green;font-weight: bold">
                     {% if success %}{{ success }}{% endif %}
                 </div>
+
+
                 <input type="button"
                        id="confirm"
                        onclick="fill_modal()"
@@ -170,28 +372,11 @@
                     </div>
 
                 </div>
+
             </form>
         </div>
 
     </div>
-
-
-
-{#    <div id="write_review_box" class="start_review">#}
-{#        <div id="rating_field">#}
-{#            <div id="js">#}
-{#                <div id="rating">#}
-{#                    <div class="star_rating_big" title="0.0 star rating">#}
-{#                        <div class="star rating w0" >#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div id="rating_bubble"></div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <a href="/online-business-review#walmart.com_(Walmart.com)" id="write_review_prompt">Start your review of <strong>Walmart.com</strong></a>#}
-{#        <div class="clear"></div>#}
-{#    </div>#}
 
 {% endblock %}
 

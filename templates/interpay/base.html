@@ -136,7 +136,6 @@
     {% endblock %}
     <meta charset="UTF-8" name="viewport" content="width=device-width,height=device-height,initial-scale=1.0">
     <title>{% block title %}{% trans 'Home Page ' %}- InterPay Iran{% endblock %}</title>
-
 </head>
 <script>
     {% block script %}
@@ -463,6 +462,13 @@
                </div>
 
            </div>
+    </section>
+
+    <section id="head-section">
+        <div id="head">
+            {% block head %}
+            {% endblock %}
+        </div>
     </section>
  </div>
     </div>
