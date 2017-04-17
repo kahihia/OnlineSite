@@ -194,9 +194,12 @@ class BankAccount(models.Model):
             current_date += timedelta(days=1)
             break
 
-            #   print current_date
+            #   print
         # result *= 1 - (rule.deposit_charge_percent * 0.01)
-        return result
+        if self.cur_code=='IRR':
+            return round(result, 0)
+        else:
+            return round(result, 2)
 
     @property
     def commission(self):
@@ -334,7 +337,7 @@ class CurrencyReserve(models.Model):
         conversion_deposits = []
         for item in CurrencyConversion.objects.filter(deposit__date__gte=temp_recharge_date,
                                                       deposit__cur_code=self.currency):
-            conversion_deposits.append(item)
+            conversion_deposits.append(item.deposit)
 
         result -= sum(x.amount for x in conversion_deposits)
         return result

@@ -143,13 +143,13 @@
         {{ error }}
     </div>
 
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modalconvert">convert</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modalconvert"> {% trans 'Convert' %}</button>
     <div class="modal fade" id="Modalconvert" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Convert</h4>
+                    <h4 class="modal-title">{% trans 'Convert' %}</h4>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="../actual_convert/" id="sampleform">
@@ -161,7 +161,7 @@
                                 <input id="amount" name="amount" type="text" value={{ recommended }}><br>
                                 <label>{% trans 'To Currency' %}: </label>
                                 <select name="currency" id="currency">
-                                    <option value="EUR" selected="selected">Default EURO</option>
+                                    <option value="EUR" selected="selected">Default(EURO)</option>
                                     {% for curr in CURRENCIES %}
                                         <option value="{{ curr.code }}">
                                             {{ curr.symbol }} {{ curr.name }}
@@ -186,7 +186,7 @@
     <form action="../withdraw_pending_deposit/" method="post">
         {% csrf_token %}
         <div class="table-responsive">
-            <h3>Transactions</h3>
+            <h3>{%  trans 'Transactions' %}</h3>
             <table id="wal-tab" class="table">
                 <thead>
                 <tr class="table-header-row">
@@ -206,7 +206,7 @@
                         {% trans 'Status' %}
                     </th>
                     <th class="table-header-cell">
-                        {% trans 'Description' %}
+                        {% trans 'Pay From ( Desc)' %}
                     </th>
                     {#                    <th class="table-header-cell">#}
                     {#                        {% trans 'Source/Destination' %}#}
@@ -233,11 +233,11 @@
                             {#                            {% endif %}#}
                             {#                            {{ d.id }}#}
                         </td>
-                        {% if d|get_transaction_type == "deposit" %}
+                        {% if d|get_is_deposit:user%}
                             <td class="table-cell">{{ d.amount }}<span style="float:right; color:lime"
                                                                        class="glyphicon glyphicon-triangle-top green"></span>
                             </td>
-                        {% else %}
+                        {% elif d|get_is_withdraw:user%}
                             <td class="table-cell">- {{ d.amount }}<span style="float:right; color:red"
                                                                          class="glyphicon glyphicon-triangle-bottom red"></span>
                             </td>

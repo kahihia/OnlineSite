@@ -78,6 +78,9 @@ def get_currency_rate(currency):
 
 
 def set_rates(request):
+    if not request.user.is_authenticated() or not request.user.is_superuser:
+        return HttpResponse("Error")
+
     euro_rate = get_currency_rate("EUR")
     dollar_rate = get_currency_rate("USD")
 
@@ -283,27 +286,28 @@ def verify_user(request):
 
 @login_required()
 def pay_user(request):
+    if request.LANGUAGE_CODE == 'en-gb':
+        langStr = ""
+    else:
+        langStr = '/' +request.LANGUAGE_CODE
+
     if request.method == "POST":
         up = ""
         currency = request.POST['currency']
         amount = request.POST['amount']
         comment = request.POST['comment']
+
         if not comment:
             comment = ""
         if not amount:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
 
-        try:
-            amount = float(amount)
-        except ValueError:
+        v = Validation.Validation()
+        er=v.check_value(amount)
+        if not er == Validation.Validation.OK:
             return render(request, "interpay/pay_user.html",
-                          {'error': Validation.Validation.check_validation('invalid_amount')})
+                          {'error': v.get_errormessage(er), 'langStr': langStr})
 
-        # if not amount.isdigit():
-        #     return render(request, 'interpay/pay_user.html', {'error': Validation.check_validation('invalid_amount')})
-        if int(amount) <= 0:
-            return render(request, 'interpay/pay_user.html',
-                          {'error': Validation.Validation.check_validation('non_positive')})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
@@ -344,14 +348,14 @@ def pay_user(request):
                 MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
                                              date=datetime.datetime.now(),
                                              amount=amount, comment=comment, cur_code=currency)
-                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.'})
+                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.', 'langStr': langStr})
             else:
                 return render(request, 'interpay/pay_user.html',
                               {'error': 'No destination account with this currency.'})
         else:
             return render(request, 'interpay/pay_user.html',
                           {'error': 'You do not have any account in this currency. '})
-    return render(request, "interpay/pay_user.html")
+    return render(request, "interpay/pay_user.html",{'langStr': langStr})
 
 
 def reset_password(request, token):
@@ -584,7 +588,7 @@ def recharge_account(request, **message):
         if code != 0:
             emessage = "Unknown ZarinPal Error"
     print msg_color, "msg_color"
-    deposit_num= deposit_set.count();
+    deposit_num = deposit_set.count();
     return render(request, "interpay/top_up.html",
                   {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage,
                    'msg_color': msg_color, 'deposit_num': deposit_num})
@@ -599,9 +603,9 @@ mobile = '09123456789'
 
 def zarinpal_payment_gate(request, amount):
     if request.LANGUAGE_CODE == 'en-gb':
-     call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
     else:
-      call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + amount  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + amount  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
@@ -620,6 +624,8 @@ def zarinpal_payment_gate(request, amount):
 
 
 def zarinpal_callback_handler(request, amount):
+    global new_connection
+    new_connection = settings.connect_to_redis()
     client = Client(ZARINPAL_WEBSERVICE)
     if request.GET.get('Status') == 'OK':
         auth = request.GET.get('Authority')
@@ -725,8 +731,17 @@ def bank_accounts(request):
     bank_account_form = CreateBankAccountForm()
     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW) \
         .order_by('name')
-    return render(request, "interpay/bank_accounts.html",
-                  {'bank_accounts_set': bank_accounts_set, 'form': bank_account_form, 'emessage': mymessage})
+    irr_accounts = BankAccount.objects.filter(cur_code="IRR")
+    if irr_accounts:
+        irr_wallet = irr_accounts[0]
+    else:
+        irr_wallet = ""
+    return render(request, "interpay/bank_accounts.html", {
+        'bank_accounts_set': bank_accounts_set,
+        'form': bank_account_form,
+        'emessage': mymessage,
+        'irr_account': irr_wallet,
+    })
 
 
 @login_required
@@ -775,7 +790,8 @@ def wallet(request, wallet_id, recom=None):
         for item2 in Withdraw.objects.filter(account=ba):
             transaction_list.append(item2)
         # for item3 in MoneyTransfer.objects.filter(Q(sender__owner=up) | Q(receiver__owner=up)):
-        for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)):
+        for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)).filter(
+                        Q(receiver=ba) | Q(sender=ba)):
             transaction_list.append(item3)
         transaction_list.sort(key=lambda x: x.date)
         context = {
@@ -785,7 +801,6 @@ def wallet(request, wallet_id, recom=None):
             'user': up
         }
         return render(request, "interpay/wallet.html", context)
-
 
 
 @login_required()
@@ -1007,104 +1022,104 @@ def contact_email(request):
         return HttpResponse("No such user")
 
 
-                #if request.POST['action'] == 'change_national_photo':
-            #form_edit = RegistrationForm_edit(request.POST, request.FILES)
-            #print form_edit
-            #if form_edit.is_valid():
-                #newphoto = form_edit.save(commit=False)
-                #print newphoto
-                #print request.FILES
-                #newphoto.national_card_photo = request.FILES['national_card_photo']
-                #newphoto.save()
-                #print newphoto.national_card_photo
-            #html = '<strong>Your National photo has changed successfully</strong><hr>'
-            #result = {'html': html}
-            #return HttpResponse(json.dumps(result))
-            # if request.POST['action'] == 'change_national_photo':
-            # form_edit = RegistrationForm_edit(request.POST, request.FILES)
-            # print form_edit
-            # if form_edit.is_valid():
-            # newphoto = form_edit.save(commit=False)
-            # print newphoto
-            # print request.FILES
-            # newphoto.national_card_photo = request.FILES['national_card_photo']
-            # newphoto.save()
-            # print newphoto.national_card_photo
-            # html = '<strong>Your National photo has changed successfully</strong><hr>'
-            # result = {'html': html}
-            # return HttpResponse(json.dumps(result))
+        # if request.POST['action'] == 'change_national_photo':
+        # form_edit = RegistrationForm_edit(request.POST, request.FILES)
+        # print form_edit
+        # if form_edit.is_valid():
+        # newphoto = form_edit.save(commit=False)
+        # print newphoto
+        # print request.FILES
+        # newphoto.national_card_photo = request.FILES['national_card_photo']
+        # newphoto.save()
+        # print newphoto.national_card_photo
+        # html = '<strong>Your National photo has changed successfully</strong><hr>'
+        # result = {'html': html}
+        # return HttpResponse(json.dumps(result))
+        # if request.POST['action'] == 'change_national_photo':
+        # form_edit = RegistrationForm_edit(request.POST, request.FILES)
+        # print form_edit
+        # if form_edit.is_valid():
+        # newphoto = form_edit.save(commit=False)
+        # print newphoto
+        # print request.FILES
+        # newphoto.national_card_photo = request.FILES['national_card_photo']
+        # newphoto.save()
+        # print newphoto.national_card_photo
+        # html = '<strong>Your National photo has changed successfully</strong><hr>'
+        # result = {'html': html}
+        # return HttpResponse(json.dumps(result))
 
 
 
-            # entered_naional_photo = request.POST.get('national_photo')
-            # full_filename = os.path.join(settings.MEDIA_ROOT+"nationalCardScan/",entered_naional_photo)
-            # registration_form_edit = RegistrationForm_edit(data=request.POST)
+        # entered_naional_photo = request.POST.get('national_photo')
+        # full_filename = os.path.join(settings.MEDIA_ROOT+"nationalCardScan/",entered_naional_photo)
+        # registration_form_edit = RegistrationForm_edit(data=request.POST)
 
 
-            # uploaded_filename = request.FILES[' national_photo'].name
-            # print(uploaded_filename)
-            # save the uploaded file inside that folder.
-            # full_filename = os.path.join(settings.MEDIA_ROOT, folder, national_photo)
-            # print(full_filename)
+        # uploaded_filename = request.FILES[' national_photo'].name
+        # print(uploaded_filename)
+        # save the uploaded file inside that folder.
+        # full_filename = os.path.join(settings.MEDIA_ROOT, folder, national_photo)
+        # print(full_filename)
 
 
-            # fout = open(full_filename, 'wb+')
-            # file_content = ContentFile(request.FILES['national_photo'].read())
-            # newdoc = handle_uploaded_file(request.FILES['national_photo'],full_filename)
-            # print newdoc
-            # print "you in"
-            # newdoc.save()
+        # fout = open(full_filename, 'wb+')
+        # file_content = ContentFile(request.FILES['national_photo'].read())
+        # newdoc = handle_uploaded_file(request.FILES['national_photo'],full_filename)
+        # print newdoc
+        # print "you in"
+        # newdoc.save()
 
-            # Iterate through the chunks.
-            # for chunk in file_content.chunks():
-            #   fout.write(chunk)
-            # fout.close()
-            # user_profile = models.UserProfile.objects.get(user__username=request.user)
-            # user_profile.national_card_photo = full_filename
-            # user_profile.save()
-
-
-
+        # Iterate through the chunks.
+        # for chunk in file_content.chunks():
+        #   fout.write(chunk)
+        # fout.close()
+        # user_profile = models.UserProfile.objects.get(user__username=request.user)
+        # user_profile.national_card_photo = full_filename
+        # user_profile.save()
 
 
 
 
-            # class RegistrationView(CreateView):
-            #     template_name = '../templates/registeration_form.html'
-            #     user_form = UserForm
-            #     registration_form = RegistrationForm
-            #     model = UserProfile
-            #     registered = False
-            #
-            #     def post(self, request, *args, **kwargs):
-            #         print("post called")
-            #         user_form = UserForm(data=request.POST)
-            #         registration_form = RegistrationForm(data=request.POST)
-            #         return self.my_form_valid(user_form)
-            #
-            #     def my_form_valid(self, user_form, request):
-            #         print("is valid called")
-            #         user = user_form.save()
-            #         user.set_password(user.password)
-            #         user.save()
-            #
-            #         user_profile = self.registration_form.save(commit=False)
-            #         user_profile.email = user_form.cleaned_data['email']
-            #         user_profile.password = user.password
-            #
-            #         if user.is_active:
-            #             user_profile.is_active = True
-            #         user_profile.user = user
-            #
-            #         if 'picture' in request.FILES:
-            #             user_profile.picture = request.FILES['picture']
-            #         user_profile.save()
-            #         self.registered = True
-            #
-            #         new_user = authenticate(username=user_form.cleaned_data['username'],
-            #                                 password=user_form.cleaned_data['password'], )
-            #         login(request, new_user)
-            #
-            #     def get(self):
-            #         user_form = UserForm()
-            #         registration_form = RegistrationForm()
+
+
+
+        # class RegistrationView(CreateView):
+        #     template_name = '../templates/registeration_form.html'
+        #     user_form = UserForm
+        #     registration_form = RegistrationForm
+        #     model = UserProfile
+        #     registered = False
+        #
+        #     def post(self, request, *args, **kwargs):
+        #         print("post called")
+        #         user_form = UserForm(data=request.POST)
+        #         registration_form = RegistrationForm(data=request.POST)
+        #         return self.my_form_valid(user_form)
+        #
+        #     def my_form_valid(self, user_form, request):
+        #         print("is valid called")
+        #         user = user_form.save()
+        #         user.set_password(user.password)
+        #         user.save()
+        #
+        #         user_profile = self.registration_form.save(commit=False)
+        #         user_profile.email = user_form.cleaned_data['email']
+        #         user_profile.password = user.password
+        #
+        #         if user.is_active:
+        #             user_profile.is_active = True
+        #         user_profile.user = user
+        #
+        #         if 'picture' in request.FILES:
+        #             user_profile.picture = request.FILES['picture']
+        #         user_profile.save()
+        #         self.registered = True
+        #
+        #         new_user = authenticate(username=user_form.cleaned_data['username'],
+        #                                 password=user_form.cleaned_data['password'], )
+        #         login(request, new_user)
+        #
+        #     def get(self):
+        #         user_form = UserForm()
+        #         registration_form = RegistrationForm()
