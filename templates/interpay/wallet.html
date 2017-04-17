@@ -78,8 +78,28 @@
                 document.getElementById("sampleform").style.display = "none";
                 setTimeout("time()", 1000);
             }
+
+
+            function withdrawFormSubmitter(formTag, messageTag) {
+                swal({
+                    title: '{%  trans 'Conversion' %}',
+                    text: '{%  trans 'Your conversion is in process' %}',
+                    type: 'info',
+                    showConfirmButton: false,
+                });
+                document.getElementById("success").style.display = "block";
+                document.getElementById(messageTag).innerHTML = "You have changed currency";
+                document.getElementById(formTag).style.display = "none";
+                setTimeout("withdraw_form_submit()", 1000);
+            }
+
+
             function time() {
                 document.getElementById("sampleform").submit();
+            }
+
+            function withdraw_form_submit() {
+                document.getElementById("withdraw_convert_form").submit();
             }
         </script>
     {% endblock %}
@@ -185,7 +205,7 @@
     </div>
     <div style="display: none; width: 80%; height: 30%" class="alert alert-success" id='success'></div>
     <hr>
-    <form action="../withdraw_pending_deposit/" method="post">
+    <form action="../withdraw_pending_deposit/" method="post" id="withdraw_convert_form">
         {% csrf_token %}
         <div class="table-responsive">
             <h3>{%  trans 'Transactions' %}</h3>
@@ -267,7 +287,52 @@
                             {% if d|get_transaction_type == "deposit" %}
                                 <input type="hidden" name="deposit_id" value="{{ d.id }}">
                                 {% if d.status == 2 %}
-                                    <input type="submit" value="Withdraw">
+{#                                    <input type="submit" value="Withdraw">#}
+
+                                    <button type="button" data-toggle="modal" data-target="#modal_withdraw">Withdraw</button>
+
+
+
+
+                                    <div class="modal fade" id="modal_withdraw" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Convert to Rial</h4>
+                </div>
+                <div class="modal-body">
+{#                    <form method="post" action="../withdraw_convert/" id="sampleform">#}
+                        {% csrf_token %}
+
+                        <div style="margin-left: 0 !important;margin-right: 0 !important;">
+                            <div style="margin-right:0px;width:540px;margin-left: 10px ">
+                                <div style="background-color: #ddd; padding: 2px; margin-bottom: 8px">
+                                   <b>Note:</b> In order to make the status of this payment completed, you have to convert it to rial.
+                                </div>
+                                <label>{% trans 'Source Amount' %}: </label>
+                                {{ d.amount }} {{ account.cur_code|get_currency }}s<br>
+                                <label>{% trans 'To Currency' %}: Rial</label>
+                                <input type="hidden" name="account_id" value="{{ account.account_id }}">
+                                <br>
+                                <label>{% trans 'Destination Amount' %}: {{ d.amount|withdraw_convert_currency:d.cur_code}} Rials</label>
+                                <input type="hidden" name="account_id" value="{{ account.account_id }}">
+                                <br>
+                                <input value="Submit" type='button' onclick="withdrawFormSubmitter('withdraw_convert_form','success')">
+                            </div>
+                        </div>
+{#                    </form>#}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
                                 {% endif %}
                             {% endif %}
                         </td>
@@ -289,6 +354,10 @@
 
         </div>
     </form>
+
+
+
+
 {% endblock %}
 </body>
 
