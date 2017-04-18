@@ -603,10 +603,13 @@ mobile = '09123456789'
 
 
 def zarinpal_payment_gate(request, amount):
+
+    amount = int(amount) / 10
+
     if request.LANGUAGE_CODE == 'en-gb':
-        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
     else:
-        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + amount  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
@@ -845,15 +848,24 @@ def withdraw_pending_deposit(request):
 
 
 def check_currency_reserve(currency, amount):
-    print (currency)
-    try:
-        current_currency = CurrencyReserve.objects.get(currency=currency)
-        print (current_currency.reserve)
-    except:
-        return False
-    if current_currency.reserve < amount:
-        return False
-    return True
+    global new_connection
+    new_connection = settings.connect_to_redis()
+    currency_reserve = new_connection.get(currency)
+    if currency_reserve:
+        currency_reserve = float(currency_reserve)
+        if currency_reserve < amount:
+            return False
+        else:
+            return True
+    else:
+        try:
+            current_currency = CurrencyReserve.objects.get(currency=currency)
+            print (current_currency.reserve)
+        except:
+            return False
+        if current_currency.reserve < amount:
+            return False
+        return True
 
 
 @login_required()

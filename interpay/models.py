@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from collections import defaultdict
 from currencies.utils import convert
+from firstsite import settings
 from django.db import models
 from decimal import Decimal
 # import convert
@@ -331,7 +332,6 @@ class CurrencyReserve(models.Model):
 
     @property
     def reserve(self):
-        # today = datetime.today()
         temp_recharge_date = self.recharge_date
         result = self.on_recharge_amount
         conversion_deposits = []
@@ -341,6 +341,11 @@ class CurrencyReserve(models.Model):
 
         result -= sum(x.amount for x in conversion_deposits)
         return result
+
+    def save(self, *args, **kwargs):
+        new_connection = settings.connect_to_redis()
+        new_connection.set(self.currency, self.on_recharge_amount)
+        super(CurrencyReserve, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.currency
