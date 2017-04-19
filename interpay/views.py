@@ -756,7 +756,13 @@ def user_logout(request):
 
 @login_required()
 def home(request):
-    return render(request, "interpay/home.html")
+    user_profile = models.UserProfile.objects.get(user=request.user)
+    context = {
+
+        'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
+        'user_profile': user_profile
+    }
+    return render(request, "interpay/home.html", context)
 
 
 class HomeView(TemplateView):

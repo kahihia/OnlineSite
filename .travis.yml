@@ -36,7 +36,7 @@ before_script:
   - python manage.py makemigrations
   - python manage.py migrate
   - sudo redis-server /etc/redis/redis.conf --port 6379
-  - python manage.py collectstatic
+  - python manage.py collectstatic --noinput
 
 after_script: echo 'Bye'
 
