@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from collections import defaultdict
 from currencies.utils import convert
+from choices import TYPE_CHOICES
 from firstsite import settings
 from django.db import models
 from decimal import Decimal
@@ -259,14 +260,19 @@ class Deposit(models.Model):
     REVERSED = 1
     PENDING = 2
     COMPLETED = 3
-    # Receiving money; Charging account.
+    # types
+    CONVERSION = '0'
+    PAYMENT = '1'
+    INTERNATIONAL = '2'
+    TOP_UP = '3'
+    ##
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
     amount = models.FloatField(default=0)
     banker = models.ForeignKey(UserProfile, null=True)
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     tracking_code = models.IntegerField(default='0')
-
+    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=2)
     commission = models.FloatField(default=0)
     status = models.IntegerField(default=COMPLETED)
     objects = OperationManager()
@@ -275,9 +281,6 @@ class Deposit(models.Model):
         return self.amount + self.commission
 
     def calculate_comission(self):
-        # print datetime.datetime.strptime(self.date, 'Y-%m-%d').date()
-        # print type(self.date)
-        # http://127.0.0.1:8000/
         thedate = self.date
         if type(self.date) is str:
             log.debug("Deposit object has a string date")
@@ -297,10 +300,14 @@ class Deposit(models.Model):
 
 
 class Withdraw(models.Model):
+    CONVERSION = '0'
+    PAYMENT = '1'
+    WITHDRAWAL_REQUEST = '4'
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
     amount = models.FloatField()
     banker = models.ForeignKey(UserProfile)
     date = models.DateTimeField()
+    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=2)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
 
@@ -311,8 +318,6 @@ class CurrencyConversion(models.Model):
 
 
 class WithdrawalRequest(models.Model):
-    # deposit = models.OneToOneField(Deposit, related_name="deposit")
-    # withdraw = models.OneToOneField(Withdraw, related_name="withdraw")
     src_account = models.ForeignKey(BankAccount, related_name="src_account", unique=False)
     dest_account = models.ForeignKey(BankAccount, related_name="dest_account", unique=False)
     status = models.BooleanField(default=False)

@@ -645,14 +645,8 @@ def zarinpal_callback_handler(request, amount):
                                      banker=new_banker,
                                      date=(datetime.datetime.strptime(a['date'].__str__()[:10], '%Y-%m-%d')),
                                      cur_code=a['cur_code'],
-                                     tracking_code=result2.RefID)
-            # try:
+                                     tracking_code=result2.RefID, type=Deposit.TOP_UP)
             deposit.calculate_comission()  # automatically saves after calculating comission
-            # except:
-            #     log.error("error in Calculating Comission")
-            #     deposit.save()
-
-            # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
             return recharge_account(request, message="Your account charged successfully.")
 
         elif result2.Status == 101:
@@ -792,12 +786,12 @@ def wallet(request, wallet_id, recom=None):
         for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)).filter(
                         Q(receiver=ba) | Q(sender=ba)):
             transaction_list.append(item3)
-        transaction_list.sort(key=lambda x: x.date)
+        transaction_list.sort(key=lambda x: x.date, reverse=True)
         context = {
             'account': ba,
             'recommended': recommended,
             'list': transaction_list,
-            'user_profile': up
+            'user': up
         }
         return render(request, "interpay/wallet.html", context)
 
@@ -903,7 +897,7 @@ def actual_convert(request):
         conversion = CurrencyConversion()
 
         new_withdraw = Withdraw(account=cur_account, amount=amount, banker=user_profile, date=datetime.datetime.now(),
-                                cur_code=cur_account.cur_code)
+                                cur_code=cur_account.cur_code, type=Withdraw.CONVERSION)
         new_withdraw.save()
         conversion.withdraw = new_withdraw
         converted_amount = convert(amount, cur_account.cur_code, currency)
@@ -918,7 +912,7 @@ def actual_convert(request):
                                               account_id=make_id())
         destination_account.save()
         new_deposit = Deposit(account=destination_account, amount=float(converted_amount), banker=user_profile,
-                              date=datetime.datetime.now(), cur_code=currency)
+                              date=datetime.datetime.now(), cur_code=currency, type=Deposit.CONVERSION)
         new_deposit.calculate_comission()
         new_deposit.save()
         conversion.deposit = new_deposit

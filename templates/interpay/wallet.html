@@ -38,22 +38,24 @@
 
 
         <script>
-         $(document).ready(function () {
-          var inf = $('#message').text();
-          if( $('#message').text().length!=14)
-            {
+            $(document).ready(function () {
+                var inf = $('#message').text();
+                if ($('#message').text().length != 14) {
                     swal({
-              title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
-                    type: 'info',
-               html: ' ' + 'and other HTML tags',
-               type: "info",
-               showCancelButton: true,
-               confirmButtonColor: "#DD6B55 ",
-               cancelButtonText: '{% trans 'back to current wallet'%}',
-               closeOnConfirm: false,
-               closeOnCancel: false,
-               showConfirmButton: false,
-             });
+                        title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a
+                                {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}
+                                    {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}}
+                                     {% endifequal %}</a> ',
+                        type: 'info',
+                        html: ' ' + 'and other HTML tags',
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55 ",
+                        cancelButtonText: '{% trans 'back to current wallet'%}',
+                        closeOnConfirm: false,
+                        closeOnCancel: false,
+                        showConfirmButton: false,
+                    });
                 }
             });
             var unsaved = false;
@@ -163,7 +165,8 @@
         {{ error }}
     </div>
 
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modalconvert"> {% trans 'Convert' %}</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+            data-target="#Modalconvert"> {% trans 'Convert' %}</button>
     <div class="modal fade" id="Modalconvert" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -184,9 +187,9 @@
                                     <option value="EUR" selected="selected">Default(EURO)</option>
                                     {% for curr in CURRENCIES %}
                                         {% if  account.cur_code != curr.code %}
-                                        <option value="{{ curr.code }}">
-                                            {{ curr.symbol }} {{ curr.name }}
-                                        </option>
+                                            <option value="{{ curr.code }}">
+                                                {{ curr.symbol }} {{ curr.name }}
+                                            </option>
                                         {% endif %}
                                     {% endfor %}
                                 </select>
@@ -208,7 +211,7 @@
     <form action="../withdraw_pending_deposit/" method="post" id="withdraw_convert_form">
         {% csrf_token %}
         <div class="table-responsive">
-            <h3>{%  trans 'Transactions' %}</h3>
+            <h3>{% trans 'Transactions' %}</h3>
             <table id="wal-tab" class="table">
                 <thead>
                 <tr class="table-header-row">
@@ -230,9 +233,6 @@
                     <th class="table-header-cell">
                         {% trans 'Pay From ( Desc)' %}
                     </th>
-                    {#                    <th class="table-header-cell">#}
-                    {#                        {% trans 'Source/Destination' %}#}
-                    {#                    </th>#}
                     <th class="table-header-cell">
                         {% trans 'International' %}
                     </th>
@@ -247,23 +247,20 @@
                         <td width="6%" class="table-cell" style="text-align: center">{{ forloop.counter }}</td>
                         {#                        <td width="10%" class="table-cell" style="text-align: center">{{ d.id }}</td>#}
                         <td width="15%" class="table-cell" style="text-align: center">{{ d.date }}</td>
-                        {#                        <td class="table-cell">{{ d.account.account_id }}</td>#}
-                        {#                        <td class="table-cell">{{ d.cur_code }}</td>#}
                         <td class="table-cell" width="15%" style="text-align: center">
-                            {#                            {% if d|get_transaction_type == "money_transfer" %}#}
-                            {{ d|get_transfer_type:user}}
-                            {#                            {% endif %}#}
-                            {#                            {{ d.id }}#}
+                            {{ d.type|get_type }} {% if d|get_is_deposit:user %} Deposit {% else %} Withdraw {% endif %}
                         </td>
-                        {% if d|get_is_deposit:user%}
+
+                        {% if d|get_is_deposit:user %}
                             <td class="table-cell">{{ d.amount }}<span style="float:right; color:lime"
                                                                        class="glyphicon glyphicon-triangle-top green"></span>
                             </td>
-                        {% elif d|get_is_withdraw:user%}
+                        {% elif d|get_is_withdraw:user %}
                             <td class="table-cell">- {{ d.amount }}<span style="float:right; color:red"
                                                                          class="glyphicon glyphicon-triangle-bottom red"></span>
                             </td>
                         {% endif %}
+
                         <td class="table-cell" style="text-align: center">
                             {% if d|get_transaction_type == "deposit" %}
                                 {% if d.status == 1 %}
@@ -287,48 +284,58 @@
                             {% if d|get_transaction_type == "deposit" %}
                                 <input type="hidden" name="deposit_id" value="{{ d.id }}">
                                 {% if d.status == 2 %}
-{#                                    <input type="submit" value="Withdraw">#}
+                                    {#                                    <input type="submit" value="Withdraw">#}
 
-                                    <button type="button" data-toggle="modal" data-target="#modal_withdraw">Withdraw</button>
+                                    <button type="button" data-toggle="modal" data-target="#modal_withdraw">Withdraw
+                                    </button>
 
 
 
 
                                     <div class="modal fade" id="modal_withdraw" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Convert to Rial</h4>
-                </div>
-                <div class="modal-body">
-{#                    <form method="post" action="../withdraw_convert/" id="sampleform">#}
-                        {% csrf_token %}
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Convert to Rial</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {#                    <form method="post" action="../withdraw_convert/" id="sampleform">#}
+                                                    {% csrf_token %}
 
-                        <div style="margin-left: 0 !important;margin-right: 0 !important;">
-                            <div style="margin-right:0px;width:540px;margin-left: 10px ">
-                                <div style="background-color: #ddd; padding: 2px; margin-bottom: 8px">
-                                   <b>Note:</b> In order to make the status of this payment completed, you have to convert it to rial.
-                                </div>
-                                <label>{% trans 'Source Amount' %}: </label>
-                                {{ d.amount }} {{ account.cur_code|get_currency }}s<br>
-                                <label>{% trans 'To Currency' %}: Rial</label>
-                                <input type="hidden" name="account_id" value="{{ account.account_id }}">
-                                <br>
-                                <label>{% trans 'Destination Amount' %}: {{ d.amount|withdraw_convert_currency:d.cur_code}} Rials</label>
-                                <input type="hidden" name="account_id" value="{{ account.account_id }}">
-                                <br>
-                                <input value="Submit" type='button' onclick="withdrawFormSubmitter('withdraw_convert_form','success')">
-                            </div>
-                        </div>
-{#                    </form>#}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                    <div style="margin-left: 0 !important;margin-right: 0 !important;">
+                                                        <div style="margin-right:0px;width:540px;margin-left: 10px ">
+                                                            <div style="background-color: #ddd; padding: 2px; margin-bottom: 8px">
+                                                                <b>Note:</b> In order to make the status of this payment
+                                                                completed, you have to convert it to rial.
+                                                            </div>
+                                                            <label>{% trans 'Source Amount' %}: </label>
+                                                            {{ d.amount }} {{ account.cur_code|get_currency }}s<br>
+                                                            <label>{% trans 'To Currency' %}: Rial</label>
+                                                            <input type="hidden" name="account_id"
+                                                                   value="{{ account.account_id }}">
+                                                            <br>
+                                                            <label>{% trans 'Destination Amount' %}:
+                                                                {{ d.amount|withdraw_convert_currency:d.cur_code}}
+                                                                Rials</label>
+                                                            <input type="hidden" name="account_id"
+                                                                   value="{{ account.account_id }}">
+                                                            <br>
+                                                            <input value="Submit" type='button'
+                                                                   onclick="withdrawFormSubmitter('withdraw_convert_form','success')">
+                                                        </div>
+                                                    </div>
+                                                    {#                    </form>#}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
 
