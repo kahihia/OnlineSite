@@ -7,8 +7,8 @@ from currencies.models import Currency
 from interpay.models import CurrencyReserve
 import unittest
 import datetime
-from django.conf import settings
 from rest_framework.test import force_authenticate, APIRequestFactory
+from django.conf import settings
 from django.test.client import encode_multipart, RequestFactory
 from django.core.urlresolvers import reverse, resolve
 import json
@@ -322,6 +322,7 @@ class CallbackTestCase(TestCase):
 class Teststaticfiles(TestCase):
     def test_responsive(self):
         abs_path = finders.find('../static/interpay/css/base.css')
-        self.assertTrue(staticfiles_storage.exists(abs_path))
-        test_file = open('../OnlineSite/interpay/static/interpay/css/base.css', 'rb')
+        # print ("abspath"+abs_path)
+        self.assertTrue(staticfiles_storage.exists(settings.BASE_DIR+'/static/interpay/css/base.css'))
+        test_file = open(abs_path, 'rb')
         self.assertIs('@media only screen and (min-width : 420px) and ( max-width: 900px)' in test_file.read(), True)

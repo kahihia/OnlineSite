@@ -4,6 +4,7 @@
 @media screen and (min-width: 800px) {
     .content {
         margin-left: 15%;
+
     }
 }
 
@@ -83,12 +84,12 @@
 
 
 #sidebar ul li:hover  {
-    background: #BAB6B2;
+    background: #2E2E2E;
 }
 
 #sidebar {
     width: 15%;
-    background: #DBD8D8 repeat-y 50%;
+    background: #151515 repeat-y 50%;
     border-right: 3px solid #9F9D9B;
     height: 100%;
     box-sizing: border-box;
@@ -107,30 +108,26 @@
 
 
 #sidebar1 {
+  background-color: #FECB98;
   width:15%;
   padding: 5px;
-  height: 6%
+
 }
 
 .sidebar-entry {
     padding: 5px;
-    color: #585858;
+    color: white;
     padding: 15px 20px;
     font-size: 16px;
     font-weight: 100;
-    color: white;
-    text-decoration: none;
-    display: block;
     border-bottom: 1px solid #898785;
-    -webkit-transition:  background 0.3s ease-in-out;
-    -moz-transition:  background 0.3s ease-in-out;
-    -ms-transition:  background 0.3s ease-in-out;
-    -o-transition:  background 0.3s ease-in-out;
-    transition:  background 0.3s ease-in-out;
 }
 
 .sidebar-ent-items {
-    color: #585858
+    color: #D8D8D8;
+}
+.sidebar-entry-name{
+    color: #D8D8D8;
 }
 
 #footer {
@@ -174,7 +171,7 @@
 
 #info-bar {
     padding: 5px;
-    background-color: #FECB98 /*FCAE60/*#B7B5B3 /*#FCA750*/;
+    background-color: #F7BE81 /*FCAE60/*#B7B5B3 /*#FCA750*/;
 }
 
 
@@ -482,18 +479,18 @@ ul.topnav{
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #898787;
+    background-color: #6E6E6E;
 }
 }
 
 @media only screen and (min-width : 420px) and ( max-width: 900px) {
 ul.topnav{
-    height: 40px;
+    height: 45px;
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #898787;
+    background-color: #585858;
 }
 }
 
@@ -504,7 +501,7 @@ ul.topnav{
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #898787;
+    background-color: #585858;
 }
 }
 
@@ -517,7 +514,7 @@ ul.topnav{
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #898787;
+    background-color: #585858;
 }
 }
 
@@ -528,7 +525,7 @@ ul.topnav{
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #898787;
+    background-color: #585858;
 }
 }
 
