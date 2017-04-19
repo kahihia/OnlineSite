@@ -4,6 +4,7 @@
 @media screen and (min-width: 800px) {
     .content {
         margin-left: 15%;
+        margin-right: 15%;
     }
 }
 
@@ -478,7 +479,7 @@ ul.topnav{
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #1C1C1C;
+    background-color: #6E6E6E;
 }
 }
 
@@ -489,7 +490,7 @@ ul.topnav{
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #1C1C1C;
+    background-color: #585858;
 }
 }
 
