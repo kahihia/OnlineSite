@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-19 15:39+0430\n"
+"POT-Creation-Date: 2017-04-19 20:21+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: interpay/forms.py:87
-msgid "National Code"
+#: interpay/forms.py:33
+msgid "Password"
 msgstr ""
 
-#: interpay/forms.py:91
+#: interpay/forms.py:35
+msgid "Confirm Password"
+msgstr ""
+
+#: interpay/forms.py:87 interpay/forms.py:94
+msgid "National ID"
+msgstr ""
+
+#: interpay/forms.py:88
+msgid "Country"
+msgstr ""
+
+#: interpay/forms.py:89
+msgid "Mobile Number"
+msgstr ""
+
+#: interpay/forms.py:90
+msgid "National ID Photo"
+msgstr ""
+
+#: interpay/forms.py:98
 msgid "Mobile (Example: 09121234567)"
 msgstr ""
 
@@ -112,88 +132,88 @@ msgid ""
 "rial."
 msgstr ""
 
-#: templates/interpay/base.html:137 templates/manager/manager-base.html:115
+#: templates/interpay/base.html:136 templates/manager/manager-base.html:115
 msgid "Home Page "
 msgstr ""
 
-#: templates/interpay/base.html:178
+#: templates/interpay/base.html:177
 msgid "Profile"
 msgstr ""
 
-#: templates/interpay/base.html:204
-msgid "menu"
-msgstr ""
-
-#: templates/interpay/base.html:220 templates/interpay/base.html:324
+#: templates/interpay/base.html:211 templates/interpay/base.html:315
 #: templates/manager/manager-base.html:177
 #: templates/manager/manager-base.html:266
 msgid "Home"
 msgstr ""
 
-#: templates/interpay/base.html:225 templates/interpay/base.html:329
+#: templates/interpay/base.html:216 templates/interpay/base.html:320
 msgid "Wallets"
 msgstr ""
 
-#: templates/interpay/base.html:235 templates/interpay/base.html:339
+#: templates/interpay/base.html:226 templates/interpay/base.html:330
 #: templates/interpay/wallet.html:111
 msgid "Wallet Info"
 msgstr ""
 
-#: templates/interpay/base.html:243 templates/interpay/base.html:347
+#: templates/interpay/base.html:234 templates/interpay/base.html:338
 #: templates/interpay/top_up.html:27
 msgid "Top Up by Credit Card"
 msgstr ""
 
-#: templates/interpay/base.html:253 templates/interpay/trans_history.html:24
+#: templates/interpay/base.html:244 templates/interpay/trans_history.html:24
 msgid "Transaction History"
 msgstr ""
 
-#: templates/interpay/base.html:262 templates/interpay/base.html:366
+#: templates/interpay/base.html:253 templates/interpay/base.html:357
 msgid "Payment"
 msgstr ""
 
-#: templates/interpay/base.html:271 templates/interpay/base.html:375
+#: templates/interpay/base.html:262 templates/interpay/base.html:366
 msgid "Withdrawals"
 msgstr ""
 
-#: templates/interpay/base.html:280 templates/interpay/base.html:384
+#: templates/interpay/base.html:271 templates/interpay/base.html:375
 msgid " Reports"
 msgstr ""
 
-#: templates/interpay/base.html:289 templates/interpay/base.html:393
+#: templates/interpay/base.html:280 templates/interpay/base.html:384
 msgid " General"
 msgstr ""
 
-#: templates/interpay/base.html:313
+#: templates/interpay/base.html:304
 msgid "Close"
 msgstr ""
 
-#: templates/interpay/base.html:357
+#: templates/interpay/base.html:348
 msgid " Transaction"
 msgstr ""
 
-#: templates/interpay/base.html:419 templates/interpay/base.html:445
+#: templates/interpay/base.html:408
+msgid "Info"
+msgstr ""
+
+#: templates/interpay/base.html:417 templates/interpay/base.html:443
 #: templates/manager/manager-base.html:290
 #: templates/manager/manager-base.html:305
 msgid "Logout"
 msgstr ""
 
-#: templates/interpay/base.html:422 templates/manager/manager-base.html:285
+#: templates/interpay/base.html:420 templates/manager/manager-base.html:285
 msgid "Name"
 msgstr ""
 
-#: templates/interpay/base.html:423 templates/interpay/base.html:436
+#: templates/interpay/base.html:421 templates/interpay/base.html:434
 #: templates/interpay/contact.html:95 templates/interpay/contact.html:159
 msgid "Email"
 msgstr ""
 
-#: templates/interpay/base.html:424 templates/interpay/base.html:437
+#: templates/interpay/base.html:422 templates/interpay/base.html:435
 #: templates/manager/manager-base.html:286
 #: templates/manager/manager-base.html:302
 msgid "Login ID"
 msgstr ""
 
-#: templates/interpay/base.html:425 templates/interpay/base.html:438
+#: templates/interpay/base.html:423 templates/interpay/base.html:436
 #: templates/manager/manager-base.html:287
 #: templates/manager/manager-base.html:303
 msgid "InterPay ID"
@@ -204,7 +224,7 @@ msgid "Title"
 msgstr ""
 
 #: templates/interpay/contact.html:103 templates/interpay/contact.html:167
-#: templates/interpay/pay_user.html:191
+#: templates/interpay/pay_user.html:230
 msgid "Comment:"
 msgstr ""
 
@@ -235,12 +255,21 @@ msgstr ""
 msgid "Welcome to interpay"
 msgstr ""
 
-#: templates/interpay/home.html:23
+#: templates/interpay/home.html:24
 msgid ""
 "Interpay is an online electronic service which provides a safe and secure "
 "platform for business transactions and e-commerce. No matter you are the "
 "merchant or the consumer, we will bring you an enjoyable experience of "
 "transaction."
+msgstr ""
+
+#: templates/interpay/home.html:26
+msgid ""
+"You can pay your GRE, GMAT, University Fees and others by clicking on payment"
+msgstr ""
+
+#: templates/interpay/home.html:29
+msgid "Your total wallet amount is"
 msgstr ""
 
 #: templates/interpay/index.html:83 templates/manager/manager-login.html:81
@@ -263,46 +292,46 @@ msgstr ""
 msgid "Create One!"
 msgstr ""
 
-#: templates/interpay/pay_user.html:105
+#: templates/interpay/pay_user.html:140
 msgid "Pay to user"
 msgstr ""
 
-#: templates/interpay/pay_user.html:118
+#: templates/interpay/pay_user.html:153 templates/interpay/pay_user.html:154
 msgid "Pay"
 msgstr ""
 
-#: templates/interpay/pay_user.html:119
+#: templates/interpay/pay_user.html:155
 msgid "University Fees"
 msgstr ""
 
-#: templates/interpay/pay_user.html:120
+#: templates/interpay/pay_user.html:156
 msgid "Google play"
 msgstr ""
 
-#: templates/interpay/pay_user.html:121
+#: templates/interpay/pay_user.html:157
 msgid "Other Payments"
 msgstr ""
 
-#: templates/interpay/pay_user.html:138 templates/interpay/top_up.html:199
+#: templates/interpay/pay_user.html:169 templates/interpay/top_up.html:199
 #: templates/interpay/trans_history.html:92 templates/interpay/wallet.html:180
 #: templates/interpay/wallet.html:225 templates/interpay/wallets.html:141
 #: templates/manager/manager-withdrawal-requests.html:56
 msgid "Amount"
 msgstr ""
 
-#: templates/interpay/pay_user.html:156
+#: templates/interpay/pay_user.html:185
 msgid "currency"
 msgstr ""
 
-#: templates/interpay/pay_user.html:171
+#: templates/interpay/pay_user.html:210
 msgid "Destination Email:"
 msgstr ""
 
-#: templates/interpay/pay_user.html:183
+#: templates/interpay/pay_user.html:222
 msgid "Destination Mobile Number:"
 msgstr ""
 
-#: templates/interpay/pay_user.html:199
+#: templates/interpay/pay_user.html:238
 #: templates/manager/manager-withdrawal-requests.html:59
 msgid "Confirm"
 msgstr ""
