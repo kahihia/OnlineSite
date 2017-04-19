@@ -15,7 +15,6 @@
             {% ifequal LANGUAGE_CODE 'fa-ir' %}
                 .content {
                     margin-left: 0 !important;
-                    margin-right: 15% !important;
                     direction: rtl;
                     font-family: "IRAN-web";
                 }
@@ -195,15 +194,7 @@
         </ul>
     </header>
 
-    <div id="topbar">
-         {% ifequal LANGUAGE_CODE 'en-gb' %}
-        <div  id="sidebar1" class=" pull-left w3-navbar w3-hide-medium w3-hide-large w3-left">
-             {% else %}
-        <div  id="sidebar1" class=" pull-right w3-navbar w3-hide-medium w3-hide-large w3-right">
-    {% endifequal %}
-            <a  id="open" href="javascript:void(0);" onclick="sidebarfunc1()">{% trans "menu"%}</a>
-        </div>
-    </div>
+
     {% ifequal LANGUAGE_CODE 'en-gb' %}
         <div id="sidebar" class="pull-left  w3-table w3-bordered w3-hide-small">
     {% else %}
@@ -217,13 +208,13 @@
                 {% else %}
                     <a class="sidebar-links w3-hide-small" href="/fa-ir/home">
                 {% endifequal %}
-                <i class="fa fa-home sidebar-ent-items w3-hide-small" aria-hidden="true"></i> {% trans "Home" %}
+                <i class="fa fa-home sidebar-ent-items w3-hide-small" aria-hidden="true"></i><span class="sidebar-entry-name"> {% trans "Home" %}</span>
                 </a>
             </li>
             <li class="dropdown sidebar-entry">
                 <a href="#" class="sidebar-links dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-money" aria-hidden="true"></i> {% trans "Wallets" %}
-                    <span class="caret"></span>
+                    <i class="fa fa-money sidebar-ent-items w3-hide-small" aria-hidden="true"></i><span class="sidebar-entry-name"> {% trans "Wallets" %}</span>
+                    <span class="caret sidebar-ent-items"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li id="wallet_info">
@@ -250,7 +241,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/trans-history">
                 {% endifequal %}
-                <i class="fa fa-history sidebar-ent-items" aria-hidden="true"></i>{% trans 'Transaction History' %}
+                <i class="fa fa-history sidebar-ent-items" aria-hidden="true"></i><span class="sidebar-entry-name">{% trans 'Transaction History' %}</span>
                 </a>
             </li>
                      <li class="sidebar-entry">
@@ -259,7 +250,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/pay_user/">
                 {% endifequal %}
-                <i class="fa fa-cc-discover sidebar-ent-items" aria-hidden="true"></i> {% trans 'Payment' %}
+                <i class="fa fa-cc-discover sidebar-ent-items" aria-hidden="true"></i> <span class="sidebar-entry-name">{% trans 'Payment' %}</span>
                 </a>
              </li>
             <li class="sidebar-entry" >
@@ -268,7 +259,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/bank-accounts">
                 {% endifequal %}
-                <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i>{% trans "Withdrawals" %}
+                <i class="fa fa-credit-card sidebar-ent-items" aria-hidden="true"></i><span class="sidebar-entry-name">{% trans "Withdrawals" %}</span>
                 </a>
             </li>
             <li class="sidebar-entry">
@@ -277,16 +268,16 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/reports">
                 {% endifequal %}
-                <i class="fa fa-file-text-o sidebar-ent-items" aria-hidden="true"></i>{% trans " Reports" %}
+                <i class="fa fa-file-text-o sidebar-ent-items" aria-hidden="true"></i><span class="sidebar-entry-name">{% trans " Reports" %}</span>
                 </a>
             </li>
-            <li class="sidebar-entry" style="border-bottom: double #f1f1f1">
+            <li class="sidebar-entry">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links" href="/general">
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/general">
                 {% endifequal %}
-                <i class="fa fa-bullseye sidebar-ent-items" aria-hidden="true"></i>{% trans " General" %}
+                <i class="fa fa-bullseye sidebar-ent-items" aria-hidden="true"></i><span class="sidebar-entry-name">{% trans " General" %}</span>
                 </a>
             </li>
 
@@ -310,7 +301,7 @@
                           {% else %}
                             <a  class=" pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="sidebarfunc1()">
                            {% endifequal %}
-                           {% trans "Close" %}
+                            <span class="sidebar-entry-name">{% trans "Close" %}</span>
                             </a>
                         </li>
                         <br>
@@ -321,13 +312,13 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/home">
                             {% endifequal %}
-                             {% trans "Home" %}
+                             <span class="sidebar-entry-name">{% trans "Home" %}</span>
                             </a>
                         </li>
                         <li class="dropdown sidebar-entry">
                             <a href="#" class="sidebar-links dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                               {% trans "Wallets" %}
-                                <span class="caret"></span>
+                               <span class="sidebar-entry-name">{% trans "Wallets" %}</span>
+                                <span class="caret sidebar-ent-items" ></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li id="wallet_info">
@@ -354,7 +345,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/trans-history">
                             {% endifequal %}
-                             {% trans " Transaction" %}
+                             <span class="sidebar-entry-name">{% trans " Transaction" %}</span>
                             </a>
                         </li>
                 <li class="sidebar-entry">
@@ -363,7 +354,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/pay_user/">
                 {% endifequal %}
-               {% trans 'Payment' %}
+               <span class="sidebar-entry-name">{% trans 'Payment' %}</span>
                 </a>
                </li>
                    <li class="sidebar-entry" >
@@ -372,7 +363,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/bank-accounts">
                             {% endifequal %}
-                            {% trans "Withdrawals" %}
+                            <span class="sidebar-entry-name">{% trans "Withdrawals" %}</span>
                             </a>
                    </li>
                         <li class="sidebar-entry">
@@ -381,16 +372,16 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/reports">
                             {% endifequal %}
-                            {% trans " Reports" %}
+                            <span class="sidebar-entry-name">{% trans " Reports" %}</span>
                             </a>
                         </li>
-                        <li class="sidebar-entry" style="border-bottom: double #f1f1f1">
+                        <li class="sidebar-entry">
                             {% ifequal LANGUAGE_CODE 'en-gb' %}
                                 <a class="sidebar-links" href="/general">
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/general">
                             {% endifequal %}
-                            {% trans " General" %}
+                            <span class="sidebar-entry-name">{% trans " General" %}</span>
                             </a>
                         </li>
                     </ul>
@@ -401,13 +392,20 @@
 
     <div class="content">
         <div id="topbar">
-            <div id="info-bar" class="w3-navbar">
+            <div   id="info-bar" class="w3-navbar navbar">
+               {% ifequal LANGUAGE_CODE 'en-gb' %}
+                 <div  id="sidebar1" class=" pull-left w3-navbar w3-hide-medium w3-hide-large w3-left">
+               {% else %}
+                 <div  id="sidebar1" class=" pull-right w3-navbar w3-hide-medium w3-hide-large w3-right">
+               {% endifequal %}
+                  <a   id="open" href="javascript:void(0);" onclick="sidebarfunc1()">☰</a>
+                 </div>
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                 <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
                 {% else %}
                 <li class="w3-hide-medium w3-hide-large w3-opennav w3-left">
                  {% endifequal %}
-                    <a href="javascript:void(0);" onclick="sidebarfun()">☰</a>
+                    <a href="javascript:void(0);" onclick="sidebarfun()">{%trans "Info" %}</a>
                 </li>
                  {% ifequal LANGUAGE_CODE 'en-gb' %}
                 <li  class="w3-hide-small" id="logout" style="float: right">
@@ -428,7 +426,7 @@
         </div>
         <div id="demo" class=" sidebar_res w3-hide w3-hide-large w3-hide-medium">
             {% ifequal LANGUAGE_CODE 'en-gb' %}
-            <ul class=" sidebar_res_entries w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #FED7A0">
+            <ul class=" w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #FED7A0">
               {% else %}
                 <ul class="w3-navbar pull-left w3-animate-left" style="width:30%; background-color: #FED7A0">
                  {% endifequal %}
