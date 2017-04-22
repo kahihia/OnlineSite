@@ -1,4 +1,4 @@
-/*@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700);*/
+
 .star-ratings-css {
   unicode-bidi: bidi-override;
   color: #c5c5c5;
@@ -36,11 +36,12 @@
   margin: 0 auto;
 }
 .star-ratings-sprite-rating {
-  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
-  /*background: url("https://static3.sitejabber.com/img/sp_stars.1488228977.png") repeat-x;*/
-  background-position: 0 100%;
-  float: left;
-  height: 21px;
-  display: block;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
+    background-position: 0 100%;
+    float: left;
+    height: 21px;
+    display: block;
 }
-.faded_text{color:#aeb0b2}
+.faded_text{
+    color:#aeb0b2
+}

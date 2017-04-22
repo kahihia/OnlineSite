@@ -8,8 +8,6 @@ function rating_fun() {
     var width_style = document.getElementById("star-ratings-sprite-rating");
     var review_numbers = document.getElementById("count");
 
-    // var currency_select = document.getElementById("currency_code" + index);
-    // var converted = document.getElementById("converted" + index);
     $.ajax({
         url: "/rating_by_email/", // the endpoint
         type: "GET", // http method

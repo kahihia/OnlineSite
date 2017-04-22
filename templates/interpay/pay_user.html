@@ -92,7 +92,7 @@
                document.getElementById("university").style.background= ""
                document.getElementById("googleplay").style.background= ""
                document.getElementById("other").style.background= "#FECB98"
-{#               document.getElementById("review").style.display="block"#}
+               document.getElementById("review").style.display="none"
              }
         }
 
@@ -117,6 +117,8 @@
 
     {% endblock %}
 </script>
+
+
 
 {% block cont-header %}
     <div id="welcome-msg" style="font-family: IRAN-web">
@@ -190,8 +192,16 @@
                           {% trans 'Destination Email:' %}
                     </label>
 
-                    <input type="text" name="email" id="email" class="form-control" style="width:300px">
+                    <input type="text" name="email" id="email" class="form-control" style="width:300px" onchange="showButton(1)">
                 </div>
+                <script>
+function showButton(a){
+    if (a==1)
+         document.getElementById("review").style.display='block';
+    else
+        document.getElementById("review").style.display='none';
+}
+</script>
 
                 <div class="form-group ">
                    <label id="lable_mobile" style="display:block">
