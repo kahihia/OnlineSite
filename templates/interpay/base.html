@@ -62,11 +62,10 @@
         <link rel="icon" type="image/x-icon" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     {% endblock css %}
     {% block js %}
-        {#        <script type="text/javascript" src="../static/jquery/jquery-1.10.2.min.js"></script>#}
-        {#        <script type="text/javascript" src="../static/jquery/jquery.js"></script>#}
-        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+        <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
+        <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
+
         <script>
            function change(x) {
               var y = document.getElementById("edited");
