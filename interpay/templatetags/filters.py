@@ -1,5 +1,7 @@
 from django import template
 from interpay.models import Deposit, Withdraw, MoneyTransfer, CurrencyConversion
+from currencies.utils import convert
+from interpay.choices import TYPE_CHOICES
 
 register = template.Library()
 
@@ -63,3 +65,26 @@ def get_is_withdraw(transaction, user):
     if get_transfer_type(transaction, user) == "Conversion Withdraw":
         return True
     return False
+
+
+@register.filter()
+def get_currency(cur_code):
+    if cur_code == "EUR":
+        return "Euro"
+    if cur_code == "USD":
+        return "Dollar"
+    if cur_code == "IRR":
+        return "Rial"
+
+
+@register.filter()
+def withdraw_convert_currency(amount, source_currency):
+    return convert(amount, source_currency, 'IRR')
+
+
+@register.filter()
+def get_type(transaction_type):
+    if transaction_type:
+        return TYPE_CHOICES[int(transaction_type)][1]
+    else:
+        return 'Payment'

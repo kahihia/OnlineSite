@@ -120,7 +120,7 @@ def cash_out_order(request):
                         bank_account = BankAccount.objects.create(owner=user, method=BankAccount.DEBIT,
                                                                   cur_code=currency,
                                                                   account_id=make_id())
-                    deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING, cur_code=currency)
+                    deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING, cur_code=currency, type=Deposit.INTERNATIONAL)
                     response['orderReference'] = deposit.id
                     response['orderDate'] = datetime.datetime.now()
                     response['expiryDate'] = response['orderDate'] + datetime.timedelta(days=7)

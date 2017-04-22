@@ -141,119 +141,87 @@ input#id_national_card_photo  {
 }
 
 .flag {
-        height:1%;
-        width:2%;
+        height:19%;
+        width:4%;
 }
 @media screen and (min-width: 800px) {
     .flag {
-       height:1.5%;
+       height:25%;
        width:1.53%;
     }
 }
 .lang {
         margin-right: 1%;
         float:right;
-        font-size: 45%;
-        color: white;
+        font-size: 48%;
 }
 @media screen and (min-width: 800px) {
     .lang {
       margin-right: 1%;
       float:right;
-      font-size: 40%;
-      color: white;
+      font-size: 35%;
     }
 }
 
 
-@media only screen and (min-width : 300px) {
-ul.topnav {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 9%;
-        background-color: #898787;
-  }
+
+
+@media only screen and ( max-width: 420px){
+ul.topnav{
+    height: 40px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
 }
 
-@media only screen and (min-width : 400px) {
-ul.topnav {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 4%;
-        background-color: #898787;
-  }
+@media only screen and (min-width : 420px) and ( max-width: 900px) {
+ul.topnav{
+    height: 40px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
 }
 
-@media only screen and (min-width : 790px)  {
-ul.topnav {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 3.5%;
-        background-color: #898787;
-  }
+@media only screen and (min-width: 900px)  and ( max-width: 1400px) {
+ul.topnav{
+     height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
 }
-
-@media only screen and (min-width : 1000px) {
-ul.topnav {
-      list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 7%;
-        background-color: #898787;
-  }
-}
-
-@media only screen and (min-width : 1500px)  {
-ul.topnav {
-      list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 5%;
-        background-color: #898787;
-  }
-}
-@media only screen  {
-        ul.topnav {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 10%;
-        background-color: #898787;
-  }
-}
-
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) and (-webkit-min-device-pixel-ratio : 2) {
-ul.topnav {
-      list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 5%;
-        background-color: #898787;
-  }
-}
-/* Desktops and laptops ----------- */
-@media only screen  and (min-width : 1224px) {
-ul.topnav {
-      list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        height: 7%;
-        background-color: #898787;
-  }
 }
 
 
+
+@media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
+ul.topnav{
+    height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 1700px){
+ul.topnav{
+    height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
 
 ul.topnav span {float: left;}
 
