@@ -223,8 +223,8 @@ def send_sms(request, mobile_no):
     # request.session['code'] = code #not needed anymore; this is checked from VerificationCodes table in database
     # redis_ds = ds.AuthCodeDataStructure()
     # redis_ds.set_code(mobile_no, code)
-    p = api.ParsGreenSmsServiceClient()
-    api.ParsGreenSmsServiceClient.sendSms(p, code, mobile_no, request.session['user_id'])
+    # p = api.ParsGreenSmsServiceClient()
+    # api.ParsGreenSmsServiceClient.sendSms(p, code, mobile_no, request.session['user_id'])
     print("code:", code)
     user_profile = ''
     while 1:
@@ -286,11 +286,6 @@ def verify_user(request):
 
 @login_required()
 def pay_user(request):
-    if request.LANGUAGE_CODE == 'en-gb':
-        langStr = ""
-    else:
-        langStr = '/' +request.LANGUAGE_CODE
-
     if request.method == "POST":
         up = ""
         currency = request.POST['currency']
@@ -302,12 +297,17 @@ def pay_user(request):
         if not amount:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
 
-        v = Validation.Validation()
-        er=v.check_value(amount)
-        if not er == Validation.Validation.OK:
+        try:
+            amount = float(amount)
+        except ValueError:
             return render(request, "interpay/pay_user.html",
-                          {'error': v.get_errormessage(er), 'langStr': langStr})
+                          {'error': Validation.Validation.check_validation('invalid_amount')})
 
+        # if not amount.isdigit():
+        #     return render(request, 'interpay/pay_user.html', {'error': Validation.check_validation('invalid_amount')})
+        if int(amount) <= 0:
+            return render(request, 'interpay/pay_user.html',
+                          {'error': Validation.Validation.check_validation('non_positive')})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
@@ -348,14 +348,14 @@ def pay_user(request):
                 MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
                                              date=datetime.datetime.now(),
                                              amount=amount, comment=comment, cur_code=currency)
-                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.', 'langStr': langStr})
+                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.'})
             else:
                 return render(request, 'interpay/pay_user.html',
                               {'error': 'No destination account with this currency.'})
         else:
             return render(request, 'interpay/pay_user.html',
                           {'error': 'You do not have any account in this currency. '})
-    return render(request, "interpay/pay_user.html",{'langStr': langStr})
+    return render(request, "interpay/pay_user.html")
 
 
 def reset_password(request, token):
@@ -1020,6 +1020,24 @@ def contact_email(request):
             if error_message:
                 return HttpResponse(error_message)
         return HttpResponse("No such user")
+
+
+@login_required()
+def rating_by_email(request):
+    email = request.GET.get('email')
+    mobile = request.GET.get('mobile')
+    response_data = {}
+
+    total_rate = 2.5
+    response_data['result'] = total_rate.__str__()
+    review_numbers = 1000
+    response_data['result2'] = review_numbers.__str__()
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
 
 
         # if request.POST['action'] == 'change_national_photo':
