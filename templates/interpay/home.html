@@ -22,14 +22,11 @@
         <p style="border-bottom: dotted; border-color: #F6E3CE ;  padding-top: 3%; padding-bottom: 3% ">
 
             {% trans 'Interpay is an online electronic service which provides a safe and secure platform for business transactions and e-commerce. No matter you are the merchant or the consumer, we will bring you an enjoyable experience of transaction.' %}
-             </br>
-        </p>
-         <p style="border-bottom: dotted; border-color: #F6E3CE; padding-top: 3%; padding-bottom: 3% ">
-            {% trans 'You can pay your GRE, GMAT, University Fees and ... by clicking on payment' %}
-             <br>
+            <br/>
+            {% trans 'You can pay your GRE, GMAT, University Fees and others by clicking on payment' %}
         </p>
         <p style="padding-top: 3%; padding-bottom: 3%">
-             <b>{% trans 'Your total stock in' %} {% trans 'USD is ' %} ~ {{ accountList.first.total_value }}</b>
+             <b>{% trans 'Your total wallet amount is' %} ~ {{ accountList.first.total_value }}</b>
         </p>
     </div>
 {% endblock %}

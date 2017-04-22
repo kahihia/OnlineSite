@@ -21,6 +21,7 @@ class UserForm(forms.ModelForm):
         email = {
             'required': True
         }
+
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'registration-form-field', 'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'class': 'registration-form-field', 'placeholder': 'Last Name'}),
@@ -29,9 +30,9 @@ class UserForm(forms.ModelForm):
             'password': forms.TextInput(attrs={'class': 'registration-form-field'}),
         }
 
-    password = forms.CharField(required=True, widget=forms.PasswordInput(
+    password = forms.CharField(label=_('Password'),required=True, widget=forms.PasswordInput(
         attrs={'class': 'registration-form-field', 'placeholder': 'Password'}))
-    confirm_password = forms.CharField(required=True,
+    confirm_password = forms.CharField(label=_('Confirm Password'),required=True,
                                        widget=forms.PasswordInput(attrs={'class': 'registration-form-field',
                                                                          'placeholder': 'Re-type your password'}))
 
@@ -82,10 +83,16 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ['user', 'password', 'email', 'is_active', 'date_joined', 'picture']
+        labels = {
+            'national_code': _('National ID'),
+            'country': _('Country'),
+            'mobile_number': _('Mobile Number'),
+            'national_card_photo':_('National ID Photo')
+        }
         widgets = {
             'national_code': forms.TextInput(
-                attrs={'class': 'registration-form-field', 'placeholder': _('National Code'), 'id': 'national_code', }),
-            'country': forms.Select(attrs={'class': 'registration-form-field', 'placeholder': 'Country'}),
+                attrs={'class': 'registration-form-field', 'placeholder': _('National ID'), 'id': 'national_code', }),
+            'country': forms.Select(attrs={'class': 'registration-form-field'}),
             'mobile_number': forms.TextInput(
                 attrs={'name': 'mobile_no', 'class': 'registration-form-field',
                        'placeholder': _('Mobile (Example: 09121234567)'),

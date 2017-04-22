@@ -174,8 +174,7 @@ class BankAccount(models.Model):
     def balance(self):
         assert self.method == self.DEBIT
         today = datetime.today()
-        # print 'started balance22'
-        # rule = Rule.on_date(self.when_opened)
+
         current_date = self.when_opened
         # print 'started while'
         result = 0
@@ -183,7 +182,7 @@ class BankAccount(models.Model):
             # print self.deposit_set.count()
             # print 'count of sets fix withdraw outcome then deposit'
 
-            result -= sum(x.amount for x in self.withdraw_set.on_date_c(current_date, self.cur_code, self))
+            result -= sum(x.amount for x in self.withdraw_set.all())
             result -= sum(x.amount for x in self.outcome_transfers.all())  # .on_date_out(current_date, self))
 
             # result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
@@ -196,8 +195,6 @@ class BankAccount(models.Model):
             current_date += timedelta(days=1)
             break
 
-            #   print
-        # result *= 1 - (rule.deposit_charge_percent * 0.01)
         if self.cur_code=='IRR':
             return round(result, 0)
         else:
