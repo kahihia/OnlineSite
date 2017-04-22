@@ -344,15 +344,14 @@ def pay_user(request):
             if src_account.balance < int(amount):
                 return render(request, 'interpay/pay_user.html',
                               {'error': Validation.Validation.check_validation('insufficient_balance')})
-            if destination_account:
-                MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
-                                             date=datetime.datetime.now(),
-                                             amount=amount, comment=comment, cur_code=currency)
-                return render(request, "interpay/pay_user.html",
-                              {'success': 'Your payment was successfully done.', 'langStr': langStr})
-            else:
-                return render(request, 'interpay/pay_user.html',
-                              {'error': 'No destination account with this currency.'})
+            if not destination_account:
+                destination_account = BankAccount.objects.create(owner=up, cur_code=currency, method=BankAccount.DEBIT,
+                                                                 account_id=make_id())
+            MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
+                                         date=datetime.datetime.now(),
+                                         amount=amount, comment=comment, cur_code=currency)
+            return render(request, "interpay/pay_user.html",
+                          {'success': 'Your payment was successfully done.', 'langStr': langStr})
         else:
             return render(request, 'interpay/pay_user.html',
                           {'error': 'You do not have any account in this currency. '})
