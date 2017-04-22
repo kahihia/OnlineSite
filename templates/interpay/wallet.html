@@ -34,28 +34,23 @@
         <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
-
-
-
         <script>
-            $(document).ready(function () {
-                var inf = $('#message').text();
-                if ($('#message').text().length != 14) {
+             $(document).ready(function () {
+          var inf = $('#message').text();
+          if( $('#message').text().length!=14)
+            {
                     swal({
-                        title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a
-                                {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}
-                                    {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}}
-                                     {% endifequal %}</a> ',
-                        type: 'info',
-                        html: ' ' + 'and other HTML tags',
-                        type: "info",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55 ",
-                        cancelButtonText: '{% trans 'back to current wallet'%}',
-                        closeOnConfirm: false,
-                        closeOnCancel: false,
-                        showConfirmButton: false,
-                    });
+              title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
+                    type: 'info',
+               html: ' ' + 'and other HTML tags',
+               type: "info",
+               showCancelButton: true,
+               confirmButtonColor: "#DD6B55 ",
+               cancelButtonText: '{% trans 'back to current wallet'%}',
+               closeOnConfirm: false,
+               closeOnCancel: false,
+               showConfirmButton: false,
+             });
                 }
             });
             var unsaved = false;
@@ -103,6 +98,7 @@
             function withdraw_form_submit() {
                 document.getElementById("withdraw_convert_form").submit();
             }
+
         </script>
     {% endblock %}
 </head>
