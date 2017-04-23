@@ -51,6 +51,7 @@
              document.getElementById("gmat").style.background= ""
              document.getElementById("googleplay").style.background= ""
              document.getElementById("other").style.background= ""
+             document.getElementById("review").style.display="none"
 
             }
             if(x=="gmat")
@@ -336,13 +337,13 @@
                     <input type="text" name="email" id="email" class="form-control" style="width:300px" onchange="showButton(1)">
                 </div>
                 <script>
-function showButton(a){
-    if (a==1)
-         document.getElementById("review").style.display='block';
-    else
-        document.getElementById("review").style.display='none';
-}
-</script>
+                    function showButton(a){
+                        if (a==1)
+                            document.getElementById("review").style.display='block';
+                        else
+                            document.getElementById("review").style.display='none';
+                    }
+                </script>
 
                 <div class="form-group ">
                    <label id="lable_mobile" style="display:block">

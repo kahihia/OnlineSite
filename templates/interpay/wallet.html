@@ -5,7 +5,7 @@
 {% load staticfiles %}
 {% load currency %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 
 <head>
@@ -28,6 +28,8 @@
         <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
         <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
         <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
+{#        <link rel="stylesheet" href="{% static 'interpay/css/r1.css' %}">#}
+
     {% endblock %}
     {% block JS %}
         <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
@@ -278,6 +280,43 @@
                                     {{ d|get_payment_sender_receiver:user}}
                                     <span class="my_tooltiptext">{{ d.comment }}</span>
                                 </div>
+                                <!--
+                                <a data-toggle="modal" href="#ReviewModal">Review</a>
+                                <div class="modal fade" id="ReviewModal" role="dialog">
+                                    <div class="modal-dialog" style="width:300px">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Review Details</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="stars">
+                                                    <form action="">
+                                                        <input class="star star-5" id="star-5" type="radio" name="star"/>
+                                                        <label class="star star-5" for="star-5"></label>
+                                                        <input class="star star-4" id="star-4" type="radio" name="star"/>
+                                                        <label class="star star-4" for="star-4"></label>
+                                                        <input class="star star-3" id="star-3" type="radio" name="star"/>
+                                                        <label class="star star-3" for="star-3"></label>
+                                                        <input class="star star-2" id="star-2" type="radio" name="star"/>
+                                                        <label class="star star-2" for="star-2"></label>
+                                                        <input class="star star-1" id="star-1" type="radio" name="star"/>
+                                                        <label class="star star-1" for="star-1"></label>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default"  onclick="review_modal()" style="float: left;">
+                                                    Submit Review
+                                                </button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">
+                                                Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
                             {% endif %}
                         </td>
                         <td class="table-cell">
