@@ -49,6 +49,7 @@
                  $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#inner_first_name").replaceWith(name);
+                 $("#edit_change_name").replaceWith(name);
                  $("#edit").show();
                  $("#first_name").hide();
                  $("#edit_name").hide();
@@ -71,6 +72,7 @@ function edit_last_name(){
                  $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#inner_last_name").replaceWith(last_name);
+                 $("#edit_change_lastname").replaceWith(last_name);
                  $("#last_name").hide();
                  $("#edit_lastname").hide();
                  $("#edit2").show();
@@ -119,9 +121,7 @@ function edit_national_id(){
                  $("#photo").hide();
                  $("#edit_photo").hide();
                  $("#edit5").show();
-
-
-                }
+            }
         });
     }
 function edit_username(){
@@ -168,19 +168,22 @@ function edit_username(){
 {% endblock %}
 {% block cont-body %}
    <div style="color: #67b168" id="success_name"> </div>
-   <div id="manage_edit">
-    <i id="edit" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> First name <input id="first_name" type="text" name="fname" style="display: none"><br>
+   <div id="manage_edit" style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
+    <span style=" margin-left:4% ; margin-top: 5%;color: white">first name:</span> <span style="color: white" id="edit_change_name"> {{ user.first_name }} </span>  <br> <i id="edit" class="fa fa-pencil-square-o"  style=" color:white; margin-left: 4% ;cursor:pointer" aria-hidden="true"></i><span  style="color: white"> eidt</span> <input id="first_name" type="text" name="fname" style="display: none"><br>
     <input id="edit_name"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_name()" >
    </div>
-    <div>
-    <i id="edit2" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> Last name <input id="last_name" type="text" name="fname" style="display: none"><br>
+    <br>
+    <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
+    <span style=" margin-left:4% ; margin-top: 5%;color: white">Last name:</span> <span style=" color: white" id="edit_change_lastname"> {{ user.last_name }}</span><br><i id="edit2" class="fa fa-pencil-square-o"  style=" margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> eidt</span> <input id="last_name" type="text" name="fname" style="display: none"><br>
     <input id="edit_lastname"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_last_name()" >
    </div>
-    <div>
-    <i id="edit3" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> National id code <input id="national_id" type="text" name="fname" style="display: none"><br>
+    <br>
+    <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
+    <span style=" margin-left:4% ; margin-top: 5%;color: white">National Id Code:</span><span style=" color: white" id="edit_change_lastname"> {{ user.national_code }}</span><br><i id="edit3" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> eidt</span> <input id="national_id" type="text" name="fname" style="display: none"><br>
     <input id="edit_national_id"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_national_id()" >
    </div>
-   <div>
+     <br>
+   <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
     <i id="edit4" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> username <input id="username" type="text" name="fname" style="display: none"><br>
     <input id="edit_username"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_username()" >
    </div>
