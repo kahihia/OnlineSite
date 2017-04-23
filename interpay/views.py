@@ -305,17 +305,9 @@ def pay_user(request):
         v = Validation.Validation()
         er = v.check_value(amount)
         if not er == Validation.Validation.OK:
-        try:
-            amount = float(amount)
-        except ValueError:
             return render(request, "interpay/pay_user.html",
-                          {'error': Validation.Validation.check_validation('invalid_amount')})
+                          {'error': v.get_errormessage(er), 'langStr': langStr})
 
-        # if not amount.isdigit():
-        #     return render(request, 'interpay/pay_user.html', {'error': Validation.check_validation('invalid_amount')})
-        if int(amount) <= 0:
-            return render(request, 'interpay/pay_user.html',
-                          {'error': Validation.Validation.check_validation('non_positive')})
         email = request.POST['email']
         mobile = request.POST['mobile']
         # if not email and not mobile:
