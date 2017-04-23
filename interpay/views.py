@@ -223,8 +223,8 @@ def send_sms(request, mobile_no):
     # request.session['code'] = code #not needed anymore; this is checked from VerificationCodes table in database
     # redis_ds = ds.AuthCodeDataStructure()
     # redis_ds.set_code(mobile_no, code)
-    # p = api.ParsGreenSmsServiceClient()
-    # api.ParsGreenSmsServiceClient.sendSms(p, code, mobile_no, request.session['user_id'])
+    p = api.ParsGreenSmsServiceClient()
+    api.ParsGreenSmsServiceClient.sendSms(p, code, mobile_no, request.session['user_id'])
     print("code:", code)
     user_profile = ''
     while 1:
