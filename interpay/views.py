@@ -1051,6 +1051,24 @@ def contact_email(request):
         return HttpResponse("No such user")
 
 
+@login_required()
+def rating_by_email(request):
+    email = request.GET.get('email')
+    mobile = request.GET.get('mobile')
+    response_data = {}
+
+    total_rate = 2.5
+    response_data['result'] = total_rate.__str__()
+    review_numbers = 1000
+    response_data['result2'] = review_numbers.__str__()
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
+
+
         # if request.POST['action'] == 'change_national_photo':
         # form_edit = RegistrationForm_edit(request.POST, request.FILES)
         # print form_edit

@@ -8,19 +8,30 @@
 
 {% endblock %}
 <head>
-    <script type="text/javascript" src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+
     {% block CSS %}
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/home.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/pay_user.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/r.css' %}">
     {% endblock %}
+
+    {% block JS %}
+        <script type="text/javascript" src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'interpay/js/rating.js' %}"></script>
+
+    {% endblock %}
+
     <meta charset="UTF-8">
-    {#    <title>{% block title %}#}
-    {#        {% trans 'Home Page' %}#}
-    {#    {% endblock %}</title>#}
+
+    {% block head %}
+
+{% endblock %}
 </head>
 <body>
+
 <script>
     {% block script %}
+
         function apear(x)
         {
             if(x=="gre")
@@ -40,6 +51,7 @@
              document.getElementById("gmat").style.background= ""
              document.getElementById("googleplay").style.background= ""
              document.getElementById("other").style.background= ""
+             document.getElementById("review").style.display="none"
 
             }
             if(x=="gmat")
@@ -59,6 +71,7 @@
              document.getElementById("university").style.background= ""
              document.getElementById("googleplay").style.background= ""
              document.getElementById("other").style.background= ""
+             document.getElementById("review").style.display="none"
 
             }
             if(x=="university")
@@ -78,6 +91,7 @@
                 document.getElementById("university").style.background= "#FECB98"
                 document.getElementById("googleplay").style.background= ""
                 document.getElementById("other").style.background= ""
+                document.getElementById("review").style.display="none"
             }
              if(x=="googleplay")
             {
@@ -96,6 +110,7 @@
                 document.getElementById("gmat").style.background= ""
                 document.getElementById("googleplay").style.background= "#FECB98"
                 document.getElementById("other").style.background= ""
+                document.getElementById("review").style.display="none"
             }
            if(x=="other")
              {
@@ -113,6 +128,7 @@
                document.getElementById("googleplay").style.background= ""
                document.getElementById("gmat").style.background= ""
                document.getElementById("other").style.background= "#FECB98"
+               document.getElementById("review").style.display="none"
              }
         }
 
@@ -281,6 +297,8 @@
                 {% endifequal %}
                  </div>
 
+
+
                  <div class="form-group" style="padding: 0">
 
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
@@ -316,12 +334,16 @@
                           {% trans 'Destination Email:' %}
                     </label>
 
-{#                    <form style="display: none" method="get" action="../info/">#}
-{#                        <button  type="submit" onclick="goto()">Reviews detail</button>#}
-{#                    </form>#}
-
-                    <input type="text" name="email" id="email" class="form-control" style="width:300px">
+                    <input type="text" name="email" id="email" class="form-control" style="width:300px" onchange="showButton(1)">
                 </div>
+                <script>
+                    function showButton(a){
+                        if (a==1)
+                            document.getElementById("review").style.display='block';
+                        else
+                            document.getElementById("review").style.display='none';
+                    }
+                </script>
 
                 <div class="form-group ">
                    <label id="lable_mobile" style="display:block">
@@ -329,8 +351,45 @@
                     </label>
                     <input type="text" name="mobile" id="mobile" class="form-control" style="width:300px">
                 </div>
-                {#                </div>#}
-                {#                <div class="row">#}
+
+                <input type="button"
+                       id="review"
+                       value="{% trans 'Review Details' %}"
+                       data-toggle="modal"
+                       data-target="#ReviewModal"
+                       onclick="rating_fun({{ rate_percentage }})"
+                       class="btn btn-info">
+               <div class="modal fade" id="ReviewModal" role="dialog">
+                    <div class="modal-dialog" style="width:300px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Review Details</h4>
+                            </div>
+                            <div class="modal-body">
+
+                               <div class="star-ratings-sprite">
+                                   <span class="star-ratings-sprite-rating" id="star-ratings-sprite-rating"></span>
+                               </div>
+                                <div id="num_reviews" class="faded_text">
+					                <span class="count" id="count">
+                                    </span>
+                                    reviews
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="input_rate" id="input_rate">
+
                 <div class="form-group">
                    <label style="display:block">
                     {% trans 'Comment:' %}
@@ -367,6 +426,7 @@
                                     <br>
                                     <label>Comment:</label>
                                     <span id="modal_comment"></span>
+                                    <br>
 
                                 </div>
 
@@ -386,24 +446,6 @@
         </div>
 
     </div>
-
-
-
-{#    <div id="write_review_box" class="start_review">#}
-{#        <div id="rating_field">#}
-{#            <div id="js">#}
-{#                <div id="rating">#}
-{#                    <div class="star_rating_big" title="0.0 star rating">#}
-{#                        <div class="star rating w0" >#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div id="rating_bubble"></div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <a href="/online-business-review#walmart.com_(Walmart.com)" id="write_review_prompt">Start your review of <strong>Walmart.com</strong></a>#}
-{#        <div class="clear"></div>#}
-{#    </div>#}
 
 {% endblock %}
 
