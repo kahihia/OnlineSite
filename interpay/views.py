@@ -286,6 +286,11 @@ def verify_user(request):
 
 @login_required()
 def pay_user(request):
+    if request.LANGUAGE_CODE == 'en-gb':
+        langStr = ""
+    else:
+        langStr = '/' + request.LANGUAGE_CODE
+
     if request.method == "POST":
         up = ""
         currency = request.POST['currency']
@@ -297,6 +302,9 @@ def pay_user(request):
         if not amount:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
 
+        v = Validation.Validation()
+        er = v.check_value(amount)
+        if not er == Validation.Validation.OK:
         try:
             amount = float(amount)
         except ValueError:
@@ -348,14 +356,15 @@ def pay_user(request):
                 MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
                                              date=datetime.datetime.now(),
                                              amount=amount, comment=comment, cur_code=currency)
-                return render(request, "interpay/pay_user.html", {'success': 'Your payment was successfully done.'})
+                return render(request, "interpay/pay_user.html",
+                              {'success': 'Your payment was successfully done.', 'langStr': langStr})
             else:
                 return render(request, 'interpay/pay_user.html',
                               {'error': 'No destination account with this currency.'})
         else:
             return render(request, 'interpay/pay_user.html',
                           {'error': 'You do not have any account in this currency. '})
-    return render(request, "interpay/pay_user.html")
+    return render(request, "interpay/pay_user.html", {'langStr': langStr})
 
 
 def reset_password(request, token):
@@ -602,10 +611,13 @@ mobile = '09123456789'
 
 
 def zarinpal_payment_gate(request, amount):
+
+    amount = int(amount) / 10
+
     if request.LANGUAGE_CODE == 'en-gb':
-        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + amount  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
     else:
-        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + amount  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
@@ -644,14 +656,8 @@ def zarinpal_callback_handler(request, amount):
                                      banker=new_banker,
                                      date=(datetime.datetime.strptime(a['date'].__str__()[:10], '%Y-%m-%d')),
                                      cur_code=a['cur_code'],
-                                     tracking_code=result2.RefID)
-            # try:
+                                     tracking_code=result2.RefID, type=Deposit.TOP_UP)
             deposit.calculate_comission()  # automatically saves after calculating comission
-            # except:
-            #     log.error("error in Calculating Comission")
-            #     deposit.save()
-
-            # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
             return recharge_account(request, message="Your account charged successfully.")
 
         elif result2.Status == 101:
@@ -752,7 +758,13 @@ def user_logout(request):
 
 @login_required()
 def home(request):
-    return render(request, "interpay/home.html")
+    user_profile = models.UserProfile.objects.get(user=request.user)
+    context = {
+
+        'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
+        'user_profile': user_profile
+    }
+    return render(request, "interpay/home.html", context)
 
 
 class HomeView(TemplateView):
@@ -775,7 +787,6 @@ def wallets(request):
 
 @login_required()
 def wallet(request, wallet_id, recom=None):
-    # print "wallet function"
     ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
     up = ba.owner
     if request.method == "GET":
@@ -789,11 +800,10 @@ def wallet(request, wallet_id, recom=None):
             transaction_list.append(item1)
         for item2 in Withdraw.objects.filter(account=ba):
             transaction_list.append(item2)
-        # for item3 in MoneyTransfer.objects.filter(Q(sender__owner=up) | Q(receiver__owner=up)):
         for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)).filter(
                         Q(receiver=ba) | Q(sender=ba)):
             transaction_list.append(item3)
-        transaction_list.sort(key=lambda x: x.date)
+        transaction_list.sort(key=lambda x: x.date, reverse=True)
         context = {
             'account': ba,
             'recommended': recommended,
@@ -806,36 +816,64 @@ def wallet(request, wallet_id, recom=None):
 @login_required()
 def withdraw_pending_deposit(request):
     if request.method == 'POST':
-        print ('entered post')
         deposit_id = request.POST.get('deposit_id')
         deposit = Deposit.objects.get(id=deposit_id)
         deposit.status = Deposit.COMPLETED
         deposit.save()
         account = deposit.account
 
-        context = {
-            'account_id': account.id,
-            'transaction_status': 'Requested amount was withdrawn successfully.',
-            'account': account,
-            'deposit_set': Deposit.objects.filter(account=account),
-            'deposit_id': deposit.id,
-            'withdraw_set': Withdraw.objects.filter(account=account),
-        }
 
-        return render(request, 'interpay/wallet.html', context)
+        destination_currency = 'IRR'
+        new_withdraw = Withdraw.objects.create(account=account, amount=deposit.amount, banker=account.owner,
+                                               date=datetime.datetime.now(),
+                                               cur_code=deposit.cur_code)
+        converted_amount = convert(deposit.amount, deposit.cur_code, destination_currency)
+        rial_account = BankAccount.objects.filter(owner=account.owner, cur_code='IRR')
+        if rial_account:
+            rial_account = rial_account[0]
+        if not rial_account:
+            rial_account = BankAccount.objects.create(name='wall_account', owner=account.owner,
+                                                             method=BankAccount.DEBIT,
+                                                             cur_code=destination_currency,
+                                                             account_id=make_id())
+
+        new_deposit = Deposit.objects.create(account=rial_account, amount=float(converted_amount), banker=account.owner,
+                              date=datetime.datetime.now(), cur_code=destination_currency)
+        new_deposit.calculate_comission()
+        conversion = CurrencyConversion.objects.create(deposit=new_deposit, withdraw=new_withdraw)
+        return HttpResponseRedirect('../')
+        # context = {
+        #     'account_id': account.id,
+        #     'transaction_status': 'Requested amount was withdrawn successfully.',
+        #     'account': account,
+        #     'deposit_set': Deposit.objects.filter(account=account),
+        #     'deposit_id': deposit.id,
+        #     'withdraw_set': Withdraw.objects.filter(account=account),
+        # }
+        #
+        # return render(request, 'interpay/wallet.html', context)
     return HttpResponseRedirect('../')
 
 
 def check_currency_reserve(currency, amount):
-    print (currency)
-    try:
-        current_currency = CurrencyReserve.objects.get(currency=currency)
-        print (current_currency.reserve)
-    except:
-        return False
-    if current_currency.reserve < amount:
-        return False
-    return True
+    global new_connection
+    new_connection = settings.connect_to_redis()
+    currency_reserve = new_connection.get(currency)
+    if currency_reserve:
+        currency_reserve = float(currency_reserve)
+        if currency_reserve < amount:
+            return False
+        else:
+            return True
+    else:
+        try:
+            current_currency = CurrencyReserve.objects.get(currency=currency)
+            print (current_currency.reserve)
+        except:
+            return False
+        if current_currency.reserve < amount:
+            return False
+        return True
 
 
 @login_required()
@@ -876,7 +914,7 @@ def actual_convert(request):
         conversion = CurrencyConversion()
 
         new_withdraw = Withdraw(account=cur_account, amount=amount, banker=user_profile, date=datetime.datetime.now(),
-                                cur_code=cur_account.cur_code)
+                                cur_code=cur_account.cur_code, type=Withdraw.CONVERSION)
         new_withdraw.save()
         conversion.withdraw = new_withdraw
         converted_amount = convert(amount, cur_account.cur_code, currency)
@@ -891,7 +929,7 @@ def actual_convert(request):
                                               account_id=make_id())
         destination_account.save()
         new_deposit = Deposit(account=destination_account, amount=float(converted_amount), banker=user_profile,
-                              date=datetime.datetime.now(), cur_code=currency)
+                              date=datetime.datetime.now(), cur_code=currency, type=Deposit.CONVERSION)
         new_deposit.calculate_comission()
         new_deposit.save()
         conversion.deposit = new_deposit

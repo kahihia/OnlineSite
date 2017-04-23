@@ -43,7 +43,30 @@
              document.getElementById("mobile").style.display= "none"
              document.getElementById("lable_email").style.display= "none"
              document.getElementById("lable_mobile").style.display= "none"
+             document.getElementById("currGRE").style.display = "block"
+             document.getElementById("curr_uni_google").style.display = "none"
+             document.getElementById("curr").style.display = "none"
              document.getElementById("gre").style.background= "#FECB98"
+             document.getElementById("university").style.background= ""
+             document.getElementById("gmat").style.background= ""
+             document.getElementById("googleplay").style.background= ""
+             document.getElementById("other").style.background= ""
+
+            }
+            if(x=="gmat")
+            {
+             document.getElementById("email").value = "gmat@rizpardakht.com"
+              /*TODO need phone */
+             document.getElementById("pay").style.display= "block"
+             document.getElementById("email").style.display= "none"
+             document.getElementById("mobile").style.display= "none"
+             document.getElementById("lable_email").style.display= "none"
+             document.getElementById("lable_mobile").style.display= "none"
+             document.getElementById("currGRE").style.display = "block"
+             document.getElementById("curr_uni_google").style.display = "none"
+             document.getElementById("curr").style.display = "none"
+             document.getElementById("gmat").style.background= "#FECB98"
+             document.getElementById("gre").style.background= ""
              document.getElementById("university").style.background= ""
              document.getElementById("googleplay").style.background= ""
              document.getElementById("other").style.background= ""
@@ -59,7 +82,11 @@
                 document.getElementById("mobile").style.display= "none"
                 document.getElementById("lable_email").style.display= "none"
                 document.getElementById("lable_mobile").style.display= "none"
+                document.getElementById("currGRE").style.display = "none"
+                document.getElementById("curr_uni_google").style.display = "block"
+                document.getElementById("curr").style.display = "none"
                 document.getElementById("gre").style.background= ""
+                document.getElementById("gmat").style.background= ""
                 document.getElementById("university").style.background= "#FECB98"
                 document.getElementById("googleplay").style.background= ""
                 document.getElementById("other").style.background= ""
@@ -74,8 +101,12 @@
                 document.getElementById("mobile").style.display= "none"
                 document.getElementById("lable_email").style.display= "none"
                 document.getElementById("lable_mobile").style.display= "none"
+                document.getElementById("currGRE").style.display = "none"
+                document.getElementById("curr_uni_google").style.display = "block"
+                document.getElementById("curr").style.display = "none"
                 document.getElementById("gre").style.background= ""
                 document.getElementById("university").style.background= ""
+                document.getElementById("gmat").style.background= ""
                 document.getElementById("googleplay").style.background= "#FECB98"
                 document.getElementById("other").style.background= ""
                 document.getElementById("review").style.display="none"
@@ -88,15 +119,19 @@
                document.getElementById("mobile").style.display= "block"
                document.getElementById("lable_email").style.display= "block"
                document.getElementById("lable_mobile").style.display= "block"
+               document.getElementById("currGRE").style.display = "none"
+               document.getElementById("curr_uni_google").style.display = "none"
+               document.getElementById("curr").style.display = "block"
                document.getElementById("gre").style.background= ""
                document.getElementById("university").style.background= ""
                document.getElementById("googleplay").style.background= ""
+               document.getElementById("gmat").style.background= ""
                document.getElementById("other").style.background= "#FECB98"
                document.getElementById("review").style.display="none"
              }
         }
 
-        function fill_modal(x) {
+        function fill_modal() {
                 var email = document.getElementById("email");
                 var mobile = document.getElementById("mobile");
                 var comment = document.getElementById("comment");
@@ -112,13 +147,103 @@
                 modal_comment.innerHTML = comment.value
                 modal_amount.innerHTML = amount.value
 
-
         }
+        function choice(select) {
+            if(select.options[select.selectedIndex].id == "gre")
+            {
+              document.getElementById("email").value = "gre@rizpardakht.com"
+              /*TODO need phone */
+              document.getElementById("pay").style.display= "block"
+             document.getElementById("email").style.display= "none"
+             document.getElementById("mobile").style.display= "none"
+             document.getElementById("lable_email").style.display= "none"
+             document.getElementById("lable_mobile").style.display= "none"
+             document.getElementById("currGRE").style.display = "block"
+             document.getElementById("curr_uni_google").style.display = "none"
+             document.getElementById("curr").style.display = "none"
+             document.getElementById("gre").style.background= "#FECB98"
+             document.getElementById("university").style.background= ""
+             document.getElementById("gmat").style.background= ""
+             document.getElementById("googleplay").style.background= ""
+             document.getElementById("other").style.background= ""
+            }
+             if(select.options[select.selectedIndex].id =="gmat")
+            {
+             document.getElementById("email").value = "gmat@rizpardakht.com"
+              /*TODO need phone */
+             document.getElementById("pay").style.display= "block"
+             document.getElementById("email").style.display= "none"
+             document.getElementById("mobile").style.display= "none"
+             document.getElementById("lable_email").style.display= "none"
+             document.getElementById("lable_mobile").style.display= "none"
+             document.getElementById("currGRE").style.display = "block"
+             document.getElementById("curr_uni_google").style.display = "none"
+             document.getElementById("curr").style.display = "none"
+             document.getElementById("gmat").style.background= "#FECB98"
+             document.getElementById("gre").style.background= ""
+             document.getElementById("university").style.background= ""
+             document.getElementById("googleplay").style.background= ""
+             document.getElementById("other").style.background= ""
 
+            }
+            if(select.options[select.selectedIndex].id =="university")
+            {
+                document.getElementById("email").value = "uni@rizpardakht.com"
+                 /*TODO need phone */
+                document.getElementById("pay").style.display= "block"
+                document.getElementById("email").style.display= "none"
+                document.getElementById("mobile").style.display= "none"
+                document.getElementById("lable_email").style.display= "none"
+                document.getElementById("lable_mobile").style.display= "none"
+                document.getElementById("currGRE").style.display = "none"
+                document.getElementById("curr_uni_google").style.display = "block"
+                document.getElementById("curr").style.display = "none"
+                document.getElementById("gre").style.background= ""
+                document.getElementById("gmat").style.background= ""
+                document.getElementById("university").style.background= "#FECB98"
+                document.getElementById("googleplay").style.background= ""
+                document.getElementById("other").style.background= ""
+            }
+             if(select.options[select.selectedIndex].id =="googleplay")
+            {
+                document.getElementById("email").value = "googleplay@rizpardakht.com"
+                /*TODO need phone */
+                document.getElementById("pay").style.display= "block"
+                document.getElementById("email").style.display= "none"
+                document.getElementById("mobile").style.display= "none"
+                document.getElementById("lable_email").style.display= "none"
+                document.getElementById("lable_mobile").style.display= "none"
+                document.getElementById("currGRE").style.display = "none"
+                document.getElementById("curr_uni_google").style.display = "block"
+                document.getElementById("curr").style.display = "none"
+                document.getElementById("gre").style.background= ""
+                document.getElementById("university").style.background= ""
+                document.getElementById("gmat").style.background= ""
+                document.getElementById("googleplay").style.background= "#FECB98"
+                document.getElementById("other").style.background= ""
+            }
+           if(select.options[select.selectedIndex].id =="other")
+             {
+               document.getElementById("pay").style.display= "block"
+               document.getElementById("email").value = ""
+               document.getElementById("email").style.display= "block"
+               document.getElementById("mobile").style.display= "block"
+               document.getElementById("lable_email").style.display= "block"
+               document.getElementById("lable_mobile").style.display= "block"
+               document.getElementById("currGRE").style.display = "none"
+               document.getElementById("curr_uni_google").style.display = "none"
+               document.getElementById("curr").style.display = "block"
+               document.getElementById("gre").style.background= ""
+               document.getElementById("university").style.background= ""
+               document.getElementById("googleplay").style.background= ""
+               document.getElementById("gmat").style.background= ""
+               document.getElementById("other").style.background= "#FECB98"
+             }
+
+
+         }
     {% endblock %}
 </script>
-
-
 
 {% block cont-header %}
     <div id="welcome-msg" style="font-family: IRAN-web">
@@ -134,37 +259,43 @@
          <div style="color: green;font-weight: bold">
                     {% if success %}{{ success }}{% endif %}
         </div>
-        <div>
+        <div class ="w3-hide-small">
         <button id="gre" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green"   style="margin-left:1%"   onclick="apear(this.id)">{% trans "Pay"%}GRE</button>
-        <button id="university" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  onclick="apear(this.id)"> {% trans "University Fees" %}</button>
+        <button id="gmat" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green"   style="margin-left:1%"   onclick="apear(this.id)">{% trans "Pay"%}Gmat</button>
+        <button id="university" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  style="margin-left:1%" onclick="apear(this.id)"> {% trans "University Fees" %}</button>
         <button id="googleplay" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  style="margin-left:1%"  onclick="apear(this.id)" >{% trans "Google play" %}</button>
-        <button id="other" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"  onclick="apear(this.id)">{% trans "Other Payments" %}</button>
+        <button id="other" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"   style="margin-left:1%" onclick="apear(this.id)">{% trans "Other Payments" %}</button>
         </div>
+        <div class="w3-hide-medium w3-hide-large">
+           <div style="font-size: medium"> Select Your Payment: </div>
+            <br>
+         <select id="test-dropdown" onchange="choice(this)"  style="width:110px">
+                        <option id="gre" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >GRE</option>
+                        <option id="gmat" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >GMAT</option>
+                        <option id="university" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >University fees</option>
+                        <option id="googleplay" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >Google Play</option>
+                        <option id="other" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >other</option>
+          </select>
+         </div>
+
          <br><br>
-            <form id="pay" method="post" action="/pay_user/" style="display: none; ">
+            <form id="pay" method="post" action="/pay_user/" style="display: none;">
                 {% csrf_token %}
                 {#                <div class="row">#}
-
+                <div class="form-group" style="padding: 0">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <div class="form-group col-lg-2" style="padding:0;">
+                    <label style="padding:0;">
                  {% else %}
-                    <div class="form-group col-lg-2" style="padding:0; float:right">
-                {% endifequal %}
-                     {% ifequal LANGUAGE_CODE 'en-gb' %}
-                   <label style="display:block">
-                {% else %}
-                    <label style="display:block ; float: right">
+                    <label  style="padding:0; float:right">
                 {% endifequal %}
                     {% trans 'Amount' %}
                     </label>
                     {% ifequal LANGUAGE_CODE 'en-gb' %}
-                     <input type="text" name="amount" id="amount" class="form-control" style="width:150px;">
+                     <input type="text" name="amount" id="amount" class="form-control" style="width:150px;margin-right: 3%">
                 {% else %}
-                      <input type="text" name="amount" id="amount" class="form-control" style="width:150px; float:right">
+                      <input type="text" name="amount" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
                 {% endifequal %}
-                </div>
-
-
+                 </div>
 
                  <div class="form-group" style="padding: 0">
 
@@ -173,13 +304,22 @@
                 {% else %}
                     <label style="display:block ; float: right">
                 {% endifequal %}
-                         {% trans 'currency' %}
+                         {% trans 'Currency' %}
                  </label>
-                    <select name="currency" class="form-control"  style="width:110px">
+                    <select id="currGRE"name="currency" class="form-control"  style="width:110px; display: none">
+
+                        <option value="USD">Dollar</option>
+
+                    </select>
+                    <select id="curr_uni_google"name="currency" class="form-control"  style="width:110px; display: none">
+
+                        <option value="USD">Dollar</option>
+                        <option value="EUR">Euro</option>
+                    </select>
+                    <select id="curr"name="currency" class="form-control"  style="width:110px; display: none">
                         <option value="IRR">Rial</option>
                         <option value="USD">Dollar</option>
                         <option value="EUR">Euro</option>
-                        <option value="GBP">Pound</option>
                     </select>
                 </div>
 
