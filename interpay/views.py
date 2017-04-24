@@ -1056,10 +1056,22 @@ def rating_by_email(request):
     email = request.GET.get('email')
     mobile = request.GET.get('mobile')
     response_data = {}
+    user_id = models.UserProfile.objects.get(email=email)
+    log.debug("Getting rating by email")
 
-    total_rate = 2.5
+    review_numbers = models.Review.objects.filter(user=user_id).count()
+    log.debug("Getting rating by email")
+
+    # total_review = models.Review.objects.filter(user_id=user_id)
+    print review_numbers
+
+     # for i in total_review
+
+
+
+    total_rate = 3
+    # review_numbers = 10
     response_data['result'] = total_rate.__str__()
-    review_numbers = 1000
     response_data['result2'] = review_numbers.__str__()
 
     return HttpResponse(
@@ -1067,6 +1079,36 @@ def rating_by_email(request):
         content_type="application/json"
     )
 
+
+@login_required()
+def dynamic_rating(request):
+    if request.method == 'POST':
+        rate = request.POST.get('input_rate')
+        user_id = request.POST.get('review_user_id')
+        monTrans = models.MoneyTransfer.objects.get(id=user_id)
+        # check if user__username should be used TODO
+        reviewer = models.UserProfile.objects.get(user=request.user)
+        print reviewer
+        # user = ''
+        if monTrans.sender.id == reviewer.id:
+            ty = "Buyer"
+            user = monTrans.receiver.owner
+        else:
+            ty = "Seller"
+            user = monTrans.sender.owner
+        print user
+        print ty
+        reviewing, created = models.Review.objects.get_or_create(
+            review=rate,
+            comment=" ",
+            type=ty,
+            reviewer=reviewer,
+            user=user,
+        )
+        if created:
+            reviewing.save()
+
+        return render(request, "interpay/info.html")
 
 
         # if request.POST['action'] == 'change_national_photo':

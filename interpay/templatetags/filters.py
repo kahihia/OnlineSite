@@ -88,3 +88,7 @@ def get_type(transaction_type):
         return TYPE_CHOICES[int(transaction_type)][1]
     else:
         return 'Payment'
+
+@register.filter
+def get_review_user(payment):
+        return payment.id

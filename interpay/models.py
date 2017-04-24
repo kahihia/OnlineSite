@@ -73,7 +73,8 @@ class UserProfile(models.Model):
         #         # we're operating on an existing object, not a new one...
         #         country = self.instance.country
         #         cities = self.fields["new_city"] = ChoiceField(choices=cities)
-
+# @property
+#     def review(self):
 
 class CommonUser(models.Model):
     # since we might need to define a Manager model in the future, this model is named as "CommonUser"
@@ -351,3 +352,15 @@ class CurrencyReserve(models.Model):
 
     def __str__(self):
         return self.currency
+
+
+class Review(models.Model):
+    review = models.IntegerField(default=0)
+    comment = models.CharField(max_length=255)
+    type = models.CharField(max_length=20)
+    reviewer = models.ForeignKey(UserProfile, null=True, related_name='reviewers')
+    user = models.ForeignKey(UserProfile, null=True, related_name='users_review')
+
+
+
+

@@ -20,7 +20,8 @@
                         <ul>
 
                         <li data-transition="curtain-1" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
-                            <div class="tp-caption rs-caption-1 sft start"
+                        {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                            <div class="tp-caption rs-caption-3 sft start"
                              data-x="center"
                              data-hoffset="0"
                              data-y="10"
@@ -28,12 +29,29 @@
                              data-start="0"
 {#                             data-easing="Back.easeInOut"#}
                              data-endspeed="1000">
-                            {% ifequal LANGUAGE_CODE 'fa-ir' %}
-                                                          خدمات ما
+
+                                                          با استفاده از این سرویس امکان پرداخت های بین المللی به دو صورت از طریق حساب های ریزپرداخت Rizpal فراهم می شود.
+                                <br>
+                                امکان پرداخت های GRE/GMAT از طریق این سرویس وجود دارد.
+                                <br>
+همچنین می توان این سرویس را با API های بانکی نیز ادغام کرد.
                             {% else %}
-                             OUR SERVICES ...
-                            {% endifequal %}
+                            <div class="tp-caption rs-caption-4 sft start"
+                                 data-x="center"
+                                 data-hoffset="0"
+                                 data-y="1"
+                                 data-speed="0"
+                                 data-start="0"
+                                 data-easing="Back.easeInOut"
+                                 data-endspeed="1000">
+                             We support two way payments to and from international sources via  RizPal Interpay accounts.
+                                <br>
+                            Support payment for GRE/GMAT payments.
+                                <br>
+                            Support integrations with banking API’s.
+
                         </div>
+                                {% endifequal %}
 </li>
                         </ul>
                     </div>
