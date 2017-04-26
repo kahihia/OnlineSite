@@ -73,8 +73,13 @@ class UserProfile(models.Model):
         #         # we're operating on an existing object, not a new one...
         #         country = self.instance.country
         #         cities = self.fields["new_city"] = ChoiceField(choices=cities)
-# @property
-#     def review(self):
+    @property
+    def review(self):
+        result = 0
+        result += sum(x.review for x in self.users_review.all())
+        result /= float(self.users_review.count())
+        return result
+
 
 class CommonUser(models.Model):
     # since we might need to define a Manager model in the future, this model is named as "CommonUser"
@@ -162,6 +167,8 @@ class BankAccount(models.Model):
 
     def total_value(self):
         t_value = Decimal(0)
+        log.info("totalValue")
+        print "calc tt value"
         total_estimate = defaultdict(lambda: Decimal(0.0))
         accounts = BankAccount.objects.filter(owner=self.owner, method=BankAccount.DEBIT)
         for account in accounts:
@@ -356,10 +363,14 @@ class CurrencyReserve(models.Model):
 
 class Review(models.Model):
     review = models.IntegerField(default=0)
-    comment = models.CharField(max_length=255)
+    comments = models.CharField(max_length=255)
     type = models.CharField(max_length=20)
     reviewer = models.ForeignKey(UserProfile, null=True, related_name='reviewers')
     user = models.ForeignKey(UserProfile, null=True, related_name='users_review')
+    money_transfer = models.OneToOneField(MoneyTransfer, null=False, related_name='transfer')
+
+
+
 
 
 

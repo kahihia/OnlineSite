@@ -163,12 +163,14 @@ def register(request):
             user_profile.email = user_form.cleaned_data['email']
             # user_profile.date_of_birth = user_profile.cleaned_data['date_of_birth']
             user_profile.password = user.password
+
             user_profile.user = user
             if 'picture' in request.FILES:
                 user_profile.picture = request.FILES['picture']
             if 'national_card_photo' in request.FILES:
                 user_profile.national_card_photo = request.FILES['national_card_photo']
             user_profile.save()
+
 
             mobile_no = registration_form.cleaned_data['mobile_number']
             request.session['mobile_no'] = mobile_no
@@ -799,7 +801,7 @@ def wallet(request, wallet_id, recom=None):
             'account': ba,
             'recommended': recommended,
             'list': transaction_list,
-            'user': up
+            'user_profile': up
         }
         return render(request, "interpay/wallet.html", context)
 
@@ -1056,20 +1058,15 @@ def rating_by_email(request):
     email = request.GET.get('email')
     mobile = request.GET.get('mobile')
     response_data = {}
-    user_id = models.UserProfile.objects.get(email=email)
+    userprofile = models.UserProfile.objects.get(email=email)
     log.debug("Getting rating by email")
 
-    review_numbers = models.Review.objects.filter(user=user_id).count()
+    review_numbers = models.Review.objects.filter(user=userprofile).count()
     log.debug("Getting rating by email")
 
     # total_review = models.Review.objects.filter(user_id=user_id)
     print review_numbers
-
-     # for i in total_review
-
-
-
-    total_rate = 3
+    total_rate = userprofile.review
     # review_numbers = 10
     response_data['result'] = total_rate.__str__()
     response_data['result2'] = review_numbers.__str__()
@@ -1098,17 +1095,28 @@ def dynamic_rating(request):
             user = monTrans.sender.owner
         print user
         print ty
-        reviewing, created = models.Review.objects.get_or_create(
-            review=rate,
-            comment=" ",
-            type=ty,
-            reviewer=reviewer,
-            user=user,
-        )
-        if created:
+        created = True
+        reviewing = None
+
+        try:
+            reviewing = models.Review.objects.get(money_transfer=monTrans)
+        except models.Review.DoesNotExist:
+            log.info("no previous review for this transaction")
+            created = False
+        if not created:
+            reviewing = models.Review.objects.create(
+                review=rate,
+                comments=" ",
+                type=ty,
+                reviewer=reviewer,
+                user=user,
+                money_transfer=monTrans
+            )
+        else:
+            reviewing.review = rate
             reviewing.save()
 
-        return render(request, "interpay/info.html")
+        return render(request,  "interpay/wallet.html")
 
 
         # if request.POST['action'] == 'change_national_photo':
