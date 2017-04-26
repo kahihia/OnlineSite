@@ -28,6 +28,7 @@
         <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
         <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
         <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
+        <link rel="stylesheet" href="{% static 'interpay/css/r1.css' %}">
     {% endblock %}
     {% block JS %}
         <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
@@ -35,22 +36,24 @@
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
         <script>
-             $(document).ready(function () {
-          var inf = $('#message').text();
-          if( $('#message').text().length!=14)
-            {
+            $(document).ready(function () {
+                var inf = $('#message').text();
+                if ($('#message').text().length != 14) {
                     swal({
-              title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
-                    type: 'info',
-               html: ' ' + 'and other HTML tags',
-               type: "info",
-               showCancelButton: true,
-               confirmButtonColor: "#DD6B55 ",
-               cancelButtonText: '{% trans 'back to current wallet'%}',
-               closeOnConfirm: false,
-               closeOnCancel: false,
-               showConfirmButton: false,
-             });
+                        title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a
+                                {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}
+                                    {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}}
+                                     {% endifequal %}</a> ',
+                        type: 'info',
+                        html: ' ' + 'and other HTML tags',
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55 ",
+                        cancelButtonText: '{% trans 'back to current wallet'%}',
+                        closeOnConfirm: false,
+                        closeOnCancel: false,
+                        showConfirmButton: false,
+                    });
                 }
             });
             var unsaved = false;
@@ -98,7 +101,7 @@
             function withdraw_form_submit() {
                 document.getElementById("withdraw_convert_form").submit();
             }
-            
+
             function set_selected_transaction(id) {
                 var temp = document.getElementById("selected_transaction_id");
                 temp.value = id;
@@ -277,7 +280,43 @@
                                     {{ d|get_description}}
                                     <span class="my_tooltiptext">{{ d.comment }}</span>
                                 </div>
-                            {% else %}
+
+                                <a data-toggle="modal" href="#ReviewModal">Review</a>
+                                <div class="modal fade" id="ReviewModal" role="dialog">
+                                    <div class="modal-dialog" style="width:300px">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Review Details</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="stars">
+                                                    <form action="">
+                                                        <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
+                                                        <label class="star star-5" for="star-5"></label>
+                                                        <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
+                                                        <label class="star star-4" for="star-4"></label>
+                                                        <input class="star star-3" id="star-3" type="radio" name="star" value="3"/>
+                                                        <label class="star star-3" for="star-3"></label>
+                                                        <input class="star star-2" id="star-2" type="radio" name="star" value="2"/>
+                                                        <label class="star star-2" for="star-2"></label>
+                                                        <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
+                                                        <label class="star star-1" for="star-1"></label>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default"  onclick="review_modal()" style="float: left;">
+                                                    Submit Review
+                                                </button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">
+                                                Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+ {% else %}
                                 {{ d|get_description }}
                             {% endif %}
                         </td>
@@ -288,6 +327,8 @@
 
                                     <button type="button" data-toggle="modal" data-target="#modal_withdraw" onclick="set_selected_transaction({{ d.id }});">Withdraw
                                     </button>
+
+
 
 
                                     <div class="modal fade" id="modal_withdraw" role="dialog">
@@ -359,11 +400,20 @@
 
         </div>
         <div>
-            <input type="hidden" name="selected_transaction_id" id="selected_transaction_id"> 
+            <input type="hidden" name="selected_transaction_id" id="selected_transaction_id">
         </div>
     </form>
 
-
+<script>
+function review_modal() {
+    var rate_radio = document.getElementsByName("star");
+    for (var i = 0, length = rate_radio.length; i < length; i++) {
+        if (rate_radio[i].checked) {
+            rate = rate_radio[i].value;
+        }
+    }
+}
+</script>
 
 
 {% endblock %}

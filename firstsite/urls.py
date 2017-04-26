@@ -82,6 +82,7 @@ urlpatterns = [
     url(r'^contact/', views.contact, name='contact'),
     url(r'^services/', views.services, name='services'),
     url(r'^contact_email/$', views.contact_email, name='contact_email'),
+    url(r'^rating_by_email/$', views.rating_by_email),
 ]
 
 urlpatterns += i18n_patterns(
@@ -131,5 +132,6 @@ urlpatterns += i18n_patterns(
     url(r'^contact/', views.contact, name='contact'),
     url(r'^services/', views.services, name='services'),
     url(r'^contact_email/$', views.contact_email, name='contact_email'),
+    url(r'^rating_by_email/$', views.rating_by_email),
 )
 
