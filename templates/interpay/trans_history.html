@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
+{% load filters %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,77 +45,154 @@
                 </span>
             </div>
             <div class="table-responsive">
-            <table id="trans-his-tab" class="table">
+{#            <table id="trans-his-tab" class="table">#}
+{#                <thead>#}
+{#                <tr role="row" class="table-header-row">#}
+{#                    <td class="table-header-cell">#}
+{#                    </td>#}
+{#                    <td class="table-header-cell">#}
+{#                    </td>#}
+{#                    <td class="table-header-cell">#}
+{#                    </td>#}
+{#                    <td class="table-header-cell">#}
+{#                    </td>#}
+{#                    <td class="table-header-cell">#}
+{#                    </td>#}
+{#                    <td class="table-header-cell">#}
+{#                    </td>#}
+{#                    <td class="table-header-cell">#}
+{##}
+{#                    </td>#}
+{#                    <td class="table-header-cell">#}
+{##}
+{#                    </td>#}
+{#                </tr>#}
+{#                <tr>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Transaction Date' %}#}
+{#                    </th>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Bank Name' %}#}
+{#                    </th>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Wallet Holder Name' %}#}
+{#                    </th>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Activity' %}#}
+{#                    </th>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Index Number' %}#}
+{#                    </th>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Interpay ID' %}#}
+{#                    </th>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Transaction Desc.' %}#}
+{#                    </th>#}
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Amount' %}#}
+{#                    </th>#}
+{#                </tr>#}
+{#                </thead>#}
+{#                <tbody>#}
+                {#                {% for e in entries %}#}
+{#                <tr>#}
+{#                    <td class="table-cell"></td>#}
+{#                    <td class="table-cell"></td>#}
+{#                    <td class="table-cell"></td>#}
+{#                    <td class="table-cell"></td>#}
+{#                    <td class="table-cell"></td>#}
+{#                    <td class="table-cell"></td>#}
+{#                    <td class="table-cell"></td>#}
+{#                    <td class="table-cell"></td>#}
+{#                </tr>#}
+                {#                {% endfor %}#}
+{##}
+{#                </tbody>#}
+{#            </table>#}
+            </div>
+{#            <div id="trans-his-tab-footer" class="row" style=" height:15% ; margin-left: 0 !important;margin-right: 0 !important;">#}
+{#                <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>#}
+{#                <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4">#}
+{#                    <b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ 1000 }}</b></h5>#}
+{#            </div>#}
+
+            <table id="wal-tab" class="table">
                 <thead>
-                <tr role="row" class="table-header-row">
-                    <td class="table-header-cell">
-                    </td>
-                    <td class="table-header-cell">
-                    </td>
-                    <td class="table-header-cell">
-                    </td>
-                    <td class="table-header-cell">
-                    </td>
-                    <td class="table-header-cell">
-                    </td>
-                    <td class="table-header-cell">
-                    </td>
-                    <td class="table-header-cell">
-
-                    </td>
-                    <td class="table-header-cell">
-
-                    </td>
-                </tr>
-                <tr>
+                <tr class="table-header-row">
                     <th class="table-header-cell">
-                        {% trans 'Transaction Date' %}
+                        {% trans 'Index' %}
+                    </th>
+                    <th class="table-header-cell" style="width: 15%">
+                        {% trans 'Date' %}
                     </th>
                     <th class="table-header-cell">
-                        {% trans 'Bank Name' %}
-                    </th>
-                    <th class="table-header-cell">
-                        {% trans 'Wallet Holder Name' %}
-                    </th>
-                    <th class="table-header-cell">
-                        {% trans 'Activity' %}
-                    </th>
-                    <th class="table-header-cell">
-                        {% trans 'Index Number' %}
-                    </th>
-                    <th class="table-header-cell">
-                        {% trans 'Interpay ID' %}
-                    </th>
-                    <th class="table-header-cell">
-                        {% trans 'Transaction Desc.' %}
+                        {% trans 'Type' %}
                     </th>
                     <th class="table-header-cell">
                         {% trans 'Amount' %}
                     </th>
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Status' %}#}
+{#                    </th>#}
+                    <th class="table-header-cell">
+                        {% trans 'Description' %}
+                    </th>
+                    <th class="table-header-cell">
+                        {% trans 'Wallet' %}
+                    </th>
+{#                    <th class="table-header-cell">#}
+{#                        {% trans 'Transaction' %}#}
+{#                    </th>#}
                 </tr>
                 </thead>
                 <tbody>
-                {#                {% for e in entries %}#}
-                <tr>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                    <td class="table-cell"></td>
-                </tr>
-                {#                {% endfor %}#}
+                {% for d in transaction_list %}
+                    <tr>
+                        <td width="6%" class="table-cell" style="text-align: center">{{ forloop.counter }}</td>
+                        {#                        <td width="10%" class="table-cell" style="text-align: center">{{ d.id }}</td>#}
+                        <td width="15%" class="table-cell" style="text-align: center">{{ d.date }}</td>
+                        <td class="table-cell" width="15%" style="text-align: center">
+                            {{ d.type|get_type }} {% if d|get_is_deposit:user %} Deposit {% else %} Withdraw {% endif %}
+                        </td>
 
+                        {% if d|get_is_deposit:user %}
+                            <td class="table-cell">{{ d.amount }}<span style="float:right; color:lime"
+                                                                       class="glyphicon glyphicon-triangle-top green"></span>
+                            </td>
+                        {% elif d|get_is_withdraw:user %}
+                            <td class="table-cell">- {{ d.amount }}<span style="float:right; color:red"
+                                                                         class="glyphicon glyphicon-triangle-bottom red"></span>
+                            </td>
+                        {% endif %}
+
+{#                        <td class="table-cell" style="text-align: center">#}
+{#                            {% if d|get_transaction_type == "deposit" %}#}
+{#                                {% if d.status == 1 %}#}
+{#                                    Reversed#}
+{#                                {% elif d.status == 2 %}#}
+{#                                    Pending#}
+{#                                {% elif d.status == 3 %}#}
+{#                                    Completed#}
+{#                                {% endif %}#}
+{#                            {% endif %}#}
+{#                        </td>#}
+                        <td class="table-cell">
+                            {% if d|get_transaction_type == "money_transfer" %}
+                                <div class="my_tooltip">
+                                    {{ d|get_payment_sender_receiver:user}}
+                                    <span class="my_tooltiptext">{{ d.comment }}</span>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td class="table-cell">
+                            <a href="/wallets/{{ d.account.account_id }}/" style="color:#3c7cc0">{{ d.account.account_id }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
-            </div>
-            <div id="trans-his-tab-footer" class="row" style=" height:15% ; margin-left: 0 !important;margin-right: 0 !important;">
-                <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
-                <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4">
-{#                    <b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ 1000 }}</b></h5>#}
-            </div>
+        </div>
 {% endblock %}
 </body>
 </html>

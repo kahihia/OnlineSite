@@ -113,7 +113,7 @@ def cash_out_order(request):
             else:
                 if str(user.mobile_number) == str(payee_mobile):
 
-                    bank_account = BankAccount.objects.filter(owner=user, cur_code=currency)
+                    bank_account = BankAccount.objects.filter(owner=user, cur_code=currency, method=BankAccount.DEBIT)
                     if bank_account:
                         bank_account = bank_account[0]
                     else:

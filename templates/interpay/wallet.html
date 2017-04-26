@@ -98,7 +98,11 @@
             function withdraw_form_submit() {
                 document.getElementById("withdraw_convert_form").submit();
             }
-
+            
+            function set_selected_transaction(id) {
+                var temp = document.getElementById("selected_transaction_id");
+                temp.value = id;
+            }
         </script>
     {% endblock %}
 </head>
@@ -227,7 +231,7 @@
                         {% trans 'Status' %}
                     </th>
                     <th class="table-header-cell">
-                        {% trans 'Pay From ( Desc)' %}
+                        {% trans 'Description' %}
                     </th>
                     <th class="table-header-cell">
                         {% trans 'International' %}
@@ -241,7 +245,6 @@
                 {% for d in list %}
                     <tr>
                         <td width="6%" class="table-cell" style="text-align: center">{{ forloop.counter }}</td>
-                        {#                        <td width="10%" class="table-cell" style="text-align: center">{{ d.id }}</td>#}
                         <td width="15%" class="table-cell" style="text-align: center">{{ d.date }}</td>
                         <td class="table-cell" width="15%" style="text-align: center">
                             {{ d.type|get_type }} {% if d|get_is_deposit:user %} Deposit {% else %} Withdraw {% endif %}
@@ -271,21 +274,20 @@
                         <td class="table-cell">
                             {% if d|get_transaction_type == "money_transfer" %}
                                 <div class="my_tooltip">
-                                    {{ d|get_payment_sender_receiver:user}}
+                                    {{ d|get_description}}
                                     <span class="my_tooltiptext">{{ d.comment }}</span>
                                 </div>
+                            {% else %}
+                                {{ d|get_description }}
                             {% endif %}
                         </td>
                         <td class="table-cell">
                             {% if d|get_transaction_type == "deposit" %}
-                                <input type="hidden" name="deposit_id" value="{{ d.id }}">
-                                {% if d.status == 2 %}
-                                    {#                                    <input type="submit" value="Withdraw">#}
+                                <input type="hidden" name="deposit_id{{ d.id }}" value="{{ d.id }}">
+                                {% if d.status == 2 and d.type == '2'%}
 
-                                    <button type="button" data-toggle="modal" data-target="#modal_withdraw">Withdraw
+                                    <button type="button" data-toggle="modal" data-target="#modal_withdraw" onclick="set_selected_transaction({{ d.id }});">Withdraw
                                     </button>
-
-
 
 
                                     <div class="modal fade" id="modal_withdraw" role="dialog">
@@ -355,6 +357,9 @@
             <a href="/wallets/{{ account_id }}">{{ message }}</a>
         </div>
 
+        </div>
+        <div>
+            <input type="hidden" name="selected_transaction_id" id="selected_transaction_id"> 
         </div>
     </form>
 
