@@ -163,14 +163,12 @@ def register(request):
             user_profile.email = user_form.cleaned_data['email']
             # user_profile.date_of_birth = user_profile.cleaned_data['date_of_birth']
             user_profile.password = user.password
-
             user_profile.user = user
             if 'picture' in request.FILES:
                 user_profile.picture = request.FILES['picture']
             if 'national_card_photo' in request.FILES:
                 user_profile.national_card_photo = request.FILES['national_card_photo']
             user_profile.save()
-
 
             mobile_no = registration_form.cleaned_data['mobile_number']
             request.session['mobile_no'] = mobile_no
@@ -212,8 +210,24 @@ def edit(request):
 
 
 @login_required()
-def trans_history(request):
-    return render(request, "interpay/trans_history.html")
+def transaction_history(request):
+    user_bank_accounts = BankAccount.objects.filter(owner__user=request.user, method=BankAccount.DEBIT)
+    up = UserProfile.objects.get(user=request.user)
+    transaction_list = []
+    for item in user_bank_accounts:
+        for item1 in Deposit.objects.filter(account=item):
+            transaction_list.append(item1)
+        for item2 in Withdraw.objects.filter(account=item):
+            transaction_list.append(item2)
+            # for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)).filter(
+            #                 Q(receiver=item) | Q(sender=item)):
+            #     transaction_list.append(item3)
+    transaction_list.sort(key=lambda x: x.date, reverse=True)
+    context = {
+        'transaction_list': transaction_list,
+        'user': up,
+    }
+    return render(request, "interpay/trans_history.html", context)
 
 
 @csrf_exempt
@@ -349,9 +363,11 @@ def pay_user(request):
             if not destination_account:
                 destination_account = BankAccount.objects.create(owner=up, cur_code=currency, method=BankAccount.DEBIT,
                                                                  account_id=make_id())
-            MoneyTransfer.objects.create(sender=src_account, receiver=destination_account,
-                                         date=datetime.datetime.now(),
-                                         amount=amount, comment=comment, cur_code=currency)
+            withdraw = Withdraw.objects.create(account=src_account, amount=amount, cur_code=src_account.cur_code,
+                                               type=Withdraw.PAYMENT)
+            deposit = Deposit.objects.create(account=destination_account, amount=amount,
+                                             cur_code=destination_account.cur_code, type=Deposit.PAYMENT)
+            MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
             return render(request, "interpay/pay_user.html",
                           {'success': 'Your payment was successfully done.', 'langStr': langStr})
         else:
@@ -672,6 +688,12 @@ def bank_accounts(request):
     user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
     mymessage = ''
     bank_account_form = CreateBankAccountForm(data=request.POST)
+    irr_accounts = BankAccount.objects.filter(owner=user_profile, cur_code="IRR", method=BankAccount.DEBIT)
+
+    if irr_accounts:
+        irr_wallet = irr_accounts[0]
+    else:
+        irr_wallet = ""
     if request.method == 'POST':
         if bank_account_form.is_valid():
             cur = bank_account_form.cleaned_data['cur_code']
@@ -694,11 +716,11 @@ def bank_accounts(request):
             new_account.save()
         else:
             if request.POST['account_id']:
-                account = BankAccount.objects.filter(account_id=request.POST['account_id'])
-                amount = request.POST['amount']
+                account = BankAccount.objects.get(account_id=request.POST['account_id'])
+                amount = float(request.POST['amount'])
                 account_id = request.POST['account_id']
                 if account:
-                    account = account[0]
+
                     debit_accounts = BankAccount.objects.filter(owner=account.owner, method=1)
                     if not debit_accounts:
                         bank_account_form = CreateBankAccountForm()
@@ -706,7 +728,9 @@ def bank_accounts(request):
                                                                               method=BankAccount.WITHDRAW)
                         return render(request, 'interpay/bank_accounts.html',
                                       {'error': 'No debit account.', 'bank_accounts_set': bank_accounts_set,
-                                       'form': bank_account_form, 'emessage': mymessage, 'account_id': account_id})
+                                       'form': bank_account_form, 'emessage': mymessage, 'account_id': account_id,
+                                       'irr_account': irr_wallet,
+                                       })
 
                     bank_account_form = CreateBankAccountForm()
                     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile,
@@ -718,23 +742,29 @@ def bank_accounts(request):
                                                                                'form': bank_account_form,
                                                                                'emessage': mymessage,
                                                                                'error': 'Your balance is less than requested amount.',
-                                                                               'account_id': account_id})
+                                                                               'account_id': account_id,
+                                                                               'irr_account': irr_wallet,
+                                                                               })
                     withdraw_request = WithdrawalRequest(src_account=src_account, dest_account=account, amount=amount)
                     withdraw_request.save()
                     return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,
                                                                            'form': bank_account_form,
                                                                            'emessage': mymessage,
                                                                            'success_message': 'Your request successfully saved.',
-                                                                           'account_id': account_id})
+                                                                           'account_id': account_id,
+                                                                           'irr_account': irr_wallet,
+                                                                           })
 
     bank_account_form = CreateBankAccountForm()
     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW) \
         .order_by('name')
-    irr_accounts = BankAccount.objects.filter(cur_code="IRR")
-    if irr_accounts:
-        irr_wallet = irr_accounts[0]
-    else:
-        irr_wallet = ""
+    # irr_accounts = BankAccount.objects.filter(owner=user_profile, cur_code="IRR", method=BankAccount.DEBIT)
+    #
+    # if irr_accounts:
+    #     irr_wallet = irr_accounts[0]
+    # else:
+    #     irr_wallet = ""
+    print (irr_wallet.account_id, " ", irr_wallet.balance)
     return render(request, "interpay/bank_accounts.html", {
         'bank_accounts_set': bank_accounts_set,
         'form': bank_account_form,
@@ -793,9 +823,9 @@ def wallet(request, wallet_id, recom=None):
             transaction_list.append(item1)
         for item2 in Withdraw.objects.filter(account=ba):
             transaction_list.append(item2)
-        for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)).filter(
-                        Q(receiver=ba) | Q(sender=ba)):
-            transaction_list.append(item3)
+        # for item3 in MoneyTransfer.objects.filter(Q(receiver__owner=up) | Q(sender__owner=up)).filter(
+        #                 Q(receiver=ba) | Q(sender=ba)):
+        #     transaction_list.append(item3)
         transaction_list.sort(key=lambda x: x.date, reverse=True)
         context = {
             'account': ba,
@@ -809,31 +839,38 @@ def wallet(request, wallet_id, recom=None):
 @login_required()
 def withdraw_pending_deposit(request):
     if request.method == 'POST':
-        deposit_id = request.POST.get('deposit_id')
+        log.debug("withdraw post")
+        transaction_id = request.POST.get('selected_transaction_id')
+        log.debug(transaction_id)
+        deposit_id = request.POST.get('deposit_id' + str(transaction_id))
+        #log.info(deposit_id)
         deposit = Deposit.objects.get(id=deposit_id)
         deposit.status = Deposit.COMPLETED
         deposit.save()
         account = deposit.account
 
-
         destination_currency = 'IRR'
         new_withdraw = Withdraw.objects.create(account=account, amount=deposit.amount, banker=account.owner,
                                                date=datetime.datetime.now(),
-                                               cur_code=deposit.cur_code)
+                                               cur_code=deposit.cur_code, type=Withdraw.CONVERSION)
         converted_amount = convert(deposit.amount, deposit.cur_code, destination_currency)
-        rial_account = BankAccount.objects.filter(owner=account.owner, cur_code='IRR')
+        rial_account = BankAccount.objects.filter(owner=account.owner, cur_code='IRR', method=BankAccount.DEBIT)
         if rial_account:
+            print ("rial account")
             rial_account = rial_account[0]
         if not rial_account:
+            print ("not rial account")
             rial_account = BankAccount.objects.create(name='wall_account', owner=account.owner,
-                                                             method=BankAccount.DEBIT,
-                                                             cur_code=destination_currency,
-                                                             account_id=make_id())
+                                                      method=BankAccount.DEBIT,
+                                                      cur_code=destination_currency,
+                                                      account_id=make_id())
 
         new_deposit = Deposit.objects.create(account=rial_account, amount=float(converted_amount), banker=account.owner,
-                              date=datetime.datetime.now(), cur_code=destination_currency)
+                                             date=datetime.datetime.now(), cur_code=destination_currency,
+                                             type=Deposit.CONVERSION)
         new_deposit.calculate_comission()
         conversion = CurrencyConversion.objects.create(deposit=new_deposit, withdraw=new_withdraw)
+        print (new_deposit.account.account_id, " ", account.account_id)
         return HttpResponseRedirect('../')
         # context = {
         #     'account_id': account.id,

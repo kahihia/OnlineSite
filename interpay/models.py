@@ -191,14 +191,14 @@ class BankAccount(models.Model):
             # print 'count of sets fix withdraw outcome then deposit'
 
             result -= sum(x.amount for x in self.withdraw_set.all())
-            result -= sum(x.amount for x in self.outcome_transfers.all())  # .on_date_out(current_date, self))
+            # result -= sum(x.amount for x in self.outcome_transfers.all())  # .on_date_out(current_date, self))
 
             # result += sum(x.amount for x in self.deposit_set.on_date_c(current_date, self.cur_code, self))
             # result += sum(x.amount for x in self.deposit_set.all())
             dep_set = self.deposit_set.filter(status=Deposit.COMPLETED)
             result += sum(x.amount for x in dep_set)
             # result += sum(x.commission for x in dep_set)  No need to sum comission as amount = total - comission
-            result += sum(x.amount for x in self.income_transfers.all())  # on_date_in(current_date, self))
+            # result += sum(x.amount for x in self.income_transfers.all())  # on_date_in(current_date, self))
 
             current_date += timedelta(days=1)
             break
@@ -249,24 +249,12 @@ class OperationManager(models.Manager):
         return (super(OperationManager, self).get_queryset()).filter(date__gte=date, receiver=act)
 
 
-class MoneyTransfer(models.Model):
-    # Inter-bank-account money transfer
-    # banker is same as sender
-    sender = models.ForeignKey(BankAccount, related_name='outcome_transfers')
-    receiver = models.ForeignKey(BankAccount, related_name='income_transfers')
-    date = models.DateTimeField(auto_now=True)
-    amount = models.FloatField()
-    comment = models.CharField(max_length=255)
-    cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    objects = OperationManager()
-
-
 class Deposit(models.Model):
     REVERSED = 1
     PENDING = 2
     COMPLETED = 3
     # types
-    CONVERSION = '0'
+    CONVERSION = '4'
     PAYMENT = '1'
     INTERNATIONAL = '2'
     TOP_UP = '3'
@@ -305,15 +293,30 @@ class Deposit(models.Model):
 
 
 class Withdraw(models.Model):
-    CONVERSION = '0'
+    CONVERSION = '4'
     PAYMENT = '1'
-    WITHDRAWAL_REQUEST = '4'
+    WITHDRAWAL_REQUEST = '5'
     account = models.ForeignKey(BankAccount, related_name='withdraw_set')
     amount = models.FloatField()
-    banker = models.ForeignKey(UserProfile)
-    date = models.DateTimeField()
+    banker = models.ForeignKey(UserProfile, null=True)
+    date = models.DateTimeField(default=datetime.now())
     type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=2)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
+    objects = OperationManager()
+
+
+class MoneyTransfer(models.Model):
+    # Inter-bank-account money transfer
+    # banker is same as sender
+    # sender = models.ForeignKey(BankAccount, related_name='outcome_transfers')
+    # receiver = models.ForeignKey(BankAccount, related_name='income_transfers')
+    # date = models.DateTimeField(auto_now=True)
+    # amount = models.FloatField()
+    comment = models.CharField(max_length=255, default="")
+    # cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
+    deposit = models.OneToOneField(Deposit, related_name="payment_deposit")
+    withdraw = models.OneToOneField(Withdraw, related_name="payment_withdraw")
+
     objects = OperationManager()
 
 

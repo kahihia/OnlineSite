@@ -56,7 +56,7 @@ urlpatterns = [
     url(r'^wallets/withdraw_pending_deposit/$', views.withdraw_pending_deposit),
     # url(r'^wallets/euros/$', views.convert_euro),
     # url(r'^wallets/pounds/$', views.convert_pound),
-    url(r'^trans-history/', views.trans_history),
+    url(r'^trans-history/', views.transaction_history),
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
     url(r'^register/$', views.register, name='register'),
@@ -100,7 +100,7 @@ urlpatterns += i18n_patterns(
     # url(r'^login/$', views.user_login, name='login'),
     # url(r'^logout/$', views.user_logout, name='logout'),
     # url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
     url(r'session_security/', include('session_security.urls')),
 
     url(r'^first/$', views.main_page),

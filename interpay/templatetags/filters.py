@@ -85,10 +85,31 @@ def withdraw_convert_currency(amount, source_currency):
 @register.filter()
 def get_type(transaction_type):
     if transaction_type:
-        return TYPE_CHOICES[int(transaction_type)][1]
+        return TYPE_CHOICES[int(transaction_type)-1][1]
     else:
         return 'Payment'
 
 @register.filter
 def get_review_user(payment):
         return payment.id
+
+@register.filter()
+def get_description(transaction):
+    if type(transaction) == Deposit:
+        if transaction.type == Deposit.CONVERSION:
+            conversion = CurrencyConversion.objects.get(deposit=transaction)
+
+            return "From " + get_currency(conversion.withdraw.cur_code)
+        elif transaction.type == Deposit.PAYMENT:
+            transfer = MoneyTransfer.objects.get(deposit=transaction)
+            return "From " + transfer.withdraw.account.owner.user.first_name + " " + transfer.withdraw.account.owner.user.last_name
+
+    if type(transaction) == Withdraw:
+        if transaction.type == Withdraw.CONVERSION:
+            print ("shdfjkshgadkfaksdhf", transaction.id)
+            conversion = CurrencyConversion.objects.get(withdraw=transaction)
+            return "To " + get_currency(conversion.deposit.cur_code)
+        elif transaction.type == Deposit.PAYMENT:
+            transfer = MoneyTransfer.objects.get(withdraw=transaction)
+            return "To " + transfer.deposit.account.owner.user.first_name + " " + transfer.deposit.account.owner.user.last_name
+    return ""

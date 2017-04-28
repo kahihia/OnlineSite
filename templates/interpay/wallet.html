@@ -31,9 +31,9 @@
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
         <script>
-            $(document).ready(function () {
-                var inf = $('#message').text();
-                      if( $('#message').text().length!=14)
+             $(document).ready(function () {
+          var inf = $('#message').text();
+          if( $('#message').text().length!=14)
             {
                     swal({
               title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
@@ -95,28 +95,31 @@
                 document.getElementById("withdraw_convert_form").submit();
             }
 
-        </script>
+            function set_selected_transaction(id) {
+                var temp = document.getElementById("selected_transaction_id");
+                temp.value = id;
+            }
 
-        <script>
-            function review_modal() {
-                var rate_radio = document.getElementsByName("star");
-                for (var i = 0, length = rate_radio.length; i < length; i++) {
+
+             function review_modal() {
+                 var rate_radio = document.getElementsByName("star");
+
+                 for (var i = 0, length = rate_radio.length; i < length; i++) {
                     if (rate_radio[i].checked) {
                     rate = rate_radio[i].value;
                     }
                 }
-            var input_rate = document.getElementById("input_rate");
-            input_rate.value = rate;
-            console.log(input_rate);
 
-           document.getElementById("reviewform").submit();
+                 var input_rate = document.getElementById("input_rate");
+                 input_rate.value = rate;
+                 console.log(input_rate);
+                 document.getElementById("reviewform").submit();
             }
             function review_save_user(user_id){
                 var rform = document.getElementById("review_user_id");
                 rform.value = user_id
                 console.log(rform);
             }
-
         </script>
     {% endblock %}
 </head>
@@ -138,7 +141,7 @@
             </div>
             <div class="modal-body">
                 <div class="stars">
-                    <form action="{% url 'dynamic_review' %}" method="post" id="reviewform" style="clear: inherit">
+                    <form action="{% url 'dynamic_review' %}" method="post" id="reviewform">
                     {% csrf_token %}
                         <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
                         <label class="star star-5" for="star-5"></label>
@@ -285,7 +288,7 @@
                         {% trans 'Status' %}
                     </th>
                     <th class="table-header-cell">
-                        {% trans 'Pay From ( Desc)' %}
+                        {% trans 'Description' %}
                     </th>
                     <th class="table-header-cell">
                         {% trans 'International' %}
@@ -299,7 +302,6 @@
                 {% for d in list %}
                     <tr>
                         <td width="6%" class="table-cell" style="text-align: center">{{ forloop.counter }}</td>
-                        {#                        <td width="10%" class="table-cell" style="text-align: center">{{ d.id }}</td>#}
                         <td width="15%" class="table-cell" style="text-align: center">{{ d.date }}</td>
                         <td class="table-cell" width="15%" style="text-align: center">
                             {{ d.type|get_type }} {% if d|get_is_deposit:user_profile %} Deposit {% else %} Withdraw {% endif %}
@@ -329,7 +331,7 @@
                         <td class="table-cell">
                             {% if d|get_transaction_type == "money_transfer" %}
                                 <div class="my_tooltip">
-                                    {{ d|get_payment_sender_receiver:user_profile}}
+                                    {{ d|get_description}}
                                     <span class="my_tooltiptext">{{ d.comment }}</span>
                                 </div>
 
@@ -342,11 +344,10 @@
                         </td>
                         <td class="table-cell">
                             {% if d|get_transaction_type == "deposit" %}
-                                <input type="hidden" name="deposit_id" value="{{ d.id }}">
-                                {% if d.status == 2 %}
-                                    {#                                    <input type="submit" value="Withdraw">#}
+                                <input type="hidden" name="deposit_id{{ d.id }}" value="{{ d.id }}">
+                                {% if d.status == 2 and d.type == '2'%}
 
-                                    <button type="button" data-toggle="modal" data-target="#modal_withdraw">Withdraw
+                                    <button type="button" data-toggle="modal" data-target="#modal_withdraw" onclick="set_selected_transaction({{ d.id }});">Withdraw
                                     </button>
 
 
