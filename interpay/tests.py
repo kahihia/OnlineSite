@@ -50,8 +50,8 @@ class PaymentTestCase(TestCase):
         dest = UserProfile.objects.get(user__email='b@c.com')
         self.assertEqual(post_response.status_code, 200)
         dest_account = BankAccount.objects.get(owner=dest)
-        for temp in MoneyTransfer.objects.all():
-            print (temp.amount, " ", temp.comment, " ", temp.sender.id, " ", temp.receiver.id, " ", temp.date)
+        # for temp in MoneyTransfer.objects.all():
+        #     print (temp.amount, " ", temp.comment, " ", temp.sender.id, " ", temp.receiver.id, " ", temp.date)
         self.assertEqual(dest_account.balance, 100)
 
         post_response = c.post('/pay_user/',
