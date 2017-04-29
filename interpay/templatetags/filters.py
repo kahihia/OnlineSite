@@ -37,10 +37,12 @@ def get_transfer_type(transfer, user):
 
 @register.filter
 def get_payment_sender_receiver(payment, user):
-    if payment.sender.owner == user:
-        return payment.receiver.owner.user.first_name + " " + payment.receiver.owner.user.last_name
-    elif payment.receiver.owner == user:
-        return payment.sender.owner.user.first_name + " " + payment.sender.owner.user.last_name
+    if payment.withdraw.banker == user:
+        cuser = payment.deposit.banker
+        return cuser.first_name + " " + cuser.last_name
+    elif payment.deposit.banker == user:
+        cuser = payment.withdraw.banker
+        return cuser.first_name + " " + cuser.last_name
 
 
 @register.filter()
@@ -88,6 +90,18 @@ def get_type(transaction_type):
         return TYPE_CHOICES[int(transaction_type)-1][1]
     else:
         return 'Payment'
+
+@register.filter
+def get_moneytransfer(transaction):
+    if type(transaction) == Deposit:
+       if transaction.type == Deposit.PAYMENT:
+           transfer = MoneyTransfer.objects.get(deposit=transaction)
+           return transfer.id
+
+    if type(transaction) == Withdraw:
+        if transaction.type == Deposit.PAYMENT:
+            transfer = MoneyTransfer.objects.get(withdraw=transaction)
+            return transfer.id
 
 
 @register.filter()

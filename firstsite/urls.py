@@ -49,7 +49,7 @@ urlpatterns = [
     url(r'^first/$', views.main_page),
     url(r'^home/', views.home),
     url(r'^wallets/$', views.wallets),
-    url(r'^wallets/convert_currency/$', views.convert_currency),
+    url(r'^wallets/convert_currency/$', views.convert_currency, name="wallet"),
     url(r'^wallets/(?P<wallet_id>\d+)/$', views.wallet),
     url(r'^wallets/(?P<wallet_id>\d+)/(?P<recom>\w+)/$', views.wallet),
     url(r'^wallets/actual_convert/$', views.actual_convert),
@@ -83,6 +83,7 @@ urlpatterns = [
     url(r'^services/', views.services, name='services'),
     url(r'^contact_email/$', views.contact_email, name='contact_email'),
     url(r'^rating_by_email/$', views.rating_by_email),
+    url(r'^dynamic_rating/$', views.dynamic_rating, name='dynamic_review'),
 ]
 
 urlpatterns += i18n_patterns(
@@ -99,14 +100,14 @@ urlpatterns += i18n_patterns(
     # url(r'^login/$', views.user_login, name='login'),
     # url(r'^logout/$', views.user_logout, name='logout'),
     # url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
     url(r'session_security/', include('session_security.urls')),
 
     url(r'^first/$', views.main_page),
     url(r'^home/', views.home),
     url('^manager/', include('manager.urls')),
     url(r'^wallets/$', views.wallets),
-    url(r'^wallets/(?P<wallet_id>\d+)/$', views.wallet),
+    url(r'^wallets/(?P<wallet_id>\d+)/$', views.wallet, name="wallet"),
     url(r'^wallets/(?P<wallet_id>\d+)/(?P<recom>\w+)/$', views.wallet),
     url(r'^wallets/actual_convert/$', views.actual_convert),
     url(r'^trans-history/', views.transaction_history),
@@ -133,5 +134,6 @@ urlpatterns += i18n_patterns(
     url(r'^services/', views.services, name='services'),
     url(r'^contact_email/$', views.contact_email, name='contact_email'),
     url(r'^rating_by_email/$', views.rating_by_email),
+    url(r'^dynamic_rating/$', views.dynamic_rating, name='dynamic_review'),
 )
 

@@ -363,9 +363,9 @@ def pay_user(request):
             if not destination_account:
                 destination_account = BankAccount.objects.create(owner=up, cur_code=currency, method=BankAccount.DEBIT,
                                                                  account_id=make_id())
-            withdraw = Withdraw.objects.create(account=src_account, amount=amount, cur_code=src_account.cur_code,
+            withdraw = Withdraw.objects.create(banker=src_account_owner, account=src_account, amount=amount, cur_code=src_account.cur_code,
                                                type=Withdraw.PAYMENT)
-            deposit = Deposit.objects.create(account=destination_account, amount=amount,
+            deposit = Deposit.objects.create(banker=up, account=destination_account, amount=amount,
                                              cur_code=destination_account.cur_code, type=Deposit.PAYMENT)
             MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
             return render(request, "interpay/pay_user.html",
@@ -620,14 +620,13 @@ mobile = '09123456789'
 
 
 def zarinpal_payment_gate(request, amount):
+
     amount = int(amount) / 10
 
     if request.LANGUAGE_CODE == 'en-gb':
-        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + str(
-            amount)  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
     else:
-        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + str(
-            amount)  # TODO : this should be changed to our website url
+        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
@@ -721,7 +720,7 @@ def bank_accounts(request):
                 amount = float(request.POST['amount'])
                 account_id = request.POST['account_id']
                 if account:
-                    # account = account[0]
+
                     debit_accounts = BankAccount.objects.filter(owner=account.owner, method=1)
                     if not debit_accounts:
                         bank_account_form = CreateBankAccountForm()
@@ -811,8 +810,10 @@ def wallets(request):
 
 @login_required()
 def wallet(request, wallet_id, recom=None):
-    ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
+
+    ba = BankAccount.objects.get(owner__user=request.user, account_id=wallet_id, method=BankAccount.DEBIT)
     up = ba.owner
+    #assert(request.user.id==ba.owner.id)
     if request.method == "GET":
         recom = request.GET.get("recom")
         if recom is None:
@@ -832,7 +833,7 @@ def wallet(request, wallet_id, recom=None):
             'account': ba,
             'recommended': recommended,
             'list': transaction_list,
-            'user': up
+            'user_profile': up
         }
         return render(request, "interpay/wallet.html", context)
 
@@ -840,11 +841,11 @@ def wallet(request, wallet_id, recom=None):
 @login_required()
 def withdraw_pending_deposit(request):
     if request.method == 'POST':
-        print ("withdraw post")
+        log.debug("withdraw post")
         transaction_id = request.POST.get('selected_transaction_id')
-        print (transaction_id)
+        log.debug(transaction_id)
         deposit_id = request.POST.get('deposit_id' + str(transaction_id))
-        print (deposit_id)
+        #log.info(deposit_id)
         deposit = Deposit.objects.get(id=deposit_id)
         deposit.status = Deposit.COMPLETED
         deposit.save()
@@ -1096,10 +1097,17 @@ def rating_by_email(request):
     email = request.GET.get('email')
     mobile = request.GET.get('mobile')
     response_data = {}
+    userprofile = models.UserProfile.objects.get(email=email)
+    log.debug("Getting rating by email")
 
-    total_rate = 2.5
+    review_numbers = models.Review.objects.filter(user=userprofile).count()
+    log.debug("Getting rating by email")
+
+    # total_review = models.Review.objects.filter(user_id=user_id)
+    print review_numbers
+    total_rate = userprofile.review
+    # review_numbers = 10
     response_data['result'] = total_rate.__str__()
-    review_numbers = 1000
     response_data['result2'] = review_numbers.__str__()
 
     return HttpResponse(
@@ -1107,6 +1115,54 @@ def rating_by_email(request):
         content_type="application/json"
     )
 
+
+@login_required()
+def dynamic_rating(request):
+    if request.method == 'POST':
+        rate = request.POST.get('input_rate')
+        mt_id = request.POST.get('review_moneytransfer_id')
+
+        monTrans = models.MoneyTransfer.objects.get(id=mt_id)
+        # check if user__username should be used TODO
+        reviewer = models.UserProfile.objects.get(user=request.user)
+        print reviewer, rate,mt_id
+        # user = ''
+        if monTrans.withdraw.account.owner == reviewer:
+            ty = "Buyer"
+            account = monTrans.withdraw.account
+            user = monTrans.deposit.account.owner
+
+        else:
+            ty = "Seller"
+            account = monTrans.deposit.account
+            user = monTrans.withdraw.account.owner
+
+        print reviewer
+        print ty
+        created = True
+        reviewing = None
+
+        try:
+            reviewing = models.Review.objects.get(money_transfer=monTrans)
+        except models.Review.DoesNotExist:
+            log.info("no previous review for this transaction")
+            created = False
+        if not created:
+            reviewing = models.Review.objects.create(
+                review=rate,
+                comments=" ",
+                type=ty,
+                reviewer=reviewer,
+                user=user,
+                money_transfer=monTrans
+            )
+            reviewing.save()
+        else:
+            reviewing.review = rate
+            reviewing.save()
+
+        return HttpResponseRedirect(reverse('wallet', args=[account.account_id]))
+        #return render(request,  "interpay/wallet.html")
 
 
         # if request.POST['action'] == 'change_national_photo':

@@ -73,6 +73,12 @@ class UserProfile(models.Model):
         #         # we're operating on an existing object, not a new one...
         #         country = self.instance.country
         #         cities = self.fields["new_city"] = ChoiceField(choices=cities)
+    @property
+    def review(self):
+        result = 0
+        result += sum(x.review for x in self.users_review.all())
+        result /= float(self.users_review.count())
+        return result
 
 
 class CommonUser(models.Model):
@@ -161,6 +167,8 @@ class BankAccount(models.Model):
 
     def total_value(self):
         t_value = Decimal(0)
+        log.info("totalValue")
+        print "calc tt value"
         total_estimate = defaultdict(lambda: Decimal(0.0))
         accounts = BankAccount.objects.filter(owner=self.owner, method=BankAccount.DEBIT)
         for account in accounts:
@@ -257,7 +265,7 @@ class Deposit(models.Model):
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     tracking_code = models.IntegerField(default='0')
-    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=2)
+    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=3)
     commission = models.FloatField(default=0)
     status = models.IntegerField(default=COMPLETED)
     objects = OperationManager()
@@ -292,7 +300,7 @@ class Withdraw(models.Model):
     amount = models.FloatField()
     banker = models.ForeignKey(UserProfile, null=True)
     date = models.DateTimeField(default=datetime.now())
-    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=2)
+    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=3)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
 
@@ -300,14 +308,11 @@ class Withdraw(models.Model):
 class MoneyTransfer(models.Model):
     # Inter-bank-account money transfer
     # banker is same as sender
-    # sender = models.ForeignKey(BankAccount, related_name='outcome_transfers')
-    # receiver = models.ForeignKey(BankAccount, related_name='income_transfers')
-    # date = models.DateTimeField(auto_now=True)
-    # amount = models.FloatField()
-    comment = models.CharField(max_length=255, default="")
+
+    comment = models.CharField(max_length=255, default="None")
     # cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    deposit = models.OneToOneField(Deposit, related_name="payment_deposit")
-    withdraw = models.OneToOneField(Withdraw, related_name="payment_withdraw")
+    deposit = models.OneToOneField(Deposit, related_name= "payment_deposit")
+    withdraw = models.OneToOneField(Withdraw, related_name= "payment_withdraw")
 
     objects = OperationManager()
 
@@ -354,3 +359,19 @@ class CurrencyReserve(models.Model):
 
     def __str__(self):
         return self.currency
+
+
+class Review(models.Model):
+    review = models.IntegerField(default=1)
+    comments = models.CharField(max_length=255)
+    type = models.CharField(max_length=20)
+    reviewer = models.ForeignKey(UserProfile, null=True, related_name='reviewers')
+    user = models.ForeignKey(UserProfile, null=True, related_name='users_review')
+    money_transfer = models.OneToOneField(MoneyTransfer, null=False, related_name='transfer')
+
+
+
+
+
+
+

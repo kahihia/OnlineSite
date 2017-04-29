@@ -32,7 +32,7 @@ function notifyMe() {
     });
 
     notification.onclick = function () {
-      window.open("http://127.0.0.1:8000/home/");
+      window.open("/home/");
     };
 
   }
@@ -67,7 +67,7 @@ function notifyMe() {
         </p>
         <br>
         <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">
-             <b>{% trans 'Your total stock in' %} {% trans 'USD is ' %} ~ {{ accountList.first.total_value }}</b>
+             {% trans 'Your total wallet value is' %} USD {{ accountList.first.total_value }}
         </p>
     </div>
 {% endblock %}
