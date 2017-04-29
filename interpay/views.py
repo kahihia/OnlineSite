@@ -363,9 +363,9 @@ def pay_user(request):
             if not destination_account:
                 destination_account = BankAccount.objects.create(owner=up, cur_code=currency, method=BankAccount.DEBIT,
                                                                  account_id=make_id())
-            withdraw = Withdraw.objects.create(account=src_account, amount=amount, cur_code=src_account.cur_code,
+            withdraw = Withdraw.objects.create(banker=src_account_owner, account=src_account, amount=amount, cur_code=src_account.cur_code,
                                                type=Withdraw.PAYMENT)
-            deposit = Deposit.objects.create(account=destination_account, amount=amount,
+            deposit = Deposit.objects.create(banker=up, account=destination_account, amount=amount,
                                              cur_code=destination_account.cur_code, type=Deposit.PAYMENT)
             MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
             return render(request, "interpay/pay_user.html",
@@ -810,8 +810,10 @@ def wallets(request):
 
 @login_required()
 def wallet(request, wallet_id, recom=None):
-    ba = BankAccount.objects.get(account_id=wallet_id, method=BankAccount.DEBIT)
+
+    ba = BankAccount.objects.get(owner__user=request.user, account_id=wallet_id, method=BankAccount.DEBIT)
     up = ba.owner
+    #assert(request.user.id==ba.owner.id)
     if request.method == "GET":
         recom = request.GET.get("recom")
         if recom is None:
@@ -1118,19 +1120,24 @@ def rating_by_email(request):
 def dynamic_rating(request):
     if request.method == 'POST':
         rate = request.POST.get('input_rate')
-        user_id = request.POST.get('review_user_id')
-        monTrans = models.MoneyTransfer.objects.get(id=user_id)
+        mt_id = request.POST.get('review_moneytransfer_id')
+
+        monTrans = models.MoneyTransfer.objects.get(id=mt_id)
         # check if user__username should be used TODO
         reviewer = models.UserProfile.objects.get(user=request.user)
-        print reviewer
+        print reviewer, rate,mt_id
         # user = ''
-        if monTrans.sender.id == reviewer.id:
+        if monTrans.withdraw.account.owner == reviewer:
             ty = "Buyer"
-            user = monTrans.receiver.owner
+            account = monTrans.withdraw.account
+            user = monTrans.deposit.account.owner
+
         else:
             ty = "Seller"
-            user = monTrans.sender.owner
-        print user
+            account = monTrans.deposit.account
+            user = monTrans.withdraw.account.owner
+
+        print reviewer
         print ty
         created = True
         reviewing = None
@@ -1149,11 +1156,13 @@ def dynamic_rating(request):
                 user=user,
                 money_transfer=monTrans
             )
+            reviewing.save()
         else:
             reviewing.review = rate
             reviewing.save()
 
-        return render(request,  "interpay/wallet.html")
+        return HttpResponseRedirect(reverse('wallet', args=[account.account_id]))
+        #return render(request,  "interpay/wallet.html")
 
 
         # if request.POST['action'] == 'change_national_photo':

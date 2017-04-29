@@ -265,7 +265,7 @@ class Deposit(models.Model):
     date = models.DateTimeField(auto_now=True)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     tracking_code = models.IntegerField(default='0')
-    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=2)
+    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=3)
     commission = models.FloatField(default=0)
     status = models.IntegerField(default=COMPLETED)
     objects = OperationManager()
@@ -300,7 +300,7 @@ class Withdraw(models.Model):
     amount = models.FloatField()
     banker = models.ForeignKey(UserProfile, null=True)
     date = models.DateTimeField(default=datetime.now())
-    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=2)
+    type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=3)
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     objects = OperationManager()
 
@@ -308,14 +308,11 @@ class Withdraw(models.Model):
 class MoneyTransfer(models.Model):
     # Inter-bank-account money transfer
     # banker is same as sender
-    # sender = models.ForeignKey(BankAccount, related_name='outcome_transfers')
-    # receiver = models.ForeignKey(BankAccount, related_name='income_transfers')
-    # date = models.DateTimeField(auto_now=True)
-    # amount = models.FloatField()
-    comment = models.CharField(max_length=255, default="")
+
+    comment = models.CharField(max_length=255, default="None")
     # cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    deposit = models.OneToOneField(Deposit, related_name="payment_deposit")
-    withdraw = models.OneToOneField(Withdraw, related_name="payment_withdraw")
+    deposit = models.OneToOneField(Deposit, related_name= "payment_deposit")
+    withdraw = models.OneToOneField(Withdraw, related_name= "payment_withdraw")
 
     objects = OperationManager()
 
@@ -365,7 +362,7 @@ class CurrencyReserve(models.Model):
 
 
 class Review(models.Model):
-    review = models.IntegerField(default=0)
+    review = models.IntegerField(default=1)
     comments = models.CharField(max_length=255)
     type = models.CharField(max_length=20)
     reviewer = models.ForeignKey(UserProfile, null=True, related_name='reviewers')

@@ -115,9 +115,9 @@
                  console.log(input_rate);
                  document.getElementById("reviewform").submit();
             }
-            function review_save_user(user_id){
-                var rform = document.getElementById("review_user_id");
-                rform.value = user_id
+            function get_moneytransfer_id(id){
+                var rform = document.getElementById("review_moneytransfer_id");
+                rform.value = id
                 console.log(rform);
             }
         </script>
@@ -154,7 +154,7 @@
                         <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
                         <label class="star star-1" for="star-1"></label>
                         <input type="hidden" name="input_rate" id="input_rate">
-                        <input type="hidden" id="review_user_id" name="review_user_id">
+                        <input type="hidden" id="review_moneytransfer_id" name="review_moneytransfer_id">
 
                         <button type="button" name="btnsubmit" value="btnsubmit"  onclick="review_modal()" class="btn btn-default"  style="float: left;">
                             Submit Review
@@ -329,13 +329,14 @@
                             {% endif %}
                         </td>
                         <td class="table-cell">
-                            {% if d|get_transaction_type == "money_transfer" %}
+                        {#  type 1 is payment or moneytransfer #}
+                            {% if d.type == '1' %}
                                 <div class="my_tooltip">
                                     {{ d|get_description}}
                                     <span class="my_tooltiptext">{{ d.comment }}</span>
                                 </div>
 
-                                <a data-toggle="modal" href="#ReviewModal" onclick="review_save_user('{{ d|get_review_user}}')">Review</a>
+                                <a data-toggle="modal" href="#ReviewModal" onclick="get_moneytransfer_id('{{ d|get_moneytransfer}}')">Review</a>
 {#                                <div class="modal fade" id="ReviewModal" role="dialog">#}
 
 {#                                </div>#}
@@ -343,7 +344,7 @@
                             {% endif %}
                         </td>
                         <td class="table-cell">
-                            {% if d|get_transaction_type == "deposit" %}
+                            {% if d.type == '1' %}
                                 <input type="hidden" name="deposit_id{{ d.id }}" value="{{ d.id }}">
                                 {% if d.status == 2 and d.type == '2'%}
 
