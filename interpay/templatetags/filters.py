@@ -109,7 +109,6 @@ def get_description(transaction):
     if type(transaction) == Deposit:
         if transaction.type == Deposit.CONVERSION:
             conversion = CurrencyConversion.objects.get(deposit=transaction)
-
             return "From " + get_currency(conversion.withdraw.cur_code)
         elif transaction.type == Deposit.PAYMENT:
             transfer = MoneyTransfer.objects.get(deposit=transaction)
@@ -117,7 +116,6 @@ def get_description(transaction):
 
     if type(transaction) == Withdraw:
         if transaction.type == Withdraw.CONVERSION:
-            print ("shdfjkshgadkfaksdhf", transaction.id)
             conversion = CurrencyConversion.objects.get(withdraw=transaction)
             return "To " + get_currency(conversion.deposit.cur_code)
         elif transaction.type == Deposit.PAYMENT:

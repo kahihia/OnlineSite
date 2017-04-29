@@ -311,8 +311,8 @@ class MoneyTransfer(models.Model):
 
     comment = models.CharField(max_length=255, default="None")
     # cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
-    deposit = models.OneToOneField(Deposit, related_name= "payment_deposit")
-    withdraw = models.OneToOneField(Withdraw, related_name= "payment_withdraw")
+    deposit = models.OneToOneField(Deposit, related_name= "payment_transfer")
+    withdraw = models.OneToOneField(Withdraw, related_name= "payment_transfer")
 
     objects = OperationManager()
 

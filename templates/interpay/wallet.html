@@ -333,7 +333,7 @@
                             {% if d.type == '1' %}
                                 <div class="my_tooltip">
                                     {{ d|get_description}}
-                                    <span class="my_tooltiptext">{{ d.comment }}</span>
+                                    <span class="my_tooltiptext">{{ d.payment_transfer.comment }}</span>
                                 </div>
 
                                 <a data-toggle="modal" href="#ReviewModal" onclick="get_moneytransfer_id('{{ d|get_moneytransfer}}')">Review</a>
