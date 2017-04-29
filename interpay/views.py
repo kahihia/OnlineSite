@@ -475,8 +475,10 @@ def user_login(request):
         if not next:
             next = "/home/"
     if request.get_full_path() == "/login/?next=/home/":
-        return render(request, 'interpay/index.html',
-                      {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
+        log.info("logging user out")
+        user_logout(request)
+        # return render(request, 'interpay/index.html',
+                   #   {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
     if request.method == 'POST':
         next = request.POST.get("next")
         if not next:
