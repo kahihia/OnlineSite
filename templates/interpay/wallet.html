@@ -133,7 +133,7 @@
 {% endblock %}
 {% block cont-body %}
     <div class="modal fade" id="ReviewModal" role="dialog">
-     <div class="modal-dialog" id="rmodal">
+     <div class="modal-dialog" style="width:400px;" id="rmodal">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -155,23 +155,24 @@
                         <label class="star star-1" for="star-1"></label>
                         <input type="hidden" name="input_rate" id="input_rate">
                         <input type="hidden" id="review_moneytransfer_id" name="review_moneytransfer_id">
+                        Comment: <input type="text" name="review_comment"/>
 
-                        <button type="button" name="btnsubmit" value="btnsubmit"  onclick="review_modal()" class="btn btn-default"  style="float: left;">
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                       <button type="button" name="btnsubmit" value="btnsubmit"  onclick="review_modal()" class="btn btn-default"  style="float: left;">
                             Submit Review
                         </button>
 
                         <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">
                             Close
                         </button>
-                    </form>
                 </div>
-            </div>
-            <div class="modal-footer">
-
             </div>
         </div>
     </div>
-  </div>
 
 
     <div class="table-responsive">
@@ -336,10 +337,9 @@
                                     <span class="my_tooltiptext">{{ d.payment_transfer.comment }}</span>
                                 </div>
 
-                                <a data-toggle="modal" href="#ReviewModal" onclick="get_moneytransfer_id('{{ d|get_moneytransfer}}')">Review</a>
-{#                                <div class="modal fade" id="ReviewModal" role="dialog">#}
-
-{#                                </div>#}
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ReviewModal" onclick="get_moneytransfer_id('{{ d|get_moneytransfer}}')">
+                                    {% trans 'Review' %}
+                                </button>
 
                             {% endif %}
                         </td>

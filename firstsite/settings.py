@@ -86,6 +86,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'firstsite.urls'
 # AUTO_LOGOUT_DELAY = 30
+# CHECK AND SET ON SERVER
+# SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_AGE = 30 * 60
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
