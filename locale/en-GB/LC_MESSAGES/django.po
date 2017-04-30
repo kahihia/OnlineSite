@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-30 16:51+0430\n"
+"POT-Creation-Date: 2017-04-30 19:04+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,16 +45,20 @@ msgstr ""
 msgid "Mobile (Example: 09121234567)"
 msgstr ""
 
-#: interpay/models.py:105 interpay/models.py:164 interpay/models.py:266
-#: interpay/models.py:304
+#: interpay/models.py:108 interpay/models.py:167 interpay/models.py:272
+#: interpay/models.py:310
 msgid "cur_code"
 msgstr ""
 
-#: interpay/models.py:162 templates/interpay/top_up.html:187
+#: interpay/models.py:165 templates/interpay/top_up.html:187
 #: templates/interpay/trans_history.html:127
-#: templates/interpay/wallet.html:279
+#: templates/interpay/wallet.html:280
 #: templates/manager/manager-withdrawal-requests.html:53
 msgid "Date"
+msgstr ""
+
+#: interpay/views.py:677
+msgid "Your account charged successfully"
 msgstr ""
 
 #: templates/interpay/activate_account.html:44
@@ -108,7 +112,7 @@ msgstr ""
 #: templates/interpay/bank_accounts.html:159
 #: templates/interpay/top_up.html:181
 #: templates/interpay/trans_history.html:124
-#: templates/interpay/wallet.html:276
+#: templates/interpay/wallet.html:277
 msgid "Index"
 msgstr ""
 
@@ -323,7 +327,7 @@ msgstr ""
 
 #: templates/interpay/pay_user.html:291 templates/interpay/top_up.html:199
 #: templates/interpay/trans_history.html:133
-#: templates/interpay/wallet.html:240 templates/interpay/wallet.html:285
+#: templates/interpay/wallet.html:241 templates/interpay/wallet.html:286
 #: templates/interpay/wallets.html:141
 #: templates/manager/manager-withdrawal-requests.html:56
 msgid "Amount"
@@ -419,7 +423,7 @@ msgstr ""
 msgid "Payment Type"
 msgstr ""
 
-#: templates/interpay/top_up.html:117 templates/interpay/wallet.html:185
+#: templates/interpay/top_up.html:117 templates/interpay/wallet.html:186
 #: templates/interpay/wallets.html:81
 msgid "Wallet Type"
 msgstr ""
@@ -444,7 +448,7 @@ msgstr ""
 msgid "Recharge ID"
 msgstr ""
 
-#: templates/interpay/top_up.html:190 templates/interpay/wallet.html:182
+#: templates/interpay/top_up.html:190 templates/interpay/wallet.html:183
 #: templates/interpay/wallets.html:78
 msgid "Wallet Code"
 msgstr ""
@@ -453,7 +457,7 @@ msgstr ""
 msgid "Card Type"
 msgstr ""
 
-#: templates/interpay/top_up.html:202 templates/interpay/wallet.html:288
+#: templates/interpay/top_up.html:202 templates/interpay/wallet.html:289
 #: templates/manager/manager-withdrawal-requests.html:50
 msgid "Status"
 msgstr ""
@@ -463,12 +467,12 @@ msgid "Transaction History "
 msgstr ""
 
 #: templates/interpay/trans_history.html:130
-#: templates/interpay/wallet.html:282
+#: templates/interpay/wallet.html:283
 msgid "Type"
 msgstr ""
 
 #: templates/interpay/trans_history.html:139
-#: templates/interpay/wallet.html:291
+#: templates/interpay/wallet.html:292
 msgid "Description"
 msgstr ""
 
@@ -501,41 +505,45 @@ msgstr ""
 msgid "Your conversion is in process"
 msgstr ""
 
-#: templates/interpay/wallet.html:188 templates/interpay/wallets.html:84
+#: templates/interpay/wallet.html:189 templates/interpay/wallets.html:84
 msgid "Currency Name"
 msgstr ""
 
-#: templates/interpay/wallet.html:191 templates/interpay/wallets.html:87
+#: templates/interpay/wallet.html:192 templates/interpay/wallets.html:87
 msgid "Currency Symbol"
 msgstr ""
 
-#: templates/interpay/wallet.html:194 templates/interpay/wallets.html:90
+#: templates/interpay/wallet.html:195 templates/interpay/wallets.html:90
 msgid "Balance"
 msgstr ""
 
-#: templates/interpay/wallet.html:197 templates/interpay/wallets.html:93
+#: templates/interpay/wallet.html:198 templates/interpay/wallets.html:93
 msgid "Wallet Description"
 msgstr ""
 
-#: templates/interpay/wallet.html:226 templates/interpay/wallet.html:232
+#: templates/interpay/wallet.html:227 templates/interpay/wallet.html:233
 msgid "Convert"
 msgstr ""
 
-#: templates/interpay/wallet.html:242 templates/interpay/wallet.html:377
+#: templates/interpay/wallet.html:243 templates/interpay/wallet.html:377
 #: templates/interpay/wallets.html:143
 msgid "To Currency"
 msgstr ""
 
-#: templates/interpay/wallet.html:271
+#: templates/interpay/wallet.html:272
 msgid "Transactions"
 msgstr ""
 
-#: templates/interpay/wallet.html:294
+#: templates/interpay/wallet.html:295
 msgid "International"
 msgstr ""
 
-#: templates/interpay/wallet.html:297
+#: templates/interpay/wallet.html:298
 msgid "Transaction"
+msgstr ""
+
+#: templates/interpay/wallet.html:341
+msgid "Review"
 msgstr ""
 
 #: templates/interpay/wallet.html:375

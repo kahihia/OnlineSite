@@ -43,6 +43,7 @@ import logging
 import requests
 import BeautifulSoup
 import xml.sax
+from django.utils.translation import ugettext_lazy as _
 
 log = logging.getLogger('interpay')
 
@@ -342,6 +343,10 @@ def pay_user(request):
                 return render(request, 'interpay/pay_user.html', {'error': 'No user with this mobile number.'})
         else:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter destination email or mobile.'})
+
+        if(up.user==request.user):
+            return render(request, 'interpay/pay_user.html', {'error': 'You cannot send payment to yourself'})
+
         destination_account = ""
         if up:
             user_debit_accounts = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT)
@@ -369,10 +374,10 @@ def pay_user(request):
                                              cur_code=destination_account.cur_code, type=Deposit.PAYMENT)
             MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
             return render(request, "interpay/pay_user.html",
-                          {'success': 'Your payment was successfully done.', 'langStr': langStr})
+                          {'success': _('Your payment was successfully done'), 'langStr': langStr})
         else:
             return render(request, 'interpay/pay_user.html',
-                          {'error': 'You do not have any account in this currency. '})
+                          {'error': _('You do not have any account in this currency')})
     return render(request, "interpay/pay_user.html", {'langStr': langStr})
 
 
@@ -669,7 +674,7 @@ def zarinpal_callback_handler(request, amount):
                                      cur_code=a['cur_code'],
                                      tracking_code=result2.RefID, type=Deposit.TOP_UP)
             deposit.calculate_comission()  # automatically saves after calculating comission
-            return recharge_account(request, message="Your account charged successfully.")
+            return recharge_account(request, message=_("Your account charged successfully"))
 
         elif result2.Status == 101:
             res = 'Transaction submitted : ' + str(result2.Status)
