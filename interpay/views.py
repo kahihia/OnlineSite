@@ -1123,11 +1123,12 @@ def dynamic_rating(request):
     if request.method == 'POST':
         rate = request.POST.get('input_rate')
         mt_id = request.POST.get('review_moneytransfer_id')
+        review_comment = request.POST.get('review_comment')
 
         monTrans = models.MoneyTransfer.objects.get(id=mt_id)
         # check if user__username should be used TODO
         reviewer = models.UserProfile.objects.get(user=request.user)
-        print reviewer, rate,mt_id
+        print reviewer, rate, mt_id
         # user = ''
         if monTrans.withdraw.account.owner == reviewer:
             ty = "Buyer"
@@ -1152,7 +1153,7 @@ def dynamic_rating(request):
         if not created:
             reviewing = models.Review.objects.create(
                 review=rate,
-                comments=" ",
+                comments=review_comment,
                 type=ty,
                 reviewer=reviewer,
                 user=user,

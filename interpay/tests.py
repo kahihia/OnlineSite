@@ -361,7 +361,6 @@ class ReviewTestCase(TestCase):
     def test_review(self):
         c = Client()
         c.login(username='z1', password='z1')
-        response = c.get('/dynamic_rating/')
-        post_response = response.post('/dynamic_rating/', {'mt_id': '1', 'rate': '4', 'review_comment': 'good'})
-        self.assertRedirects(post_response, reverse('wallet/123/'), status_code=302, target_status_code=200,
+        post_response = c.post('/dynamic_rating/', {'review_moneytransfer_id': '1', 'input_rate': '4', 'review_comment': 'good'})
+        self.assertRedirects(post_response, reverse('wallet',args=["123"]), status_code=302, target_status_code=200,
                              fetch_redirect_response=True)
