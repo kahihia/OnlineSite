@@ -77,7 +77,10 @@ class UserProfile(models.Model):
     def review(self):
         result = 0
         result += sum(x.review for x in self.users_review.all())
-        result /= float(self.users_review.count())
+        if self.users_review.count():
+            result /= float(self.users_review.count())
+        else:
+            result = 0
         return result
 
 
