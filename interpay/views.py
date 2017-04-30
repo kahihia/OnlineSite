@@ -789,7 +789,6 @@ def home(request):
         'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
         'user_profile': user_profile
     }
-    print context
     return render(request, "interpay/home.html", context)
 
 
