@@ -332,12 +332,14 @@ class ReviewTestCase(TestCase):
     def setUp(self):
         print ("review test started")
 
-        user1 = User.objects.create_user(username='z1', password='z1', email='z1@gmail.com', is_active=True)
-        up_user1 = UserProfile.objects.create(user=user1, date_of_birth=datetime.datetime.now(), is_active=True)
+        user1 = User.objects.create_user(username='z1', password='z1', is_active=True)
+        up_user1 = UserProfile.objects.create(user=user1, date_of_birth=datetime.datetime.now(), is_active=True,
+                                              email='z1@gmail.com')
         up_user1.save()
 
-        user2 = User.objects.create_user(username='a1', password='a1', email='a1@gmail.com', is_active=True)
-        up_user2 = UserProfile.objects.create(user=user2, date_of_birth=datetime.datetime.now(), is_active=True)
+        user2 = User.objects.create_user(username='a1', password='a1', is_active=True)
+        up_user2 = UserProfile.objects.create(user=user2, date_of_birth=datetime.datetime.now(), is_active=True,
+                                              email='a1@gmail.com')
         up_user2.save()
 
         reviewer = BankAccount.objects.create(account_id="123", owner=up_user1, cur_code='USD',
@@ -364,3 +366,9 @@ class ReviewTestCase(TestCase):
         post_response = c.post('/dynamic_rating/', {'review_moneytransfer_id': '1', 'input_rate': '4', 'review_comment': 'good'})
         self.assertRedirects(post_response, reverse('wallet',args=["123"]), status_code=302, target_status_code=200,
                              fetch_redirect_response=True)
+
+    def test_review_show(self):
+        c = Client()
+        c.login(username='z1', password='z1')
+        get_response = c.get('/rating_by_email/', {'email': 'a1@gmail.com', 'mobile': '09123312087'})
+        self.assertEqual(get_response.status_code, 200)
