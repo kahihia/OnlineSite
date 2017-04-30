@@ -475,8 +475,10 @@ def user_login(request):
         if not next:
             next = "/home/"
     if request.get_full_path() == "/login/?next=/home/":
-        return render(request, 'interpay/index.html',
-                      {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
+        log.info("logging user out")
+        user_logout(request)
+        # return render(request, 'interpay/index.html',
+                   #   {'error': 'Your session has expired. Please log in again.', 'captcha_form': CaptchaForm()})
     if request.method == 'POST':
         next = request.POST.get("next")
         if not next:
@@ -1121,6 +1123,7 @@ def dynamic_rating(request):
     if request.method == 'POST':
         rate = request.POST.get('input_rate')
         mt_id = request.POST.get('review_moneytransfer_id')
+        review_comment = request.POST.get('review_comment')
 
         monTrans = models.MoneyTransfer.objects.get(id=mt_id)
         # check if user__username should be used TODO
@@ -1150,7 +1153,7 @@ def dynamic_rating(request):
         if not created:
             reviewing = models.Review.objects.create(
                 review=rate,
-                comments=" ",
+                comments=review_comment,
                 type=ty,
                 reviewer=reviewer,
                 user=user,
