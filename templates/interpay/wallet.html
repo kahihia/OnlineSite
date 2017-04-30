@@ -140,7 +140,7 @@
                 <h4 class="modal-title">Review Details</h4>
             </div>
             <div class="modal-body">
-                <div class="stars" style="width: 300px">
+                <div class="stars">
                     <form action="{% url 'dynamic_review' %}" method="post" id="reviewform">
                     {% csrf_token %}
                         <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
@@ -157,23 +157,22 @@
                         <input type="hidden" id="review_moneytransfer_id" name="review_moneytransfer_id">
                         Comment: <input type="text" name="review_comment"/>
 
-
                     </form>
                 </div>
 
             </div>
             <div class="modal-footer">
-                        <button type="button" name="btnsubmit" value="btnsubmit"  onclick="review_modal()" class="btn btn-default"  style="float: left;">
+                       <button type="button" name="btnsubmit" value="btnsubmit"  onclick="review_modal()" class="btn btn-default"  style="float: left;">
                             Submit Review
                         </button>
 
                         <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">
                             Close
                         </button>
+                </div>
             </div>
         </div>
     </div>
-  </div>
 
 
     <div class="table-responsive">

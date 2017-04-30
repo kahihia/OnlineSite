@@ -84,14 +84,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+
 ROOT_URLCONF = 'firstsite.urls'
 # AUTO_LOGOUT_DELAY = 30
+# CHECK AND SET ON SERVER
+# SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_AGE = 30 * 60
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_IDLE_TIMEOUT = 20
-SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 # SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_SECURITY_WARN_AFTER = 28 * 60
 SESSION_SECURITY_EXPIRE_AFTER = 30 * 60
