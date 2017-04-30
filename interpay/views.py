@@ -584,7 +584,7 @@ def recharge_account(request, **message):
                     "date": str(datetime.datetime.utcnow()), "cur_code": cur}
 
             log.debug("new BankAccount object created and saved")
-            zarinpal = zarinpal_payment_gate(request, amnt)
+            zarinpal = zarinpal_payment_gate(request, amnt, user_profile.email, user_profile.mobile_number)
             new_connection.set(zarinpal['Authority'], data)  # TODO: set proper TTL
             print data, "cached in redis"
             log.debug("Connected to redis")
@@ -617,18 +617,18 @@ def recharge_account(request, **message):
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
 ZARINPAL_WEBSERVICE = 'https://sandbox.zarinpal.com/pg/services/WebGate/wsdl'  # real version : 'https://www.zarinpal.com/pg/services/WebGate/wsdl'
 description = "this is a test"
-email = 'user@user.com'
-mobile = '09123456789'
+# email = 'user@user.com'
+# mobile = '09123456789'
 
 
-def zarinpal_payment_gate(request, amount):
+def zarinpal_payment_gate(request, amount, email, mobile):
 
     amount = int(amount) / 10
 
     if request.LANGUAGE_CODE == 'en-gb':
-        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
+        call_back_url = settings.SERVER_NAME + 'callback_handler/' + str(amount)  # TODO : this should be changed to our website url
     else:
-        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
+        call_back_url = settings.SERVER_NAME + 'fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
@@ -789,6 +789,7 @@ def home(request):
         'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
         'user_profile': user_profile
     }
+    print context
     return render(request, "interpay/home.html", context)
 
 

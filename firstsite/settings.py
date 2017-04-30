@@ -44,7 +44,7 @@ DEBUG = True
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['127.0.0.1']
 
-
+SERVER_NAME = 'http://127.0.0.1:8000/'
 #ALLOWED_HOSTS = ['.rizpardakht.com','www.rizpardakht.com', '.rizpal.com']
 
 

@@ -165,6 +165,7 @@ class BankAccount(models.Model):
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
     account_id = models.CharField(max_length=24)
 
+    @property
     def total_value(self):
         t_value = Decimal(0)
         log.info("totalValue")
