@@ -162,7 +162,7 @@ class BankAccount(models.Model):
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
     # TODO : this validator should be placed in js as well, so the user can not type other kinds of inputs
     name = models.CharField(max_length=254)
-    when_opened = models.DateField(_("Date"), default=datetime.now)
+    when_opened = models.DateField(_("Date"), default=timezone.now)
     owner = models.ForeignKey(UserProfile, related_name='w_accounts')
     cur_code = models.CharField(_('cur_code'), max_length=3, default='IRR')
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
@@ -265,7 +265,7 @@ class Deposit(models.Model):
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
     amount = models.FloatField(default=0)
     banker = models.ForeignKey(UserProfile, null=True)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(default=datetime.now())
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     tracking_code = models.IntegerField(default='0')
     type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=3)
