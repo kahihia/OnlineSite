@@ -132,8 +132,7 @@ def check_id(id):
 
 
 CURRENCY_CHOICES = {
-    ('IRR', 'Rials'),
-    ('USD', 'Dollar')
+    ('IRR', 'Rials')
 }
 
 

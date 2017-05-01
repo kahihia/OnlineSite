@@ -43,6 +43,7 @@ import logging
 import requests
 import BeautifulSoup
 import xml.sax
+from django.utils.translation import ugettext_lazy as _
 
 log = logging.getLogger('interpay')
 
@@ -342,6 +343,10 @@ def pay_user(request):
                 return render(request, 'interpay/pay_user.html', {'error': 'No user with this mobile number.'})
         else:
             return render(request, 'interpay/pay_user.html', {'error': 'Please enter destination email or mobile.'})
+
+        if(up.user==request.user):
+            return render(request, 'interpay/pay_user.html', {'error': 'You cannot send payment to yourself'})
+
         destination_account = ""
         if up:
             user_debit_accounts = BankAccount.objects.filter(owner=up, method=BankAccount.DEBIT)
@@ -369,10 +374,10 @@ def pay_user(request):
                                              cur_code=destination_account.cur_code, type=Deposit.PAYMENT)
             MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
             return render(request, "interpay/pay_user.html",
-                          {'success': 'Your payment was successfully done.', 'langStr': langStr})
+                          {'success': _('Your payment was successfully done'), 'langStr': langStr})
         else:
             return render(request, 'interpay/pay_user.html',
-                          {'error': 'You do not have any account in this currency. '})
+                          {'error': _('You do not have any account in this currency')})
     return render(request, "interpay/pay_user.html", {'langStr': langStr})
 
 
@@ -584,7 +589,7 @@ def recharge_account(request, **message):
                     "date": str(datetime.datetime.utcnow()), "cur_code": cur}
 
             log.debug("new BankAccount object created and saved")
-            zarinpal = zarinpal_payment_gate(request, amnt)
+            zarinpal = zarinpal_payment_gate(request, amnt, user_profile.email, user_profile.mobile_number)
             new_connection.set(zarinpal['Authority'], data)  # TODO: set proper TTL
             print data, "cached in redis"
             log.debug("Connected to redis")
@@ -617,18 +622,18 @@ def recharge_account(request, **message):
 MERCHANT_ID = 'd5dd997c-595e-11e6-b573-000c295eb8fc'
 ZARINPAL_WEBSERVICE = 'https://sandbox.zarinpal.com/pg/services/WebGate/wsdl'  # real version : 'https://www.zarinpal.com/pg/services/WebGate/wsdl'
 description = "this is a test"
-email = 'user@user.com'
-mobile = '09123456789'
+# email = 'user@user.com'
+# mobile = '09123456789'
 
 
-def zarinpal_payment_gate(request, amount):
+def zarinpal_payment_gate(request, amount, email, mobile):
 
     amount = int(amount) / 10
 
     if request.LANGUAGE_CODE == 'en-gb':
-        call_back_url = 'http://127.0.0.1:8000/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
+        call_back_url = settings.SERVER_NAME + 'callback_handler/' + str(amount)  # TODO : this should be changed to our website url
     else:
-        call_back_url = 'http://127.0.0.1:8000/fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
+        call_back_url = settings.SERVER_NAME + 'fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
     result = client.service.PaymentRequest(MERCHANT_ID,
@@ -669,7 +674,7 @@ def zarinpal_callback_handler(request, amount):
                                      cur_code=a['cur_code'],
                                      tracking_code=result2.RefID, type=Deposit.TOP_UP)
             deposit.calculate_comission()  # automatically saves after calculating comission
-            return recharge_account(request, message="Your account charged successfully.")
+            return recharge_account(request, message=_("Your account charged successfully"))
 
         elif result2.Status == 101:
             res = 'Transaction submitted : ' + str(result2.Status)

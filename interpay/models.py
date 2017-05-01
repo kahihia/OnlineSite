@@ -168,6 +168,7 @@ class BankAccount(models.Model):
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
     account_id = models.CharField(max_length=24)
 
+    @property
     def total_value(self):
         t_value = Decimal(0)
         log.info("totalValue")
@@ -175,8 +176,10 @@ class BankAccount(models.Model):
         total_estimate = defaultdict(lambda: Decimal(0.0))
         accounts = BankAccount.objects.filter(owner=self.owner, method=BankAccount.DEBIT)
         for account in accounts:
-            total_estimate[account.cur_code] = Decimal(convert(account.balance, account.cur_code, 'USD'))
-            t_value += total_estimate[account.cur_code]
+            #total_estimate[account.cur_code] = Decimal(convert(account.balance, account.cur_code, 'USD'))
+            t_value += Decimal(convert(account.balance, account.cur_code, 'USD'))
+
+        # print t_value
 
         return t_value.quantize(Decimal("0.01"))
         # TODO define total value
