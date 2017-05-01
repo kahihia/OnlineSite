@@ -145,14 +145,13 @@ msgid "Home Page "
 msgstr "صفحه اصلی"
 
 #: templates/interpay/base.html:181
-#, fuzzy
 #| msgid "'s Profile"
 msgid "Profile"
-msgstr " حساب کاربری "
+msgstr "پروفایل"
 
 #: templates/interpay/base.html:207
 msgid "menu"
-msgstr " صفحات"
+msgstr "فهرست"
 
 #: templates/interpay/base.html:223 templates/interpay/base.html:327
 #: templates/manager/manager-base.html:177
@@ -240,7 +239,7 @@ msgstr "عنوان"
 #: templates/interpay/contact.html:103 templates/interpay/contact.html:167
 #: templates/interpay/pay_user.html:395
 msgid "Comment:"
-msgstr "نظرات"
+msgstr "توضیحات"
 
 #: templates/interpay/contact.html:115 templates/interpay/contact.html:179
 msgid "Send"
@@ -493,7 +492,7 @@ msgstr "کیف پول من"
 
 #: templates/interpay/wallet.html:39
 msgid "Successfully Created"
-msgstr ""
+msgstr "با موفقیت ایجاد شد"
 
 #: templates/interpay/wallet.html:39
 msgid "Click on  your account Id if you want to go to your account"
@@ -501,7 +500,7 @@ msgstr ""
 
 #: templates/interpay/wallet.html:45
 msgid "back to current wallet"
-msgstr ""
+msgstr " بازگشت به کیف پول فعلی"
 
 #: templates/interpay/wallet.html:64 templates/interpay/wallet.html:78
 #: templates/interpay/wallets.html:96
@@ -510,7 +509,7 @@ msgstr "تبدیل واحد ارز"
 
 #: templates/interpay/wallet.html:65 templates/interpay/wallet.html:79
 msgid "Your conversion is in process"
-msgstr ""
+msgstr "تبدیل در حال انجام است"
 
 #: templates/interpay/wallet.html:189 templates/interpay/wallets.html:84
 msgid "Currency Name"
