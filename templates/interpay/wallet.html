@@ -36,7 +36,7 @@
           if( $('#message').text().length!=14)
             {
                     swal({
-              title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on  your account Id if you want to go to your account' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
+               title: '<div>  {% trans 'Successfully Created' %}</div> <div style="color:orange; font-size: small"> {% trans 'Click on the wallet ID if you want to see account details' %}</div><u></u> <a   {% ifequal LANGUAGE_CODE 'en-gb' %} href="/wallets/{{ account_id }}">{{account_id}}  {% else %}  href="/fa-ir/wallets/{{ account_id }}">{{account_id}} {% endifequal %}</a> ',
                     type: 'info',
                html: ' ' + 'and other HTML tags',
                type: "info",

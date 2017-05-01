@@ -495,8 +495,8 @@ msgid "Successfully Created"
 msgstr "با موفقیت ایجاد شد"
 
 #: templates/interpay/wallet.html:39
-msgid "Click on  your account Id if you want to go to your account"
-msgstr ""
+msgid "Click on the wallet ID if you want to see account details"
+msgstr "برای دیدن جزئیات حساب لینک کیف پول را کلیک کنید"
 
 #: templates/interpay/wallet.html:45
 msgid "back to current wallet"
