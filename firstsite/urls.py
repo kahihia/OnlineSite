@@ -110,6 +110,7 @@ urlpatterns += i18n_patterns(
     url(r'^wallets/(?P<wallet_id>\d+)/$', views.wallet, name="wallet"),
     url(r'^wallets/(?P<wallet_id>\d+)/(?P<recom>\w+)/$', views.wallet),
     url(r'^wallets/actual_convert/$', views.actual_convert),
+    url(r'^wallets/withdraw_pending_deposit/$', views.withdraw_pending_deposit),
     url(r'^trans-history/', views.transaction_history),
     url(r'^reports/', views.reports, name='reports'),
     url(r'^general/', views.general, name='general'),
