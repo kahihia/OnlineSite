@@ -169,22 +169,22 @@ function edit_username(){
 {% block cont-body %}
    <div style="color: #67b168" id="success_name"> </div>
    <div id="manage_edit" style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <span style=" margin-left:4% ; margin-top: 5%;color: white">first name:</span> <span style="color: white" id="edit_change_name"> {{ user.first_name }} </span>  <br> <i id="edit" class="fa fa-pencil-square-o"  style=" color:white; margin-left: 4% ;cursor:pointer" aria-hidden="true"></i><span  style="color: white"> eidt</span> <input id="first_name" type="text" name="fname" style="display: none"><br>
+    <span style=" margin-left:4% ; margin-top: 5%;color: white">{%  trans 'First name' %}:</span> <span style="color: white" id="edit_change_name"> {{ user.first_name }} </span>  <br> <i id="edit" class="fa fa-pencil-square-o"  style=" color:white; margin-left: 4% ;cursor:pointer" aria-hidden="true"></i><span  style="color: white"> {%  trans 'Edit' %}</span> <input id="first_name" type="text" name="fname" style="display: none"><br>
     <input id="edit_name"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_name()" >
    </div>
     <br>
     <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <span style=" margin-left:4% ; margin-top: 5%;color: white">Last name:</span> <span style=" color: white" id="edit_change_lastname"> {{ user.last_name }}</span><br><i id="edit2" class="fa fa-pencil-square-o"  style=" margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> eidt</span> <input id="last_name" type="text" name="fname" style="display: none"><br>
+    <span style=" margin-left:4% ; margin-top: 5%;color: white"> {%  trans 'Last name' %}:</span> <span style=" color: white" id="edit_change_lastname"> {{ user.last_name }}</span><br><i id="edit2" class="fa fa-pencil-square-o"  style=" margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="last_name" type="text" name="fname" style="display: none"><br>
     <input id="edit_lastname"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_last_name()" >
    </div>
     <br>
     <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <span style=" margin-left:4% ; margin-top: 5%;color: white">National Id Code:</span><span style=" color: white" id="edit_change_lastname"> {{ user.national_code }}</span><br><i id="edit3" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> eidt</span> <input id="national_id" type="text" name="fname" style="display: none"><br>
+    <span style=" margin-left:4% ; margin-top: 5%;color: white">{%  trans 'National Id Code' %}:</span><span style=" color: white" id="edit_change_lastname"> {{ user.national_code }}</span><br><i id="edit3" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="national_id" type="text" name="fname" style="display: none"><br>
     <input id="edit_national_id"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_national_id()" >
    </div>
      <br>
    <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <i id="edit4" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> username <input id="username" type="text" name="fname" style="display: none"><br>
+    <i id="edit4" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> {%  trans 'username' %} <input id="username" type="text" name="fname" style="display: none"><br>
     <input id="edit_username"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_username()" >
    </div>
     <!--

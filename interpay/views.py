@@ -975,7 +975,7 @@ def actual_convert(request):
         conversion.save()
         context = {
             'account_id': destination_account.account_id.__str__(),
-            'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
+            'message': _("Your new account created successfully. Your new account id is:") + destination_account.account_id.__str__(),
             'account': BankAccount.objects.get(account_id=account_id),
             'deposit_set': models.Deposit.objects.filter(account=cur_account),
         }

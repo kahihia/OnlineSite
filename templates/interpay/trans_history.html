@@ -186,7 +186,11 @@
                             {% endif %}
                         </td>
                         <td class="table-cell">
-                            <a href="/wallets/{{ d.account.account_id }}/" style="color:#3c7cc0">{{ d.account.account_id }}</a>
+                            {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                <a href="/wallets/{{ d.account.account_id }}/" style="color:#3c7cc0">{{ d.account.account_id }}</a>
+                            {% else %}
+                                <a href="/fa-ir/wallets/{{ d.account.account_id }}/" style="color:#3c7cc0">{{ d.account.account_id }}</a>
+                            {% endifequal %}
                         </td>
                     </tr>
                 {% endfor %}
