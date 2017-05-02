@@ -43,6 +43,8 @@ import logging
 import requests
 import BeautifulSoup
 import xml.sax
+from Notification.views import NotificationClass
+from Notification.models import Notification
 
 log = logging.getLogger('interpay')
 
@@ -368,6 +370,8 @@ def pay_user(request):
             deposit = Deposit.objects.create(banker=up, account=destination_account, amount=amount,
                                              cur_code=destination_account.cur_code, type=Deposit.PAYMENT)
             MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
+            NotificationClass.make_notification("You have a new payment from" + src_account_owner.user.first_name + " " + src_account_owner.user.last_name , up,
+                                                '/wallets/' + str(destination_account.account_id))
             return render(request, "interpay/pay_user.html",
                           {'success': 'Your payment was successfully done.', 'langStr': langStr})
         else:
@@ -685,7 +689,7 @@ def zarinpal_callback_handler(request, amount):
 
 @login_required()
 def bank_accounts(request):
-    user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
+    user_profile = models.UserProfile.objects.get(user=request.user)
     mymessage = ''
     bank_account_form = CreateBankAccountForm(data=request.POST)
     irr_accounts = BankAccount.objects.filter(owner=user_profile, cur_code="IRR", method=BankAccount.DEBIT)
@@ -782,10 +786,11 @@ def user_logout(request):
 @login_required()
 def home(request):
     user_profile = models.UserProfile.objects.get(user=request.user)
+    notifications = Notification.objects.filter(user=user_profile)
     context = {
-
         'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
-        'user_profile': user_profile
+        'user_profile': user_profile,
+        'notifications': notifications
     }
     return render(request, "interpay/home.html", context)
 
@@ -821,7 +826,7 @@ def wallet(request, wallet_id, recom=None):
         else:
             recommended = ba.balance
         transaction_list = []
-        for item1 in Deposit.objects.filter(account=ba):
+        for item1 in Deposit.objects.filter(account=ba).select_related("payment_transfer"):
             transaction_list.append(item1)
         for item2 in Withdraw.objects.filter(account=ba):
             transaction_list.append(item2)

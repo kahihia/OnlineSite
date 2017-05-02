@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from interpay.views import make_id
+from Notification.views import NotificationClass
 import datetime
 import json
 from django.utils import timezone
@@ -121,6 +122,8 @@ def cash_out_order(request):
                                                                   cur_code=currency,
                                                                   account_id=make_id())
                     deposit = Deposit.objects.create(account=bank_account, amount=order_amount, status=Deposit.PENDING, cur_code=currency, type=Deposit.INTERNATIONAL)
+                    NotificationClass.make_notification("You have a new International payment.", user,
+                                                        '/wallets/' + str(bank_account.account_id))
                     response['orderReference'] = deposit.id
                     response['orderDate'] = datetime.datetime.now()
                     response['expiryDate'] = response['orderDate'] + datetime.timedelta(days=7)

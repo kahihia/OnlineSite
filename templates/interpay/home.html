@@ -22,23 +22,23 @@
     Notification.requestPermission();
 });
 
-function notifyMe() {
-  if (Notification.permission !== "granted")
-    Notification.requestPermission();
-  else {
-    var notification = new Notification('Notification title', {
-      icon: src="{% static 'interpay/images/rizpal.png' %}",
-      body: "Welcome!",
-    });
+       function notifyMe(url, text) {
+           if (Notification.permission !== "granted")
+               Notification.requestPermission();
+           else {
+               var notification = new Notification(text, {
+                   icon: src = "{% static 'interpay/images/rizpal.png' %}",
+                   body: "Welcome!",
+               });
 
-    notification.onclick = function () {
-      window.open("/home/");
-    };
+               notification.onclick = function () {
+                   window.open(url);
+               };
 
-  }
+           }
 
-}
-      window.onload = notifyMe;
+       }
+{#      window.onload = notifyMe;#}
   </script>
  {% endblock %}
 </head>
@@ -69,6 +69,9 @@ function notifyMe() {
         <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">
              {% trans 'Your total wallet value is' %} USD {{ accountList.first.total_value }}
         </p>
+        {% for item in notifications %}
+            <input type="button" onclick="notifyMe('{{ item.url }}', '{{ item.text }}')" value="abc">
+        {% endfor %}
     </div>
 {% endblock %}
 

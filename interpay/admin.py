@@ -1,6 +1,6 @@
 from django.contrib import admin
 from interpay import models
-
+from Notification.models import Notification
 # Register your models here.
 
 
@@ -24,3 +24,4 @@ admin.site.register(models.CurrencyReserve)
 admin.site.register(models.MoneyTransfer)
 admin.site.register(models.BankAccount, BankAccountAdmin)
 admin.site.register(models.CurrencyConversion)
+admin.site.register(Notification)
