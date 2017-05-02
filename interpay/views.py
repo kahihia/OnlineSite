@@ -21,7 +21,7 @@ from interpay.Validation import Validation
 from firstsite.SMS import ds, api
 from interpay import models
 from smtplib import SMTPRecipientsRefused
-from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest, CurrencyReserve
+from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest, CurrencyReserve, Review
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -1172,6 +1172,31 @@ def dynamic_rating(request):
         return HttpResponseRedirect(reverse('wallet', args=[account.account_id]))
         #return render(request,  "interpay/wallet.html")
 
+@login_required()
+def reviewing_id(request):
+    email = request.GET.get('email')
+    mobile = request.GET.get('mobile')
+    response_data = {}
+    reviewing_user_id = models.UserProfile.objects.get(email=email).id
+    response_data['result'] = reviewing_user_id.__str__()
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
+
+@login_required()
+def review_comments(request,reviewing_id):
+    # 'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
+
+    context = {
+        'reviewList': Review.objects.filter(user=reviewing_id)
+        # 'reviewing_id': reviewing_id
+    }
+    return render(request, "interpay/review_comments.html", context)
+
+    # return render(request, "interpay/review_comments.html")
 
         # if request.POST['action'] == 'change_national_photo':
         # form_edit = RegistrationForm_edit(request.POST, request.FILES)

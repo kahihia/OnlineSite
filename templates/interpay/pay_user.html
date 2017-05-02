@@ -364,7 +364,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Review Details</h4>
+                                <h4 class="modal-title" style="text-align: center">{%  trans 'Review Details' %}</h4>
                             </div>
                             <div class="modal-body">
 
@@ -381,8 +381,27 @@
                             <div class="modal-footer">
 
                                 <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">
-                                    Close
+                                    {%  trans 'Close' %}
                                 </button>
+                                {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                    <input type="button"
+                                    id="review_comment"
+                                    value="{% trans 'Show comments' %}"
+                                    onclick="find_reviewing_user('en-gb')"
+                                    class="btn btn-default"
+                                    style="float: left;">
+                                {% else %}
+                                    <input type="button"
+                                    id="review_comment"
+                                    value="{% trans 'Show comments' %}"
+                                    onclick="find_reviewing_user('fa-ir')"
+                                    class="btn btn-info"
+                                    style="float: left;">
+                                {% endifequal %}
+{#                                <a href="{% url 'review_comments' %}" class="btn btn-default" style="float: left;">{%  trans 'Show comments' %}</a>#}
+
+
+
                             </div>
                         </div>
                     </div>

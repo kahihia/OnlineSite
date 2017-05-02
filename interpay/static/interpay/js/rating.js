@@ -31,3 +31,37 @@ function rating_fun() {
 
 
 }
+
+
+function find_reviewing_user(LANGUAGE_CODE){
+
+        var email = document.getElementById("email");
+        var mobile = document.getElementById("mobile");
+        // var reviewing_id = document.getElementById("reviewing_id");
+
+        $.ajax({
+        url: "/reviewing_id/", // the endpoint
+        type: "GET", // http method
+        data: {email:email.value , mobile:mobile.value}, // data sent with the post request
+
+        // handle a successful response
+        success: function (json) {
+             var reviewing_id = json['result'];
+             // win.document.write("Hello world!");
+             // console.log(reviewing_id)
+            // alert(LANGUAGE_CODE);
+            if (LANGUAGE_CODE =='en-gb')
+                window.location.href = '/review_comments/' + reviewing_id;
+            else
+                window.location.href = '/fa-ir/review_comments/' + reviewing_id;
+            end
+        },
+
+        // handle a non-successful response
+        error: function (xhr, errmsg, err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}

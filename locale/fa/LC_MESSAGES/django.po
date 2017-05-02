@@ -692,6 +692,18 @@ msgstr "نام کاربری"
 msgid "Your new account created successfully. Your new account id is:"
 msgstr "حساب جدید با موفقیت ایجاد شد. شماره حساب شما:"
 
+#: templates/interpay/pay_user.html:388
+msgid "Show comments"
+msgstr "مشاهده نظرات"
+
+#: templates/interpay/review_comments.html:48
+msgid "Reviewer"
+msgstr "رای دهنده"
+
+#: templates/interpay/review_comments.html:56
+msgid "Review Comment"
+msgstr "نظرات"
+
 #~| msgid "My total stock in"
 #~ msgid "Your total stock in"
 #~ msgstr "کل نقدینگی "

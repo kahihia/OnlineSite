@@ -1,0 +1,84 @@
+{% extends 'interpay/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}"/>
+<!DOCTYPE html>
+<html lang="en">
+    {% block flag %}
+
+    {% endblock %}
+
+    {% block CSS %}
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/home.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/pay_user.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/r.css' %}">
+        <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
+    {% endblock %}
+
+    {% block JS %}
+        <script type="text/javascript" src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'interpay/js/rating.js' %}"></script>
+
+    {% endblock %}
+
+    <meta charset="UTF-8">
+
+    {% block head %}
+
+    {% endblock %}
+
+    </head>
+
+    <body>
+
+        {% block cont-header %}
+            <div>
+                <h3 class="page-title">
+                    {% trans 'Review Comment' %}
+                </h3>
+            </div>
+        {% endblock %}
+
+        {% block cont-body %}
+            <div class="table-responsive">
+                <table id="review-tab" class="table">
+                    <thead>
+                        <tr class="table-header-row">
+                             <th class="table-header-cell" style="width:15%">
+                                {% trans 'Reviewer' %}
+                            </th>
+
+                            <th class="table-header-cell">
+                                {% trans 'Review' %}
+                            </th>
+
+                            <th class="table-header-cell">
+                                {% trans 'Review Comment' %}
+                            </th>
+
+                            <th class="table-header-cell">
+                                {% trans 'Reviewer type' %}
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    </tbody>
+                        {% for review_row in reviewList %}
+                            <tr>
+                                <td class="table-cell"> {{ review_row.reviewer }}</td>
+                                <td class="table-cell"> {{ review_row.review }}</td>
+                                <td class="table-cell"> {{ review_row.comments }}</td>
+                                <td class="table-cell"> {{ review_row.type }}</td>
+
+                            </tr>
+                        {% endfor %}
+
+                </table>
+            </div>
+        {%  endblock %}
+    </body>
+
+</html>
