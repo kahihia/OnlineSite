@@ -25,6 +25,7 @@
 
     {% block CSS %}
            <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
+          <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/top_bar.css' %}">
     {% endblock %}
 
     {% block JS %}
@@ -138,7 +139,7 @@
 <header>
      <header>
      <nav class="interpay navbar navbar-default navbar-fixed-top" role="navigation">
-        <ul class="topnav" id="myTopnav">
+        <ul class="topnav1" id="myTopnav">
             <h1  style="margin-top: 0% ; margin-bottom: 3%">
                      {% ifequal LANGUAGE_CODE 'en-gb' %}
                <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
@@ -151,8 +152,8 @@
                         <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
                     </a>
                 {% endifequal %}
-                 <img src="{% static 'interpay/images/rizpal.png' %}"  style=" padding-top: 2px; margin-left: 5px; width:56px; height: 50px; float:left ; margin-top:0px">
-                 <img src="{% static 'interpay/images/logo.png' %}"  style=" padding-left: 10px; padding-top: 20px; width:100px; height: 58px; float:left ; margin-top:0px">
+                 <img class="rizpal1" src="{% static 'interpay/images/rizpal.png' %}"  >
+                 <img class="interpay1" src="{% static 'interpay/images/logo.png' %}"  >
             </h1>
         </ul>
 

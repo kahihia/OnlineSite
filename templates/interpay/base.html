@@ -198,22 +198,14 @@
         </ul>
     </header>
 
-    <div id="topbar">
-         {% ifequal LANGUAGE_CODE 'en-gb' %}
-        <div  id="sidebar1" class=" pull-left w3-navbar w3-hide-medium w3-hide-large w3-left">
-             {% else %}
-        <div  id="sidebar1" class=" pull-right w3-navbar w3-hide-medium w3-hide-large w3-right">
-    {% endifequal %}
-            <a  id="open" href="javascript:void(0);" onclick="sidebarfunc1()">{% trans "menu"%}</a>
-        </div>
-    </div>
+
     {% ifequal LANGUAGE_CODE 'en-gb' %}
         <div id="sidebar" class="pull-left  w3-table w3-bordered w3-hide-small">
     {% else %}
         <div  id="sidebar" class="pull-right w3-table w3-bordered w3-hide-small">
     {% endifequal %}
     <div  id="sidebar-content" class="w3-hide-small">
-        <ul id="sidebar-entries" class= w3-hide-small">
+        <ul id="sidebar-entries" class= w3-hide-small
             <li class="sidebar-entry" clas="w3-hide-small">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links w3-hide-small" href="/home">

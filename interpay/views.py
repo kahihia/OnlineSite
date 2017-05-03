@@ -577,7 +577,7 @@ def recharge_account(request, **message):
                 owner=user_profile,
                 cur_code=cur,
                 method=models.BankAccount.DEBIT,
-                name=request.user.username + '_' + cur + '_InterPay-account',
+                name=cur + '_InterPay-account',
             )
 
             if created:
@@ -869,7 +869,7 @@ def withdraw_pending_deposit(request):
             rial_account = rial_account[0]
         if not rial_account:
             print ("not rial account")
-            rial_account = BankAccount.objects.create(name='wall_account', owner=account.owner,
+            rial_account = BankAccount.objects.create(name=destination_currency + '_InterPay-account', owner=account.owner,
                                                       method=BankAccount.DEBIT,
                                                       cur_code=destination_currency,
                                                       account_id=make_id())
@@ -963,7 +963,7 @@ def actual_convert(request):
                 destination_account = temp_account
                 break
         if not destination_account:
-            destination_account = BankAccount(name='wall_account', owner=user_profile, method=BankAccount.DEBIT,
+            destination_account = BankAccount(name=currency + '_InterPay-account', owner=user_profile, method=BankAccount.DEBIT,
                                               cur_code=currency,
                                               account_id=make_id())
         destination_account.save()
