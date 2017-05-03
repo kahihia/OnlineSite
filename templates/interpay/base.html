@@ -2,7 +2,9 @@
 {% load static %}
 {% load staticfiles %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
+ {% ifequal LANGUAGE_CODE 'fa-ir' %}
 <link rel="stylesheet" media="all and (max-width: 1024px)" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% endifequal %}
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
 <script src="{% static 'interpay/jquery/jquery-1.10.2.js'%}"></script>
@@ -20,7 +22,7 @@
                 }
 
                 #main-content-section{
-                margin-right: 15%
+                margin-right: 10%
                 }
 
                 #sidebar-entries {
@@ -205,7 +207,7 @@
         <div  id="sidebar" class="pull-right w3-table w3-bordered w3-hide-small">
     {% endifequal %}
     <div  id="sidebar-content" class="w3-hide-small">
-        <ul id="sidebar-entries" class= w3-hide-small
+        <ul id="sidebar-entries" class= w3-hide-small>
             <li class="sidebar-entry" clas="w3-hide-small">
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a class="sidebar-links w3-hide-small" href="/home">
