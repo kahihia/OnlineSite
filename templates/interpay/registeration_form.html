@@ -1,7 +1,9 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
+ {% ifequal LANGUAGE_CODE 'fa-ir' %}
 <link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+ {% endifequal %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
