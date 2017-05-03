@@ -366,7 +366,7 @@ def pay_user(request):
                 return render(request, 'interpay/pay_user.html',
                               {'error': Validation.Validation.check_validation('insufficient_balance')})
             if not destination_account:
-                destination_account = BankAccount.objects.create(owner=up, cur_code=currency, method=BankAccount.DEBIT,
+                destination_account = BankAccount.objects.create(name = currency + '_InterPay-account',owner=up, cur_code=currency, method=BankAccount.DEBIT,
                                                                  account_id=make_id())
             withdraw = Withdraw.objects.create(banker=src_account_owner, account=src_account, amount=amount, cur_code=src_account.cur_code,
                                                type=Withdraw.PAYMENT)
@@ -670,7 +670,6 @@ def zarinpal_callback_handler(request, amount):
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=float(a['amount']),
                                      banker=new_banker,
-                                     date=(datetime.datetime.strptime(a['date'].__str__()[:10], '%Y-%m-%d')),
                                      cur_code=a['cur_code'],
                                      tracking_code=result2.RefID, type=Deposit.TOP_UP)
             deposit.calculate_comission()  # automatically saves after calculating comission
