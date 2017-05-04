@@ -217,8 +217,9 @@ msgstr "نام "
 
 #: templates/interpay/base.html:433 templates/interpay/base.html:446
 #: templates/interpay/contact.html:95 templates/interpay/contact.html:159
+#: templates/interpay/pay_user.html:421
 msgid "Email"
-msgstr ""
+msgstr "پست الکترونیک"
 
 #: templates/interpay/base.html:434 templates/interpay/base.html:447
 #: templates/manager/manager-base.html:286
@@ -238,7 +239,8 @@ msgstr "عنوان"
 
 #: templates/interpay/contact.html:103 templates/interpay/contact.html:167
 #: templates/interpay/pay_user.html:395
-msgid "Comment:"
+#: templates/interpay/pay_user.html:427
+msgid "Comment"
 msgstr "توضیحات"
 
 #: templates/interpay/contact.html:115 templates/interpay/contact.html:179
@@ -252,7 +254,7 @@ msgstr "اطلاعات عمومی حساب"
 
 #: templates/interpay/edit.html:165
 msgid "Edit Your profile"
-msgstr ""
+msgstr "ویرایش پروفایل"
 
 #: templates/interpay/forgot_password.html:50
 #: templates/interpay/index.html:132 templates/manager/manager-login.html:123
@@ -349,7 +351,7 @@ msgstr "شماره موبایل مقصد"
 
 #: templates/interpay/pay_user.html:357
 msgid "Review Details"
-msgstr ""
+msgstr "جزئیات نظرسنجی"
 
 #: templates/interpay/pay_user.html:403
 #: templates/manager/manager-withdrawal-requests.html:59
@@ -621,6 +623,86 @@ msgstr "ایجاد حساب بانکی جدید"
 #: templates/manager/manager-withdrawal-requests.html:62
 msgid "Transaction Status"
 msgstr "تراکنش"
+
+#: templates/interpay/pay_user.html:415
+msgid "Payment Confirmation"
+msgstr "تاییدیه پرداخت"
+
+#: templates/interpay/pay_user.html:424
+msgid "Mobile"
+msgstr "تلفن همراه"
+
+#: templates/interpay/pay_user.html:434
+msgid "Submit"
+msgstr "تایید"
+
+#: templates/interpay/wallets.html:181
+msgid "Showing"
+msgstr "نمایش"
+
+#: templates/interpay/wallets.html:181
+msgid "of entries"
+msgstr " درایه ها"
+
+#: templates/interpay/wallets.html:181
+msgid "to"
+msgstr " تا"
+
+#: templates/interpay/top_up.html:223
+msgid "Completed"
+msgstr " تکمیل شده"
+
+#: templates/interpay/top_up.html:221
+msgid "Pending"
+msgstr " انتظار"
+
+#: templates/interpay/top_up.html:219
+msgid "Reversed"
+msgstr " بازگرداندن"
+
+#: templates/interpay/wallet.html:166
+msgid "Submit Review"
+msgstr " ثبت نظرسنجی"
+
+#: templates/interpay/wallet.html:158
+msgid "Comment:"
+msgstr " اظهارنظر:"
+
+#: templates/interpay/edit.html:172
+msgid "First name"
+msgstr " نام"
+
+#: templates/interpay/edit.html:177
+msgid "Last name"
+msgstr " نام خانوادگی"
+
+#: templates/interpay/edit.html:172
+msgid "Edit"
+msgstr " ویرایش"
+
+#: templates/interpay/edit.html:182
+msgid "National Id Code"
+msgstr "کد ملی"
+
+#: templates/interpay/edit.html:187
+msgid "username"
+msgstr "نام کاربری"
+
+#: interpay/views.py:978
+msgid "Your new account created successfully. Your new account id is:"
+msgstr "حساب جدید با موفقیت ایجاد شد. شماره حساب شما:"
+
+#: templates/interpay/pay_user.html:388
+msgid "Show comments"
+msgstr "مشاهده نظرات"
+
+#: templates/interpay/review_comments.html:48
+msgid "Reviewer"
+msgstr "رای دهنده"
+
+#: templates/interpay/review_comments.html:56
+msgid "Review Comment"
+msgstr "نظرات"
 
 #~| msgid "My total stock in"
 #~ msgid "Your total stock in"

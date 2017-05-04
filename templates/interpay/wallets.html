@@ -125,16 +125,20 @@
                         <td class="table-cell">
                             <div id="converted{{ forloop.counter }}"></div>
 
-                             <button  id="convertButton{{ forloop.counter }}" style="display: none" type="button" data-toggle="modal" data-target="#Modalconvert{{ forloop.counter }}">Convert</button>
+                             <button  id="convertButton{{ forloop.counter }}" style="display: none" type="button" data-toggle="modal" data-target="#Modalconvert{{ forloop.counter }}">{% trans 'Convert' %}</button>
                              <div class="modal fade" id="Modalconvert{{ forloop.counter }}" role="dialog">
                                 <div class="modal-dialog">
                                  <div class="modal-content">
                                    <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Convert</h4>
+                                    <h4 class="modal-title">{%  trans Convert%}</h4>
                                    </div>
                                  <div class="modal-body">
+                                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                                     <form method="post" action="/wallets/actual_convert/" id="sampleform{{ forloop.counter }}">
+                                 {% else %}
+                                    <form method="post" action="/fa-ir/wallets/actual_convert/" id="sampleform{{ forloop.counter }}">
+                                 {% endifequal %}
                                     {% csrf_token %}
                                     <div style="margin-left: 0 !important;margin-right: 0 !important;">
                                      <div style="margin-right:0px;width:300px;margin-left: 10px ">
@@ -153,13 +157,13 @@
                                 </select>
                                 <input type="hidden" name="account_id" value="{{ account.account_id }}">
                                 <br>
-                                <input value="Submit" type="submit">
+                                <input value={% trans 'Submit' %} type="submit">
                                 </div>
                                </div>
                               </form>
                            </div>
                      <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Close'%}</button>
                     </div>
                 </div>
              </div>
@@ -178,7 +182,7 @@
 </div>
 
    <div id="wal-tab-footer" class="row" style=" height:20%; margin-left: 0 !important;margin-right: 0 !important;">
-                <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ 1 }} to {{ x }} of entries</h5>
+                <h5 style="padding-left: 20px" class="col-sm-8">{% trans 'Showing' %} {{ 1 }} {% trans 'to' %} {{ accountList.count }} {% trans 'of entries' %}</h5>
                 <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4">
                     <b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ accountList.first.total_value }}</b></h5>
 

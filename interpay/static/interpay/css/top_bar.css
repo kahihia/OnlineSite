@@ -1,0 +1,199 @@
+@media only screen and ( max-width: 420px){
+.rizpal1{
+    padding-top: 2%;
+    margin-left: 3%;
+    width:10%;
+    height: 94%;
+    float:left ;
+    margin-top:0px;
+    padding-bottom: 2%;
+}
+ .interpay1{
+    padding-top: 2%;
+    margin-left: 1%;
+    width:17%;
+    height: 80%;
+    float:left ;
+    margin-top:1.2%;
+}
+
+}
+
+@media only screen and (min-width : 420px) and ( max-width: 800px) {
+.rizpal1{
+    padding-top: 1%;
+    margin-left: 1%;
+    width:7%;
+    height: 94%;
+    float:left ;
+    margin-top:0px;
+    padding-bottom: 5px;
+}
+ .interpay1{
+    padding-top: 1%;
+    margin-left: 0.5%;
+    width:11%;
+    height: 77%;
+    float:left ;
+    margin-top:1%;
+
+}
+
+}
+@media only screen and (min-width : 800px) and ( max-width: 1100px) {
+.rizpal1{
+    padding-top: 7px;
+    margin-left: 1%;
+    width:5%;
+    height: 94%;
+    float:left ;
+    padding-bottom: 8px;
+    margin-bottom: 1px;
+}
+ .interpay1{
+    padding-top: 2px;
+    margin-left: 0.5%;
+    width:9%;
+    height: 77%;
+    float:left ;
+    margin-top: 9px;
+
+}
+
+}
+
+@media only screen and (min-width: 1100px) and (max-width: 1400px)  {
+    .rizpal1 {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width:3%;
+        height: 98%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay1 {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+}
+
+@media only screen and (min-width: 1400px) and (max-width: 1700px)   {
+    .rizpal1 {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width: 3%;
+        height: 100%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay1 {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+}
+
+@media only screen and (min-width: 1700px)   {
+    .rizpal1 {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width:2.5%;
+        height: 100%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay1 {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+
+}
+
+
+
+/*///////////////////////////////////////////////////////////*/
+
+
+
+@media only screen and ( max-width: 420px){
+ul.topnav1{
+    height: 40px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 420px) and ( max-width: 900px) {
+ul.topnav1{
+    height: 40px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width: 900px)  and ( max-width: 1400px) {
+ul.topnav1{
+     height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+
+
+@media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
+ul.topnav1{
+    height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}
+
+@media only screen and (min-width : 1700px){
+ul.topnav1{
+    height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #898787;
+}
+}

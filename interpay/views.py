@@ -21,7 +21,7 @@ from interpay.Validation import Validation
 from firstsite.SMS import ds, api
 from interpay import models
 from smtplib import SMTPRecipientsRefused
-from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest, CurrencyReserve
+from interpay.models import BankAccount, Deposit, Withdraw, CurrencyConversion, WithdrawalRequest, CurrencyReserve, Review
 from random import randint
 from currencies.utils import convert
 from suds.client import Client
@@ -331,39 +331,90 @@ def pay_user(request):
         currency = request.POST['currency']
         amount = request.POST['amount']
         comment = request.POST['comment']
+        email = request.POST['email']
+        mobile = request.POST['mobile']
+
+        context_error_amount = {
+            'currency': currency,
+            'amount': amount,
+            'comment': comment,
+            'email': email,
+            'mobile': mobile,
+            'error': "Please enter amount."
+        }
 
         if not comment:
             comment = ""
         if not amount:
-            return render(request, 'interpay/pay_user.html', {'error': 'Please enter amount.'})
+            return render(request, 'interpay/pay_user.html', context_error_amount)
 
         v = Validation.Validation()
         er = v.check_value(amount)
+        context_error_validation = {
+            'currency': currency,
+            'amount': amount,
+            'comment': comment,
+            'email': email,
+            'mobile': mobile,
+            'error': v.get_errormessage(er),
+            'langStr': langStr
+        }
         if not er == Validation.Validation.OK:
-            return render(request, "interpay/pay_user.html",
-                          {'error': v.get_errormessage(er), 'langStr': langStr})
+            return render(request, "interpay/pay_user.html",context_error_validation)
 
-        email = request.POST['email']
-        mobile = request.POST['mobile']
+
+
         # if not email and not mobile:
         #     return render(request, 'interpay/pay_user.html', {'error': 'Please enter destination email or mobile.'})
+        context_error_email = {
+            'currency': currency,
+            'amount': amount,
+            'comment': comment,
+            'email': email,
+            'mobile': mobile,
+            'error': "No user with this email."
+        }
         if email:
             up = UserProfile.objects.filter(email=email)
             if up:
                 up = up[0]
             else:
-                return render(request, 'interpay/pay_user.html', {'error': 'No user with this email.'})
+                return render(request, 'interpay/pay_user.html', context_error_email)
         elif mobile:
             up = UserProfile.objects.filter(mobile=mobile)
             if up:
                 up = up[0]
             else:
-                return render(request, 'interpay/pay_user.html', {'error': 'No user with this mobile number.'})
+                context_error_mobile = {
+                    'currency': currency,
+                    'amount': amount,
+                    'comment': comment,
+                    'email': email,
+                    'mobile': mobile,
+                    'error': "No user with this mobile number."
+                }
+                return render(request, 'interpay/pay_user.html', context_error_mobile)
         else:
-            return render(request, 'interpay/pay_user.html', {'error': 'Please enter destination email or mobile.'})
+            context_error_mobile_email = {
+                'currency': currency,
+                'amount': amount,
+                'comment': comment,
+                'email': email,
+                'mobile': mobile,
+                'error': "Please enter destination email or mobile."
+            }
+            return render(request, 'interpay/pay_user.html', context_error_mobile_email)
 
         if(up.user==request.user):
-            return render(request, 'interpay/pay_user.html', {'error': 'You cannot send payment to yourself'})
+            context_error_pay_yourself = {
+                'currency': currency,
+                'amount': amount,
+                'comment': comment,
+                'email': email,
+                'mobile': mobile,
+                'error': 'You cannot send payment to yourself'
+            }
+            return render(request, 'interpay/pay_user.html',context_error_pay_yourself)
 
         destination_account = ""
         if up:
@@ -379,10 +430,17 @@ def pay_user(request):
         if src_account:
             src_account = src_account[0]
             if src_account.balance < int(amount):
-                return render(request, 'interpay/pay_user.html',
-                              {'error': Validation.Validation.check_validation('insufficient_balance')})
+                context_error_balance = {
+                    'currency': currency,
+                    'amount': amount,
+                    'comment': comment,
+                    'email': email,
+                    'mobile': mobile,
+                    'error': Validation.Validation.check_validation('insufficient_balance')
+                }
+                return render(request, 'interpay/pay_user.html', context_error_balance)
             if not destination_account:
-                destination_account = BankAccount.objects.create(owner=up, cur_code=currency, method=BankAccount.DEBIT,
+                destination_account = BankAccount.objects.create(name = currency + '_InterPay-account',owner=up, cur_code=currency, method=BankAccount.DEBIT,
                                                                  account_id=make_id())
             withdraw = Withdraw.objects.create(banker=src_account_owner, account=src_account, amount=amount, cur_code=src_account.cur_code,
                                                type=Withdraw.PAYMENT)
@@ -396,8 +454,15 @@ def pay_user(request):
             return render(request, "interpay/pay_user.html",
                           {'success': _('Your payment was successfully done'), 'langStr': langStr})
         else:
-            return render(request, 'interpay/pay_user.html',
-                          {'error': _('You do not have any account in this currency')})
+            context_error_currency = {
+                'currency': currency,
+                'amount': amount,
+                'comment': comment,
+                'email': email,
+                'mobile': mobile,
+                'error': "You do not have any account in this currency"
+            }
+            return render(request, 'interpay/pay_user.html', context_error_currency)
     return render(request, "interpay/pay_user.html", {'langStr': langStr})
 
 
@@ -597,7 +662,7 @@ def recharge_account(request, **message):
                 owner=user_profile,
                 cur_code=cur,
                 method=models.BankAccount.DEBIT,
-                name=request.user.username + '_' + cur + '_InterPay-account',
+                name=cur + '_InterPay-account',
             )
 
             if created:
@@ -690,7 +755,6 @@ def zarinpal_callback_handler(request, amount):
             new_banker = models.UserProfile.objects.get(id=a['banker_id'])
             deposit = models.Deposit(account=new_account, amount=float(a['amount']),
                                      banker=new_banker,
-                                     date=(datetime.datetime.strptime(a['date'].__str__()[:10], '%Y-%m-%d')),
                                      cur_code=a['cur_code'],
                                      tracking_code=result2.RefID, type=Deposit.TOP_UP)
             deposit.calculate_comission()  # automatically saves after calculating comission
@@ -890,7 +954,7 @@ def withdraw_pending_deposit(request):
             rial_account = rial_account[0]
         if not rial_account:
             print ("not rial account")
-            rial_account = BankAccount.objects.create(name='wall_account', owner=account.owner,
+            rial_account = BankAccount.objects.create(name=destination_currency + '_InterPay-account', owner=account.owner,
                                                       method=BankAccount.DEBIT,
                                                       cur_code=destination_currency,
                                                       account_id=make_id())
@@ -984,7 +1048,7 @@ def actual_convert(request):
                 destination_account = temp_account
                 break
         if not destination_account:
-            destination_account = BankAccount(name='wall_account', owner=user_profile, method=BankAccount.DEBIT,
+            destination_account = BankAccount(name=currency + '_InterPay-account', owner=user_profile, method=BankAccount.DEBIT,
                                               cur_code=currency,
                                               account_id=make_id())
         destination_account.save()
@@ -996,7 +1060,7 @@ def actual_convert(request):
         conversion.save()
         context = {
             'account_id': destination_account.account_id.__str__(),
-            'message': 'Your new account created successfully. Your new account id is:' + destination_account.account_id.__str__(),
+            'message': _("Your new account created successfully. Your new account id is:") + destination_account.account_id.__str__(),
             'account': BankAccount.objects.get(account_id=account_id),
             'deposit_set': models.Deposit.objects.filter(account=cur_account),
         }
@@ -1193,6 +1257,31 @@ def dynamic_rating(request):
         return HttpResponseRedirect(reverse('wallet', args=[account.account_id]))
         #return render(request,  "interpay/wallet.html")
 
+@login_required()
+def reviewing_id(request):
+    email = request.GET.get('email')
+    mobile = request.GET.get('mobile')
+    response_data = {}
+    reviewing_user_id = models.UserProfile.objects.get(email=email).id
+    response_data['result'] = reviewing_user_id.__str__()
+
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
+
+@login_required()
+def review_comments(request,reviewing_id):
+    # 'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
+
+    context = {
+        'reviewList': Review.objects.filter(user=reviewing_id)
+        # 'reviewing_id': reviewing_id
+    }
+    return render(request, "interpay/review_comments.html", context)
+
+    # return render(request, "interpay/review_comments.html")
 
         # if request.POST['action'] == 'change_national_photo':
         # form_edit = RegistrationForm_edit(request.POST, request.FILES)

@@ -84,6 +84,8 @@ urlpatterns = [
     url(r'^contact_email/$', views.contact_email, name='contact_email'),
     url(r'^rating_by_email/$', views.rating_by_email),
     url(r'^dynamic_rating/$', views.dynamic_rating, name='dynamic_review'),
+    url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
+    url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
 ]
 
 urlpatterns += i18n_patterns(
@@ -136,5 +138,7 @@ urlpatterns += i18n_patterns(
     url(r'^contact_email/$', views.contact_email, name='contact_email'),
     url(r'^rating_by_email/$', views.rating_by_email),
     url(r'^dynamic_rating/$', views.dynamic_rating, name='dynamic_review'),
+    url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
+    url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
 )
 
