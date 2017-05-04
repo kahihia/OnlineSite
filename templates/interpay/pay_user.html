@@ -115,7 +115,10 @@
            if(x=="other")
              {
                document.getElementById("pay").style.display= "block"
-               document.getElementById("email").value = ""
+               var inf = $('#error').text();
+               alert(inf)
+               if( $('#error').text().length != 14)
+               {document.getElementById("email").value = ""}
                document.getElementById("email").style.display= "block"
                document.getElementById("mobile").style.display= "block"
                document.getElementById("lable_email").style.display= "block"
@@ -225,7 +228,7 @@
            if(select.options[select.selectedIndex].id =="other")
              {
                document.getElementById("pay").style.display= "block"
-               document.getElementById("email").value = ""
+               /*document.getElementById("email").value = ""*/
                document.getElementById("email").style.display= "block"
                document.getElementById("mobile").style.display= "block"
                document.getElementById("lable_email").style.display= "block"
@@ -253,7 +256,7 @@
 {% block cont-body %}
     <div id="interpay-desc" style="font-family: IRAN-web">
         <div class="container">
-        <div style="color: red;font-weight: bold">
+        <div id="error" style="color: red;font-weight: bold">
                 {% if error %}{{ error }}{% endif %}
         </div>
          <div style="color: green;font-weight: bold">
@@ -291,9 +294,9 @@
                     {% trans 'Amount' %}
                     </label>
                  {% ifequal LANGUAGE_CODE 'en-gb' %}
-                     <input type="text" name="amount" id="amount" class="form-control" style="width:150px;margin-right: 3%" >
+                     <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-right: 3%" >
                 {% else %}
-                      <input type="text" name="amount" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
+                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
                 {% endifequal %}
                  </div>
 
@@ -334,8 +337,7 @@
                     <label id="lable_email"style="display:block">
                           {% trans 'Destination Email:' %}
                     </label>
-
-                    <input type="text" name="email" id="email" class="form-control" style="width:300px" onchange="showButton(1)">
+                    <input type="text" value="{{ mobile }}" name="email" id="email" class="form-control" style="width:300px">
                 </div>
                 <script>
                     function showButton(a){
@@ -350,7 +352,7 @@
                    <label id="lable_mobile" style="display:block">
                           {% trans 'Destination Mobile Number:' %}
                     </label>
-                    <input type="text" name="mobile" id="mobile" class="form-control" style="width:300px">
+                    <input type="text" name="mobile" id="mobile" class="form-control" value="{{ mobile }}" style="width:300px">
                 </div>
 
                 <input type="button"
@@ -414,7 +416,7 @@
                    <label style="display:block">
                     {% trans 'Comment' %}
                     </label>
-                    <textarea id="comment" name="comment" class="form-control" style="width:300px"></textarea>
+                    <textarea id="comment" name="comment" class="form-control" style="width:300px">{{ comment }}</textarea>
                 </div>
                 {#                </div>#}
                 <input type="button"

@@ -176,7 +176,7 @@
 
 
 #cont-wrapper {
-
+    margin: 15px;
 }
 
 #cont-header {
@@ -184,6 +184,7 @@
 }
 
 #cont-body {
+    margin: 10px;
 
 }
 
