@@ -77,7 +77,10 @@ class UserProfile(models.Model):
     def review(self):
         result = 0
         result += sum(x.review for x in self.users_review.all())
-        result /= float(self.users_review.count())
+        if self.users_review.count():
+            result /= float(self.users_review.count())
+        else:
+            result = 0
         return result
 
 
@@ -159,12 +162,13 @@ class BankAccount(models.Model):
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
     # TODO : this validator should be placed in js as well, so the user can not type other kinds of inputs
     name = models.CharField(max_length=254)
-    when_opened = models.DateField(_("Date"), default=datetime.now)
+    when_opened = models.DateField(_("Date"), default=timezone.now)
     owner = models.ForeignKey(UserProfile, related_name='w_accounts')
     cur_code = models.CharField(_('cur_code'), max_length=3, default='IRR')
     spectators = models.ManyToManyField(UserProfile, related_name='r_accounts')
     account_id = models.CharField(max_length=24)
 
+    @property
     def total_value(self):
         t_value = Decimal(0)
         log.info("totalValue")
@@ -172,8 +176,10 @@ class BankAccount(models.Model):
         total_estimate = defaultdict(lambda: Decimal(0.0))
         accounts = BankAccount.objects.filter(owner=self.owner, method=BankAccount.DEBIT)
         for account in accounts:
-            total_estimate[account.cur_code] = Decimal(convert(account.balance, account.cur_code, 'USD'))
-            t_value += total_estimate[account.cur_code]
+            #total_estimate[account.cur_code] = Decimal(convert(account.balance, account.cur_code, 'USD'))
+            t_value += Decimal(convert(account.balance, account.cur_code, 'USD'))
+
+        # print t_value
 
         return t_value.quantize(Decimal("0.01"))
         # TODO define total value
@@ -262,7 +268,7 @@ class Deposit(models.Model):
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
     amount = models.FloatField(default=0)
     banker = models.ForeignKey(UserProfile, null=True)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(default=datetime.now())
     cur_code = models.CharField(_('cur_code'), max_length=3, default='USD')
     tracking_code = models.IntegerField(default='0')
     type = models.CharField(default='0', choices=TYPE_CHOICES, max_length=3)

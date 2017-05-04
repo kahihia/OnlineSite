@@ -2,7 +2,7 @@ from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.http import HttpResponse
 from django.test import TestCase, Client
-from interpay.models import User, UserProfile, BankAccount, Deposit, MoneyTransfer
+from interpay.models import User, UserProfile, BankAccount, Deposit, MoneyTransfer, Withdraw
 from currencies.models import Currency
 from interpay.models import CurrencyReserve
 import unittest
@@ -326,3 +326,49 @@ class Teststaticfiles(TestCase):
         self.assertTrue(staticfiles_storage.exists(settings.BASE_DIR+'/static/interpay/css/base.css'))
         test_file = open(abs_path, 'rb')
         self.assertIs('@media only screen and (min-width : 420px) and ( max-width: 900px)' in test_file.read(), True)
+
+
+class ReviewTestCase(TestCase):
+    def setUp(self):
+        print ("review test started")
+
+        user1 = User.objects.create_user(username='z1', password='z1', is_active=True)
+        up_user1 = UserProfile.objects.create(user=user1, date_of_birth=datetime.datetime.now(), is_active=True,
+                                              email='z1@gmail.com')
+        up_user1.save()
+
+        user2 = User.objects.create_user(username='a1', password='a1', is_active=True)
+        up_user2 = UserProfile.objects.create(user=user2, date_of_birth=datetime.datetime.now(), is_active=True,
+                                              email='a1@gmail.com')
+        up_user2.save()
+
+        reviewer = BankAccount.objects.create(account_id="123", owner=up_user1, cur_code='USD',
+                                              method=BankAccount.DEBIT)
+        reviewer.save()
+        reviewing = BankAccount.objects.create(account_id="456", owner=up_user2, cur_code='USD',
+                                               method=BankAccount.DEBIT)
+        reviewing.save()
+
+        deposit_user = Deposit.objects.create(account=reviewer, amount=200, banker=up_user1, date=datetime.datetime.now(
+
+        ), )
+        deposit_user.save()
+
+        withdraw_user = Withdraw.objects.create(account=reviewing, amount=200, banker=up_user2)
+        withdraw_user.save()
+
+        montrans = MoneyTransfer.objects.create(deposit=deposit_user, withdraw=withdraw_user, comment="dinner")
+        montrans.save()
+
+    def test_review(self):
+        c = Client()
+        c.login(username='z1', password='z1')
+        post_response = c.post('/dynamic_rating/', {'review_moneytransfer_id': '1', 'input_rate': '4', 'review_comment': 'good'})
+        self.assertRedirects(post_response, reverse('wallet',args=["123"]), status_code=302, target_status_code=200,
+                             fetch_redirect_response=True)
+
+    def test_review_show(self):
+        c = Client()
+        c.login(username='z1', password='z1')
+        get_response = c.get('/rating_by_email/', {'email': 'a1@gmail.com', 'mobile': '09123312087'})
+        self.assertEqual(get_response.status_code, 200)

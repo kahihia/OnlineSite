@@ -5,3 +5,7 @@
 .idea
 db.sqlite3
 interpay/migrations/*
+*.djcache
+interpay/static/interpay/media/nationalCardScans/
+diagram.png
+interpay/static/server.log
