@@ -80,6 +80,15 @@ def get_currency_rate(currency):
     return main_price
 
 
+def set_notification_seen(request):
+    if request.method == "GET":
+        notif_id = request.GET["notif_id"]
+        notification = Notification.objects.get(id=notif_id)
+        notification.seen = True
+        notification.save()
+    return
+
+
 def set_rates(request):
     if not request.user.is_authenticated() or not request.user.is_superuser:
         return HttpResponse("Error")
@@ -112,6 +121,13 @@ def set_rates(request):
 #
 # def cache_read(request):
 #     return HttpResponse(cache.get('my_key'))
+def get_currency(cur_code):
+    if cur_code == "EUR":
+        return "Euro"
+    if cur_code == "USD":
+        return "Dollar"
+    if cur_code == "IRR":
+        return "Rial"
 
 
 def main_page(request):
@@ -362,8 +378,6 @@ def pay_user(request):
         src_account = BankAccount.objects.filter(owner=src_account_owner, method=BankAccount.DEBIT, cur_code=currency)
         if src_account:
             src_account = src_account[0]
-            # d = Deposit(account=src_account, amount=1000.00, banker=UserProfile.objects.get(user=request.user), date=datetime.datetime.now(), cur_code='USD')
-            # d.save()
             if src_account.balance < int(amount):
                 return render(request, 'interpay/pay_user.html',
                               {'error': Validation.Validation.check_validation('insufficient_balance')})
@@ -375,7 +389,9 @@ def pay_user(request):
             deposit = Deposit.objects.create(banker=up, account=destination_account, amount=amount,
                                              cur_code=destination_account.cur_code, type=Deposit.PAYMENT)
             MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
-            NotificationClass.make_notification("You have a new payment from" + src_account_owner.user.first_name + " " + src_account_owner.user.last_name , up,
+            NotificationClass.make_notification(
+                "You have a new payment from" + src_account_owner.user.first_name + " " + src_account_owner.user.last_name + ". You have received " + amount + " " + get_currency(
+                    deposit.cur_code) + "s.", up,
                                                 '/wallets/' + str(destination_account.account_id))
             return render(request, "interpay/pay_user.html",
                           {'success': _('Your payment was successfully done'), 'langStr': langStr})
@@ -793,11 +809,11 @@ def user_logout(request):
 @login_required()
 def home(request):
     user_profile = models.UserProfile.objects.get(user=request.user)
-    notifications = Notification.objects.filter(user=user_profile)
+    notifications = Notification.objects.filter(user=user_profile, seen=False)
     context = {
         'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
         'user_profile': user_profile,
-        'notifications': notifications
+        'notifications': notifications,
     }
     return render(request, "interpay/home.html", context)
 
