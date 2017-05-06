@@ -333,7 +333,7 @@ def pay_user(request):
         comment = request.POST['comment']
         email = request.POST['email']
         mobile = request.POST['mobile']
-        setform = request.POST['setform']
+        setform = request.POST.get('setform', False)
 
         context_error_amount = {
             'currency': currency,
