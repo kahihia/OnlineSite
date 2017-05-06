@@ -315,6 +315,7 @@ def pay_user(request):
         comment = request.POST['comment']
         email = request.POST['email']
         mobile = request.POST['mobile']
+        setform = request.POST['setform']
 
         context_error_amount = {
             'currency': currency,
@@ -322,6 +323,7 @@ def pay_user(request):
             'comment': comment,
             'email': email,
             'mobile': mobile,
+            'setform': setform,
             'error': "Please enter amount."
         }
 
@@ -338,6 +340,7 @@ def pay_user(request):
             'comment': comment,
             'email': email,
             'mobile': mobile,
+            'setform': setform,
             'error': v.get_errormessage(er),
             'langStr': langStr
         }
@@ -354,6 +357,7 @@ def pay_user(request):
             'comment': comment,
             'email': email,
             'mobile': mobile,
+            'setform': setform,
             'error': "No user with this email."
         }
         if email:
@@ -373,6 +377,7 @@ def pay_user(request):
                     'comment': comment,
                     'email': email,
                     'mobile': mobile,
+                    'setform': setform,
                     'error': "No user with this mobile number."
                 }
                 return render(request, 'interpay/pay_user.html', context_error_mobile)
@@ -383,6 +388,7 @@ def pay_user(request):
                 'comment': comment,
                 'email': email,
                 'mobile': mobile,
+                'setform': setform,
                 'error': "Please enter destination email or mobile."
             }
             return render(request, 'interpay/pay_user.html', context_error_mobile_email)
@@ -394,6 +400,7 @@ def pay_user(request):
                 'comment': comment,
                 'email': email,
                 'mobile': mobile,
+                'setform': setform,
                 'error': 'You cannot send payment to yourself'
             }
             return render(request, 'interpay/pay_user.html',context_error_pay_yourself)
@@ -420,6 +427,7 @@ def pay_user(request):
                     'comment': comment,
                     'email': email,
                     'mobile': mobile,
+                    'setform': setform,
                     'error': Validation.Validation.check_validation('insufficient_balance')
                 }
                 return render(request, 'interpay/pay_user.html', context_error_balance)
@@ -440,6 +448,7 @@ def pay_user(request):
                 'comment': comment,
                 'email': email,
                 'mobile': mobile,
+                'setform': setform,
                 'error': "You do not have any account in this currency"
             }
             return render(request, 'interpay/pay_user.html', context_error_currency)

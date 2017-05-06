@@ -32,10 +32,25 @@
 <script>
     {% block script %}
 
+        function apearByError() {
+
+            if( $('#setform').val() == 1 )
+              apear("other")
+            else if ( $('#setform').val() == 2 )
+               apear("gre")
+            else if ( $('#setform').val() == 3 )
+               apear("gmat")
+            else if ( $('#setform').val() == 4 )
+               apear("university")
+            else if ( $('#setform').val() == 5 )
+               apear("googleplay")
+        }
+        window.onload = apearByError;
         function apear(x)
         {
             if(x=="gre")
             {
+             document.getElementById("setform").value = "2"
              document.getElementById("email").value = "gre@rizpardakht.com"
               /*TODO need phone */
              document.getElementById("pay").style.display= "block"
@@ -56,6 +71,7 @@
             }
             if(x=="gmat")
             {
+             document.getElementById("setform").value = "3"
              document.getElementById("email").value = "gmat@rizpardakht.com"
               /*TODO need phone */
              document.getElementById("pay").style.display= "block"
@@ -76,6 +92,7 @@
             }
             if(x=="university")
             {
+                document.getElementById("setform").value = "4"
                 document.getElementById("email").value = "uni@rizpardakht.com"
                  /*TODO need phone */
                 document.getElementById("pay").style.display= "block"
@@ -95,6 +112,7 @@
             }
              if(x=="googleplay")
             {
+                document.getElementById("setform").value = "5"
                 document.getElementById("email").value = "googleplay@rizpardakht.com"
                 /*TODO need phone */
                 document.getElementById("pay").style.display= "block"
@@ -115,10 +133,11 @@
            if(x=="other")
              {
                document.getElementById("pay").style.display= "block"
-               var inf = $('#error').text();
-               alert(inf)
-               if( $('#error').text().length != 14)
-               {document.getElementById("email").value = ""}
+               if( $('#error').text().length === 26 )
+               {
+                   document.getElementById("email").value = ""
+               }
+               document.getElementById("setform").value = "1"
                document.getElementById("email").style.display= "block"
                document.getElementById("mobile").style.display= "block"
                document.getElementById("lable_email").style.display= "block"
@@ -140,15 +159,19 @@
                 var mobile = document.getElementById("mobile");
                 var comment = document.getElementById("comment");
                 var amount = document.getElementById("amount");
+                var setform = document.getElementById("setform");
 
                 var modal_email = document.getElementById("modal_email");
                 var modal_mobile = document.getElementById("modal_mobile");
                 var modal_comment = document.getElementById("modal_comment");
                 var modal_amount = document.getElementById("modal_amount");
+                var modal_setfrom = document.getElementById("modal_setform");
+
                 modal_email.innerHTML = email.value
                 modal_mobile.innerHTML = mobile.value
                 modal_comment.innerHTML = comment.value
                 modal_amount.innerHTML = amount.value
+                modal_setfrom.innerHTML = setform.value
 
         }
         function choice(select) {
@@ -298,6 +321,7 @@
                 {% else %}
                       <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
                 {% endifequal %}
+                      <input type="hidden" name="setform" id="setform" value="{{ setform }}">
                  </div>
 
                  <span class="form-group" style="padding: 0">
@@ -337,7 +361,7 @@
                     <label id="lable_email"style="display:block">
                           {% trans 'Destination Email:' %}
                     </label>
-                    <input type="text" value="{{ mobile }}" name="email" id="email" class="form-control" style="width:300px">
+                    <input type="text" value="{{ email }}" name="email" id="email" class="form-control" style="width:300px">
                 </div>
                 <script>
                     function showButton(a){
@@ -448,6 +472,8 @@
                                     <br>
                                     <label>{%  trans 'Comment' %}:</label>
                                     <span id="modal_comment"></span>
+                                    <br>
+                                    <span id="modal_setform" style="display: none"></span>
                                     <br>
 
                                 </div>
