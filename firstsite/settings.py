@@ -68,7 +68,8 @@ INSTALLED_APPS = [
     'manager',
     'captcha',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'Notification'
 ]
 
 SITE_ID=1

@@ -12,34 +12,60 @@
     <meta charset="UTF-8">
   {% block JS %}
       <script>
-               document.addEventListener('DOMContentLoaded', function () {
-            if (!Notification) {
-           alert('Desktop notifications not available in your browser. Try Chromium.');
-          return;
-        }
+          document.addEventListener('DOMContentLoaded', function () {
+              if (!Notification) {
+                  alert('Desktop notifications not available in your browser. Try Chromium.');
+                  return;
+              }
 
-  if (Notification.permission !== "granted")
-    Notification.requestPermission();
-});
+              if (Notification.permission !== "granted")
+                  Notification.requestPermission();
+          });
 
-function notifyMe() {
-  if (Notification.permission !== "granted")
-    Notification.requestPermission();
-  else {
-    var notification = new Notification('Notification title', {
-      icon: src="{% static 'interpay/images/rizpal.png' %}",
-      body: "Welcome!",
-    });
+          function init() {
+              var notification_list = document.getElementById("notifications")
+              for (var i = 0; i < notification_list.options.length; i++) {
+                  var notification = notification_list.options[i].text;
+                  parts = notification.split(",");
+                  notifyMe(parts[0], parts[1], parts[2]);
+              }
+          }
 
-    notification.onclick = function () {
-      window.open("/home/");
-    };
+          function notifyMe(url, text, notif_id) {
+              if (Notification.permission !== "granted")
+                  Notification.requestPermission();
+              else {
+                  var notification = new Notification(text, {
+                      icon: src = "{% static 'interpay/images/rizpal.png' %}",
+                      requireInteraction: true,
+                      tag : notif_id,
+                      {#                   body: "Welcome!",#}
+                  });
+                  notification.requireInteraction = true;
+                  notification.onclick = function () {
 
-  }
+                      $.ajax({
+                          url: "/set_notification_seen/", // the endpoint
+                          type: "GET", // http method
+                          data: {notif_id: notif_id}, // data sent with the post request
 
-}
-      window.onload = notifyMe;
-  </script>
+                          // handle a successful response
+                          success: function (json) {
+                              $.each(json, function (id, value) {
+                                  $('#applications').append($('<option>').text(value.value).attr('value', value.value));
+                                  console.log(value)
+                              });
+                          }
+
+                      });
+                      window.open(url);
+                  };
+
+              }
+
+          }
+          window.onload = init;
+      </script>
  {% endblock %}
 </head>
 <body>
@@ -69,6 +95,16 @@ function notifyMe() {
         <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">
              {% trans 'Your total wallet value is' %} (USD): {{ accountList.first.total_value }}
         </p>
+        <select id="notifications" style="display: none">
+            {% for item in notifications %}
+                <option>
+                    {{ item.url }},{{ item.text }},{{ item.id }}
+                </option>
+            {% endfor %}
+        </select>
+{#        {% for item in notifications %}#}
+{#            <input type="button" onclick="notifyMe('{{ item.url }}', '{{ item.text }}')" value="abc">#}
+{#        {% endfor %}#}
     </div>
 {% endblock %}
 
