@@ -175,9 +175,6 @@
 }
 
 
-#cont-wrapper {
-    margin: 15px;
-}
 
 #cont-header {
     margin: 10px;
@@ -206,6 +203,10 @@
 
 
 @media only screen and ( max-width: 420px){
+#cont-wrapper {
+    margin: 5px;
+}
+
 .rizpal{
     padding-top: 2%;
     margin-left: 3%;
@@ -248,6 +249,12 @@
 }
 
 @media only screen and (min-width : 420px) and ( max-width: 800px) {
+
+ #cont-wrapper
+ {
+    margin: 10px;
+}
+
 .rizpal{
     padding-top: 1%;
     margin-left: 1%;
@@ -290,6 +297,11 @@
     }
 }
 @media only screen and (min-width : 800px) and ( max-width: 1100px) {
+
+    #cont-wrapper {
+    margin: 10px;
+}
+
 .rizpal{
     padding-top: 7px;
     margin-left: 1%;
@@ -333,6 +345,10 @@
 }
 
 @media only screen and (min-width: 1100px) and (max-width: 1400px)  {
+    #cont-wrapper {
+    margin: 15px;
+}
+
     .rizpal {
         padding-top: 7px;
         margin-top: 0%;
@@ -378,6 +394,10 @@
 }
 
 @media only screen and (min-width: 1400px) and (max-width: 1700px)   {
+    #cont-wrapper {
+    margin: 15px;
+}
+
     .rizpal {
         padding-top: 7px;
         margin-top: 0%;
@@ -423,6 +443,10 @@
 }
 
 @media only screen and (min-width: 1700px)   {
+    #cont-wrapper {
+    margin: 15px;
+}
+
     .rizpal {
         padding-top: 7px;
         margin-top: 0%;
