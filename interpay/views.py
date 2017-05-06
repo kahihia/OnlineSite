@@ -47,6 +47,7 @@ from django.utils.translation import ugettext_lazy as _
 from Notification.views import NotificationClass
 from Notification.models import Notification
 from django.core.mail import send_mail
+from django.views.generic.base import RedirectView
 
 log = logging.getLogger('interpay')
 
@@ -1285,6 +1286,8 @@ def review_comments(request,reviewing_id):
         'reviewing_user': UserProfile.objects.get(id=reviewing_id).user
     }
     return render(request, "interpay/review_comments.html", context)
+
+favicon_view = RedirectView.as_view(url='/static/interpay/images/ipay-favicon.ico', permanent=True)
 
     # return render(request, "interpay/review_comments.html")
 

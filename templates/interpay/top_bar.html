@@ -1,7 +1,9 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% ifequal LANGUAGE_CODE 'fa-ir' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% endifequal %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +19,7 @@
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
     <link rel="stylesheet" href="{% static 'interpay/css/info.css' %}">
-{#    <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>#}
+    <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
 
     <link rel="stylesheet" href="{% static 'interpay/css/custom.css' %}">
