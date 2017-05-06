@@ -46,6 +46,7 @@ import xml.sax
 from django.utils.translation import ugettext_lazy as _
 from Notification.views import NotificationClass
 from Notification.models import Notification
+from django.core.mail import send_mail
 
 log = logging.getLogger('interpay')
 
@@ -1176,21 +1177,17 @@ def edit_profile(request):
 
 
 def contact_email(request):
-    email = request.POST.get('email', False)
-    email_sender = Email.Email(email)
-    error_message = ""
-    sent = ""
-    try:
-        sent = email_sender.send_email()
-    except SMTPRecipientsRefused:
-        error_message = "Invalid Email"
+    email = request.POST.get('email')
+    title = request.POST.get('title')
+    comment = request.POST.get('comment')
+    send_mail(
+        title,
+        comment,
+        email,
+        ['info@rizpardakht.com'],
+    )
 
-        if sent == 1:
-            return HttpResponse("Email Send Successfully")
-        else:
-            if error_message:
-                return HttpResponse(error_message)
-        return HttpResponse("No such user")
+    return HttpResponseRedirect(reverse('contact'))
 
 
 @login_required()
@@ -1282,11 +1279,10 @@ def reviewing_id(request):
 
 @login_required()
 def review_comments(request,reviewing_id):
-    # 'accountList': BankAccount.objects.filter(owner=user_profile, method=BankAccount.DEBIT),
 
     context = {
-        'reviewList': Review.objects.filter(user=reviewing_id)
-        # 'reviewing_id': reviewing_id
+        'reviewList': Review.objects.filter(user=reviewing_id),
+        'reviewing_user': UserProfile.objects.get(id=reviewing_id).user
     }
     return render(request, "interpay/review_comments.html", context)
 
