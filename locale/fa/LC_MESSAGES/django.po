@@ -701,8 +701,17 @@ msgid "Reviewer"
 msgstr "رای دهنده"
 
 #: templates/interpay/review_comments.html:56
-msgid "Review Comment"
-msgstr "نظرات"
+msgid "Review Comments"
+msgstr "مشاهده نظرات"
+
+#: templates/interpay/review_comments.html:37
+msgid "Review Comments for"
+msgstr "نظر کاربران در رابطه با کاربر"
+
+#: templates/interpay/contact.html:141
+msgid "Send Email"
+msgstr "ارسال ایمیل"
+
 
 #~| msgid "My total stock in"
 #~ msgid "Your total stock in"

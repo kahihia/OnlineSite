@@ -86,6 +86,7 @@ urlpatterns = [
     url(r'^dynamic_rating/$', views.dynamic_rating, name='dynamic_review'),
     url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
+    url(r'^favicon\.ico$', views.favicon_view),
 ]
 
 urlpatterns += i18n_patterns(
@@ -140,5 +141,6 @@ urlpatterns += i18n_patterns(
     url(r'^dynamic_rating/$', views.dynamic_rating, name='dynamic_review'),
     url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
+    url(r'^favicon\.ico$', views.favicon_view),
 )
 

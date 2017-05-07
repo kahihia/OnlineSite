@@ -1231,9 +1231,9 @@ img.tp-slider-alternative-image	{	width:100%; height:auto;}
         -o-user-select: none;
 	}
 
-.tp-bannershadow.tp-shadow1 {	background:url(../assets/shadow1.png) no-repeat; background-size:100% 100%; width:890px; height:60px; bottom:-60px}
-.tp-bannershadow.tp-shadow2 {	background:url(../assets/shadow2.png) no-repeat; background-size:100% 100%; width:890px; height:60px;bottom:-60px}
-.tp-bannershadow.tp-shadow3 {	background:url(../assets/shadow3.png) no-repeat; background-size:100% 100%; width:890px; height:60px;bottom:-60px}
+/*.tp-bannershadow.tp-shadow1 {	background:url(../assets/shadow1.png) no-repeat; background-size:100% 100%; width:890px; height:60px; bottom:-60px}*/
+/*.tp-bannershadow.tp-shadow2 {	background:url(../assets/shadow2.png) no-repeat; background-size:100% 100%; width:890px; height:60px;bottom:-60px}*/
+/*.tp-bannershadow.tp-shadow3 {	background:url(../assets/shadow3.png) no-repeat; background-size:100% 100%; width:890px; height:60px;bottom:-60px}*/
 
 
 /********************************
@@ -1555,7 +1555,7 @@ img.tp-slider-alternative-image	{	width:100%; height:auto;}
 /************************************
 		-	TP BANNER TIMER		-
 *************************************/
-.tp-bannertimer								{	width:100%; height:10px; background:url(../assets/timer.png);position:absolute; z-index:200;top:0px}
+/*.tp-bannertimer								{	width:100%; height:10px; background:url(../assets/timer.png);position:absolute; z-index:200;top:0px}*/
 .tp-bannertimer.tp-bottom					{	bottom:0px;height:5px; top:auto}
 
 
@@ -2123,7 +2123,7 @@ img.tp-slider-alternative-image	{	width:100%; height:auto;}
 .tp-loader.spinner0 {
   width: 40px;
   height: 40px;
-  background:url(../assets/loader.gif) no-repeat center center;
+  /*background:url(../assets/loader.gif) no-repeat center center;*/
   background-color: #fff;
   box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.15);
   -webkit-box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.15);

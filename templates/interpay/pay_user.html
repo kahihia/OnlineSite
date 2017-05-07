@@ -361,7 +361,7 @@
                     <label id="lable_email"style="display:block">
                           {% trans 'Destination Email:' %}
                     </label>
-                    <input type="text" value="{{ email }}" name="email" id="email" class="form-control" style="width:300px">
+                    <input type="text" value="{{ email }}" name="email" id="email" class="form-control" onchange="showButton(1)" style="width:300px">
                 </div>
                 <script>
                     function showButton(a){

@@ -34,7 +34,7 @@
         {% block cont-header %}
             <div>
                 <h3 class="page-title">
-                    {% trans 'Review Comment' %}
+                    {% trans 'Review Comments for' %} {{ reviewing_user }}
                 </h3>
             </div>
         {% endblock %}
@@ -69,7 +69,21 @@
                         {% for review_row in reviewList %}
                             <tr>
                                 <td class="table-cell"> {{ review_row.reviewer }}</td>
-                                <td class="table-cell"> {{ review_row.review }}</td>
+                                <td class="table-cell">
+                                    <div class="star-ratings-sprite">
+                                        {% if review_row.review == 1 %}
+                                            <span class="star-ratings-sprite-rating" id="star-ratings-sprite-rating"  style="width:22px"></span>
+                                        {% elif review_row.review == 2 %}
+                                            <span class="star-ratings-sprite-rating" id="star-ratings-sprite-rating"  style="width:44px"></span>
+                                        {% elif review_row.review == 3 %}
+                                            <span class="star-ratings-sprite-rating" id="star-ratings-sprite-rating"  style="width:66px"></span>
+                                        {% elif review_row.review == 4 %}
+                                            <span class="star-ratings-sprite-rating" id="star-ratings-sprite-rating"  style="width:88px"></span>
+                                        {% else %}
+                                            <span class="star-ratings-sprite-rating" id="star-ratings-sprite-rating"  style="width:110px"></span>
+                                        {% endif %}
+                                    </div>
+                                </td>
                                 <td class="table-cell"> {{ review_row.comments }}</td>
                                 <td class="table-cell"> {{ review_row.type }}</td>
 
