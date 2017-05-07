@@ -73,7 +73,8 @@ class ConversionTestCase(TestCase):
         cr1.save()
         cr2 = Currency.objects.create(code="IRR", name="rial", factor=39000)
         cr2.save()
-        CurrencyReserve.objects.create(currency="IRR", recharge_date=datetime.datetime.now(), on_recharge_amount=4000000)
+        CurrencyReserve.objects.create(currency="IRR", recharge_date=datetime.datetime.now(),
+                                       on_recharge_amount=4000000)
 
     def test_conversion(self):
         c = Client()
@@ -252,41 +253,6 @@ class Registration(TestCase):
         self.assertContains(response, 'continue')
 
 
-# class ForeignKeyTestCase(TestCase):
-#     def setUp(self):
-#         user_src = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
-#         up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(), email='a@b.com',
-#                                             is_active=True)
-#
-#         user_dest = User.objects.create_user(username='arman71', password='1731', email='b@c.com', is_active=True)
-#         up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(), email='b@c.com',
-#                                              is_active=True)
-#         account1 = BankAccount.objects.create(account_id="123", owner=up_src, cur_code='USD',
-#                                               method=BankAccount.DEBIT)
-#         account2 = BankAccount.objects.create(account_id="124", owner=up_src, cur_code='USD',
-#                                               method=BankAccount.DEBIT)
-#         account3 = BankAccount.objects.create(account_id="125", owner=up_src, cur_code='USD',
-#                                               method=BankAccount.DEBIT)
-#         account4 = BankAccount.objects.create(account_id="126", owner=up_src, cur_code='USD',
-#                                               method=BankAccount.DEBIT)
-#         MoneyTransfer.objects.create(sender=account1, receiver=account2,
-#                                      date=datetime.datetime.now(),
-#                                      amount=100, comment="test", cur_code="USD")
-#         MoneyTransfer.objects.create(sender=account1, receiver=account2,
-#                                      date=datetime.datetime.now(),
-#                                      amount=200, comment="test", cur_code="USD")
-#         MoneyTransfer.objects.create(sender=account1, receiver=account2,
-#                                      date=datetime.datetime.now(),
-#                                      amount=300, comment="test", cur_code="USD")
-#         for temp in account1.outcome_transfers.all():
-#             print ("abcde")
-#         for temp in account3.outcome_transfers.all():
-#             print ("abcdefgh")
-#
-#     def test_payment(self):
-#         print ("test started")
-
-
 class CallbackTestCase(TestCase):
     def setUp(self):
         user_src = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
@@ -310,20 +276,13 @@ class CallbackTestCase(TestCase):
     def test_callback(self):
         c = Client()
         c.login(username='arman', password='1731')
-        # response = c.get('/fa-ir/top-up/')
-        # self.assertEqual(response.status_code, 200)
-        # # print "***************"
-        # # print response
-        # post_response = c.get('/callback_handler/',
-        #                       {'Status': 'OK', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
-        #                        'mobile': '10'})
-        # self.assertEqual(post_response.status_code, 200)
+
 
 class Teststaticfiles(TestCase):
     def test_responsive(self):
         abs_path = finders.find('../static/interpay/css/base.css')
         # print ("abspath"+abs_path)
-        self.assertTrue(staticfiles_storage.exists(settings.BASE_DIR+'/static/interpay/css/base.css'))
+        self.assertTrue(staticfiles_storage.exists(settings.BASE_DIR + '/static/interpay/css/base.css'))
         test_file = open(abs_path, 'rb')
         self.assertIs('@media only screen and (min-width : 420px) and ( max-width: 900px)' in test_file.read(), True)
 
@@ -363,8 +322,9 @@ class ReviewTestCase(TestCase):
     def test_review(self):
         c = Client()
         c.login(username='z1', password='z1')
-        post_response = c.post('/dynamic_rating/', {'review_moneytransfer_id': '1', 'input_rate': '4', 'review_comment': 'good'})
-        self.assertRedirects(post_response, reverse('wallet',args=["123"]), status_code=302, target_status_code=200,
+        post_response = c.post('/dynamic_rating/',
+                               {'review_moneytransfer_id': '1', 'input_rate': '4', 'review_comment': 'good'})
+        self.assertRedirects(post_response, reverse('wallet', args=["123"]), status_code=302, target_status_code=200,
                              fetch_redirect_response=True)
 
     def test_review_show(self):
@@ -372,3 +332,41 @@ class ReviewTestCase(TestCase):
         c.login(username='z1', password='z1')
         get_response = c.get('/rating_by_email/', {'email': 'a1@gmail.com', 'mobile': '09123312087'})
         self.assertEqual(get_response.status_code, 200)
+
+
+class TestWithdrawInternationalPayment(TestCase):
+    def setUp(self):
+        settings.DEBUG = True
+        user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
+        up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
+                                        email='a@b.com', mobile_number='09102118797')
+        content = {'payeeEmail': 'a@b.com', 'orderAmount': '150', 'MerOrderRef': '500',
+                   'orderCurrencyCode': 'EUR', 'payeeMobile': '09102118797',
+                   'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
+        data = self.make_request('/rest_framework/cash_out_order/', content, 'cash_out')
+        cr1 = Currency.objects.create(code="EUR", name="dollar")
+        cr1.save()
+        cr2 = Currency.objects.create(code="IRR", name="rial", factor=39000)
+        cr2.save()
+        CurrencyReserve.objects.create(currency="IRR", recharge_date=datetime.datetime.now(),
+                                       on_recharge_amount=400000000)
+
+    def make_request(self, url, content, url_name):
+        factory = APIRequestFactory()
+        request = factory.post(url, content, format='json')
+        user = User.objects.get(username='arman')
+        force_authenticate(request, user=user)
+        func_url = reverse(url_name)
+        view = resolve(func_url).func
+        response = view(request)
+        return json.loads(response.content)
+
+    def test_withdraw(self):
+        up = UserProfile.objects.all()[0]
+        deposit = Deposit.objects.all()[0]
+        c = Client()
+        c.login(username='arman', password='1731')
+        post_response = c.post('/wallets/withdraw_pending_deposit/',
+                               {'selected_transaction_id': deposit.id, 'deposit_id' + str(deposit.id): deposit.id})
+        rial_wallet = BankAccount.objects.get(cur_code="IRR")
+        self.assertEqual(rial_wallet.balance + rial_wallet.commission, float(5850000))

@@ -20,7 +20,7 @@ import json
 from django.utils import timezone
 from interpay.Email import Email
 from smtplib import SMTPRecipientsRefused
-
+from django.db import transaction
 
 class JSONResponse(HttpResponse):
     """
@@ -90,6 +90,7 @@ def get_order_status(request):
             return JSONResponse(response)
 
 
+@transaction.atomic()
 @api_view(['GET', 'POST'])
 def cash_out_order(request):
     response = {}
