@@ -305,7 +305,11 @@
          </div>
 
          <br><br>
+        {% ifequal LANGUAGE_CODE 'en-gb' %}
             <form id="pay" method="post" action="/pay_user/" style="display: none;">
+        {%  else %}
+            <form id="pay" method="post" action="/fa-ir/pay_user/" style="display: none;">
+        {%  endifequal %}
                 {% csrf_token %}
                 {#                <div class="row">#}
                 <div class="form-group" style="padding: 0">

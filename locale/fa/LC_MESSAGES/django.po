@@ -712,6 +712,9 @@ msgstr "نظر کاربران در رابطه با کاربر"
 msgid "Send Email"
 msgstr "ارسال ایمیل"
 
+#: interpay/views.py:465
+msgid "Your payment was successfully done"
+msgstr "پرداخت شما با موفقیت انجام شد."
 
 #~| msgid "My total stock in"
 #~ msgid "Your total stock in"
