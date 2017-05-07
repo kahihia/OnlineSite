@@ -32,6 +32,7 @@ from firstsite import settings
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from currencies.models import Currency
+from django.db import transaction
 from django.db.models import Q
 import json
 import time
@@ -321,6 +322,7 @@ def verify_user(request):
             return HttpResponse(json.dumps(result))
 
 
+@transaction.atomic()
 @login_required()
 def pay_user(request):
     if request.LANGUAGE_CODE == 'en-gb':
