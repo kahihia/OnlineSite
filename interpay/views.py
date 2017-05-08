@@ -1292,6 +1292,9 @@ def review_comments(request,reviewing_id):
 
 favicon_view = RedirectView.as_view(url='/static/interpay/images/ipay-favicon.ico', permanent=True)
 
+def unregistered_pay(request):
+    return render(request, "interpay/unregistered_pay.html")
+
     # return render(request, "interpay/review_comments.html")
 
         # if request.POST['action'] == 'change_national_photo':

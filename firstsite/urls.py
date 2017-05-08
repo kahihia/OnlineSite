@@ -87,6 +87,7 @@ urlpatterns = [
     url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
     url(r'^favicon\.ico$', views.favicon_view),
+    url(r'^unregistered_pay/$', views.unregistered_pay, name='unregistered_pay'),
 ]
 
 urlpatterns += i18n_patterns(
@@ -142,5 +143,6 @@ urlpatterns += i18n_patterns(
     url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
     url(r'^favicon\.ico$', views.favicon_view),
+    url(r'^unregistered_pay/$', views.unregistered_pay, name='unregistered_pay'),
 )
 
