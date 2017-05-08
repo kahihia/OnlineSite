@@ -7,7 +7,6 @@
 {% endifequal %}
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
-<script src="{% static 'interpay/jquery/jquery-1.10.2.js'%}"></script>
 {% include 'session_security/all.html' %}
 <!-- -->
 <html lang="en">
@@ -30,6 +29,7 @@
 
     {% endblock css %}
     {% block js %}
+        <script src="{% static 'interpay/jquery/jquery-1.10.2.js'%}"></script>
         <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
@@ -93,9 +93,22 @@
                 });
 
             });
+            {% ifequal LANGUAGE_CODE 'fa-ir' %}
+           jQuery(document).ready( function() {
+           var map =
+                [
+                "&\#1632;","&\#1633;","&\#1634;","&\#1635;","&\#1636;",
+                "&\#1637;","&\#1638;","&\#1639;","&\#1640;","&\#1641;"
+                ]
 
-
-        </script>
+            document.body.innerHTML =
+            document.body.innerHTML.replace(
+            /\d(?=[^<>]*(<|$))/g,
+            function($0) { return map[$0] }
+          );
+   })
+        {% endifequal %}
+   </script>
     {% endblock %}
     {% block JS %}
     {% endblock %}
@@ -125,12 +138,12 @@
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
-                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag">
                     </a>
                 {% else %}
                     <a id="to-en-link" class="trans-link" onclick="to_en()">
                         <p class="lang" style="cursor: pointer"> Eng/Fa </p>
-                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag">
                     </a>
                 {% endifequal %}
              {% endblock %}
@@ -150,15 +163,9 @@
                          --->
                    </div>
                  </a>
-
                 <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
                 <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
-
             </h1>
-     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
-
-
-      </div>
         </ul>
     </header>
 
@@ -257,17 +264,17 @@
     <div id="closeall">
         <nav id="demoo" class="w3-hide w3-hide-large w3-hide-medium w3-collapse">
           {% ifequal LANGUAGE_CODE 'en-gb' %}
-            <div id="sidebar" class="pull-left w3-table w3-animate-left" style="width: 30%">
+            <div id="sidebar" class="pull-left w3-table w3-animate-left">
            {% else %}
-           <div id="sidebar" class="pull-right w3-table w3-animate-right" style="width: 30%">
+           <div id="sidebar" class="pull-right w3-table w3-animate-right">
            {% endifequal %}
                 <div  id="sidebar-content">
                     <ul id="sidebar-entries">
                         <li class="  w3-hide-medium w3-hide-large">
                           {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a  class="w3-closenav" id="close"  style="float:left" href="javascript:void(0);" onclick="sidebarfunc1()">
+                            <a  class="pull-left w3-closenav" id="close"  href="javascript:void(0);" onclick="sidebarfunc1()">
                           {% else %}
-                            <a  class=" pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="sidebarfunc1()">
+                            <a  class="pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="sidebarfunc1()">
                            {% endifequal %}
                             <span class="sidebar-entry-name">{% trans "Close" %}</span>
                             </a>

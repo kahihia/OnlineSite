@@ -2,47 +2,51 @@
                     margin-left: 0 !important;
                     direction: rtl;
                     font-family: "IRAN-web";
-                }
+  }
 
-               @media only screen and ( max-width: 700px){
+  @media only screen and ( max-width: 700px)
+  {
                  #main-content-section{
                 margin-right: 5%
-                }}
-               @media only screen and (min-width: 700px)  and ( max-width: 1400px) {
+  }}
+ @media only screen and (min-width: 700px)  and ( max-width: 1400px)
+ {
                 #main-content-section{
                 margin-right: 15%
-                }}
-               @media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
+ }}
+ @media only screen and (min-width : 1400px)  and ( max-width: 1700px)
+ {
                   #main-content-section{
                 margin-right: 15%
-                }}
-               @media only screen and (min-width : 1700px){
+  }}
+  @media only screen and (min-width : 1700px)
+  {
                  #main-content-section{
                 margin-right: 15%
-                }}
-                #sidebar-entries {
+  }}
+  #sidebar-entries {
                     padding-right: 10px;
                     padding-left: 0 !important;
                     font-family: "IRAN-web";
-                }
-                .sidebar-entry {
+ }
+  .sidebar-entry {
                     text-align: right;
                     direction: rtl;
                     font-family: "IRAN-web";
-                }
-                #logout {
+   }
+ #logout {
                     float: left !important;
                     font-family: "IRAN-web";
-                }
-                #name {
+   }
+  #name {
                     float: right !important;
                     font-family: "IRAN-web";
-                }
-                #interpay-id {
+}
+  #interpay-id {
                     float: right !important;
                     font-family: "IRAN-web";
-                }
-                .sidebar-links {
+  }
+ .sidebar-links {
                     text-align: right;
                     font-family: "IRAN-web";
-                }
+}

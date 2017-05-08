@@ -36,12 +36,13 @@
  {% block style %}
     <style>
         {% ifequal LANGUAGE_CODE 'fa-ir' %}
-
-            .form-wrapper {
+           .form-wrapper {
                 text-align: right !important;
                 font-family: "IRAN-web";
             }
-
+            #main_register{
+            font-family: "IRAN-web";
+            }
             #reg-wrap-wrap-div{
              font-family: "IRAN-web";
             }
@@ -314,7 +315,7 @@
         {#                </div>#}
         {#            </div>#}
         {% else %}
-        <div class="row">
+        <div id="main_register" class="row">
             {% block main-cont %}
                 <div class="col-xs-12" id="reg-wrap-wrap-div">
                 <div class="form-wrapper">

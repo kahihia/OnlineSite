@@ -5,6 +5,7 @@
 {% load filters %}
 <!DOCTYPE html>
 <html lang="en">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-6">
 
  {% block flag %}
 
@@ -15,6 +16,9 @@
         {% trans 'Transaction History ' %}
     {% endblock %}</title>
     {% block CSS %}
+       {% ifequal LANGUAGE_CODE 'fa-ir' %}
+         <link rel="stylesheet" href="{% static 'interpay/css/trans_historyFarsi.css' %}">
+       {% endifequal %}
         <link rel="stylesheet" href="{% static 'interpay/css/trans_history.css' %}">
     {% endblock %}
 </head>
@@ -27,7 +31,6 @@
     </div>
 {% endblock %}
 {% block cont-body %}
-
 
             <div id="trans-his-tab-searchbar" class="row" style="height: 15%">
                 <span id="display-records" class="col-sm-6">
@@ -44,7 +47,7 @@
                     </i>
                 </span>
             </div>
-            <div class="table-responsive">
+            <div id="trans_table" class="table-responsive">
 {#            <table id="trans-his-tab" class="table">#}
 {#                <thead>#}
 {#                <tr role="row" class="table-header-row">#}
