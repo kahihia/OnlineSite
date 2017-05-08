@@ -289,9 +289,13 @@ msgstr ""
 msgid "payment"
 msgstr "پرداخت"
 
-#: templates/interpay/home.html:70
+#: templates/interpay/home.html:96
 msgid "Your total wallet value is"
 msgstr "مقدار کل قابل پرداخت"
+
+#: templates/interpay/home.html:99
+msgid "(USD):"
+msgstr "(USD):"
 
 #: templates/interpay/index.html:83 templates/manager/manager-login.html:81
 msgid "Welcome to Interpay Iran"
@@ -371,9 +375,9 @@ msgstr ""
 msgid "New User Registration"
 msgstr "ساخت حساب کاربری"
 
-#: templates/interpay/registeration_form.html:349
+#: templates/interpay/registeration_form.html:351
 msgid "Continue >>"
-msgstr ""
+msgstr "ادامه >> "
 
 #: templates/interpay/registeration_form.html:353
 msgid "Sign Up"
@@ -701,8 +705,26 @@ msgid "Reviewer"
 msgstr "رای دهنده"
 
 #: templates/interpay/review_comments.html:56
-msgid "Review Comment"
-msgstr "نظرات"
+msgid "Review Comments"
+msgstr "مشاهده نظرات"
+
+#: templates/interpay/review_comments.html:37
+msgid "Review Comments for"
+msgstr "نظر کاربران در رابطه با کاربر"
+
+#: templates/interpay/contact.html:141
+msgid "Send Email"
+msgstr "ارسال ایمیل"
+
+#: interpay/views.py:465
+msgid "Your payment was successfully done"
+msgstr "پرداخت شما با موفقیت انجام شد."
+
+#: templates/interpay/registation_form.html:193
+msgid "Processing. If successful a message will be sent to your mobile."
+msgstr "در حال پردازش. اگر عملیات با موفقیت انجام شود، پیامی به تلفن شما ارسال خواهدشد."
+
+
 
 #~| msgid "My total stock in"
 #~ msgid "Your total stock in"

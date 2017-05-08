@@ -1,7 +1,9 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% ifequal LANGUAGE_CODE 'fa-ir' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% endifequal %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,6 +163,13 @@
         <div class="navbar-collapse">
             <div class="menu-container">
                <ul class="nav navbar-nav">
+               <li class="active">
+                      {% ifequal LANGUAGE_CODE 'en-gb' %}
+                       <a href="/unregistered_pay/" class="buynowbut">{% trans 'Trusted Payment' %}</a>
+                      {% else %}
+                       <a href="/fa-ir/unregistered_pay/" class="buynowbut">{% trans 'Trusted Payment' %}</a>
+                      {% endifequal %}
+                    </li>
                     <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
                        <a href="/login/" class="buynowbut">{% trans 'LOGIN' %}</a>

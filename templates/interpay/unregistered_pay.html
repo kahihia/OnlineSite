@@ -1,0 +1,150 @@
+
+{% load i18n %}
+{% load static %}
+{% load staticfiles %}
+
+{% ifequal LANGUAGE_CODE 'fa-ir' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% endifequal %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            Unregistered Payment
+        </title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
+        <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
+        <link rel="stylesheet" href="{% static 'interpay/css/registeration_form.css' %}">
+        <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
+        <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+
+        <!-- JS -->
+        <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
+        <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
+        <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
+
+        {% block style %}
+            <style>
+                {% ifequal LANGUAGE_CODE 'fa-ir' %}
+
+                    .form-wrapper {
+                        text-align: right !important;
+                        font-family: "IRAN-web";
+                    }
+
+                    #reg-wrap-wrap-div{
+                        font-family: "IRAN-web";
+                    }
+
+                {% endifequal %}
+            </style>
+    {% endblock %}
+
+    </head>
+
+    <body style="background: #f9f9f9">
+        <script>
+            $(document).ready(function () {
+            $("#national_code").keydown(function (event) {
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    // Allow: Ctrl+A
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    // Allow: home, end, left, right
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+            $("#mob_no").keydown(function (event) {
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+                }
+                else {
+                // Ensure that it is a number and stop the keypress
+                    if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                        event.preventDefault();
+                    }
+                }
+            });
+
+            $("#verification-code").keydown(function (event) {
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+                }
+                else {
+                    if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                        event.preventDefault();
+                    }
+                }
+            });
+
+            $('#continue-btn').attr('disabled', true);
+            $('input').keyup (function () {
+                var disable = false;
+                $(":text, :password").each(function () {
+                    if ($(this).val() == "") {
+                        disable = true;
+                    }
+                });
+                $('#continue-btn').prop('disabled', disable);
+            });
+        });
+
+        function to_en() {
+            var en_url = window.location.href.replace("/fa-ir/", "/");
+            window.location.assign(en_url);
+            document.lang= "en"
+        }
+
+        function to_FA() {
+            document.lang= "fa"
+        }
+        </script>
+
+        <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
+            <header>
+                <ul class="topnav">
+                    <h1  style="margin-top: 0% ; margin-bottom: 2%">
+                    {% block flag %}
+                        {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
+                                <p class="lang"> Fa/Eng</p>
+                                <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
+                            </a>
+                        {% else %}
+                            <a id="to-en-link" class="trans-link" onclick="to_en()">
+                                <p class="lang" style="cursor: pointer"> Eng/Fa </p>
+                                <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                            </a>
+                        {% endifequal %}
+                    {% endblock %}
+                        <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
+                        <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
+                    </h1>
+                </ul>
+            </header>
+
+            <section>
+                <div class="container">
+                </div>
+            </section>
+        </div>
+
+    </body>
+</html>
