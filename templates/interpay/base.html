@@ -12,64 +12,14 @@
 <!-- -->
 <html lang="en">
 <head>
-
     {% block style %}
-        <style>
-            {% ifequal LANGUAGE_CODE 'fa-ir' %}
-                .content {
-                    margin-left: 0 !important;
-                    direction: rtl;
-                    font-family: "IRAN-web";
-                }
-
-               @media only screen and ( max-width: 700px){
-                 #main-content-section{
-                margin-right: 5%
-                }}
-               @media only screen and (min-width: 700px)  and ( max-width: 1400px) {
-                #main-content-section{
-                margin-right: 15%
-                }}
-               @media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
-                  #main-content-section{
-                margin-right: 15%
-                }}
-               @media only screen and (min-width : 1700px){
-                 #main-content-section{
-                margin-right: 15%
-                }}
-                #sidebar-entries {
-                    padding-right: 10px;
-                    padding-left: 0 !important;
-                    font-family: "IRAN-web";
-                }
-                .sidebar-entry {
-                    text-align: right;
-                    direction: rtl;
-                    font-family: "IRAN-web";
-                }
-                #logout {
-                    float: left !important;
-                    font-family: "IRAN-web";
-                }
-                #name {
-                    float: right !important;
-                    font-family: "IRAN-web";
-                }
-                #interpay-id {
-                    float: right !important;
-                    font-family: "IRAN-web";
-                }
-                .sidebar-links {
-                    text-align: right;
-                    font-family: "IRAN-web";
-                }
-            {% endifequal %}
-        </style>
     {% endblock %}
     {% block STYLE %}
     {% endblock %}
     {% block css %}
+       {% ifequal LANGUAGE_CODE 'fa-ir' %}
+       <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/baseFarsi.css' %}">
+       {% endifequal %}
         <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
