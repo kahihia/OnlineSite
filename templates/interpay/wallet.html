@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="{% static 'interpay/css/wallets.css' %}">
         <link rel="stylesheet" href="{% static 'interpay/css/r1.css' %}">
         <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/r.css' %}">
     {% endblock %}
     {% block JS %}
         <script type="text/javascript" src="{% static 'interpay/js/conversion.js' %}"></script>
@@ -338,9 +339,10 @@
                                     <span class="my_tooltiptext">{{ d.payment_transfer.comment }}</span>
                                 </div>
 
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ReviewModal" onclick="get_moneytransfer_id('{{ d|get_moneytransfer}}')">
-                                    {% trans 'Review' %}
-                                </button>
+                                <div class="my_tooltip">
+                                    <div class="star-ratings-sprite-show"> </div>
+                                        <span class="my_tooltiptext" data-toggle="modal" data-target="#ReviewModal" onclick="get_moneytransfer_id('{{ d|get_moneytransfer}}')">{% trans 'Review' %} </span>
+                               </div>
 
                             {% endif %}
                         </td>

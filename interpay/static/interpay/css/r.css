@@ -36,12 +36,26 @@
   margin: 0 auto;
 }
 .star-ratings-sprite-rating {
-    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
-    background-position: 0 100%;
-    float: left;
-    height: 21px;
-    display: block;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
+  background-position: 0 100%;
+  float: left;
+  height: 21px;
+  display: block;
 }
 .faded_text{
-    color:#aeb0b2
+  color:#aeb0b2
+}
+
+.star-ratings-sprite-show {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  text-indent: -999em;
+  width: 21px;
+  margin: 0 auto;
+  background-position: 0 100%;
+  float: right;
+  height: 21px;
+  display: block
 }
