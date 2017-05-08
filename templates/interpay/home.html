@@ -92,9 +92,13 @@
              <br>
         </p>
         <br>
-        <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">
-             {% trans 'Your total wallet value is' %} (USD): {{ accountList.first.total_value }}
-        </p>
+    <div style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">
+
+{#        <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">#}
+             {% trans 'Your total wallet value is' %}
+       :
+            {{ accountList.first.total_value }} USD
+    </div>
         <select id="notifications" style="display: none">
             {% for item in notifications %}
                 <option>

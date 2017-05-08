@@ -136,7 +136,7 @@ def get_currency(cur_code):
 def main_page(request):
     # test()
     if (models.Rule.objects.count() == 0):
-        log.debug('1Initialising comission because no Rule objects exists')
+        log.debug('Initialising comission because no Rule objects exists')
         r = models.Rule(start_date=datetime.datetime.now().date(),
                         end_date=(datetime.datetime.now() + datetime.timedelta(days=100)).date())
         r.save()
@@ -173,7 +173,7 @@ def register(request):
             content = response.json()
             if not content['success']:
                 return render(request, "interpay/registeration_form.html",
-                              {'error': 'Captcha is not entered.', 'user_form': user_form,
+                              {'error': _("Captcha is not entered."), 'user_form': user_form,
                                'profile_form': registration_form, })
 
         if user_form.is_valid() and registration_form.is_valid():
@@ -209,8 +209,8 @@ def register(request):
         registration_form = RegistrationForm()
     activated = False
     if request.LANGUAGE_CODE == 'en-gb':
-        thanks_msg = "Thank You for Registering!"
-        redirect_to_home_msg = 'Launch to your homepage'
+        thanks_msg = _("Thank You for Registering!")
+        redirect_to_home_msg = _("Launch to your homepageee")
         # dict = {thanks_msg, redirect_to_home_msg}
         return render(request, 'interpay/registeration_form.html',
                       {'user_form': user_form, 'profile_form': registration_form,
@@ -279,7 +279,7 @@ def send_sms(request, mobile_no):
     #     models.VerificationCodes.objects.get(id=user_profile.id).user_code = code
     # TODO check if there exists a code for this user and replace it
     models.VerificationCodes.objects.create(user_code=code, user=user_profile)
-    msg = "A code has just been sent to your phone."
+    msg = _("A code has just been sent to your phone.")
     return HttpResponse(msg)
 
 
@@ -380,7 +380,7 @@ def pay_user(request):
             'email': email,
             'mobile': mobile,
             'setform': setform,
-            'error': "No user with this email."
+            'error': _("No user with this email.")
         }
         if email:
             up = UserProfile.objects.filter(email=email)
@@ -400,7 +400,7 @@ def pay_user(request):
                     'email': email,
                     'mobile': mobile,
                     'setform': setform,
-                    'error': "No user with this mobile number."
+                    'error': _("No user with this mobile number.")
                 }
                 return render(request, 'interpay/pay_user.html', context_error_mobile)
         else:
@@ -411,7 +411,7 @@ def pay_user(request):
                 'email': email,
                 'mobile': mobile,
                 'setform': setform,
-                'error': "Please enter destination email or mobile."
+                'error': _("Please enter destination email or mobile.")
             }
             return render(request, 'interpay/pay_user.html', context_error_mobile_email)
 
@@ -423,7 +423,7 @@ def pay_user(request):
                 'email': email,
                 'mobile': mobile,
                 'setform': setform,
-                'error': 'You cannot send payment to yourself'
+                'error': _("You cannot send payment to yourself")
             }
             return render(request, 'interpay/pay_user.html',context_error_pay_yourself)
 
@@ -464,7 +464,7 @@ def pay_user(request):
                     deposit.cur_code) + "s.", up,
                                                 '/wallets/' + str(destination_account.account_id))
             return render(request, "interpay/pay_user.html",
-                          {'success': _('Your payment was successfully done'), 'langStr': langStr})
+                          {'success': _("Your payment was successfully done"), 'langStr': langStr})
         else:
             context_error_currency = {
                 'currency': currency,
@@ -473,7 +473,7 @@ def pay_user(request):
                 'email': email,
                 'mobile': mobile,
                 'setform': setform,
-                'error': "You do not have any account in this currency"
+                'error': _("You do not have any account in this currency")
             }
             return render(request, 'interpay/pay_user.html', context_error_currency)
     return render(request, "interpay/pay_user.html", {'langStr': langStr})
@@ -492,27 +492,27 @@ def reset_password(request, token):
         print ('user: ', str(birth_date))
         if new_password != re_new_password:
             return render(request, 'interpay/reset_password.html', {
-                'error': 'Both fields must match. '
+                'error': _("Both fields must match.")
             })
         user = User.objects.get(id=int(user_id))
         user_profile = UserProfile.objects.get(user=user)
         if user_profile.mobile_number != mobile_number:
             return render(request, 'interpay/reset_password.html', {
-                'error': 'mobile number is not valid.'
+                'error': _("mobile number is not valid.")
             })
         if user_profile.national_code != national_id:
             return render(request, 'interpay/reset_password.html', {
-                'error': 'national id is not valid.'
+                'error': _("national id is not valid.")
             })
         if str(user_profile.date_of_birth.date()) != str(birth_date):
             return render(request, 'interpay/reset_password.html', {
-                'error': 'date of birth is not valid.'
+                'error': _("date of birth is not valid.")
             })
 
         user.set_password(new_password)
         user.save()
         return render(request, 'interpay/reset_password.html', {
-            'success': 'Your password successfully changed. '
+            'success': _("Your password successfully changed.")
         })
 
     if request.method == "GET":
@@ -533,11 +533,11 @@ def retrieve_pass(request):
     except SMTPRecipientsRefused:
         error_message = "Invalid Email"
     if sent == 1:
-        return HttpResponse("Password retrieved successful")
+        return HttpResponse(_("Password retrieved successful"))
     else:
         if error_message:
             return HttpResponse(error_message)
-        return HttpResponse("No such user")
+        return HttpResponse(_("No such user"))
 
 
 def activate_account(request, token):
@@ -559,7 +559,7 @@ def activate_account(request, token):
         up.save()
         if new_password != re_new_password:
             return render(request, 'interpay/reset_password.html', {
-                'error': 'Both fields must match. '
+                'error': _("Both fields must match.")
             })
         user.set_password(new_password)
         user.save()
@@ -596,12 +596,12 @@ def user_login(request):
             content = response.json()
 
             if not content['success']:
-                return render(request, "interpay/index.html", {'error': 'Captcha is not entered.'})
+                return render(request, "interpay/index.html", {'error': _("Captcha is not entered.")})
         user = authenticate(username=username, password=password)
 
         user_user = models.User.objects.filter(username=username)
         if not user_user:
-            return render(request, "interpay/index.html", {'error': 'Username or password is invalid.'})
+            return render(request, "interpay/index.html", {'error': _("Username or password is invalid.")})
         else:
             user_user = user_user[0]
         user_profile = models.UserProfile.objects.get(user=user_user)
@@ -616,7 +616,7 @@ def user_login(request):
                     return HttpResponseRedirect('/fa-ir' + next)
             else:
                 if request.LANGUAGE_CODE == 'en-gb':
-                    en_acc_disabled_msg = "Your account is disabled."
+                    en_acc_disabled_msg = _("Your account is disabled.")
                     return render(request, 'interpay/index.html', {'msg': en_acc_disabled_msg})
                 else:
                     fa_acc_disabled_msg = u'???? ?????? ??? ????? ??? ???.'
@@ -624,7 +624,7 @@ def user_login(request):
         else:
             print "Invalid login details: {0}, {1}".format(username, password)
             if request.LANGUAGE_CODE == 'en-gb':
-                en_wrong_info_msg = "Username or Password is not valid. please try again."
+                en_wrong_info_msg = _("Username or Password is not valid. please try again.")
                 return render(request, 'interpay/index.html', {'msg': en_wrong_info_msg})
             else:
                 fa_wrong_info_msg = u'??? ?????? ?? ??? ???? ???? ??? ?????? ???.'
@@ -706,12 +706,12 @@ def recharge_account(request, **message):
         log.debug('an exception occurred : ', e)
         deposit_set = models.Deposit.none()
     if code == -3:
-        emessage = "Entered value too small. This payment will not accept less than 100."
+        emessage = _("Entered value too small. This payment will not accept less than 100.")
     else:
         if code != 0:
-            emessage = "Unknown ZarinPal Error"
+            emessage = _("Unknown ZarinPal Error")
     print msg_color, "msg_color"
-    deposit_num = deposit_set.count();
+    deposit_num = deposit_set.count()
     return render(request, "interpay/top_up.html",
                   {'form': recharge_form, 'deposit_set': deposit_set, 'code': code, 'emessage': emessage,
                    'msg_color': msg_color, 'deposit_num': deposit_num})
@@ -734,6 +734,7 @@ def zarinpal_payment_gate(request, amount, email, mobile):
         call_back_url = settings.SERVER_NAME + 'fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
+    description = "pay to" + email
     result = client.service.PaymentRequest(MERCHANT_ID,
                                            amount,
                                            description,
@@ -774,17 +775,17 @@ def zarinpal_callback_handler(request, amount):
             return recharge_account(request, message=_("Your account charged successfully"))
 
         elif result2.Status == 101:
-            res = 'Transaction submitted : ' + str(result2.Status)
+            res = _("Transaction submitted : ") + str(result2.Status)
             # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
-            return recharge_account(request, message="Your transaction has been successfully submitted earlier.")
+            return recharge_account(request, message=_("Your transaction has been successfully submitted earlier."))
         else:
-            res = 'Transaction failed. Status: ' + str(result2.Status)
+            res = _("Transaction failed. Status: ") + str(result2.Status)
             # return render(request, 'interpay/test.html', {'res': res, 'result2': result2})
-            return recharge_account(request, message="Your transaction was not successful. Try again later.")
+            return recharge_account(request, message=_("Your transaction was not successful. Try again later."))
     else:
-        res = 'Transaction failed or canceled by user'
+        res = _("Transaction failed or canceled by user")
         # return render(request, 'interpay/test.html', {'res': res})
-        return recharge_account(request, message="Transaction failed or canceled by you.")
+        return recharge_account(request, message=_("Transaction failed or canceled by you."))
 
 
 @login_required()
@@ -815,7 +816,7 @@ def bank_accounts(request):
 
             if not created:
                 mymessage = account_no
-                mymessage += ": Error, that account has already been added."
+                mymessage += _(": Error, that account has already been added.")
 
             new_account.save()
         else:
@@ -831,7 +832,7 @@ def bank_accounts(request):
                         bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile,
                                                                               method=BankAccount.WITHDRAW)
                         return render(request, 'interpay/bank_accounts.html',
-                                      {'error': 'No debit account.', 'bank_accounts_set': bank_accounts_set,
+                                      {'error': _("No debit account."), 'bank_accounts_set': bank_accounts_set,
                                        'form': bank_account_form, 'emessage': mymessage, 'account_id': account_id,
                                        'irr_account': irr_wallet,
                                        })
@@ -845,7 +846,7 @@ def bank_accounts(request):
                         return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,
                                                                                'form': bank_account_form,
                                                                                'emessage': mymessage,
-                                                                               'error': 'Your balance is less than requested amount.',
+                                                                               'error': _("Your balance is less than requested amount."),
                                                                                'account_id': account_id,
                                                                                'irr_account': irr_wallet,
                                                                                })
@@ -854,7 +855,7 @@ def bank_accounts(request):
                     return render(request, 'interpay/bank_accounts.html', {'bank_accounts_set': bank_accounts_set,
                                                                            'form': bank_account_form,
                                                                            'emessage': mymessage,
-                                                                           'success_message': 'Your request successfully saved.',
+                                                                           'success_message': _("Your request successfully saved."),
                                                                            'account_id': account_id,
                                                                            'irr_account': irr_wallet,
                                                                            })
@@ -1023,7 +1024,7 @@ def actual_convert(request):
         if not check_currency_reserve(currency, convert(amount, cur_account.cur_code, currency)):
             return render(request, "interpay/wallet.html",
                           {
-                              'error': 'This transaction is not possible now. Please try later.',
+                              'error': _("This transaction is not possible now. Please try later."),
                               'account': BankAccount.objects.get(account_id=account_id),
                           })
         try:
@@ -1081,7 +1082,7 @@ def actual_convert(request):
     else:
         return render(request, "interpay/wallet.html",
                       {
-                          'error': 'Invalid GET Request. Contact Admin',
+                          'error': _("Invalid GET Request. Contact Admin"),
                       })
 
 

@@ -1,9 +1,9 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
- {% ifequal LANGUAGE_CODE 'fa-ir' %}
-<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
- {% endifequal %}
+{% ifequal LANGUAGE_CODE 'fa-ir' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% endifequal %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,7 +165,7 @@
     function resend_sms() {
         swal({
             title: "",
-            text: "You want to get a new code?",
+            text: '{%  trans 'You want to get a new code?' %}',
             type: "info",
             showCancelButton: false,
             closeOnConfirm: false,
@@ -190,7 +190,7 @@
 
         swal({
             title: "",
-            text: "Processing. If successful a message will be sent to your mobile.",
+            text:  '{%  trans 'Processing. If successful a message will be sent to your mobile.' %}',
             type: "info",
             showCancelButton: false,
             closeOnConfirm: false,
@@ -199,7 +199,7 @@
             $.ajax({
 
                 error: function (xhr, ajaxOptions, thrownError) {
-              swal("Error deleting!", "Please try again", "error");
+              swal('{% trans 'Error deleting!' %}', '{%  trans 'Please try again' %}', '{%  trans 'Error' %}');
                }
 
                 });
@@ -246,16 +246,15 @@
                 <div class="form-wrapper" style="text-align: center; width:50%">
                     <strong>{{ thanks_msg }}</strong>
                     <hr>
-                    <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>
-
+{#                    <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>#}
                     {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <a class="btn-link" href="/home/">{{ redirect_to_home_msg }}
-                        {% else %}
+                        <a class="btn-link" href="/home/">{{ redirect_to_home_msg }}
+                    {% else %}
                         <a class="btn-link" href="/fa-ir/home/">
-                            {% endifequal %}
+                    {% endifequal %}
                             {% trans 'Launch to your homepage' %}
                         </a>
-                        <br/>
+                    <br/>
                 </div>
             </div>
         </div>
@@ -329,8 +328,14 @@
                     {% endblock %}
                     <hr>
                     <div id="registration_form_wrapper">
+                    {% ifequal LANGUAGE_CODE 'en-gb' %}
                         <form enctype="multipart/form-data" id="registration_form" method="post"
-                              action="/register/"> {% csrf_token %}
+                              action="/register/">
+                        {%  else %}
+                        <form enctype="multipart/form-data" id="registration_form" method="post"
+                              action="/fa-ir/register/">
+                        {%  endifequal %}
+                            {% csrf_token %}
                             {{ user_form.as_p }}
                             {{ profile_form.as_p }}
 {#                            <div class="g-recaptcha" data-sitekey="6LfHKRMUAAAAABhBgggT5PR293yWX8jSWamrxJCl"></div>#}
