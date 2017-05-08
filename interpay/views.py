@@ -1014,6 +1014,7 @@ def check_currency_reserve(currency, amount):
         return True
 
 
+@transaction.atomic()
 @login_required()
 def actual_convert(request):
     if request.method == 'POST':
