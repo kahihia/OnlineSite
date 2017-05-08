@@ -1,14 +1,22 @@
 {% extends 'interpay/base.html' %}
 {% load staticfiles %}
 {% load i18n %}
-<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}"/>
 <!DOCTYPE html>
 <html lang="en">
  {% block flag %}
 
 {% endblock %}
 <head>
+ <style>
+         {% ifequal LANGUAGE_CODE 'fa-ir' %}
 
+            #pay {
+                font-family: "IRAN-web";
+            }
+
+
+        {% endifequal %}
+ </style>
     {% block CSS %}
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/home.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/pay_user.css' %}">
@@ -277,7 +285,7 @@
     </div>
 {% endblock %}
 {% block cont-body %}
-    <div id="interpay-desc" style="font-family: IRAN-web">
+    <div id="interpay-desc">
         <div class="container">
         <div id="error" style="color: red;font-weight: bold">
                 {% if error %}{{ error }}{% endif %}
@@ -317,9 +325,9 @@
                     {% trans 'Amount' %}
                     </label>
                  {% ifequal LANGUAGE_CODE 'en-gb' %}
-                     <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-right: 3%" >
+                     <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style=" width:150px;margin-right: 3%" >
                 {% else %}
-                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
+                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="font-family: IRAN-web;width:150px;margin-left: 5%; float:right">
                 {% endifequal %}
                       <input type="hidden" name="setform" id="setform" value="{{ setform }}">
                  </div>

@@ -138,6 +138,7 @@ function edit_username(){
                  $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#inner_username").replaceWith(username);
+                 $("#edit_change_username").replaceWith(username);
                  $("#username").hide();
                  $("#edit_username").hide();
                  $("#edit4").show();
@@ -179,12 +180,12 @@ function edit_username(){
    </div>
     <br>
     <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <span style=" margin-left:4% ; margin-top: 5%;color: white">{%  trans 'National Id Code' %}:</span><span style=" color: white" id="edit_change_lastname"> {{ user.national_code }}</span><br><i id="edit3" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="national_id" type="text" name="fname" style="display: none"><br>
+    <span style=" margin-left:4% ; margin-top: 5%;color: white">{%  trans 'National Id Code' %}:</span><span style=" color: white" id="edit_change_nationalId"> {{ user.national_code }}</span><br><i id="edit3" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="national_id" type="text" name="fname" style="display: none"><br>
     <input id="edit_national_id"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_national_id()" >
    </div>
      <br>
-   <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <i id="edit4" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> {%  trans 'username' %} <input id="username" type="text" name="fname" style="display: none"><br>
+   <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double"> <span style=" margin-left:4% ; margin-top: 5%;color: white">{%  trans 'username' %}:</span><span style=" color: white" id="edit_change_username"> {{ user.username }}</span><br>
+    <i id="edit4" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer"  aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="username" type="text" name="fname" style="display: none"><br>
     <input id="edit_username"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_username()" >
    </div>
     <!--
