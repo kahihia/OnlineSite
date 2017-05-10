@@ -96,24 +96,6 @@ def set_notification_seen(request):
     return
 
 
-def set_rates(request):
-    if not request.user.is_authenticated() or not request.user.is_superuser:
-        return HttpResponse("Error")
-
-    euro_rate = get_currency_rate("EUR")
-    dollar_rate = get_currency_rate("USD")
-
-    dollar_to_euro_ratio = float(dollar_rate) / (euro_rate * 1.00)
-    dollar_to_euro_ratio = float("{0:.2f}".format(dollar_to_euro_ratio))
-    dollar = Currency.objects.get(code='USD')
-    dollar.factor = dollar_to_euro_ratio
-    dollar.save()
-
-    rial = Currency.objects.get(code='IRR')
-    rial.factor = euro_rate
-    rial.save()
-    return HttpResponse("Successful")
-
 
 # @cache_page(20)
 # def cache_test(request):
