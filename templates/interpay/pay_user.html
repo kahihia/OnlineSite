@@ -7,16 +7,7 @@
 
 {% endblock %}
 <head>
- <style>
-         {% ifequal LANGUAGE_CODE 'fa-ir' %}
 
-            #pay {
-                font-family: "IRAN-web";
-            }
-
-
-        {% endifequal %}
- </style>
     {% block CSS %}
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/home.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/pay_user.css' %}">
@@ -39,7 +30,6 @@
 
 <script>
     {% block script %}
-
         function apearByError() {
 
             if( $('#setform').val() == 1 )
@@ -274,13 +264,12 @@
                document.getElementById("other").style.background= "#FECB98"
              }
 
-
          }
     {% endblock %}
 </script>
 
 {% block cont-header %}
-    <div id="welcome-msg" style="font-family: IRAN-web">
+    <div id="welcome-msg">
         <h3 class="page-title"> {% trans "Pay to user" %}</h3>
     </div>
 {% endblock %}
@@ -316,7 +305,7 @@
         {% ifequal LANGUAGE_CODE 'en-gb' %}
             <form id="pay" method="post" action="/pay_user/" style="display: none;">
         {%  else %}
-            <form id="pay" method="post" action="/fa-ir/pay_user/" style="display: none;">
+            <form id="pay" method="post" action="/fa-ir/pay_user/" style="font-family:IRAN-web;display: none;">
         {%  endifequal %}
                 {% csrf_token %}
                 {#                <div class="row">#}
@@ -331,7 +320,7 @@
                  {% ifequal LANGUAGE_CODE 'en-gb' %}
                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style=" width:150px;margin-right: 3%" >
                 {% else %}
-                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="font-family: IRAN-web;width:150px;margin-left: 5%; float:right">
+                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
                 {% endifequal %}
                       <input type="hidden" name="setform" id="setform" value="{{ setform }}">
                  </div>

@@ -30,22 +30,7 @@
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
 
-        {% block style %}
-            <style>
-                {% ifequal LANGUAGE_CODE 'fa-ir' %}
 
-                    .form-wrapper {
-                        text-align: right !important;
-                        font-family: "IRAN-web";
-                    }
-
-                    #reg-wrap-wrap-div{
-                        font-family: "IRAN-web";
-                    }
-
-                {% endifequal %}
-            </style>
-    {% endblock %}
 
     </head>
 
