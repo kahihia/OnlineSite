@@ -43,31 +43,10 @@
         <script src="{% static 'interpay/js/revolution-slider.js' %}"></script>
     {% endblock %}
 
-
- {% block style %}
-    <style>
-
-
-
-
-        {% ifequal LANGUAGE_CODE 'fa-ir' %}
-
-            .form-wrapper {
-                text-align: right !important;
-                font-family: "IRAN-web";
-            }
-
-            #reg-wrap-wrap-div{
-             font-family: "IRAN-web";
-            }
-
-        {% endifequal %}
-    </style>
-    {% endblock %}
 </head>
 
 {#<body style="background: #f9f9f9">#}
-<body id="body" data-spy="scroll" data-target="interpay" style="background: #f9f9f9">
+<body id="body" data-spy="scroll" data-target="interpay" style=" font-family:IRAN-web; background: #f9f9f9">
 <script>
     $(document).ready(function () {
         $("#national_code").keydown(function (event) {
