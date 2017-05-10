@@ -30,6 +30,7 @@
 
 <script>
     {% block script %}
+
         function apearByError() {
 
             if( $('#setform').val() == 1 )
@@ -270,7 +271,7 @@
 
 {% block cont-header %}
     <div id="welcome-msg">
-        <h3 class="page-title"> {% trans "Pay to user" %}</h3>
+        <dic style="font-size: xx-large" class="page-title"> {% trans "Pay to user" %}</dic>
     </div>
 {% endblock %}
 {% block cont-body %}
@@ -320,7 +321,7 @@
                  {% ifequal LANGUAGE_CODE 'en-gb' %}
                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style=" width:150px;margin-right: 3%" >
                 {% else %}
-                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
+                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="font-family:IRAN-web; width:150px;margin-left: 5%; float:right">
                 {% endifequal %}
                       <input type="hidden" name="setform" id="setform" value="{{ setform }}">
                  </div>

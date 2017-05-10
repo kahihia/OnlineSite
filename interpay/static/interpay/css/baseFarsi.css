@@ -7,22 +7,26 @@
   @media only screen and ( max-width: 700px)
   {
                  #main-content-section{
-                margin-right: 5%
+                margin-right: 5%;
+                  font-family: "IRAN-web";
   }}
  @media only screen and (min-width: 700px)  and ( max-width: 1400px)
  {
                 #main-content-section{
-                margin-right: 15%
+                margin-right: 15%;
+                  font-family: "IRAN-web";
  }}
  @media only screen and (min-width : 1400px)  and ( max-width: 1700px)
  {
                   #main-content-section{
-                margin-right: 15%
+                margin-right: 15%;
+                  font-family: "IRAN-web";
   }}
   @media only screen and (min-width : 1700px)
   {
                  #main-content-section{
-                margin-right: 15%
+                margin-right: 15%;
+                 font-family: "IRAN-web";
   }}
   #sidebar-entries {
                     padding-right: 10px;

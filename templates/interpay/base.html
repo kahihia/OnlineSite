@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
         <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'interpay/css/logo.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
         <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
 
@@ -132,7 +133,7 @@
 <body style="background: #FEFCEF repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
-        <ul class="topnav">
+        <ul class="topnav1">
             <h1  style="margin-top: 0% ; margin-bottom: 2%">
               {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
@@ -163,12 +164,11 @@
                          --->
                    </div>
                  </a>
-                <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
-                <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
+                <img  class="rizpal2"   src="{% static 'interpay/images/rizpal.png' %}">
+                <img  class="interpay1" src="{% static 'interpay/images/logo.png' %}">
             </h1>
         </ul>
     </header>
-
 
     {% ifequal LANGUAGE_CODE 'en-gb' %}
         <div id="sidebar" class="pull-left  w3-table w3-bordered w3-hide-small">
