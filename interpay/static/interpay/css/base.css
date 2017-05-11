@@ -69,13 +69,23 @@
 
 #sidebar {
     width: 15%;
-    background: #151515 repeat-y 50%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
     border-right: 3px solid #9F9D9B;
     height: 100%;
     box-sizing: border-box;
    -moz-box-sizing: border-box;
 }
+ #demoo {
 
+     height: 100%;
+     width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    transition: 0.5s;"
+ }
 
 #sidebar-entries {
     list-style-type: none;

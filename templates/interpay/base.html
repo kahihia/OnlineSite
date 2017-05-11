@@ -72,7 +72,7 @@
                 if (x.className.indexOf("w3-show") == -1) {
                     x.className += " w3-show"
                     y.style.display = "none"
-                    z.style.display = "none"
+
                 }
                 else {
                     x.className = x.className.replace(" w3-show", "");
@@ -83,7 +83,7 @@
                 $("#close").click(function(){
                     $("#closeall").hide();
                     $("#sidebar1").show();
-                    $("#cont-body").show();
+
                 });
 
             });
@@ -262,11 +262,11 @@
 
 
     <div id="closeall">
-        <nav id="demoo" class="w3-hide w3-hide-large w3-hide-medium w3-collapse">
+        <nav id="demoo" class=" overlay w3-hide w3-hide-large w3-hide-medium w3-collapse">
           {% ifequal LANGUAGE_CODE 'en-gb' %}
             <div id="sidebar" class="pull-left w3-table w3-animate-left">
            {% else %}
-           <div id="sidebar" class="pull-right w3-table w3-animate-right">
+           <div id="sidebar" class="pull-right  w3-table w3-animate-right">
            {% endifequal %}
                 <div  id="sidebar-content">
                     <ul id="sidebar-entries">
