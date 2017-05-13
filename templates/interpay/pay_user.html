@@ -1,7 +1,6 @@
 {% extends 'interpay/base.html' %}
 {% load staticfiles %}
 {% load i18n %}
-<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}"/>
 <!DOCTYPE html>
 <html lang="en">
  {% block flag %}
@@ -266,18 +265,17 @@
                document.getElementById("other").style.background= "#FECB98"
              }
 
-
          }
     {% endblock %}
 </script>
 
 {% block cont-header %}
-    <div id="welcome-msg" style="font-family: IRAN-web">
-        <h3 class="page-title"> {% trans "Pay to user" %}</h3>
+    <div id="welcome-msg">
+        <dic style="font-size: xx-large" class="page-title"> {% trans "Pay to user" %}</dic>
     </div>
 {% endblock %}
 {% block cont-body %}
-    <div id="interpay-desc" style="font-family: IRAN-web">
+    <div id="interpay-desc">
         <div class="container">
         <div id="error" style="color: red;font-weight: bold">
                 {% if error %}{{ error }}{% endif %}
@@ -308,7 +306,7 @@
         {% ifequal LANGUAGE_CODE 'en-gb' %}
             <form id="pay" method="post" action="/pay_user/" style="display: none;">
         {%  else %}
-            <form id="pay" method="post" action="/fa-ir/pay_user/" style="display: none;">
+            <form id="pay" method="post" action="/fa-ir/pay_user/" style="font-family:IRAN-web;display: none;">
         {%  endifequal %}
                 {% csrf_token %}
                 {#                <div class="row">#}
@@ -321,9 +319,9 @@
                     {% trans 'Amount' %}
                     </label>
                  {% ifequal LANGUAGE_CODE 'en-gb' %}
-                     <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-right: 3%" >
+                     <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style=" width:150px;margin-right: 3%" >
                 {% else %}
-                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="width:150px;margin-left: 5%; float:right">
+                      <input type="text" name="amount" value="{{ amount }}" id="amount" class="form-control" style="font-family:IRAN-web; width:150px;margin-left: 5%; float:right">
                 {% endifequal %}
                       <input type="hidden" name="setform" id="setform" value="{{ setform }}">
                  </div>

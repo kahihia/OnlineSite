@@ -14,32 +14,7 @@
         InterPay Iran
     </title>
 
- {% block style %}
-    <style>
 
-    #login  {
-
-     border: 1px solid #cccccc;
-	margin: 10px;
-	padding: 2px;
-	text-decoration: none;
-        text-align: center;
-}
-        {% ifequal LANGUAGE_CODE 'fa-ir' %}
-
-            .form-wrapper {
-                text-align: right !important;
-                font-family: "IRAN-web";
-            }
-
-            #reg-wrap-wrap-div{
-             font-family: "IRAN-web";
-            }
-
-        {% endifequal %}
-    </style>
-
-    {% endblock %}
 </head>
 
 <body id="body" data-spy="scroll" data-target="interpay" style="background: #f9f9f9">
@@ -64,7 +39,7 @@
                              data-speed="800"
                              data-start="1000"
                              data-easing="Back.easeInOut"
-                             data-endspeed="300">
+                             data-endspeed="300" style="font-size: xx-large">
                             {% ifequal LANGUAGE_CODE 'fa-ir' %}
                                                             اولین سامانه پرداخت آنلاین رسمی با حمایت بین المللی
                             {% else %}

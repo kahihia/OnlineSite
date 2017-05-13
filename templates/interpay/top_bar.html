@@ -10,8 +10,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {%  block title %}
-        {%  endblock %}
     </title>
 
 
@@ -26,15 +24,11 @@
 
     <link rel="stylesheet" href="{% static 'interpay/css/custom.css' %}">
     <link rel="stylesheet" href="{% static 'interpay/css/settings.css' type="text/css"%}">
-    <link rel="stylesheet" href="{% static 'interpay/css/animate.css' type="text/css"%}">
-    <link rel="stylesheet" href="{% static 'interpay/css/pace-flash.css' type="text/css"%}">
-
-    <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/top_bar.css' %}">
-
 
     {% block CSS %}
-
+           <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
+          <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/top_bar.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/logo.css' %}">
     {% endblock %}
 
     {% block JS %}
@@ -50,31 +44,10 @@
         <script src="{% static 'interpay/js/revolution-slider.js' %}"></script>
     {% endblock %}
 
-
- {% block style %}
-    <style>
-
-
-
-
-        {% ifequal LANGUAGE_CODE 'fa-ir' %}
-
-            .form-wrapper {
-                text-align: right !important;
-                font-family: "IRAN-web";
-            }
-
-            #reg-wrap-wrap-div{
-             font-family: "IRAN-web";
-            }
-
-        {% endifequal %}
-    </style>
-    {% endblock %}
 </head>
 
 {#<body style="background: #f9f9f9">#}
-<body id="body" data-spy="scroll" data-target="interpay" style="background: #f9f9f9">
+<body id="body" data-spy="scroll" data-target="interpay" style=" font-family:IRAN-web; background: #f9f9f9">
 <script>
     $(document).ready(function () {
         $("#national_code").keydown(function (event) {

@@ -27,7 +27,6 @@ admin.autodiscover()
 urlpatterns = [
     url('^admin/', admin.site.urls),
     url('^manager/', include('manager.urls')),
-    url(r'^conversion/', include('conversion.urls')),
     url(r'^currencies/', include('currencies.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'session_security/', include('session_security.urls')),
@@ -35,7 +34,6 @@ urlpatterns = [
     url(r'^rest_framework/', include('RestApi.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^pay_user/', views.pay_user),
-    url(r'^set_currency_rates/', views.set_rates),
     url(r'^set_notification_seen/$', views.set_notification_seen),
     # url(r'^home/', TemplateView.as_view(template_name="manager-home.html")),
     # url(r'^wallets/', TemplateView.as_view(template_name="wallets.html")),

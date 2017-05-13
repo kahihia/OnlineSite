@@ -37,9 +37,9 @@
 {#{% endblock %}#}
 {% block cont-header %}
     <div>
-        <h3 class="page-title">
+        <div style="font-size: xx-large" class="page-title">
             {% trans 'Wallets Overview' %}
-        </h3>
+        </div>
         <div class="isa_info" style="background-color: #DCDCDC;">
           <i class="fa fa-info-circle"></i>
            {% trans 'may take up to 1 minute to be updated, please refresh to get latest information.' %}
@@ -131,7 +131,7 @@
                                  <div class="modal-content">
                                    <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">{%  trans Convert%}</h4>
+                                    <div style="font-size: x-large" class="modal-title">{%  trans Convert%}</div>
                                    </div>
                                  <div class="modal-body">
                                  {% ifequal LANGUAGE_CODE 'en-gb' %}

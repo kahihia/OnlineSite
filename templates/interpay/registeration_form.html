@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
     <link rel="stylesheet" href="{% static 'interpay/css/registeration_form.css' %}">
+    <link rel="stylesheet" href="{% static 'interpay/css/logo.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
 
@@ -36,12 +37,13 @@
  {% block style %}
     <style>
         {% ifequal LANGUAGE_CODE 'fa-ir' %}
-
-            .form-wrapper {
+           .form-wrapper {
                 text-align: right !important;
                 font-family: "IRAN-web";
             }
-
+            #main_register{
+            font-family: "IRAN-web";
+            }
             #reg-wrap-wrap-div{
              font-family: "IRAN-web";
             }
@@ -51,7 +53,6 @@
     {% endblock %}
 </head>
 
-<body style="background: #f9f9f9">
 <script>
     $(document).ready(function () {
         $("#national_code").keydown(function (event) {
@@ -209,33 +210,30 @@
     {% block script %}
     {% endblock %}
 </script>
+<body style="background: #FEFCEF repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
-        <ul class="topnav">
+        <ul class="topnav1">
             <h1  style="margin-top: 0% ; margin-bottom: 2%">
               {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
-                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag">
                     </a>
                 {% else %}
                     <a id="to-en-link" class="trans-link" onclick="to_en()">
                         <p class="lang" style="cursor: pointer"> Eng/Fa </p>
-                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag">
                     </a>
                 {% endifequal %}
              {% endblock %}
-                <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
-                <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
-
+                <img  class="rizpal1"   src="{% static 'interpay/images/rizpal.png' %}">
+                <img  class="interpay1" src="{% static 'interpay/images/logo.png' %}">
             </h1>
-     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
-
-
-      </div>
         </ul>
     </header>
+
 
 <section>
     <div class="container">
@@ -314,7 +312,7 @@
         {#                </div>#}
         {#            </div>#}
         {% else %}
-        <div class="row">
+        <div id="main_register" class="row">
             {% block main-cont %}
                 <div class="col-xs-12" id="reg-wrap-wrap-div">
                 <div class="form-wrapper">

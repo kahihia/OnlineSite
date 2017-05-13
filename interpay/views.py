@@ -2,6 +2,7 @@ import os
 
 from django.core.files.base import ContentFile
 
+
 from interpay.forms import RegistrationForm, UserForm, RechargeAccountForm, CreateBankAccountForm
 from django.shortcuts import render, render_to_response, redirect
 # from groupcache.decorators import cache_tagged_page
@@ -47,6 +48,9 @@ import xml.sax
 from django.utils.translation import ugettext_lazy as _
 from Notification.views import NotificationClass
 from Notification.models import Notification
+from django.utils import timezone
+from jdatetime import GregorianToJalali
+
 from django.core.mail import send_mail
 from django.views.generic.base import RedirectView
 
@@ -91,24 +95,6 @@ def set_notification_seen(request):
         notification.save()
     return
 
-
-def set_rates(request):
-    if not request.user.is_authenticated() or not request.user.is_superuser:
-        return HttpResponse("Error")
-
-    euro_rate = get_currency_rate("EUR")
-    dollar_rate = get_currency_rate("USD")
-
-    dollar_to_euro_ratio = float(dollar_rate) / (euro_rate * 1.00)
-    dollar_to_euro_ratio = float("{0:.2f}".format(dollar_to_euro_ratio))
-    dollar = Currency.objects.get(code='USD')
-    dollar.factor = dollar_to_euro_ratio
-    dollar.save()
-
-    rial = Currency.objects.get(code='IRR')
-    rial.factor = euro_rate
-    rial.save()
-    return HttpResponse("Successful")
 
 
 # @cache_page(20)
@@ -245,6 +231,14 @@ def transaction_history(request):
             #                 Q(receiver=item) | Q(sender=item)):
             #     transaction_list.append(item3)
     transaction_list.sort(key=lambda x: x.date, reverse=True)
+    if request.LANGUAGE_CODE == 'fa-ir':
+        for transaction in transaction_list:
+            cur_date = timezone.localtime(transaction.date)
+            jalali_date_obj = GregorianToJalali(cur_date.year, cur_date.month, cur_date.day)
+            year, month, day = jalali_date_obj.getJalaliList()
+            transaction.date = str(year) + "-" + str(month) + "-" + str(day) + ", " + str(cur_date.hour) + ":" + str(
+                cur_date.minute) + ":" + str(cur_date.second)
+
     context = {
         'transaction_list': transaction_list,
         'user': up,
@@ -703,6 +697,14 @@ def recharge_account(request, **message):
 
         user_profile = models.UserProfile.objects.get(user=models.User.objects.get(id=request.user.id))
         deposit_set = models.Deposit.objects.filter(banker=user_profile)
+        if request.LANGUAGE_CODE == 'fa-ir':
+            for transaction in deposit_set:
+                cur_date =timezone.localtime(transaction.date)
+                jalali_date_obj = GregorianToJalali(cur_date.year, cur_date.month, cur_date.day)
+                year, month, day = jalali_date_obj.getJalaliList()
+                transaction.date = str(year) + "-" + str(month) + "-" + str(day) + ", " + str(
+                    cur_date.hour) + ":" + str(cur_date.minute) + ":" + str(cur_date.second)
+
 
     except Exception as e:
         log.debug('an exception occurred : ', e)
@@ -938,12 +940,19 @@ def wallet(request, wallet_id, recom=None):
         #                 Q(receiver=ba) | Q(sender=ba)):
         #     transaction_list.append(item3)
         transaction_list.sort(key=lambda x: x.date, reverse=True)
+        if request.LANGUAGE_CODE == 'fa-ir':
+          for transaction in transaction_list:
+            cur_date = timezone.localtime(transaction.date)
+            jalali_date_obj = GregorianToJalali(cur_date.year, cur_date.month, cur_date.day)
+            year, month, day = jalali_date_obj.getJalaliList()
+            transaction.date = str(year) + "-" + str(month) + "-" + str(day)+", " + str(cur_date.hour) + ":" + str(cur_date.minute) + ":" + str(cur_date.second)
         context = {
             'account': ba,
             'recommended': recommended,
             'list': transaction_list,
             'user_profile': up
         }
+
         return render(request, "interpay/wallet.html", context)
 
 
