@@ -347,7 +347,7 @@ msgstr "مقدار"
 
 #: templates/interpay/pay_user.html:334
 msgid "Destination Email:"
-msgstr "میل مقصد"
+msgstr "پست الکترونیکی مقصد:"
 
 #: templates/interpay/pay_user.html:350
 msgid "Destination Mobile Number:"
@@ -724,6 +724,141 @@ msgstr "پرداخت شما با موفقیت انجام شد."
 msgid "Processing. If successful a message will be sent to your mobile."
 msgstr "در حال پردازش. اگر عملیات با موفقیت انجام شود، پیامی به تلفن شما ارسال خواهدشد."
 
+#: templates/interpay/unregistered_pay.html:62
+msgid "Sender Email"
+msgstr "پست الکترونیکی پرداخت کننده"
+
+#: templates/interpay/unregistered_pay.html:69
+msgid "Receiver Email"
+msgstr "پست الکترونیکی دریافت کننده"
+
+#: templates/interpay/unregistered_pay.html:76
+msgid "Sender Mobile Number"
+msgstr "شماره تلفن پرداخت کننده"
+
+#: templates/interpay/unregistered_pay.html:83
+msgid "Receiver Mobile Number"
+msgstr "شماره تلفن دریافت کننده"
+
+#: templates/interpay/top_bar.html:170
+msgid "Trusted Payment"
+msgstr "پرداخت امن"
+
+#: templates/interpay/unregistered_pay.html:55
+msgid "(Rial)"
+msgstr "(ریال)"
+
+#: interpay/views.py:176
+msgid "Captcha is not entered."
+msgstr ""
+
+#: interpay/views.py:282
+msgid "A code has just been sent to your phone."
+msgstr "کد امنیتی به شماره تلفن شما ارسال شده است."
+
+#: interpay/views.py:414
+msgid "Please enter destination email or mobile."
+msgstr "لطفاً پست الکترونیکی یا موبایل کاربر مقصد را وارد نمایید."
+
+#: interpay/views.py:426
+msgid "You cannot send payment to yourself"
+msgstr " شما نمی توانید به خودتان پرداخت کنید."
+
+#: interpay/views.py:476
+msgid "You do not have any account in this currency"
+msgstr " شما در این واحد ارزی، حسابی ندارید."
+
+#: interpay/views.py:495
+msgid "Both fields must match."
+msgstr "هر دو مورد باید مطابقت داشته باشد."
+
+#: interpay/views.py:501
+msgid "mobile number is not valid."
+msgstr " شماره تلفن همراه وارد شده معتبر نیست."
+
+#: interpay/views.py:505
+msgid "national id is not valid."
+msgstr " کد ملی وارد شده معتبر نیست."
+
+#: interpay/views.py:509
+msgid "date of birth is not valid."
+msgstr "تاریخ تولد معتبر نیست."
+
+#: interpay/views.py:515
+msgid "Your password successfully changed."
+msgstr "رمز عبور شما با موفقیت تغییر یافت."
+
+#: interpay/views.py:536
+msgid "Password retrieved successful"
+msgstr "رمز عبور شما با موفقیت بازیابی شد."
+
+#: interpay/views.py:540
+msgid "No such user"
+msgstr " چنین کاربری وجود ندارد."
+
+#: interpay/views.py:604
+msgid "Username or password is invalid."
+msgstr "نام کاربری یا رمز عبور معتبر نیست."
+
+#: interpay/views.py:619
+msgid "Your account is disabled."
+msgstr "حساب شما غیرفعال شده است."
+
+#: interpay/views.py:627
+msgid "Username or Password is not valid. please try again."
+msgstr "نام کاربری یا رمز عبور معتبر نیست. لطفاً مجدداً تلاش کنید."
+
+#: interpay/views.py:709
+msgid "Entered value too small. This payment will not accept less than 100."
+msgstr "مقدار وارد شده، بسیار کم است. پرداخت کمتر از 100 ریال امکان پذیر نیست."
+
+#: interpay/views.py:780
+msgid "Your transaction has been successfully submitted earlier."
+msgstr ""
+
+#: interpay/views.py:784
+msgid "Your transaction was not successful. Try again later."
+msgstr "تراکنش شما با موفقیت انجام نشد. لطفاً مجدداً تلاش کنید."
+
+#: interpay/views.py:786
+msgid "Transaction failed or canceled by user"
+msgstr ""
+
+#: interpay/views.py:788
+msgid "Transaction failed or canceled by you."
+msgstr ""
+
+#: interpay/views.py:819
+msgid ": Error, that account has already been added."
+msgstr ""
+
+#: interpay/views.py:849
+msgid "Your balance is less than requested amount."
+msgstr " موجودی حساب شما کمتر از مقدار درخواست شده است."
+
+#: interpay/views.py:858
+msgid "Your request successfully saved."
+msgstr "درخواست شما با موفقیت ثبت شد."
+
+#: interpay/views.py:1028
+msgid "This transaction is not possible now. Please try later."
+msgstr "در حال حاضر امکان انجام این تراکنش وجود ندارد. لطفاً بعداً تلاش کنید."
+
+#: interpay/views.py:1436
+msgid "Your money transfer done successfully"
+msgstr "انتقال مالی شما با موفقیت انجام شد."
+
+#: interpay/views.py:1328
+msgid "Your have an account already, please login"
+msgstr "شما دارای حساب کاربری هستید. لطفاً وارد حساب خود شوید."
+
+#: interpay/views.py:1330
+msgid "Your email registered before with another phone number."
+msgstr "پست الکترونیکی شما پیش از این با شماره تلفن دیگری در سایت ثبت شده است."
+
+#: interpay/views.py:1332
+msgid "Your mobile number registered before with another email address"
+msgstr "شماره تلفن شما پیش از این با پست الکترونیکی دیگری در سایت ثبت شده است."
 
 
 #~| msgid "My total stock in"

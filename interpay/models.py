@@ -260,10 +260,13 @@ class Deposit(models.Model):
     PENDING = 2
     COMPLETED = 3
     # types
-    CONVERSION = '4'
     PAYMENT = '1'
     INTERNATIONAL = '2'
     TOP_UP = '3'
+    CONVERSION = '4'
+    DIRECT_PAY = '5'
+
+
     ##
     account = models.ForeignKey(BankAccount, related_name='deposit_set')
     amount = models.FloatField(default=0)

@@ -114,6 +114,9 @@ def get_description(transaction):
         elif transaction.type == Deposit.PAYMENT:
             transfer = transaction.payment_transfer
             return "From " + transfer.withdraw.account.owner.user.first_name + " " + transfer.withdraw.account.owner.user.last_name
+        elif transaction.type == Deposit.DIRECT_PAY:
+            transfer = transaction.payment_transfer
+            return "From " + transfer.withdraw.account.owner.user.email
 
     if type(transaction) == Withdraw:
         if transaction.type == Withdraw.CONVERSION:

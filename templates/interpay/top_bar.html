@@ -10,6 +10,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
+        {%  block title %}
+        {%  endblock %}
     </title>
 
 
@@ -24,10 +26,15 @@
 
     <link rel="stylesheet" href="{% static 'interpay/css/custom.css' %}">
     <link rel="stylesheet" href="{% static 'interpay/css/settings.css' type="text/css"%}">
+    <link rel="stylesheet" href="{% static 'interpay/css/animate.css' type="text/css"%}">
+    <link rel="stylesheet" href="{% static 'interpay/css/pace-flash.css' type="text/css"%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/top_bar.css' %}">
+
 
     {% block CSS %}
-           <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
-          <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/top_bar.css' %}">
+
     {% endblock %}
 
     {% block JS %}

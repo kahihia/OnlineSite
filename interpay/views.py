@@ -654,7 +654,8 @@ new_connection = settings.connection
 @login_required()
 def recharge_account(request, **message):
     global new_connection
-    new_connection = settings.connect_to_redis()
+    if not new_connection:
+        new_connection = settings.connect_to_redis()
     code = 0
     msg_color = 0
     if message:
@@ -687,7 +688,8 @@ def recharge_account(request, **message):
                     "date": str(datetime.datetime.utcnow()), "cur_code": cur}
 
             log.debug("new BankAccount object created and saved")
-            zarinpal = zarinpal_payment_gate(request, amnt, user_profile.email, user_profile.mobile_number)
+            zarinpal = zarinpal_payment_gate(request, amnt, user_profile.email, user_profile.mobile_number,
+                                             'callback_handler')
             new_connection.set(zarinpal['Authority'], data)  # TODO: set proper TTL
             print data, "cached in redis"
             log.debug("Connected to redis")
@@ -724,17 +726,17 @@ description = "this is a test"
 # mobile = '09123456789'
 
 
-def zarinpal_payment_gate(request, amount, email, mobile):
+def zarinpal_payment_gate(request, amount, email, mobile,url):
 
     amount = int(amount) / 10
 
     if request.LANGUAGE_CODE == 'en-gb':
-        call_back_url = settings.SERVER_NAME + 'callback_handler/' + str(amount)  # TODO : this should be changed to our website url
+        call_back_url = settings.SERVER_NAME + url + '/' + str(amount)  # TODO : this should be changed to our website url
     else:
-        call_back_url = settings.SERVER_NAME + 'fa-ir/callback_handler/' + str(amount)  # TODO : this should be changed to our website url
+        call_back_url = settings.SERVER_NAME + 'fa-ir/' + url +'/' + str(amount)  # TODO : this should be changed to our website url
 
     client = Client(ZARINPAL_WEBSERVICE)
-    description = "pay to" + email
+    description = "pay to " + email
     result = client.service.PaymentRequest(MERCHANT_ID,
                                            amount,
                                            description,
@@ -761,6 +763,7 @@ def zarinpal_callback_handler(request, amount):
                                                      amount)
         print "result2", result2
         if result2.Status == 100:
+            print ""
             res = 'Transaction success. RefID: ' + str(result2.RefID)
             log.debug("new Deposit object created and saved")
             data = new_connection.get(auth)
@@ -973,10 +976,13 @@ def withdraw_pending_deposit(request):
                                                       cur_code=destination_currency,
                                                       account_id=make_id())
 
-        new_deposit = Deposit.objects.create(account=rial_account, amount=float(converted_amount), banker=account.owner,
+        new_deposit = Deposit(account=rial_account, amount=float(converted_amount), banker=account.owner,
                                              date=datetime.datetime.now(), cur_code=destination_currency,
                                              type=Deposit.CONVERSION)
-        new_deposit.calculate_comission()
+        if destination_currency != deposit.cur_code:
+            new_deposit.calculate_comission()
+
+        new_deposit.save()
         conversion = CurrencyConversion.objects.create(deposit=new_deposit, withdraw=new_withdraw)
         print (new_deposit.account.account_id, " ", account.account_id)
         return HttpResponseRedirect('../')
@@ -1293,8 +1299,153 @@ def review_comments(request,reviewing_id):
 
 favicon_view = RedirectView.as_view(url='/static/interpay/images/ipay-favicon.ico', permanent=True)
 
-def unregistered_pay(request):
-    return render(request, "interpay/unregistered_pay.html")
+
+def unregistered_pay(request, **message):
+    if message:
+        emessage = message['message']
+        msg_color = 1
+    else:
+        emessage = ''
+    context = {
+        'emessage': emessage,
+    }
+    return render(request, "interpay/unregistered_pay.html",context)
+
+
+def unregistered_charge(request):
+    global new_connection
+    if not new_connection:
+        new_connection = settings.connect_to_redis()
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        sender_email = request.POST.get('sender_email')
+        sender_mobile = request.POST.get('sender_mobile')
+        receiver_email = request.POST.get('receiver_email')
+        receiver_mobile = request.POST.get('receiver_mobile')
+        payment_comment = request.POST.get('comment')
+
+        if UserProfile.objects.filter(email=sender_email, mobile_number=sender_mobile):
+            return unregistered_pay(request, message=_("Your have an account already, please login"))
+        elif UserProfile.objects.filter(email=sender_email):
+            return unregistered_pay(request, message=_("Your email registered before with another phone number."))
+        elif UserProfile.objects.filter(mobile_number=sender_mobile):
+            return unregistered_pay(request, message=_("Your mobile number registered before with another email address"))
+        else:
+
+            sender_user = User.objects.create(username=sender_email,password="123",email=sender_email)
+
+            sender_user_profile = UserProfile.objects.create(user=sender_user, password="123", email=sender_email,
+                                                         is_active=False, date_of_birth=datetime.datetime.now(),mobile_number=sender_mobile)
+
+            sender_user_account = BankAccount.objects.create(owner=sender_user_profile,method=BankAccount.DEBIT,
+                                                         cur_code='IRR', account_id=make_id(),
+                                                         name='IRR_InterPay-account')
+
+            banker = models.UserProfile.objects.get(user=models.User.objects.get(id=sender_user.id))
+
+            data = {"account_id": sender_user_account.account_id, "amount": amount,
+                "banker_id": banker.id,
+                "date": str(datetime.datetime.utcnow()), "cur_code": 'IRR', "receiver_email": receiver_email,
+                "receiver_mobile": receiver_mobile, "comment" : payment_comment}
+
+            zarinpal = zarinpal_payment_gate(request, amount, receiver_email, receiver_mobile,
+                                         'callback_handler_withdraw')
+
+            email_sender = Email.Email(sender_user.email)
+            error_message = ""
+            sent = ""
+            try:
+                sent = email_sender.send_account_activation_email(sender_user.email)
+            except SMTPRecipientsRefused:
+                error_message = "Invalid Email"
+
+            new_connection.set(zarinpal['Authority'], data)
+            code = zarinpal['status']
+            print code
+            if code == 100:
+                log.debug("redirecting to " + zarinpal['ret'])
+                return redirect(zarinpal['ret'])
+
+
+def callback_handler_withdraw(request, amount):
+    global new_connection
+    if not new_connection:
+        new_connection = settings.connect_to_redis()
+    client = Client(ZARINPAL_WEBSERVICE)
+    if request.GET.get('Status') == 'OK':
+        auth = request.GET.get('Authority')
+        result2 = client.service.PaymentVerification(MERCHANT_ID,
+                                                     auth,
+                                                     amount)
+        if result2.Status == 100:
+            print ""
+            res = 'Transaction success. RefID: ' + str(result2.RefID)
+            log.debug("new Deposit object created and saved")
+            data = new_connection.get(auth)
+            a = ast.literal_eval(data)
+            new_account = models.BankAccount.objects.get(account_id=a['account_id'])
+            new_banker = models.UserProfile.objects.get(id=a['banker_id'])
+            deposit = models.Deposit(account=new_account, amount=float(a['amount']),
+                                     banker=new_banker,
+                                     cur_code='IRR',
+                                     tracking_code=result2.RefID, type=Deposit.TOP_UP)
+            deposit.calculate_comission()  # automatically saves after calculating comission
+
+            withdraw = models.Withdraw.objects.create(account=new_account, amount=a['amount'], cur_code='IRR',
+                                                      banker=new_banker, type=Withdraw.PAYMENT)
+
+            if UserProfile.objects.filter(email=a['receiver_email']) or UserProfile.objects.filter(mobile_number=a['receiver_mobile']):
+                receiver_user_profile = UserProfile.objects.get(email=a['receiver_email'])
+                if not receiver_user_profile:
+                    receiver_user_profile = UserProfile.objects.get(mobile_number=a['receiver_mobile'])
+
+                bank_account = BankAccount.objects.filter(owner=receiver_user_profile, cur_code='IRR',
+                                                          method=BankAccount.DEBIT)
+                if bank_account:
+                    bank_account = bank_account[0]
+                else:
+                    bank_account = BankAccount.objects.create(owner=receiver_user_profile, method=BankAccount.DEBIT,
+                                                                  cur_code='IRR', account_id=make_id())
+
+                deposit = Deposit.objects.create(account=bank_account, amount=a['amount'],status=Deposit.COMPLETED,
+                                                 cur_code='IRR',type=Deposit.DIRECT_PAY)
+                MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=a['comment'])
+
+            else:
+                receiver_user = User.objects.create(username=a['receiver_email'], email=a['receiver_email'],
+                                                    password="123")
+                receiver_user_profile = UserProfile.objects.create(user=receiver_user, password='123',
+                                                                   national_code='1111111111', email=a['receiver_email'],
+                                                                   is_active=False, date_of_birth=datetime.datetime.now(),
+                                                                   mobile_number=a['receiver_mobile'])
+                receiver_user_account = BankAccount.objects.create(owner=receiver_user_profile, method=BankAccount.DEBIT,
+                                                                   cur_code='IRR', account_id=make_id())
+                deposit = Deposit.objects.create(account=receiver_user_account, status=Deposit.PENDING, amount=a['amount'],
+                                                 cur_code='IRR', type=Deposit.DIRECT_PAY)
+                MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=a['comment'])
+
+                email_receiver = Email.Email(receiver_user.email)
+                error_message = ""
+                sent = ""
+                try:
+                    sent = email_receiver.send_account_activation_email(receiver_user.email)
+                except SMTPRecipientsRefused:
+                    error_message = "Invalid Email"
+
+
+            return unregistered_pay(request, message=_("Your money transfer done successfully"))
+
+        elif result2.Status == 101:
+            res = _("Transaction submitted : ") + str(result2.Status)
+            return unregistered_pay(request, message=_("Your transaction has been successfully submitted earlier."))
+        else:
+            res = _("Transaction failed. Status: ") + str(result2.Status)
+            return unregistered_pay(request, message=_("Your transaction was not successful. Try again later."))
+    else:
+        res = _("Transaction failed or canceled by user")
+        return unregistered_pay(request, message=_("Transaction failed or canceled by you."))
+
+
 
     # return render(request, "interpay/review_comments.html")
 

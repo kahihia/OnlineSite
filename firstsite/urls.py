@@ -88,6 +88,8 @@ urlpatterns = [
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
     url(r'^favicon\.ico$', views.favicon_view),
     url(r'^unregistered_pay/$', views.unregistered_pay, name='unregistered_pay'),
+    url(r'^unregistered_charge/$', views.unregistered_charge, name='unregistered_charge'),
+    url(r'^callback_handler_withdraw/([0-9]*)', views.callback_handler_withdraw, name='callback_handler_withdraw'),
 ]
 
 urlpatterns += i18n_patterns(
@@ -144,5 +146,7 @@ urlpatterns += i18n_patterns(
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
     url(r'^favicon\.ico$', views.favicon_view),
     url(r'^unregistered_pay/$', views.unregistered_pay, name='unregistered_pay'),
+    url(r'^unregistered_charge/$', views.unregistered_charge, name='unregistered_charge'),
+    url(r'^callback_handler_withdraw/([0-9]*)', views.callback_handler_withdraw, name='callback_handler_withdraw'),
 )
 
