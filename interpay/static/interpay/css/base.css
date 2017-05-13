@@ -129,7 +129,9 @@
 .sidebar-entry-name{
     color: #D8D8D8;
 }
-
+.sidebar-entry-name-small{
+      color: #D8D8D8;
+  }
 #footer {
     position: absolute;
     width: 100%;

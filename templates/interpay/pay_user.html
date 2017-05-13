@@ -176,6 +176,7 @@
         function choice(select) {
             if(select.options[select.selectedIndex].id == "gre")
             {
+              document.getElementById("setform").value = "2"
               document.getElementById("email").value = "gre@rizpardakht.com"
               /*TODO need phone */
               document.getElementById("pay").style.display= "block"
@@ -194,6 +195,7 @@
             }
              if(select.options[select.selectedIndex].id =="gmat")
             {
+             document.getElementById("setform").value = "3"
              document.getElementById("email").value = "gmat@rizpardakht.com"
               /*TODO need phone */
              document.getElementById("pay").style.display= "block"
@@ -213,6 +215,7 @@
             }
             if(select.options[select.selectedIndex].id =="university")
             {
+                document.getElementById("setform").value = "4"
                 document.getElementById("email").value = "uni@rizpardakht.com"
                  /*TODO need phone */
                 document.getElementById("pay").style.display= "block"
@@ -231,6 +234,7 @@
             }
              if(select.options[select.selectedIndex].id =="googleplay")
             {
+                document.getElementById("setform").value = "5"
                 document.getElementById("email").value = "googleplay@rizpardakht.com"
                 /*TODO need phone */
                 document.getElementById("pay").style.display= "block"
@@ -250,6 +254,11 @@
            if(select.options[select.selectedIndex].id =="other")
              {
                document.getElementById("pay").style.display= "block"
+               if( $('#error').text().length === 26 )
+               {
+                   document.getElementById("email").value = ""
+               }
+               document.getElementById("setform").value = "1"
                /*document.getElementById("email").value = ""*/
                document.getElementById("email").style.display= "block"
                document.getElementById("mobile").style.display= "block"
@@ -331,9 +340,7 @@
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                    <label style="display:block">
                 {% else %}
-                    <div class="w3-hide-large ; w3-hide-medium">
                     <br><br>
-                    </div>
                     <label style="display:block ; float: right">
                 {% endifequal %}
                          {% trans 'Currency' %}

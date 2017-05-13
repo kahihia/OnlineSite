@@ -76,22 +76,20 @@
 {% endblock %}
 {% block cont-body %}
     <div id="interpay-desc">
-        <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 10%; margin-right: 15%; background-color: #373736; color: white;  padding-top: 3%; padding-bottom: 3% ">
+        <p style="margin-bottom: 20px; border-color: #C69453 ;padding-left: 5%; margin-left: 10%; margin-right: 15%; background-color: #373736; color: white;  padding-top: 3%; padding-bottom: 3% ">
 
             {% trans 'Interpay is an online electronic service which provides a safe and secure platform for business transactions and e-commerce. No matter you are the merchant or the consumer, we will bring you an enjoyable experience of transaction.' %}
-             </br>
+
         </p>
-        <br>
-         <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 10%; margin-right: 15%; background-color: #E59328; color: white;  padding-top: 3%; padding-bottom: 3% ">
+
+         <p style=" margin-bottom: 20px; border-color: #C69453 ;padding-left: 5%; margin-left: 10%; margin-right: 15%; background-color: #E59328; color: white;  padding-top: 3%; padding-bottom: 3% ">
             {% trans 'You can pay your GRE, GMAT, University Fees and ... by clicking on'%}  {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a  class="sidebar-links" href="/pay_user/">
                 {% else %}
                     <a   class="sidebar-links" href="/fa-ir/pay_user/">
                 {% endifequal %}<span style="color: white">{% trans 'payment' %}</span>
            </a>
-             <br>
         </p>
-        <br>
     <div style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">
 
 {#        <p style=" border-color: #C69453 ;padding-left: 5%; margin-left: 30%; margin-right: 30%; background-color:  #D5D2CF; color: black;width: 30%; display: block; height: 13%; text-align:center;">#}

@@ -71,17 +71,19 @@
                 }
             }
            function sidebarfuncscreen() {
-                if(openside)
-                var x = document.getElementById("demoo");
-                var y = document.getElementById("sidebar1");
-                if (x.className.indexOf("w3-show") == -1) {
-                    x.className += " w3-show"
-                    y.style.display = "none"
-                }
-                else {
-                    x.className = x.className.replace("w3-show", "");
-                }
-            }
+               if (openside) {
+                   var x = document.getElementById("demoo");
+                   if (x.className.indexOf("w3-show") == -1) {
+                       x.className += " w3-show"
+                       y.style.display = "none"
+                       openside = 0;
+                   }
+                   else {
+                       x.className = x.className.replace("w3-show", "");
+                       openside = 0;
+                   }
+               }
+           }
 
             $(document).ready(function(){
                 $("#close").click(function(){
@@ -281,29 +283,27 @@
            {% endifequal %}
                 <div  id="sidebar-content">
                     <ul id="sidebar-entries">
-                        <li class="w3-hide-medium w3-hide-large">
+                        <li style="margin-bottom: 30px" class="w3-hide-medium w3-hide-large">
                           {% ifequal LANGUAGE_CODE 'en-gb' %}
                             <a  class="pull-left w3-closenav" id="close"  href="javascript:void(0);" onclick="sidebarfunc1()">
                           {% else %}
                             <a  class="pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="sidebarfunc1()">
                            {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans "Close" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans "Close" %}</span>
                             </a>
                         </li>
-                        <br>
-                        <br>
                         <li class="sidebar-entry">
                             {% ifequal LANGUAGE_CODE 'en-gb' %}
                                 <a class="sidebar-links" href="/home">
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/home">
                             {% endifequal %}
-                             <span class="sidebar-entry-name">{% trans "Home" %}</span>
+                             <span class="sidebar-entry-name-small">{% trans "Home" %}</span>
                             </a>
                         </li>
                         <li class="dropdown sidebar-entry">
                             <a href="#" class="sidebar-links dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                               <span class="sidebar-entry-name">{% trans "Wallets" %}</span>
+                               <span class="sidebar-entry-name-small">{% trans "Wallets" %}</span>
                                 <span class="caret sidebar-ent-items" ></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -331,7 +331,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/trans-history">
                             {% endifequal %}
-                             <span class="sidebar-entry-name">{% trans " Transaction" %}</span>
+                             <span class="sidebar-entry-name-small">{% trans " Transaction" %}</span>
                             </a>
                         </li>
                 <li class="sidebar-entry">
@@ -340,7 +340,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/pay_user/">
                 {% endifequal %}
-               <span class="sidebar-entry-name">{% trans 'Payment' %}</span>
+               <span class="sidebar-entry-name-small">{% trans 'Payment' %}</span>
                 </a>
                </li>
                    <li class="sidebar-entry" >
@@ -349,7 +349,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/bank-accounts">
                             {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans "Withdrawals" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans "Withdrawals" %}</span>
                             </a>
                    </li>
                         <li class="sidebar-entry">
@@ -358,7 +358,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/reports">
                             {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans " Reports" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans " Reports" %}</span>
                             </a>
                         </li>
                         <li class="sidebar-entry">
@@ -367,7 +367,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/general">
                             {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans " General" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans " General" %}</span>
                             </a>
                         </li>
                     </ul>
