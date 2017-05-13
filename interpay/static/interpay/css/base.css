@@ -76,15 +76,25 @@
     box-sizing: border-box;
    -moz-box-sizing: border-box;
 }
- #demoo {
 
-     height: 100%;
-     width: 0;
+ .fixedmenue {
+    height: 100%;
+    width: 0;
     position: fixed;
     z-index: 1;
     top: 0;
     left: 0;
-    transition: 0.5s;"
+    transition: 0.5s;
+ }
+  .fixedmenueFarsi {
+    top: 0;
+    right:0;
+    float: right;
+    position: fixed;
+    z-index: 1;
+    transition: 0.5s;
+    width: 50% ;
+    height: 100% ;
  }
 
 #sidebar-entries {

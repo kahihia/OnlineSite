@@ -6,20 +6,20 @@
 
   @media only screen and ( max-width: 700px)
   {
-                 #main-content-section{
-                margin-right: 5%;
+                  #main-content-section{
+                  margin-right: 5%;
                   font-family: "IRAN-web";
   }}
  @media only screen and (min-width: 700px)  and ( max-width: 1400px)
  {
                 #main-content-section{
                 margin-right: 15%;
-                  font-family: "IRAN-web";
+                font-family: "IRAN-web";
  }}
  @media only screen and (min-width : 1400px)  and ( max-width: 1700px)
  {
                   #main-content-section{
-                margin-right: 15%;
+                  margin-right: 15%;
                   font-family: "IRAN-web";
   }}
   @media only screen and (min-width : 1700px)
@@ -30,7 +30,7 @@
   }}
   #sidebar-entries {
                     padding-right: 10px;
-                    padding-left: 0 !important;
+                    padding-left: 0px !important;
                     font-family: "IRAN-web";
  }
   .sidebar-entry {
@@ -38,6 +38,9 @@
                     direction: rtl;
                     font-family: "IRAN-web";
    }
+  .sidebar-entry-name{
+      font-size: x-large;
+  }
  #logout {
                     float: left !important;
                     font-family: "IRAN-web";
