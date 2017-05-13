@@ -38,8 +38,9 @@
                     direction: rtl;
                     font-family: "IRAN-web";
    }
-  .sidebar-entry-name{
+  .sidebar-entry-name-small{
       font-size: x-large;
+      color: #D8D8D8;
   }
  #logout {
                     float: left !important;

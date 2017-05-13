@@ -1,13 +1,27 @@
-.manage_edit
+#manage_edit
 {
 
-    padding: 3px;
-    padding: 5px 5px;
-    font-size: 24px;
-    font-weight: 100;
-    color: #5B5955;
-    text-decoration: none;
-    display: block;
-    overflow-wrap: break-word;
-    border-bottom: 1px solid #E7AC4C;
+    margin-bottom: 5%;
+    background-color: #656360;
+    width: 40% ;
+    height: 15%;
+    border-color: #3c3c3c ;
+    border-style: double;
+}
+
+.stylename
+{
+     margin-left:4% ;
+    margin-top: 5%;
+    color: white;
+}
+
+.editcolor
+{
+    margin-bottom: 3% ;
+    color: white
+}
+
+.button_edit{
+    display:none;
 }
