@@ -36,6 +36,8 @@
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
         <script src="{% static 'interpay/bootstrap/js/bootstrap.min.js' %}"></script>
         <script>
+           var openside;
+           openside = 0 ;
            function change(x) {
               var y = document.getElementById("edited");
               var z = document.getElementById("profile_name");
@@ -57,43 +59,56 @@
                 } else {
                     x.className = x.className.replace(" w3-show", "");
                 }
-          /*   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-              alert("hello")
-              }
-             else
-             {
-                 alert("no")
-             }
-*/            }
+                    }
             function sidebarfunc1() {
+                openside =1
                 var x = document.getElementById("demoo");
                 var y = document.getElementById("sidebar1");
-                var z = document.getElementById("cont-body");
+                var z = document.getElementById("cont-wrapper");
                 if (x.className.indexOf("w3-show") == -1) {
                     x.className += " w3-show"
                     y.style.display = "none"
 
                 }
                 else {
-                    x.className = x.className.replace(" w3-show", "");
+                    x.className = x.className.replace("w3-show", "");
+                }
+            }
+           function sidebarfuncscreen() {
+                if(openside)
+                var x = document.getElementById("demoo");
+                var y = document.getElementById("sidebar1");
+                var z = document.getElementById("cont-wrapper");
+                if (x.className.indexOf("w3-show") == -1) {
+                    x.className += " w3-show"
+                    y.style.display = "none"
+
+                }
+                else {
+                    x.className = x.className.replace("w3-show", "");
                 }
             }
 
             $(document).ready(function(){
                 $("#close").click(function(){
+                    openside = 0 ;
                     $("#closeall").hide();
                     $("#sidebar1").show();
-
                 });
-
-            });
-            $(document).ready(function(){
                 $("#open").click(function(){
                     $("#closeall").show();
                     $("#sidebar1").hide();
+
                 });
+                $("#cont-wrapper").click(function () {
+                            openside = 0 ;
+                            $("#closeall").hide();
+                            $("#sidebar1").show();
+
+                    });
 
             });
+
             {% ifequal LANGUAGE_CODE 'fa-ir' %}
            jQuery(document).ready( function() {
            var map =
@@ -422,7 +437,7 @@
         </div>
 
     <section  id="main-content-section">
-           <div id="cont-wrapper">
+           <div id="cont-wrapper"  href="javascript:void(0);" onclick="sidebarfuncscreen()">
                <div id="cont-header">
                    {% block cont-header %}
                    {% endblock %}
