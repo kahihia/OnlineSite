@@ -26,7 +26,7 @@ from random import randint
 from currencies.utils import convert
 from suds.client import Client
 from django.contrib.auth.models import User
-from interpay.models import UserProfile, MoneyTransfer
+from interpay.models import UserProfile, MoneyTransfer, UserSession
 from interpay.Email import Email
 from firstsite import settings
 from django.views.decorators.cache import cache_page
@@ -49,11 +49,29 @@ from Notification.views import NotificationClass
 from Notification.models import Notification
 from django.core.mail import send_mail
 from django.views.generic.base import RedirectView
+from django.contrib.auth.signals import user_logged_in
+
 
 log = logging.getLogger('interpay')
 
 
 # @every(seconds=10)
+
+# def kick_my_other_sessions(sender, request=None, user=None, **kwargs):
+#     print ("abcde")
+#     from tracking.models import Visitor
+#     from django.contrib.sessions.models import Session
+#     keys = [v.session_key for v in Visitor.objects.filter(user=request.user).exclude(session_key=request.session.session_key)]
+#     Session.objects.filter(session_key__in=keys).delete()
+
+
+
+def handler400(request):
+    response = render_to_response('400.html', {},
+                                 )
+    response.status_code = 404
+    return response
+
 
 def get_currency_rate(currency):
     response = requests.get('http://kajex.com/')
@@ -609,6 +627,11 @@ def user_login(request):
         if user:
             if user.is_active and user_profile.is_active:
                 login(request, user, None)
+                user_sessions = UserSession.objects.filter(user=user)
+                for user_session in user_sessions:
+                    user_session.session.delete()
+
+                UserSession.objects.create(user=user, session_id=request.session.session_key)
                 if request.LANGUAGE_CODE == 'en-gb':
                     return HttpResponseRedirect(next)
                     # return HttpResponseRedirect('/home/')
@@ -879,6 +902,9 @@ def bank_accounts(request):
 
 @login_required
 def user_logout(request):
+    # user_sessions = UserSession.objects.filter(user=request.user)
+    # for user_session in user_sessions:
+    #     user_session.session.delete()
     logout(request)
     return HttpResponseRedirect('/')
 
