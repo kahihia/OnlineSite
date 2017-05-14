@@ -1,9 +1,9 @@
 {% load i18n %}
 {% load static %}
 {% load staticfiles %}
- {% ifequal LANGUAGE_CODE 'fa-ir' %}
-<link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
- {% endifequal %}
+{% ifequal LANGUAGE_CODE 'fa-ir' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
+{% endifequal %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
     <link rel="stylesheet" href="{% static 'interpay/css/registeration_form.css' %}">
+    <link rel="stylesheet" href="{% static 'interpay/css/logo.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
 
@@ -36,12 +37,13 @@
  {% block style %}
     <style>
         {% ifequal LANGUAGE_CODE 'fa-ir' %}
-
-            .form-wrapper {
+           .form-wrapper {
                 text-align: right !important;
                 font-family: "IRAN-web";
             }
-
+            #main_register{
+            font-family: "IRAN-web";
+            }
             #reg-wrap-wrap-div{
              font-family: "IRAN-web";
             }
@@ -51,7 +53,6 @@
     {% endblock %}
 </head>
 
-<body style="background: #f9f9f9">
 <script>
     $(document).ready(function () {
         $("#national_code").keydown(function (event) {
@@ -165,7 +166,7 @@
     function resend_sms() {
         swal({
             title: "",
-            text: "You want to get a new code?",
+            text: '{%  trans 'You want to get a new code?' %}',
             type: "info",
             showCancelButton: false,
             closeOnConfirm: false,
@@ -190,7 +191,7 @@
 
         swal({
             title: "",
-            text: "Processing. If successful a message will be sent to your mobile.",
+            text:  '{%  trans 'Processing. If successful a message will be sent to your mobile.' %}',
             type: "info",
             showCancelButton: false,
             closeOnConfirm: false,
@@ -199,7 +200,7 @@
             $.ajax({
 
                 error: function (xhr, ajaxOptions, thrownError) {
-              swal("Error deleting!", "Please try again", "error");
+              swal('{% trans 'Error deleting!' %}', '{%  trans 'Please try again' %}', '{%  trans 'Error' %}');
                }
 
                 });
@@ -209,33 +210,30 @@
     {% block script %}
     {% endblock %}
 </script>
+<body style="background: #FEFCEF repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
-        <ul class="topnav">
+        <ul class="topnav1">
             <h1  style="margin-top: 0% ; margin-bottom: 2%">
               {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
-                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag">
                     </a>
                 {% else %}
                     <a id="to-en-link" class="trans-link" onclick="to_en()">
                         <p class="lang" style="cursor: pointer"> Eng/Fa </p>
-                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag">
                     </a>
                 {% endifequal %}
              {% endblock %}
-                <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
-                <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
-
+                <img  class="rizpal1"   src="{% static 'interpay/images/rizpal.png' %}">
+                <img  class="interpay1" src="{% static 'interpay/images/logo.png' %}">
             </h1>
-     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
-
-
-      </div>
         </ul>
     </header>
+
 
 <section>
     <div class="container">
@@ -246,16 +244,15 @@
                 <div class="form-wrapper" style="text-align: center; width:50%">
                     <strong>{{ thanks_msg }}</strong>
                     <hr>
-                    <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>
-
+{#                    <a class="btn-link" href="/home">{% trans 'Launch to your homepage' %}</a><br/>#}
                     {% ifequal LANGUAGE_CODE 'en-gb' %}
-                    <a class="btn-link" href="/home/">{{ redirect_to_home_msg }}
-                        {% else %}
+                        <a class="btn-link" href="/home/">{{ redirect_to_home_msg }}
+                    {% else %}
                         <a class="btn-link" href="/fa-ir/home/">
-                            {% endifequal %}
+                    {% endifequal %}
                             {% trans 'Launch to your homepage' %}
                         </a>
-                        <br/>
+                    <br/>
                 </div>
             </div>
         </div>
@@ -315,7 +312,7 @@
         {#                </div>#}
         {#            </div>#}
         {% else %}
-        <div class="row">
+        <div id="main_register" class="row">
             {% block main-cont %}
                 <div class="col-xs-12" id="reg-wrap-wrap-div">
                 <div class="form-wrapper">
@@ -329,8 +326,14 @@
                     {% endblock %}
                     <hr>
                     <div id="registration_form_wrapper">
+                    {% ifequal LANGUAGE_CODE 'en-gb' %}
                         <form enctype="multipart/form-data" id="registration_form" method="post"
-                              action="/register/"> {% csrf_token %}
+                              action="/register/">
+                        {%  else %}
+                        <form enctype="multipart/form-data" id="registration_form" method="post"
+                              action="/fa-ir/register/">
+                        {%  endifequal %}
+                            {% csrf_token %}
                             {{ user_form.as_p }}
                             {{ profile_form.as_p }}
 {#                            <div class="g-recaptcha" data-sitekey="6LfHKRMUAAAAABhBgggT5PR293yWX8jSWamrxJCl"></div>#}

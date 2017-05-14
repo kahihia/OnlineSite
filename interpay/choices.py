@@ -4,5 +4,6 @@ TYPE_CHOICES = (
     ('2', 'International'),
     ('3', 'Top Up'),
     ('4', 'Conversion'),
-    ('5', 'Withdrawal Request')
+    ('5', 'Withdrawal Request'),
+    ('6', 'direct payment')
 )

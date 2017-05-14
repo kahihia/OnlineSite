@@ -7,84 +7,37 @@
 {% endifequal %}
 <!DOCTYPE html>
 <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
-<script src="{% static 'interpay/jquery/jquery-1.10.2.js'%}"></script>
 {% include 'session_security/all.html' %}
 <!-- -->
 <html lang="en">
 <head>
-
     {% block style %}
-        <style>
-            {% ifequal LANGUAGE_CODE 'fa-ir' %}
-                .content {
-                    margin-left: 0 !important;
-                    direction: rtl;
-                    font-family: "IRAN-web";
-                }
-
-               @media only screen and ( max-width: 700px){
-                 #main-content-section{
-                margin-right: 5%
-                }}
-               @media only screen and (min-width: 700px)  and ( max-width: 1400px) {
-                #main-content-section{
-                margin-right: 15%
-                }}
-               @media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
-                  #main-content-section{
-                margin-right: 15%
-                }}
-               @media only screen and (min-width : 1700px){
-                 #main-content-section{
-                margin-right: 15%
-                }}
-                #sidebar-entries {
-                    padding-right: 10px;
-                    padding-left: 0 !important;
-                    font-family: "IRAN-web";
-                }
-                .sidebar-entry {
-                    text-align: right;
-                    direction: rtl;
-                    font-family: "IRAN-web";
-                }
-                #logout {
-                    float: left !important;
-                    font-family: "IRAN-web";
-                }
-                #name {
-                    float: right !important;
-                    font-family: "IRAN-web";
-                }
-                #interpay-id {
-                    float: right !important;
-                    font-family: "IRAN-web";
-                }
-                .sidebar-links {
-                    text-align: right;
-                    font-family: "IRAN-web";
-                }
-            {% endifequal %}
-        </style>
     {% endblock %}
     {% block STYLE %}
     {% endblock %}
     {% block css %}
+       {% ifequal LANGUAGE_CODE 'fa-ir' %}
+       <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/baseFarsi.css' %}">
+       {% endifequal %}
         <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
         <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'interpay/css/logo.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
         <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
 
     {% endblock css %}
     {% block js %}
+        <script src="{% static 'interpay/jquery/jquery-1.10.2.js'%}"></script>
         <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
         <script src="{% static 'interpay/bootstrap/js/bootstrap.min.js' %}"></script>
         <script>
+           var openside;
+           openside = 0 ;
            function change(x) {
               var y = document.getElementById("edited");
               var z = document.getElementById("profile_name");
@@ -106,46 +59,69 @@
                 } else {
                     x.className = x.className.replace(" w3-show", "");
                 }
-          /*   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-              alert("hello")
-              }
-             else
-             {
-                 alert("no")
-             }
-*/            }
+                    }
             function sidebarfunc1() {
+                openside =1
                 var x = document.getElementById("demoo");
-                var y = document.getElementById("sidebar1");
-                var z = document.getElementById("cont-body");
                 if (x.className.indexOf("w3-show") == -1) {
                     x.className += " w3-show"
-                    y.style.display = "none"
-                    z.style.display = "none"
                 }
                 else {
-                    x.className = x.className.replace(" w3-show", "");
+                    x.className = x.className.replace("w3-show", "");
                 }
             }
+           function sidebarfuncscreen() {
+               if (openside) {
+                   var x = document.getElementById("demoo");
+                   if (x.className.indexOf("w3-show") == -1) {
+                       x.className += " w3-show"
+                       y.style.display = "none"
+                       openside = 0;
+                   }
+                   else {
+                       x.className = x.className.replace("w3-show", "");
+                       openside = 0;
+                   }
+               }
+           }
 
             $(document).ready(function(){
                 $("#close").click(function(){
+                    openside = 0 ;
                     $("#closeall").hide();
                     $("#sidebar1").show();
                     $("#cont-body").show();
                 });
-
-            });
-            $(document).ready(function(){
                 $("#open").click(function(){
                     $("#closeall").show();
                     $("#sidebar1").hide();
+
                 });
+                $("#cont-wrapper").click(function () {
+                            openside = 0 ;
+                            $("#closeall").hide();
+                            $("#sidebar1").show();
+
+                    });
 
             });
 
+            {% ifequal LANGUAGE_CODE 'fa-ir' %}
+           jQuery(document).ready( function() {
+           var map =
+                [
+                "&\#1632;","&\#1633;","&\#1634;","&\#1635;","&\#1636;",
+                "&\#1637;","&\#1638;","&\#1639;","&\#1640;","&\#1641;"
+                ]
 
-        </script>
+            document.body.innerHTML =
+            document.body.innerHTML.replace(
+            /\d(?=[^<>]*(<|$))/g,
+            function($0) { return map[$0] }
+          );
+   })
+        {% endifequal %}
+   </script>
     {% endblock %}
     {% block JS %}
     {% endblock %}
@@ -169,18 +145,18 @@
 <body style="background: #FEFCEF repeat-y 50% 0;">
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
-        <ul class="topnav">
+        <ul class="topnav1">
             <h1  style="margin-top: 0% ; margin-bottom: 2%">
               {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
                     <p class="lang"> Fa/Eng</p>
-                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag" style=" float:right ; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/irflag.png' %}" class="flag">
                     </a>
                 {% else %}
                     <a id="to-en-link" class="trans-link" onclick="to_en()">
                         <p class="lang" style="cursor: pointer"> Eng/Fa </p>
-                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
+                        <img src="{% static 'interpay/images/ukflag.png' %}" class="flag">
                     </a>
                 {% endifequal %}
              {% endblock %}
@@ -200,18 +176,11 @@
                          --->
                    </div>
                  </a>
-
-                <img  class="rizpal"   src="{% static 'interpay/images/rizpal.png' %}">
-                <img  class="interpay" src="{% static 'interpay/images/logo.png' %}">
-
+                <img  class="rizpal2"   src="{% static 'interpay/images/rizpal.png' %}">
+                <img  class="interpay1" src="{% static 'interpay/images/logo.png' %}">
             </h1>
-     <div style="float: right; font-family: IRAN-web ; color:white" id="welcome-btn" class="col-xs-3 col-md-3">
-
-
-      </div>
         </ul>
     </header>
-
 
     {% ifequal LANGUAGE_CODE 'en-gb' %}
         <div id="sidebar" class="pull-left  w3-table w3-bordered w3-hide-small">
@@ -305,37 +274,36 @@
 
 
     <div id="closeall">
-        <nav id="demoo" class="w3-hide w3-hide-large w3-hide-medium w3-collapse">
-          {% ifequal LANGUAGE_CODE 'en-gb' %}
-            <div id="sidebar" class="pull-left w3-table w3-animate-left" style="width: 30%">
+       {% ifequal LANGUAGE_CODE 'en-gb' %}
+            <nav id="demoo" class=" fixedmenue w3-hide w3-hide-large w3-hide-medium w3-collapse">
+              <div id="sidebar"  class="pull-left w3-table w3-animate-left">
            {% else %}
-           <div id="sidebar" class="pull-right w3-table w3-animate-right" style="width: 30%">
+            <nav id="demoo" class=" fixedmenueFarsi w3-hide w3-hide-large w3-hide-medium w3-collapse">
+              <div id="sidebar" style="width: 100%" class=" pull-right w3-table w3-animate-right">
            {% endifequal %}
                 <div  id="sidebar-content">
                     <ul id="sidebar-entries">
-                        <li class="  w3-hide-medium w3-hide-large">
+                        <li style="margin-bottom: 30px" class="w3-hide-medium w3-hide-large">
                           {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a  class="w3-closenav" id="close"  style="float:left" href="javascript:void(0);" onclick="sidebarfunc1()">
+                            <a  class="pull-left w3-closenav" id="close"  href="javascript:void(0);" onclick="sidebarfunc1()">
                           {% else %}
-                            <a  class=" pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="sidebarfunc1()">
+                            <a  class="pull-right w3-closenav" id="close" href="javascript:void(0);" onclick="sidebarfunc1()">
                            {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans "Close" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans "Close" %}</span>
                             </a>
                         </li>
-                        <br>
-                        <br>
                         <li class="sidebar-entry">
                             {% ifequal LANGUAGE_CODE 'en-gb' %}
                                 <a class="sidebar-links" href="/home">
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/home">
                             {% endifequal %}
-                             <span class="sidebar-entry-name">{% trans "Home" %}</span>
+                             <span class="sidebar-entry-name-small">{% trans "Home" %}</span>
                             </a>
                         </li>
                         <li class="dropdown sidebar-entry">
                             <a href="#" class="sidebar-links dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                               <span class="sidebar-entry-name">{% trans "Wallets" %}</span>
+                               <span class="sidebar-entry-name-small">{% trans "Wallets" %}</span>
                                 <span class="caret sidebar-ent-items" ></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -363,7 +331,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/trans-history">
                             {% endifequal %}
-                             <span class="sidebar-entry-name">{% trans " Transaction" %}</span>
+                             <span class="sidebar-entry-name-small">{% trans " Transaction" %}</span>
                             </a>
                         </li>
                 <li class="sidebar-entry">
@@ -372,7 +340,7 @@
                 {% else %}
                     <a class="sidebar-links" href="/fa-ir/pay_user/">
                 {% endifequal %}
-               <span class="sidebar-entry-name">{% trans 'Payment' %}</span>
+               <span class="sidebar-entry-name-small">{% trans 'Payment' %}</span>
                 </a>
                </li>
                    <li class="sidebar-entry" >
@@ -381,7 +349,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/bank-accounts">
                             {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans "Withdrawals" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans "Withdrawals" %}</span>
                             </a>
                    </li>
                         <li class="sidebar-entry">
@@ -390,7 +358,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/reports">
                             {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans " Reports" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans " Reports" %}</span>
                             </a>
                         </li>
                         <li class="sidebar-entry">
@@ -399,7 +367,7 @@
                             {% else %}
                                 <a class="sidebar-links" href="/fa-ir/general">
                             {% endifequal %}
-                            <span class="sidebar-entry-name">{% trans " General" %}</span>
+                            <span class="sidebar-entry-name-small">{% trans " General" %}</span>
                             </a>
                         </li>
                     </ul>
@@ -465,7 +433,7 @@
         </div>
 
     <section  id="main-content-section">
-           <div id="cont-wrapper">
+           <div id="cont-wrapper"  href="javascript:void(0);" onclick="sidebarfuncscreen()">
                <div id="cont-header">
                    {% block cont-header %}
                    {% endblock %}

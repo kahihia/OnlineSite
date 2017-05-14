@@ -3,6 +3,9 @@
 {% load static %}
 {% load i18n %}
 <!DOCTYPE html>
+{% block CSS %}
+        <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/edit.css' %}">
+{% endblock %}
 {% block JS %}
 <script>
       $(document).ready(function(){
@@ -138,26 +141,28 @@ function edit_username(){
                  $('#success_name').empty()
                  $('#success_name').append(data['html'])
                  $("#inner_username").replaceWith(username);
+                 $("#edit_change_username").replaceWith(username);
                  $("#username").hide();
                  $("#edit_username").hide();
                  $("#edit4").show();
                 }
         });
     }
-
-
 </script>
 {% endblock %}
+
 <html lang="en">
  {% block flag %}
 
  {% endblock %}
-<head>
+
+ <head>
     <meta charset="UTF-8">
     <title>
         <h3 class="page-title">{% block title %}{% trans 'General' %}{% endblock %}</h3>
     </title>
-</head>
+ </head>
+
 <body>
 {% block cont-header %}
     <div>
@@ -168,24 +173,22 @@ function edit_username(){
 {% endblock %}
 {% block cont-body %}
    <div style="color: #67b168" id="success_name"> </div>
-   <div id="manage_edit" style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <span style=" margin-left:4% ; margin-top: 5%;color: white">{%  trans 'First name' %}:</span> <span style="color: white" id="edit_change_name"> {{ user.first_name }} </span>  <br> <i id="edit" class="fa fa-pencil-square-o"  style=" color:white; margin-left: 4% ;cursor:pointer" aria-hidden="true"></i><span  style="color: white"> {%  trans 'Edit' %}</span> <input id="first_name" type="text" name="fname" style="display: none"><br>
-    <input id="edit_name"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_name()" >
+   <div id="manage_edit">
+    <p><span class="stylename">{%  trans 'First name' %}:</span> <span class = "editcolor" id="edit_change_name"> {{ user.first_name }} </span></p> <i id="edit" class="fa fa-pencil-square-o"  style=" color:white; margin-left: 4% ;cursor:pointer" aria-hidden="true"></i><span  style="color: white"> {%  trans 'Edit' %}</span> <input id="first_name" type="text" name="fname" style="display: none"><br>
+    <input id="edit_name"  class ="button_edit" type="button" class="w3-button" value="save" onclick="edit_name()" >
    </div>
-    <br>
-    <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <span style=" margin-left:4% ; margin-top: 5%;color: white"> {%  trans 'Last name' %}:</span> <span style=" color: white" id="edit_change_lastname"> {{ user.last_name }}</span><br><i id="edit2" class="fa fa-pencil-square-o"  style=" margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="last_name" type="text" name="fname" style="display: none"><br>
-    <input id="edit_lastname"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_last_name()" >
+
+    <div id="manage_edit">
+    <p><span class="stylename"> {%  trans 'Last name' %}:</span> <span class = "editcolor" id="edit_change_lastname"> {{ user.last_name }}</span></p><i id="edit2" class="fa fa-pencil-square-o"  style=" margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="last_name" type="text" name="fname" style="display: none"><br>
+    <input id="edit_lastname"  class ="button_edit" type="button" class="w3-button" value="save" onclick="edit_last_name()" >
    </div>
-    <br>
-    <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <span style=" margin-left:4% ; margin-top: 5%;color: white">{%  trans 'National Id Code' %}:</span><span style=" color: white" id="edit_change_lastname"> {{ user.national_code }}</span><br><i id="edit3" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="national_id" type="text" name="fname" style="display: none"><br>
-    <input id="edit_national_id"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_national_id()" >
+    <div id="manage_edit">
+    <p><span class="stylename">{%  trans 'National Id Code' %}:</span><span class = "editcolor" id="edit_change_nationalId"> {{ user.national_code }}</span></p><i id="edit3" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer" aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="national_id" type="text" name="fname" style="display: none"><br>
+    <input id="edit_national_id" class ="button_edit" type="button" class="w3-button" value="save" onclick="edit_national_id()" >
    </div>
-     <br>
-   <div style=" background-color: #656360; width: 40% ;  height: 15%; border-color: #3c3c3c ; border-style: double">
-    <i id="edit4" class="fa fa-pencil-square-o"  style="cursor:pointer" aria-hidden="true"></i> {%  trans 'username' %} <input id="username" type="text" name="fname" style="display: none"><br>
-    <input id="edit_username"  style="display:none" type="button" class="w3-button" value="save" onclick="edit_username()" >
+   <div id="manage_edit"> <p><span class="stylename">{%  trans 'username' %}:</span><span class = "editcolor" id="edit_change_username"> {{ user.username }}</span></p>
+    <i id="edit4" class="fa fa-pencil-square-o"  style="  margin-left: 4% ; color: white; cursor:pointer"  aria-hidden="true"></i> <span  style="color: white"> {%  trans 'Edit' %}</span> <input id="username" type="text" name="fname" style="display: none">
+    <input id="edit_username"  class ="button_edit" type="button" class="w3-button" value="save" onclick="edit_username()" >
    </div>
     <!--
     <div>
@@ -201,7 +204,6 @@ function edit_username(){
 
    </div>
    -->
-
 {% endblock %}
 </body>
 </html>

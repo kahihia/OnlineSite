@@ -1,0 +1,430 @@
+
+
+@media only screen and ( max-width: 420px){
+#cont-wrapper {
+    margin: 5px;
+}
+
+.rizpal2{
+    padding-top: 2%;
+    margin-left: 3%;
+    width:10%;
+    height: 94%;
+    float:left ;
+    margin-top:0px;
+    padding-bottom: 2%;
+}
+ .interpay1{
+    padding-top: 2%;
+    margin-left: 1%;
+    width:17%;
+    height: 80%;
+    float:left ;
+    margin-top:1.2%;
+}
+ .rizpal1{
+    padding-top: 1%;
+    margin-left: 3%;
+    width:10%;
+    height: 40px;
+    float:left ;
+    margin-top:0px;
+    padding-bottom: 2%;
+    margin-bottom: 0%;
+}
+
+ .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+  .inner_edit  {
+      padding: 5px;
+      overflow: hidden;
+      width: 75%;
+      height: 85%;
+      border-radius: 50%;
+      background-color:#696969;
+      float: inherit;
+      font-family: IRAN-web;
+      font-size: x-small
+  }
+
+}
+
+@media only screen and (min-width : 420px) and ( max-width: 800px) {
+
+ #cont-wrapper
+ {
+    margin: 10px;
+}
+
+.rizpal1{
+    padding-top: 1.2%;
+    margin-left: 1%;
+    width:6%;
+    height: 45px;
+    float:left ;
+    margin-top:0px;
+    padding-bottom: 5px;
+}
+.rizpal2{
+    padding-top: 1%;
+    margin-left: 1%;
+    width:7%;
+    height: 94%;
+    float:left ;
+    margin-top:0px;
+    padding-bottom: 5px;
+}
+ .interpay1{
+    padding-top: 0.5%;
+    margin-left: 0.5%;
+    width:11%;
+    height: 77%;
+    float:left ;
+    margin-top:1%;
+
+}
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small;
+        margin-top: 0.7%;
+
+    }
+}
+@media only screen and (min-width : 800px) and ( max-width: 1100px) {
+
+    #cont-wrapper {
+    margin: 10px;
+}
+
+.rizpal2{
+    padding-top: 7px;
+    margin-left: 1%;
+    width:5%;
+    height: 94%;
+    float:left ;
+    padding-bottom: 8px;
+    margin-bottom: 1px;
+}
+.rizpal1{
+    padding-top: 10px;
+    margin-left: 1%;
+    width:5%;
+    height: 48px;
+    float:left ;
+    padding-bottom: 8px;
+    margin-bottom: 1px;
+}
+ .interpay1{
+    padding-top: 2px;
+    margin-left: 0.5%;
+    width:9%;
+    height: 77%;
+    float:left ;
+    margin-top: 9px;
+
+}
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small;
+        margin-top: 0.7%;
+
+    }
+}
+
+@media only screen and (min-width: 1100px) and (max-width: 1400px)  {
+    #cont-wrapper {
+    margin: 15px;
+}
+
+    .rizpal1 {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width:3%;
+        height: 50px;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+     .rizpal2 {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width:3%;
+        height: 98%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay1 {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small
+
+    }
+}
+
+@media only screen and (min-width: 1400px) and (max-width: 1700px)   {
+    #cont-wrapper {
+    margin: 15px;
+}
+
+    .rizpal1 {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width: 3%;
+        height: 100%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay1 {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small
+
+    }
+}
+
+@media only screen and (min-width: 1700px)   {
+    #cont-wrapper {
+    margin: 15px;
+}
+
+    .rizpal1 {
+        padding-top: 8px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width:2.5%;
+        height: 50px;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 10px;
+        margin-bottom: 1px;
+    }
+    .rizpal2 {
+        padding-top: 7px;
+        margin-top: 0%;
+        margin-left: 1%;
+        width:2.5%;
+        height: 100%;
+        float:left ;
+        margin-top:0px;
+        padding-bottom: 8px;
+        margin-bottom: 1px;
+    }
+
+    .interpay1 {
+        padding-top: 2px;
+        margin-left: 0.5%;
+        width:6%;
+        height: 77%;
+        float:left ;
+        margin-top: 9px;
+    }
+
+    .edit {
+        float: right;
+        padding-right: 2%;
+        padding-bottom: 1.5%;
+        margin-bottom: 1%;
+        padding-top: 0.5%;
+        margin-top: 0;
+    }
+
+    .inner_edit {
+        padding: 5px;
+        overflow: hidden;
+        width: 95%;
+        height: 65%;
+        border-radius: 50%;
+        background-color: #696969;
+        float: inherit;
+        font-family: IRAN-web;
+        font-size: x-small
+
+    }
+}
+
+
+
+/*///////////////////////////////////////////////////////////*/
+
+
+
+@media only screen and ( max-width: 420px){
+ul.topnav1{
+    height: 40px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #6E6E6E;
+}
+}
+
+@media only screen and (min-width : 420px) and ( max-width: 900px) {
+ul.topnav1{
+    height: 45px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #585858;
+}
+}
+
+@media only screen and (min-width: 900px)  and ( max-width: 1400px) {
+ul.topnav1{
+     height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #585858;
+}
+}
+
+
+
+@media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
+ul.topnav1{
+    height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #585858;
+}
+}
+
+@media only screen and (min-width : 1700px){
+ul.topnav1{
+    height: 50px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #585858;
+}
+}
+
+.flag {
+        height:19%;
+        width:4%;
+         float:right;
+}
+@media screen and (min-width: 800px) {
+    .flag {
+       height:25%;
+       width:1.53%;
+        float:right;
+    }
+}
+.lang {
+        color: white;
+        margin-right: 1%;
+        float:right;
+        font-size: 48%;
+}
+@media screen and (min-width: 800px) {
+    .lang {
+      color: white;
+      margin-right: 1%;
+      float:right;
+      font-size: 35%;
+    }
+}

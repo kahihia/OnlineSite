@@ -27,7 +27,6 @@ admin.autodiscover()
 urlpatterns = [
     url('^admin/', admin.site.urls),
     url('^manager/', include('manager.urls')),
-    url(r'^conversion/', include('conversion.urls')),
     url(r'^currencies/', include('currencies.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'session_security/', include('session_security.urls')),
@@ -35,7 +34,6 @@ urlpatterns = [
     url(r'^rest_framework/', include('RestApi.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^pay_user/', views.pay_user),
-    url(r'^set_currency_rates/', views.set_rates),
     url(r'^set_notification_seen/$', views.set_notification_seen),
     # url(r'^home/', TemplateView.as_view(template_name="manager-home.html")),
     # url(r'^wallets/', TemplateView.as_view(template_name="wallets.html")),
@@ -87,6 +85,9 @@ urlpatterns = [
     url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
     url(r'^favicon\.ico$', views.favicon_view),
+    url(r'^unregistered_pay/$', views.unregistered_pay, name='unregistered_pay'),
+    url(r'^unregistered_charge/$', views.unregistered_charge, name='unregistered_charge'),
+    url(r'^callback_handler_withdraw/([0-9]*)', views.callback_handler_withdraw, name='callback_handler_withdraw'),
 ]
 
 urlpatterns += i18n_patterns(
@@ -142,5 +143,8 @@ urlpatterns += i18n_patterns(
     url(r'^reviewing_id/$', views.reviewing_id, name='reviewing_id'),
     url(r'^review_comments/(?P<reviewing_id>\d+)', views.review_comments, name="review_comments"),
     url(r'^favicon\.ico$', views.favicon_view),
+    url(r'^unregistered_pay/$', views.unregistered_pay, name='unregistered_pay'),
+    url(r'^unregistered_charge/$', views.unregistered_charge, name='unregistered_charge'),
+    url(r'^callback_handler_withdraw/([0-9]*)', views.callback_handler_withdraw, name='callback_handler_withdraw'),
 )
 
