@@ -849,7 +849,7 @@ msgid "Your money transfer done successfully"
 msgstr "انتقال مالی شما با موفقیت انجام شد."
 
 #: interpay/views.py:1328
-msgid "Your have an account already, please login"
+msgid "You have an account already, please login"
 msgstr "شما دارای حساب کاربری هستید. لطفاً وارد حساب خود شوید."
 
 #: interpay/views.py:1330
@@ -860,6 +860,13 @@ msgstr "پست الکترونیکی شما پیش از این با شماره ت
 msgid "Your mobile number registered before with another email address"
 msgstr "شماره تلفن شما پیش از این با پست الکترونیکی دیگری در سایت ثبت شده است."
 
+#: templates/interpay/unregistered_pay.html:105
+msgid "Forgot password ?"
+msgstr "رمز عبور خود را فراموش کرده اید؟"
+
+#: templates/interpay/top_bar.html:155
+msgid "Main Page"
+msgstr "صفحه اصلی"
 
 #~| msgid "My total stock in"
 #~ msgid "Your total stock in"

@@ -1309,14 +1309,17 @@ def review_comments(request,reviewing_id):
 favicon_view = RedirectView.as_view(url='/static/interpay/images/ipay-favicon.ico', permanent=True)
 
 
-def unregistered_pay(request, **message):
+def unregistered_pay(request, **message ):
+    link = ''
     if message:
         emessage = message['message']
+        link = message ['link']
         msg_color = 1
     else:
         emessage = ''
     context = {
         'emessage': emessage,
+        'link': link,
     }
     return render(request, "interpay/unregistered_pay.html",context)
 
@@ -1334,11 +1337,13 @@ def unregistered_charge(request):
         payment_comment = request.POST.get('comment')
 
         if UserProfile.objects.filter(email=sender_email, mobile_number=sender_mobile):
-            return unregistered_pay(request, message=_("Your have an account already, please login"))
+            return unregistered_pay(request, message=_("You have an account already, please login"), link="1")
         elif UserProfile.objects.filter(email=sender_email):
-            return unregistered_pay(request, message=_("Your email registered before with another phone number."))
+            return unregistered_pay(request, message=_("Your email registered before with another phone number."),
+                                    link="0")
         elif UserProfile.objects.filter(mobile_number=sender_mobile):
-            return unregistered_pay(request, message=_("Your mobile number registered before with another email address"))
+            return unregistered_pay(request, message=_("Your mobile number registered before with another email address"),
+                                    link="0")
         else:
 
             sender_user = User.objects.create(username=sender_email,password="123",email=sender_email)
@@ -1442,17 +1447,17 @@ def callback_handler_withdraw(request, amount):
                     error_message = "Invalid Email"
 
 
-            return unregistered_pay(request, message=_("Your money transfer done successfully"))
+            return unregistered_pay(request, message=_("Your money transfer done successfully"), link="0")
 
         elif result2.Status == 101:
             res = _("Transaction submitted : ") + str(result2.Status)
-            return unregistered_pay(request, message=_("Your transaction has been successfully submitted earlier."))
+            return unregistered_pay(request, message=_("Your transaction has been successfully submitted earlier."), link="0")
         else:
             res = _("Transaction failed. Status: ") + str(result2.Status)
-            return unregistered_pay(request, message=_("Your transaction was not successful. Try again later."))
+            return unregistered_pay(request, message=_("Your transaction was not successful. Try again later."), link="0")
     else:
         res = _("Transaction failed or canceled by user")
-        return unregistered_pay(request, message=_("Transaction failed or canceled by you."))
+        return unregistered_pay(request, message=_("Transaction failed or canceled by you."), link="0")
 
 
 
