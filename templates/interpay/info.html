@@ -11,7 +11,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        InterPay Iran
+        {%  block title %}
+            InterPay Iran
+        {%  endblock %}
     </title>
 
 
@@ -24,14 +26,15 @@
         <div class="fullscreenbanner-container">
             <div class="fullscreenbanner">
                 <ul>
-                    <!-- SLIDE 1 -->
-                    <li data-transition="curtain-1" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
+
+                    <li data-transition="boxslide" data-slotamount="10" data-masterspeed="1000">
                         <!-- MAIN IMAGE -->
-                       <!--
-                       <img src="Content/HomePages/images/slider/slider01.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
--->
-{#                        <img src="{% static 'interpay/images/first_page1.png' %}" alt="slidebg1" data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">#}
-                        <!-- LAYERS -->
+                    <div class="first_image" style="margin-top: 12%">
+                        <img class="img1" src="{% static 'interpay/images/first_page1.png' %}" style="display: none; width:650px; height: 600px; margin-right: auto; margin-left: auto; margin-bottom: auto">
+                        <img class="img2" src="{% static 'interpay/images/first_page2.png' %}" style="display: none; width:650px; height: 600px; margin-left: 29%; margin-right: auto; margin-bottom: auto">
+
+                    </div>
+
                         <div class="tp-caption rs-caption-1 sft start"
                              data-x="center"
                              data-hoffset="0"
@@ -110,12 +113,17 @@
                 </ul>
 {#                <div class="tp-bannertimer tp-bottom"></div>#}
 {#                <div class="tp-dottedoverlay twoxtwo"></div>#}
+
             </div>
+
         </div>
+
     </section>
 
 
-    <div class="clearfix"></div>
+{#    <div class="clearfix"></div>#}
+
+
 
 <!--
                     <div class="col-md-6">
@@ -153,6 +161,16 @@
             RevolutionSlider.initRSfullScreen();
         });
     </script>
+
+    <script>
+    $(window).load(function() {
+        setTimeout(function () {$(".img1").delay(5000).fadeIn(1000);})
+        setTimeout(function () {$(".img2").delay(5000).fadeIn(1000);})
+    }
+    )
+    </script>
+
 {% endblock %}
     </body>
 
+</html>

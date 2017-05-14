@@ -22,5 +22,9 @@ var RevolutionSlider = function () {
             });
         }
 
+
+
     };
 }();
+
+

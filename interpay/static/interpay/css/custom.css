@@ -654,7 +654,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .rs-caption-2 {
-  font-size: 52px;
+  font-size: 40px;
   font-family: Raleway;
   font-weight: 100;
   color: #fff;
@@ -2347,5 +2347,5 @@ i.icon-bg-blue {
   width:100%;
   position:relative;
   padding:0;
-        overflow: hidden;
+  overflow: hidden;
 }

@@ -1358,9 +1358,9 @@ img.tp-slider-alternative-image	{	width:100%; height:auto;}
 *********************************/
 .tp-dottedoverlay						{	background-repeat:repeat;width:100%;height:100%;position:absolute;top:0px;left:0px;z-index:4}
 /*.tp-dottedoverlay.twoxtwo				{	background:url(../assets/gridtilexx.png)}*/
-.tp-dottedoverlay.twoxtwowhite			{	background:url(../assets/gridtile_white.png)}
-.tp-dottedoverlay.threexthree			{	background:url(../assets/gridtile_3x3.png)}
-.tp-dottedoverlay.threexthreewhite		{	background:url(../assets/gridtile_3x3_white.png)}
+/*.tp-dottedoverlay.twoxtwowhite			{	background:url(../assets/gridtile_white.png)}*/
+/*.tp-dottedoverlay.threexthree			{	background:url(../assets/gridtile_3x3.png)}*/
+/*.tp-dottedoverlay.threexthreewhite		{	background:url(../assets/gridtile_3x3_white.png)}*/
 /********************************
 	-	DOTTED OVERLAYS ENDS	-
 *********************************/
