@@ -24,6 +24,7 @@ from rest_framework import routers
 from RestApi import views as restViews
 
 admin.autodiscover()
+handler400 = 'interpay.views.handler400'
 urlpatterns = [
     url('^admin/', admin.site.urls),
     url('^manager/', include('manager.urls')),

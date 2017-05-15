@@ -11,6 +11,7 @@ from django_countries.fields import CountryField
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.formats import get_format
+from django.contrib.sessions.models import Session
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from collections import defaultdict
@@ -379,7 +380,9 @@ class Review(models.Model):
     money_transfer = models.OneToOneField(MoneyTransfer, null=False, related_name='transfer')
 
 
-
+class UserSession(models.Model):
+    user = models.ForeignKey(User)
+    session = models.ForeignKey(Session)
 
 
 
