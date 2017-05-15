@@ -30,8 +30,8 @@
                     <li data-transition="boxslide" data-slotamount="10" data-masterspeed="1000">
                         <!-- MAIN IMAGE -->
                     <div class="first_image" style="margin-top: 12%">
-                        <img class="img1" src="{% static 'interpay/images/first_page1.png' %}" style="display: none; width:650px; height: 600px; margin-right: auto; margin-left: auto; margin-bottom: auto">
-                        <img class="img2" src="{% static 'interpay/images/first_page2.png' %}" style="display: none; width:650px; height: 600px; margin-left: 20%; margin-right: auto; margin-bottom: auto">
+                        <img id="img1" class="img-responsive" src="{% static 'interpay/images/first_page1.png' %}">
+                        <img id="img2" class="img-responsive" src="{% static 'interpay/images/first_page2.png' %}">
 
                     </div>
 
@@ -164,8 +164,8 @@
 
     <script>
     $(window).load(function() {
-        setTimeout(function () {$(".img1").delay(5000).fadeIn(1000);})
-        setTimeout(function () {$(".img2").delay(5000).fadeIn(1000);})
+        setTimeout(function () {$("#img1").delay(5000).fadeIn(1000);})
+        setTimeout(function () {$("#img2").delay(5000).fadeIn(1000);})
     }
     )
     </script>
