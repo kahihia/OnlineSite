@@ -54,6 +54,7 @@ from jdatetime import GregorianToJalali
 from django.core.mail import send_mail
 from django.views.generic.base import RedirectView
 from django.contrib.auth.signals import user_logged_in
+from django.contrib.sessions.models import Session
 
 
 log = logging.getLogger('interpay')
@@ -71,10 +72,8 @@ log = logging.getLogger('interpay')
 
 
 def handler400(request):
-    response = render_to_response('400.html', {},
-                                 )
-    response.status_code = 404
-    return response
+    logout(request)
+    return render(request,'interpay/400.html')
 
 
 def get_currency_rate(currency):
@@ -623,7 +622,10 @@ def user_login(request):
                 login(request, user, None)
                 user_sessions = UserSession.objects.filter(user=user)
                 for user_session in user_sessions:
-                    user_session.session.delete()
+                    if Session.objects.filter(usersession=user_session):
+                        user_session.session.delete()
+                    else:
+                        user_session.delete()
 
                 UserSession.objects.create(user=user, session_id=request.session.session_key)
                 if request.LANGUAGE_CODE == 'en-gb':
