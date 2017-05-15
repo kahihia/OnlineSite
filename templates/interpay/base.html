@@ -6,9 +6,7 @@
 <link rel="stylesheet" media="all and (max-width: 1024px)" type="text/css" href="{% static 'interpay/fonts/style.css' %}" />
 {% endifequal %}
 <!DOCTYPE html>
-<!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
-{% include 'session_security/all.html' %}
-<!-- -->
+
 <html lang="en">
 <head>
     {% block style %}
@@ -31,6 +29,9 @@
     {% endblock css %}
     {% block js %}
         <script src="{% static 'interpay/jquery/jquery-1.10.2.js'%}"></script>
+        <!--The next two lines are for warning the user about expiring their session; the script tag should be placed right above the include tag in order for the fancybox to work properly-->
+        {% include 'session_security/all.html' %}
+        <!-- -->
         <script src="{% static 'interpay/jquery/jquery-1.10.2.min.js' %}"></script>
         <script src="{% static 'interpay/jquery/jquery-ui.js' %}"></script>
         <script src="{% static 'interpay/js/sweetalert.min.js' %}"></script>
@@ -123,6 +124,7 @@
         {% endifequal %}
    </script>
     {% endblock %}
+
     {% block JS %}
     {% endblock %}
     {% block CSS %}
