@@ -300,9 +300,8 @@
         <button id="other" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green"   style="margin-left:1%" onclick="apear(this.id)">{% trans "Other Payments" %}</button>
         </div>
         <div class="w3-hide-medium w3-hide-large">
-           <div style="font-size: medium"> Select Your Payment: </div>
-            <br>
-         <select id="test-dropdown" onchange="choice(this)"  style="width:110px">
+           <div style="font-size: medium ; margin-bottom: 4%"> Select Your Payment: </div>
+         <select id="test-dropdown" onchange="choice(this)"  style=" margin-bottom: 6% ; width:110px">
                         <option id="gre" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >GRE</option>
                         <option id="gmat" class=" select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >GMAT</option>
                         <option id="university" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >University fees</option>
@@ -310,12 +309,10 @@
                         <option id="other" class="select_button w3-button w3-round-xxlarge w3-border w3-hover-green" >other</option>
           </select>
          </div>
-
-         <br><br>
         {% ifequal LANGUAGE_CODE 'en-gb' %}
-            <form id="pay" method="post" action="/pay_user/" style="display: none;">
+            <form id="pay" method="post" action="/pay_user/" style="margin-top: 4% ; display: none;">
         {%  else %}
-            <form id="pay" method="post" action="/fa-ir/pay_user/" style="font-family:IRAN-web;display: none;">
+            <form id="pay" method="post" action="/fa-ir/pay_user/" style="margin-top: 4% ; display: none;">
         {%  endifequal %}
                 {% csrf_token %}
                 {#                <div class="row">#}
@@ -323,7 +320,7 @@
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <label style="padding:0;">
                  {% else %}
-                    <label  style="padding:0; float:right">
+                    <label  style="margin-left: 3%;padding:0; float:right">
                 {% endifequal %}
                     {% trans 'Amount' %}
                     </label>
@@ -335,13 +332,13 @@
                       <input type="hidden" name="setform" id="setform" value="{{ setform }}">
                  </div>
 
-                 <span class="form-group" style="padding: 0">
+                 <span class="form-group" style=" margin-bottom: 5% ; padding: 0">
 
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                    <label style="display:block">
                 {% else %}
                     <br><br>
-                    <label style="display:block ; float: right">
+                    <label style="margin-left: 3% ; display:block ; float: right">
                 {% endifequal %}
                          {% trans 'Currency' %}
                  </label>
@@ -367,7 +364,7 @@
                 {% else %}
                     <div class="form-group" style="float: right ; margin-left: 3%">
                 {% endifequal %}
-                    <label id="lable_email"style="display:block">
+                    <label id="lable_email"style=" margin-top: 3% ; display:block">
                           {% trans 'Destination Email:' %}
                     </label>
                     <input type="text" value="{{ email }}" name="email" id="email" class="form-control" onchange="showButton(1)" style="width:300px">
@@ -382,7 +379,7 @@
                 </script>
 
                 <div class="form-group ">
-                   <label id="lable_mobile" style="display:block">
+                   <label id="lable_mobile" style="margin-top: 1.2% ; display:block">
                           {% trans 'Destination Mobile Number:' %}
                     </label>
                     <input type="text" name="mobile" id="mobile" class="form-control" value="{{ mobile }}" style="width:300px">
@@ -435,22 +432,19 @@
                                     style="float: left;">
                                 {% endifequal %}
 {#                                <a href="{% url 'review_comments' %}" class="btn btn-default" style="float: left;">{%  trans 'Show comments' %}</a>#}
-
-
-
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <input type="hidden" name="input_rate" id="input_rate">
-
-                <div class="form-group">
-                   <label style="display:block">
+                <br>
+                <p class="form-group">
+                   <label style=" margin: 0%; display:block">
                     {% trans 'Comment' %}
                     </label>
                     <textarea id="comment" name="comment" class="form-control" style="width:300px">{{ comment }}</textarea>
-                </div>
+                </p>
                 {#                </div>#}
                 <input type="button"
                        id="confirm"
@@ -470,21 +464,23 @@
                                     <h4 class="modal-title" style="text-align: center">{% trans 'Payment Confirmation' %}</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <label>{% trans 'Amount' %}:</label>
-                                    <span id="modal_amount"></span>
-                                    <br>
+                                    <p>
+                                    <label >{% trans 'Amount' %}:</label>
+                                    <span  style="margin-bottom: 2%" id="modal_amount"></span>
+                                    </p>
+                                    <p>
                                     <label>{%  trans 'Email' %}:</label>
-                                    <span id="modal_email"></span>
-                                    <br>
+                                    <span  style="margin-bottom: 2%" id="modal_email"></span>
+                                    </p>
+                                    <p>
                                     <label>{%  trans 'Mobile' %}:</label>
-                                    <span id="modal_mobile"></span>
-                                    <br>
+                                    <span  style="margin-bottom: 2%" id="modal_mobile"></span>
+                                    </p>
+                                    <p>
                                     <label>{%  trans 'Comment' %}:</label>
-                                    <span id="modal_comment"></span>
-                                    <br>
-                                    <span id="modal_setform" style="display: none"></span>
-                                    <br>
-
+                                    <span  style="margin-bottom: 2%" id="modal_comment"></span>
+                                    </p>
+                                    <span id="modal_setform" style="margin-bottom: 2%; display: none"></span>
                                 </div>
 
                                 <div class="modal-footer">
@@ -501,6 +497,7 @@
                 </div>
             </form>
         </div>
+    </div>
 
     </div>
 
