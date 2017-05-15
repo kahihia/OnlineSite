@@ -17,14 +17,55 @@
         {%  endblock %}
     </head>
 
+
     <body>
         {% block cont-body %}
         <script>
             {% block script %}
+                function forgot_pass() {
+                    swal({
+                        title: "Password Retrieval",
+                        text: "Enter your email please.",
+                        type: "input",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        animation: "slide-from-top",
+                        inputPlaceholder: "Email"
+                },
+                        function (inputValue) {
+                            if (inputValue === "") {
+                                swal.showInputError("You should enter your email.");
+                                return false
+                            }
+                            var postUrl = "/retrieve_pass/";
+                            $.ajax({
+                                url: postUrl,
+                                type: 'POST',
+                                data: {
+                                    'email': inputValue,
+                                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                                },
+                                traditional: true,
+                                dataType: 'html',
+                                success: function (result) {
+                                    if (result == "Invalid Email") {
+                                        swal(result, "Your Email is not valid. Contact support.", "error");
+                                    }
+                                    else if (result == "No such user"){
+                                        swal(result, "There is no user with this email.", "error");
+                                    }else{
+                                        swal(result, "A new password was sent to your email.", "success");
+                                    }
+                                }
 
+                            });
+                        }
+                        );
+                    }
             {% endblock %}
         </script>
-
+        {%  block change_lang %}
+        {%  endblock %}
             <section id="intro" class="intro-section">
                 <div class="fullscreenbanner-container">
                     <div class="fullscreenbanner">
@@ -60,6 +101,12 @@
                                         {% else %}
                                             <div class="form-group" style="text-align: center; color: #8CD4F5">
                                                 {{ emessage }}
+                                                {% ifequal link '1' %}
+                                                    <a href="/fa-ir/login/" style="color: #E89102">{% trans 'LOGIN' %}</a>
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    <a style="color: #E89102" onclick="forgot_pass()">{% trans 'Forgot password ?' %}</a>
+                                                {%  endifequal %}
                                             </div>
                                         {% endifequal %}
 
@@ -117,6 +164,16 @@
                                         {% else %}
                                             <div class="form-group" style="text-align: center; color: #8CD4F5">
                                                 {{ emessage }}
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                {% ifequal link '1' %}
+                                                    <a href="/fa-ir/login/" style="color: #E89102">{% trans 'Login' %}</a>
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    <a style="color: #E89102" onclick="forgot_pass()">{% trans 'Forgot password ?' %}</a>
+                                                {%  endifequal %}
                                             </div>
                                         {% endifequal %}
 

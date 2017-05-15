@@ -127,6 +127,7 @@
      <nav class="interpay navbar navbar-default navbar-fixed-top" role="navigation">
         <ul class="topnav1" id="myTopnav">
             <h1  style="margin-top: 0% ; margin-bottom: 3%">
+            {%  block change_lang %}
                      {% ifequal LANGUAGE_CODE 'en-gb' %}
                <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
                     <p class="lang"> Fa/Eng</p>
@@ -138,6 +139,7 @@
                         <img src="{% static 'interpay/images/ukflag.png' %}" class="flag" style="float:right; margin-top:0px;cursor: pointer">
                     </a>
                 {% endifequal %}
+            {%  endblock %}
                  <img class="rizpal1" src="{% static 'interpay/images/rizpal.png' %}"  >
                  <img class="interpay1" src="{% static 'interpay/images/logo.png' %}"  >
             </h1>
@@ -147,6 +149,14 @@
         <div class="navbar-collapse">
             <div class="menu-container">
                <ul class="nav navbar-nav">
+
+               <li class="active">
+                      {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a href="/" class="buynowbut">{% trans 'Main Page' %}</a>
+                      {% else %}
+                            <a href="/fa-ir/" class="buynowbut">{% trans 'Main Page' %}</a>
+                      {% endifequal %}
+                    </li>
                <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
                        <a href="/unregistered_pay/" class="buynowbut">{% trans 'Trusted Payment' %}</a>

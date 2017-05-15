@@ -370,3 +370,40 @@ class TestWithdrawInternationalPayment(TestCase):
                                {'selected_transaction_id': deposit.id, 'deposit_id' + str(deposit.id): deposit.id})
         rial_wallet = BankAccount.objects.get(cur_code="IRR")
         self.assertEqual(rial_wallet.balance + rial_wallet.commission, float(5850000))
+
+
+class DirectPayTestCase(TestCase):
+
+    def SenderExist(self):
+        sender_user = User.objects.create(username='z1', password='123', is_active=True)
+        sender_user_profile = UserProfile.objects.create(user=sender_user, date_of_birth=datetime.datetime.now(), is_active=True,
+                                              email='z1@gmail.com', mobile_number='09123312087' )
+        content = {'amount': '10000', 'sender_email': 'z1@gmail.com', 'sender_mobile': '09123312087',
+                   'receiver_email': 'z2@gmail.com', 'receiver_mobile': '09124313015', 'comment': 'book'}
+        c = Client()
+        data = c.post('/unregistered_charge/', content)
+        self.assertEqual(data.status_code, 200)
+
+    def ReceiverExist(self):
+        receiver_user = User.objects.create(username='z2', password='123', is_active=True)
+        receiver_user_profile = UserProfile.objects.create(user=receiver_user, date_of_birth=datetime.datetime.now(),
+                                                         is_active=True,
+                                                         email='z2@gmail.com', mobile_number='09124313015')
+        receiver_user_account = BankAccount.objects.create(owner=receiver_user_profile, method=BankAccount.DEBIT,
+                                                         cur_code='IRR', account_id=1,
+                                                         name='IRR_InterPay-account')
+        content = {'amount': '10000', 'sender_email': 'z1@gmail.com', 'sender_mobile': '09123312087',
+                   'receiver_email': 'z2@gmail.com', 'receiver_mobile': '09124313015', 'comment': 'book'}
+        c = Client()
+        data = c.post('/unregistered_charge/', content)
+        self.assertEqual(data.status_code, 302)
+
+    def NewSenderReceiver(self):
+        content = {'amount': '10000', 'sender_email': 'z1@gmail.com', 'sender_mobile': '09123312087',
+                   'receiver_email': 'z2@gmail.com', 'receiver_mobile': '09124313015', 'comment': 'book'}
+        c = Client()
+        data = c.post('/unregistered_charge/', content)
+        self.assertEqual(data.status_code, 302)
+
+
+
