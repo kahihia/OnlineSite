@@ -5,187 +5,56 @@
 @media only screen and (max-width : 320px)  {
     .base_line{
         font-size: 15px;
-        padding-top: 100%;
+        margin-top: 15%;
+        padding-top: 40%;
         text-align: center;
     }
 
     .base_line_persian{
-        font-size: 15px;
-        padding-top: 100%;
+        font-size: 17px;
+        padding-top: 40%;
         margin-top: 20%;
         text-align: center;
     }
 
     .cont_line1 {
-        font-size: 15px;
-        padding-top: 180%;
-        margin-top: 180%;
-        text-align: center;
-    }
-
-    .cont_line1_persian {
-        font-size: 15px;
-        margin-top: 270%;
-        padding-top: 270%;
-        text-align: center;
-    }
-    .cont_line2{
-        font-size: 15px;
-        padding-top: 50%;
-        margin-top: 50%;
-        text-align: center;
-    }
-
-    .cont_line2_persian{
-        font-size: 15px;
-        padding-top: 110%;
-        margin-top: 110%;
-        text-align: center;
-    }
-
-    .cont_line3 {
         font-size: 15px;
         padding-top: 30%;
         margin-top: 30%;
         text-align: center;
     }
 
-    .cont_line3_persian {
-        font-size: 15px;
-        padding-top: 60%;
-        margin-top: 60%;
-        text-align: center;
-    }
-
-    #img1 {
-        display: none;
-        max-width: 40%;
-        max-height: 600px;
-        height: auto;
-        width:auto;
-        float: left;
-        position: absolute;
-        top: 70%;
-    }
-
-    #img2 {
-        display: none;
-        max-width: 40%;
-        width:auto;
-        height: auto;
-        max-height: 600px;
-        float: left;
-        position: absolute;
-        top: 70%;
-        left: 60%;
-    }
-}
-
-@media only screen and (min-width : 330px) and ( max-width: 750px) {
-    .base_line{
-        font-size: 15px;
-        padding-top: 100%;
-        text-align: center;
-    }
-
-    .base_line_persian{
-        margin-top: 20%;
-        font-size: 15px;
-        padding-top: 100%;
-        text-align: center;
-    }
-
-    .cont_line1 {
-        font-size: 15px;
-        padding-top: 150%;
-        margin-top: 150%;
-        text-align: center;
-    }
-
     .cont_line1_persian {
         font-size: 15px;
-        padding-top: 150%;
-        margin-top: 150%;
+        margin-top: 30%;
+        padding-top: 30%;
         text-align: center;
     }
     .cont_line2{
         font-size: 15px;
-        padding-top: 40%;
-        margin-top: 40%;
+        padding-top: 10%;
+        margin-top: 10%;
         text-align: center;
     }
 
     .cont_line2_persian{
         font-size: 15px;
-        padding-top: 60%;
-        margin-top: 60%;
+        padding-top: 10%;
+        margin-top: 10%;
         text-align: center;
     }
 
     .cont_line3 {
         font-size: 15px;
-        padding-top: 25%;
-        margin-top: 25%;
+        padding-top: 10%;
+        margin-top: 10%;
         text-align: center;
     }
 
     .cont_line3_persian {
         font-size: 15px;
-        padding-top: 35%;
-        margin-top: 35%;
-        text-align: center;
-    }
-
-    #img1 {
-        display: none;
-        max-width: 40%;
-        max-height: 600px;
-        height: auto;
-        width:auto;
-        margin-left: 10%;
-        margin-top:60%;
-        padding-top: 65%;
-        float: left;
-
-    }
-
-    #img2 {
-        display: none;
-        max-width: 40%;
-        width:auto;
-        height: auto;
-        max-height: 600px;
-        margin-right: 40%;
-        margin-top: 18%;
-        float: left;
-        position: absolute;
-        top: 60%
-
-    }
-}
-
-@media only screen and (min-width : 760px) and ( max-width: 1100px) {
-    .base_line{
-        font-size: 28px;
-        padding-top: 55%;
-        text-align: center;
-    }
-
-    .cont_line1 {
-        font-size: 25px;
-        padding-top: 20%;
-        text-align: center;
-    }
-    .cont_line2{
-        font-size: 25px;
-        padding-top: 30%;
-        text-align: center;
-    }
-
-    .cont_line3 {
-        font-size: 25px;
-        padding-top: 20%;
-        margin-top: 20%;
+        padding-top: 10%;
+        margin-top: 10%;
         text-align: center;
     }
 
@@ -198,8 +67,7 @@
         float: left;
         position: absolute;
         top: 70%;
-        left:10%;
-
+        left: 10%;
     }
 
     #img2 {
@@ -212,13 +80,166 @@
         position: absolute;
         top: 70%;
         left: 50%;
+    }
+}
 
+@media only screen and (min-width : 320px) and ( max-width: 800px) {
+    .base_line{
+        font-size: 32px;
+        margin-top: 20%;
+        padding-top: 15%;
+        text-align: center;
+    }
+
+    .base_line_persian{
+        font-size: 35px;
+        margin-top: 20%;
+        padding-top: 15%;
+        text-align: center;
+    }
+
+    .cont_line1 {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .cont_line1_persian {
+        font-size: 30px;
+        text-align: center;
+    }
+    .cont_line2{
+        font-size: 28px;
+        padding-top: 5%;
+        margin-top: 5%;
+        text-align: center;
+    }
+
+    .cont_line2_persian{
+        font-size: 30px;
+        padding-top: 10%;
+        margin-top: 10%;
+        text-align: center;
+    }
+
+    .cont_line3 {
+        font-size: 28px;
+        padding-top: 5%;
+        margin-top: 5%;
+        text-align: center;
+    }
+
+    .cont_line3_persian {
+        font-size: 30px;
+        padding-top: 10%;
+        margin-top: 10%;
+        text-align: center;
+    }
+
+    #img1 {
+        display: none;
+        max-width: 40%;
+        max-height: 600px;
+        height: auto;
+        width:auto;
+        float: left;
+        position: absolute;
+        top: 60%;
+        left: 10%;
+    }
+
+    #img2 {
+        display: none;
+        max-width: 40%;
+        width:auto;
+        height: auto;
+        max-height: 600px;
+        float: left;
+        position: absolute;
+        top: 60%;
+        left: 50%;
+    }
+}
+
+@media only screen and (min-width : 800px) and ( max-width: 1100px) {
+    .base_line{
+        font-size: 32px;
+        margin-top: 25%;
+        padding-top: 25%;
+        text-align: center;
+    }
+
+    .base_line_persian{
+        font-size: 35px;
+        margin-top: 30%;
+        padding-top: 30%;
+        text-align: center;
+    }
+
+    .cont_line1 {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .cont_line1_persian {
+        font-size: 30px;
+        text-align: center;
+    }
+    .cont_line2{
+        font-size: 28px;
+        padding-top: 5%;
+        margin-top: 5%;
+        text-align: center;
+    }
+
+    .cont_line2_persian{
+        font-size: 30px;
+        padding-top: 10%;
+        margin-top: 10%;
+        text-align: center;
+    }
+
+    .cont_line3 {
+        font-size: 28px;
+        padding-top: 5%;
+        margin-top: 5%;
+        text-align: center;
+    }
+
+    .cont_line3_persian {
+        font-size: 30px;
+        padding-top: 10%;
+        margin-top: 10%;
+        text-align: center;
+    }
+
+    #img1 {
+        display: none;
+        max-width: 40%;
+        max-height: 600px;
+        height: auto;
+        width:auto;
+        float: left;
+        position: absolute;
+        top: 60%;
+        left: 10%;
+    }
+
+    #img2 {
+        display: none;
+        max-width: 40%;
+        width:auto;
+        height: auto;
+        max-height: 600px;
+        float: left;
+        position: absolute;
+        top: 60%;
+        left: 50%;
     }
 }
 
 @media only screen and ( min-width: 1100px) {
     .base_line{
-        font-size: 40px;
+        font-size: 35px;
         padding-top: 10%;
         text-align: center;
     }
