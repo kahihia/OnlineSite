@@ -395,7 +395,7 @@ def pay_user(request):
             'error': _("No user with this email.")
         }
         if email:
-            up = UserProfile.objects.filter(email=email)
+            up = UserProfile.objects.filter(user__email=email)
             if up:
                 up = up[0]
             else:
@@ -473,7 +473,7 @@ def pay_user(request):
             MoneyTransfer.objects.create(deposit=deposit, withdraw=withdraw, comment=comment)
             NotificationClass.make_notification(
                 "You have a new payment from" + src_account_owner.user.first_name + " " + src_account_owner.user.last_name + ". You have received " + amount + " " + get_currency(
-                    deposit.cur_code) + "s.", up.user,
+                    deposit.cur_code) + "s.", up,
                                                 '/wallets/' + str(destination_account.account_id))
             return render(request, "interpay/pay_user.html",
                           {'success': _("Your payment was successfully done"), 'langStr': langStr})
@@ -1244,7 +1244,7 @@ def rating_by_email(request):
     email = request.GET.get('email')
     mobile = request.GET.get('mobile')
     response_data = {}
-    userprofile = models.UserProfile.objects.get(email=email)
+    userprofile = models.UserProfile.objects.get(user__email=email)
     log.debug("Getting rating by email")
 
     review_numbers = models.Review.objects.filter(user=userprofile).count()

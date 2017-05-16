@@ -11,7 +11,7 @@ class NotificationClass():
             'New Payment',
             text,
             'info@rizpal.com',
-            [user.email],
+            [user.user.email],
             fail_silently=True,
         )
         return notification
