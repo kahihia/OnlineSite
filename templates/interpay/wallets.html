@@ -101,88 +101,100 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for account in accountList %}
-                    <tr>
-                        <td class="table-cell"><a href="{{ account.account_id }}">{{ account.account_id }}</a></td>
-                        <td class="table-cell">user</td>
-                        <td class="table-cell"></td>
-                        <td class="table-cell">{{ account.cur_code }}</td>
-                        <td class="table-cell">{{ account.balance }}</td>
-                        <td class="table-cell">{{ account.name }}</td>
-                        <td class="table-cell">
-                            <select name="currency_code{{ forloop.counter }}" id="currency_code{{ forloop.counter }}"
-                                    onchange="convert({{ account.balance }},{{ forloop.counter }},'{{ account.cur_code }}');">
-                                <option>Currency...</option>
-                                {% for curr in CURRENCIES %}
-                                   {% if  account.cur_code != curr.code %}
-                                    <option value="{{ curr.code }}">
-                                        {{ curr.symbol }} {{ curr.name }}
-                                    </option>
-                                  {% endif %}
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td class="table-cell">
-                            <div id="converted{{ forloop.counter }}"></div>
-
-                             <button  id="convertButton{{ forloop.counter }}" style="display: none" type="button" data-toggle="modal" data-target="#Modalconvert{{ forloop.counter }}">{% trans 'Convert' %}</button>
-                             <div class="modal fade" id="Modalconvert{{ forloop.counter }}" role="dialog">
-                                <div class="modal-dialog">
-                                 <div class="modal-content">
-                                   <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <div style="font-size: x-large" class="modal-title">{%  trans Convert%}</div>
-                                   </div>
-                                 <div class="modal-body">
-                                 {% ifequal LANGUAGE_CODE 'en-gb' %}
-                                    <form method="post" action="/wallets/actual_convert/" id="sampleform{{ forloop.counter }}">
-                                 {% else %}
-                                    <form method="post" action="/fa-ir/wallets/actual_convert/" id="sampleform{{ forloop.counter }}">
-                                 {% endifequal %}
-                                    {% csrf_token %}
-                                    <div style="margin-left: 0 !important;margin-right: 0 !important;">
-                                     <div style="margin-right:0px;width:300px;margin-left: 10px ">
-                                        <label>{% trans 'Amount' %} ({{ account.cur_code }}) :</label>
-                                        <input id="amount" name="amount" type="text" value="{{ account.balance }}"><br>
-                                        <label>{% trans 'To Currency' %}: </label>
-                                        <select name="currency" id="currency">
-                                         <option value="EUR" selected="selected">Default EURO</option>
-                                         {% for curr in CURRENCIES %}
-                                          {% if  account.cur_code != curr.code %}
-                                          <option value="{{ curr.code }}">
+                {% if accountList %}
+                    {% for account in accountList %}
+                        <tr>
+                            <td class="table-cell"><a href="{{ account.account_id }}">{{ account.account_id }}</a></td>
+                            <td class="table-cell">user</td>
+                            <td class="table-cell"></td>
+                            <td class="table-cell">{{ account.cur_code }}</td>
+                            <td class="table-cell">{{ account.balance }}</td>
+                            <td class="table-cell">{{ account.name }}</td>
+                            <td class="table-cell">
+                                <select name="currency_code{{ forloop.counter }}" id="currency_code{{ forloop.counter }}"
+                                        onchange="convert({{ account.balance }},{{ forloop.counter }},'{{ account.cur_code }}');">
+                                    <option>Currency...</option>
+                                    {% for curr in CURRENCIES %}
+                                       {% if  account.cur_code != curr.code %}
+                                        <option value="{{ curr.code }}">
                                             {{ curr.symbol }} {{ curr.name }}
-                                          </option>
-                                           {% endif %}
-                                         {% endfor %}
+                                        </option>
+                                      {% endif %}
+                                    {% endfor %}
                                 </select>
-                                <input type="hidden" name="account_id" value="{{ account.account_id }}">
-                                <br>
-                                <input value={% trans 'Submit' %} type="submit">
-                                </div>
-                               </div>
-                              </form>
-                           </div>
-                     <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Close'%}</button>
-                    </div>
-                </div>
-             </div>
-            </div>
-                           <!---   <form id="convertButton{{ forloop.counter }}" style="display: none" method="get" action="../wallets/{{ account.account_id }}/">
-                                <input type="hidden" name="recom" value="yes"/>
+                            </td>
+                            <td class="table-cell">
+                                <div id="converted{{ forloop.counter }}"></div>
 
-                               <button  type="submit" onclick="goto()">Convert</button>
-                            </form> -->
-                        </td>
+                                 <button  id="convertButton{{ forloop.counter }}" style="display: none" type="button" data-toggle="modal" data-target="#Modalconvert{{ forloop.counter }}">{% trans 'Convert' %}</button>
+                                 <div class="modal fade" id="Modalconvert{{ forloop.counter }}" role="dialog">
+                                    <div class="modal-dialog">
+                                     <div class="modal-content">
+                                       <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <div style="font-size: x-large" class="modal-title">{%  trans Convert%}</div>
+                                       </div>
+                                     <div class="modal-body">
+                                     {% ifequal LANGUAGE_CODE 'en-gb' %}
+                                        <form method="post" action="/wallets/actual_convert/" id="sampleform{{ forloop.counter }}">
+                                     {% else %}
+                                        <form method="post" action="/fa-ir/wallets/actual_convert/" id="sampleform{{ forloop.counter }}">
+                                     {% endifequal %}
+                                        {% csrf_token %}
+                                        <div style="margin-left: 0 !important;margin-right: 0 !important;">
+                                         <div style="margin-right:0px;width:300px;margin-left: 10px ">
+                                            <label>{% trans 'Amount' %} ({{ account.cur_code }}) :</label>
+                                            <input id="amount" name="amount" type="text" value="{{ account.balance }}"><br>
+                                            <label>{% trans 'To Currency' %}: </label>
+                                            <select name="currency" id="currency">
+                                             <option value="EUR" selected="selected">Default EURO</option>
+                                             {% for curr in CURRENCIES %}
+                                              {% if  account.cur_code != curr.code %}
+                                              <option value="{{ curr.code }}">
+                                                {{ curr.symbol }} {{ curr.name }}
+                                              </option>
+                                               {% endif %}
+                                             {% endfor %}
+                                    </select>
+                                    <input type="hidden" name="account_id" value="{{ account.account_id }}">
+                                    <br>
+                                    <input value={% trans 'Submit' %} type="submit">
+                                    </div>
+                                   </div>
+                                  </form>
+                               </div>
+                         <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Close'%}</button>
+                        </div>
+                    </div>
+                 </div>
+                </div>
+                               <!---   <form id="convertButton{{ forloop.counter }}" style="display: none" method="get" action="../wallets/{{ account.account_id }}/">
+                                    <input type="hidden" name="recom" value="yes"/>
+
+                                   <button  type="submit" onclick="goto()">Convert</button>
+                                </form> -->
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                       <td style="width:500px"> {% trans 'You do not have any wallets.' %} </td>
                     </tr>
-                {% endfor %}
+                {% endif %}
 
                 </tbody>
             </table>
 </div>
 
-   <div id="wal-tab-footer" class="row" style=" height:20%; margin-left: 0 !important;margin-right: 0 !important;">
-                <h5 style="padding-left: 20px" class="col-sm-8">{% trans 'Showing' %} {{ 1 }} {% trans 'to' %} {{ accountList.count }} {% trans 'of entries' %}</h5>
+   <div id="wal-tab-footer" class="row" style=" height:10%; margin-left: 0 !important;margin-right: 0 !important;">
+
+                <h5 style="padding-left: 20px" class="col-sm-7">
+                    {% if accountList.count %}
+                        {% trans 'Showing' %} {{ 1 }} {% trans 'to' %} {{ accountList.count }} {% trans 'of entries' %}
+                    {% endif %}
+                </h5>
+
                 <h5 style="padding-left: 20px;font-style: italic" class="col-sm-4">
                     <b>{% trans 'My total stock in' %} {% trans 'USD' %} ~ {{ accountList.first.total_value }}</b></h5>
 

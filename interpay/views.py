@@ -894,13 +894,6 @@ def bank_accounts(request):
     bank_account_form = CreateBankAccountForm()
     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW) \
         .order_by('name')
-    # irr_accounts = BankAccount.objects.filter(owner=user_profile, cur_code="IRR", method=BankAccount.DEBIT)
-    #
-    # if irr_accounts:
-    #     irr_wallet = irr_accounts[0]
-    # else:
-    #     irr_wallet = ""
-    print (irr_wallet.account_id, " ", irr_wallet.balance)
     return render(request, "interpay/bank_accounts.html", {
         'bank_accounts_set': bank_accounts_set,
         'form': bank_account_form,
@@ -935,7 +928,7 @@ class HomeView(TemplateView):
 
 
 @login_required()
-@cache_page(60)
+# @cache_page(60)
 @vary_on_headers('User-Agent', 'Cookie')
 def wallets(request):
     print ("entered wallet")
