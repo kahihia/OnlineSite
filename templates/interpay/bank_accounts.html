@@ -176,40 +176,41 @@
                             <th class="table-header-cell">
                                 {% trans 'Message' %}
                             </th>
-                            {#                            <th class="table-header-cell">#}
-                            {#                                {% trans 'Withdraw To Account' %}#}
-                            {#                            </th>#}
-                            {#                        <th class="table-header-cell">#}
-                            {#                            {% trans 'Total Inventory' %}#}
-                            {#                        </th>#}
                         </tr>
                         </thead>
                         <tbody>
-                        {% for b in bank_accounts_set %}
+                        {% if bank_accounts_set %}
+                            {% for b in bank_accounts_set %}
+                                <tr>
+                                    <td class="table-cell">{{ forloop.counter }}</td>
+                                    <td class="table-cell">{{ b.name }}</td>
+                                    <td class="table-cell">{{ b.owner.user.username }}</td>
+                                    <td class="table-cell">{{ b.account_id }}</td>
+                                    <td class="table-cell">{{ b.cur_code }}</td>
+                                    <td class="table-cell"><input type="hidden" name="account_id"
+                                                                  value="{{ b.account_id }}"><input type="button"
+                                                                                                    id="withdraw{{ b.account_id }}"
+                                                                                                    onclick="fill_modal({{ b.account_id }})"
+                                                                                                    value="Withdraw"
+                                                                                                    data-toggle="modal"
+                                                                                                    data-target="#myModal">
+                                    </td>
+                                    <td class="table-cell"
+                                        style="{% if error and b.account_id == account_id %}color:red;{% else %}color:green;{% endif %}font-weight: bold">
+                                        {% if success_message and b.account_id == account_id %}
+                                            {{ success_message }}
+                                        {% elif error and b.account_id == account_id%}
+                                            {{ error }}
+                                        {% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
                             <tr>
-                                <td class="table-cell">{{ forloop.counter }}</td>
-                                <td class="table-cell">{{ b.name }}</td>
-                                <td class="table-cell">{{ b.owner.user.username }}</td>
-                                <td class="table-cell">{{ b.account_id }}</td>
-                                <td class="table-cell">{{ b.cur_code }}</td>
-                                <td class="table-cell"><input type="hidden" name="account_id"
-                                                              value="{{ b.account_id }}"><input type="button"
-                                                                                                id="withdraw{{ b.account_id }}"
-                                                                                                onclick="fill_modal({{ b.account_id }})"
-                                                                                                value="Withdraw"
-                                                                                                data-toggle="modal"
-                                                                                                data-target="#myModal">
+                                <td style="width:500px">
+                                    {% trans 'You do not have any bank accounts.' %}
                                 </td>
-                                <td class="table-cell"
-                                    style="{% if error and b.account_id == account_id %}color:red;{% else %}color:green;{% endif %}font-weight: bold">
-                                    {% if success_message and b.account_id == account_id %}
-                                        {{ success_message }}
-                                    {% elif error and b.account_id == account_id%}
-                                        {{ error }}
-                                    {% endif %}</td>
                             </tr>
-                        {% endfor %}
-
+                        {% endif %}
                         </tbody>
                     </table>
                     </div>
@@ -261,19 +262,8 @@
 
                     </div>
 
-
                 </form>
-                <div id="tab-footer" class="row" style="margin-left: 0 !important;margin-right: 0 !important;">
-                    {#                    <h5 style="padding-left: 20px" class="col-sm-8">Showing {{ m }} to {{ x }} of {{ y }}entries</h5>#}
-                </div>
 
-            <!---this button should be activated in future --->
-            {#            <div id="create_acc" style="margin-top: 40px;text-align: center" class="">#}
-            {#                <button class="btn btn-info" onclick="create_bank_acc()"><i class="fa fa-plus"#}
-            {#                                                                            aria-hidden="true"></i>#}
-            {#                    {% trans 'Create new account' %}#}
-            {#                </button>#}
-            {#            </div>#}
         </div>
     </div>
 {% endblock %}
