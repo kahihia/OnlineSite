@@ -152,16 +152,16 @@
 
                <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
-                       <a href="/unregistered_pay/" class="buynowbut" id="trusted_payment_english">{% trans 'Trusted Payment' %}</a>
+                       <a href="/unregistered_pay/" class="buynowbut" id="trusted_payment_english" style="color: #9acfea">{% trans 'Direct Payment' %}</a>
                       {% else %}
-                       <a href="/fa-ir/unregistered_pay/" class="buynowbut" id="trusted_payment_persian">{% trans 'Trusted Payment' %}</a>
+                       <a href="/fa-ir/unregistered_pay/" class="buynowbut" id="trusted_payment_persian" style="color: #9acfea">{% trans 'Direct Payment' %}</a>
                       {% endifequal %}
                     </li>
                     <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
-                       <a href="/login/" class="buynowbut" id="login_english">{% trans 'LOGIN' %}</a>
+                       <a href="/login/" class="buynowbut" id="login_english" style="color: #eebd14">{% trans 'LOGIN' %}</a>
                       {% else %}
-                       <a href="/fa-ir/login/" class="buynowbut" id="login_persian">{% trans 'LOGIN' %}</a>
+                       <a href="/fa-ir/login/" class="buynowbut" id="login_persian" style="color: #eebd14">{% trans 'LOGIN' %}</a>
                       {% endifequal %}
                     </li>
 

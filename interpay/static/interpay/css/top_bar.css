@@ -2,148 +2,149 @@
     box-sizing: border-box;
 }
 
-@media only screen and (max-width : 420px)  {
+@media only screen and (min-width : 250px) and (max-width: 400px)  {
 
     #trusted_payment_persian{
         font-size: 15px;
         position: absolute;
-        padding-left: 80%;
+        padding-left: 40%;
     }
+
     #login_persian {
         font-size: 15px;
-        padding-left: 55%;
+        padding-left: 20%;
     }
 
     #main_page_persian {
         font-size: 15px;
         position: absolute;
-        padding-left: 80%;
+        padding-left: 68%;
     }
 
     #services_persian {
         font-size: 15px;
         position: absolute;
-        padding-left: 60%;
-        padding-top:5%;
+        padding-left: 48%;
+        padding-top:4%;
     }
 
     #contact_us_persian {
         font-size: 15px;
         position: absolute;
-        padding-left: 35%;
-        padding-top:5%;
+        padding-left: 20%;
+        padding-top:4%;
     }
 
     #about_us_persian {
         font-size: 15px;
-        padding-left: 15%;
         padding-top:2%;
     }
 
     #trusted_payment_english{
-        font-size: 12px;
+        font-size: 10px;
         position: absolute;
-        padding-left: 60%;
+        padding-left: 50%;
     }
     #login_english {
-        font-size: 12px;
-        padding-left: 40%;
+        font-size: 10px;
+        padding-left: 30%;
     }
 
     #main_page_english {
-        font-size: 12px;
+        font-size: 10px;
         position: absolute;
         padding-left: 75%;
     }
 
     #services_english {
-        font-size: 12px;
+        font-size: 10px;
         position: absolute;
         padding-left: 50%;
-        padding-top:5%;
+        padding-top:4%;
     }
 
     #contact_us_english {
-        font-size: 12px;
+        font-size: 10px;
         position: absolute;
         padding-left: 25%;
-        padding-top:5%;
+        padding-top:4%;
     }
 
     #about_us_english {
-        font-size: 12px;
+        font-size: 10px;
         padding-top:2%;
     }
 }
 
-@media only screen and (min-width : 420px) and ( max-width: 800px) {
+@media only screen and (min-width : 400px) and (max-width: 1000px)  {
+
     #trusted_payment_persian{
-        font-size: 18px;
+        font-size: 15px;
         position: absolute;
-        padding-left: 90%;
+        padding-left: 73%;
     }
     #login_persian {
-        font-size: 18px;
-        padding-left: 80%;
+        font-size: 15px;
+        padding-left: 65%;
         position: absolute;
     }
 
     #main_page_persian {
-        font-size: 18px;
+        font-size: 15px;
         position: absolute;
-        padding-left: 65%;
+        padding-left: 45%;
     }
 
     #services_persian {
-        font-size: 18px;
+        font-size: 15px;
         position: absolute;
-        padding-left: 55%;
+        padding-left: 33%;
     }
 
     #contact_us_persian {
-        font-size: 18px;
+        font-size: 15px;
         position: absolute;
-        padding-left: 40%;
+        padding-left: 17%;
     }
 
     #about_us_persian {
-        font-size: 18px;
-        padding-left:28%;
-        padding-top: 0.5%;
+        font-size: 15px;
+        padding-left: 4%;
+        padding-top: 0.4%;
     }
 
     #trusted_payment_english{
-        font-size: 15px;
+        font-size: 10px;
         position: absolute;
-        padding-left:80%;
+        padding-left:75%;
     }
     #login_english {
-        font-size: 15px;
-        padding-left: 70%;
+        font-size: 10px;
+        padding-left: 65%;
         position: absolute;
     }
 
     #main_page_english {
-        font-size: 15px;
+        font-size: 10px;
         position: absolute;
-        padding-left: 55%;
+        padding-left: 48%;
     }
 
     #services_english {
-        font-size: 15px;
+        font-size: 10px;
         position: absolute;
-        padding-left: 40%;
+        padding-left: 32%;
     }
 
     #contact_us_english {
-        font-size: 15px;
+        font-size: 10px;
         position: absolute;
-        padding-left: 25%;
+        padding-left: 17%;
     }
 
     #about_us_english {
-        font-size: 15px;
-        padding-top:0.5%;
-        padding-left: 8%;
+        font-size: 10px;
+        padding-top:0.1%;
+        padding-left: 2%;
     }
 }

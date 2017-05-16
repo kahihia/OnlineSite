@@ -4,9 +4,8 @@
 @media only screen and (max-width : 320px)  {
 
     .line1_contact_persian{
-        font-size: 15px;
-        padding-top: 100%;
-        margin-top: 100%;
+        font-size: 20px;
+        text-align: center;
     }
 
     .line2_contact_persian{
@@ -15,7 +14,10 @@
         margin-top: 100%;
     }
 
-    .line1_contact_english {
+    .line3_contact_persian{
+        font-size: 15px;
+        padding-top: 20%;
+
 
     }
 }

@@ -231,7 +231,7 @@ h1, h2, h3, h4, h5, h6 {
 .interpay.top-nav-collapse .dropdown-menu > .active > a:focus {
   z-index: 1;
   background: none;
-  color: #eebd14 !important;
+  /*color: #eebd14 !important;*/
 }
 
 

@@ -4,13 +4,17 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <head>
         <title>
             {%  block title %}
                 {%  trans 'Contact' %}
             {%  endblock %}
         </title>
+
+        {% block CSS %}
+            <link rel="stylesheet" href="{% static 'interpay/css/contact.css' %}">
+        {%  endblock %}
     </head>
 
     <body>
@@ -39,13 +43,19 @@
                                  data-easing="Back.easeInOut"
                                  data-endspeed="1000">
 
-                                <div class="line1_contact_persian">
-                                                         ما آماده ی پاسخگویی به سوالات شما در رابطه با سرویس ریزپرداخت در اولین فرصت هستیم
+                                <br class="line1_contact_persian">
+                                                         ما در اولین فرصت آماده ی پاسخگویی به سوالات شما
+                                <br>
+                                    در رابطه با سرویس ریزپرداخت هستیم
                                 </div>
 
+                                <div class="line2_contact_persian">
                             در صورتی که نیاز به اضافه کردن مشخصه ای در سرویس ریزپرداخت دارید، حتماً به ما اطلاع بدهید
+                                </div>
 
+                                <div class="line3_contact_persian">
                             ما تمام تلاشمان را در خصوص فراهم آوردن آن برای شما خواهیم کرد
+                                </div>
 
 
                                 <div>
