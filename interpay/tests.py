@@ -20,11 +20,11 @@ import json
 class PaymentTestCase(TestCase):
     def setUp(self):
         user_src = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
-        up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(), email='a@b.com',
+        up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(),
                                             is_active=True)
 
         user_dest = User.objects.create_user(username='arman71', password='1731', email='b@c.com', is_active=True)
-        up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(), email='b@c.com',
+        up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(),
                                              is_active=True)
         src_account = BankAccount.objects.create(account_id="123", owner=up_src, cur_code='USD',
                                                  method=BankAccount.DEBIT)
@@ -45,13 +45,9 @@ class PaymentTestCase(TestCase):
         post_response = c.post('/pay_user/',
                                {'currency': 'USD', 'amount': 100, 'email': 'b@c.com', 'comment': 'new payment',
                                 'mobile': '10'})
-        for temp in UserProfile.objects.all():
-            print (temp.email, 'hfsjdhf')
         dest = UserProfile.objects.get(user__email='b@c.com')
         self.assertEqual(post_response.status_code, 200)
         dest_account = BankAccount.objects.get(owner=dest)
-        # for temp in MoneyTransfer.objects.all():
-        #     print (temp.amount, " ", temp.comment, " ", temp.sender.id, " ", temp.receiver.id, " ", temp.date)
         self.assertEqual(dest_account.balance, 100)
 
         post_response = c.post('/pay_user/',
@@ -111,7 +107,7 @@ class WithdrawalRequestTestCase(TestCase):
         settings.DEBUG = True
         user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
         up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
-                                        email='a@b.com', mobile_number='09102118797')
+                                        mobile_number='09102118797')
         ba = BankAccount.objects.create(account_id="123", owner=up, cur_code='USD', method=BankAccount.WITHDRAW)
 
     def test_no_debit(self):
@@ -153,7 +149,7 @@ class APITestCase(TestCase):
         settings.DEBUG = True
         user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
         up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
-                                        email='a@b.com', mobile_number='09102118797')
+                                        mobile_number='09102118797')
 
     def test_cash_out(self):
         content = {'payeeEmail': 'a@b.com', 'orderAmount': '150', 'MerOrderRef': '500',
@@ -256,11 +252,11 @@ class Registration(TestCase):
 class CallbackTestCase(TestCase):
     def setUp(self):
         user_src = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
-        up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(), email='a@b.com',
+        up_src = UserProfile.objects.create(user=user_src, date_of_birth=datetime.datetime.now(),
                                             is_active=True)
 
         user_dest = User.objects.create_user(username='arman71', password='1731', email='b@c.com', is_active=True)
-        up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(), email='b@c.com',
+        up_dest = UserProfile.objects.create(user=user_dest, date_of_birth=datetime.datetime.now(),
                                              is_active=True)
         src_account = BankAccount.objects.create(account_id="123", owner=up_src, cur_code='USD',
                                                  method=BankAccount.DEBIT)
@@ -282,23 +278,23 @@ class Teststaticfiles(TestCase):
     def test_responsive(self):
         abs_path = finders.find('../static/interpay/css/logo.css')
         # print ("abspath"+abs_path)
-        #self.assertTrue(staticfiles_storage.exists(settings.BASE_DIR + '/static/interpay/css/logo.css'))
-        #test_file = open(abs_path, 'rb')
-        #self.assertIs('@media only screen and (min-width : 420px) and ( max-width: 900px)' in test_file.read(), True)
+        # self.assertTrue(staticfiles_storage.exists(settings.BASE_DIR + '/static/interpay/css/logo.css'))
+        # test_file = open(abs_path, 'rb')
+        # self.assertIs('@media only screen and (min-width : 420px) and ( max-width: 900px)' in test_file.read(), True)
 
 
 class ReviewTestCase(TestCase):
     def setUp(self):
         print ("review test started")
 
-        user1 = User.objects.create_user(username='z1', password='z1', is_active=True)
+        user1 = User.objects.create_user(username='z1', password='z1', is_active=True,email='z1@gmail.com')
         up_user1 = UserProfile.objects.create(user=user1, date_of_birth=datetime.datetime.now(), is_active=True,
-                                              email='z1@gmail.com')
+                                              )
         up_user1.save()
 
-        user2 = User.objects.create_user(username='a1', password='a1', is_active=True)
+        user2 = User.objects.create_user(username='a1', password='a1', is_active=True, email='a1@gmail.com')
         up_user2 = UserProfile.objects.create(user=user2, date_of_birth=datetime.datetime.now(), is_active=True,
-                                              email='a1@gmail.com')
+                                              )
         up_user2.save()
 
         reviewer = BankAccount.objects.create(account_id="123", owner=up_user1, cur_code='USD',
@@ -339,7 +335,7 @@ class TestWithdrawInternationalPayment(TestCase):
         settings.DEBUG = True
         user = User.objects.create_user(username='arman', password='1731', email='a@b.com', is_active=True)
         up = UserProfile.objects.create(user=user, date_of_birth=datetime.datetime.now(), is_active=True,
-                                        email='a@b.com', mobile_number='09102118797')
+                                        mobile_number='09102118797')
         content = {'payeeEmail': 'a@b.com', 'orderAmount': '150', 'MerOrderRef': '500',
                    'orderCurrencyCode': 'EUR', 'payeeMobile': '09102118797',
                    'Authorization': 'Token 013799913a41292f31a4173ba58e10a2d6f26ad1'}
@@ -373,11 +369,11 @@ class TestWithdrawInternationalPayment(TestCase):
 
 
 class DirectPayTestCase(TestCase):
-
     def SenderExist(self):
-        sender_user = User.objects.create(username='z1', password='123', is_active=True)
-        sender_user_profile = UserProfile.objects.create(user=sender_user, date_of_birth=datetime.datetime.now(), is_active=True,
-                                              email='z1@gmail.com', mobile_number='09123312087' )
+        sender_user = User.objects.create(username='z1', password='123', is_active=True, email='z1@gmail.com')
+        sender_user_profile = UserProfile.objects.create(user=sender_user, date_of_birth=datetime.datetime.now(),
+                                                         is_active=True,
+                                                         mobile_number='09123312087')
         content = {'amount': '10000', 'sender_email': 'z1@gmail.com', 'sender_mobile': '09123312087',
                    'receiver_email': 'z2@gmail.com', 'receiver_mobile': '09124313015', 'comment': 'book'}
         c = Client()
@@ -385,13 +381,13 @@ class DirectPayTestCase(TestCase):
         self.assertEqual(data.status_code, 200)
 
     def ReceiverExist(self):
-        receiver_user = User.objects.create(username='z2', password='123', is_active=True)
+        receiver_user = User.objects.create(username='z2', password='123', is_active=True,
+                                            email='z2@gmail.com')
         receiver_user_profile = UserProfile.objects.create(user=receiver_user, date_of_birth=datetime.datetime.now(),
-                                                         is_active=True,
-                                                         email='z2@gmail.com', mobile_number='09124313015')
+                                                           is_active=True, mobile_number='09124313015')
         receiver_user_account = BankAccount.objects.create(owner=receiver_user_profile, method=BankAccount.DEBIT,
-                                                         cur_code='IRR', account_id=1,
-                                                         name='IRR_InterPay-account')
+                                                           cur_code='IRR', account_id=1,
+                                                           name='IRR_InterPay-account')
         content = {'amount': '10000', 'sender_email': 'z1@gmail.com', 'sender_mobile': '09123312087',
                    'receiver_email': 'z2@gmail.com', 'receiver_mobile': '09124313015', 'comment': 'book'}
         c = Client()
@@ -404,6 +400,3 @@ class DirectPayTestCase(TestCase):
         c = Client()
         data = c.post('/unregistered_charge/', content)
         self.assertEqual(data.status_code, 302)
-
-
-
