@@ -152,48 +152,48 @@
 
                <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
-                       <a href="/unregistered_pay/" class="buynowbut">{% trans 'Trusted Payment' %}</a>
+                       <a href="/unregistered_pay/" class="buynowbut" id="trusted_payment_english">{% trans 'Trusted Payment' %}</a>
                       {% else %}
-                       <a href="/fa-ir/unregistered_pay/" class="buynowbut">{% trans 'Trusted Payment' %}</a>
+                       <a href="/fa-ir/unregistered_pay/" class="buynowbut" id="trusted_payment_persian">{% trans 'Trusted Payment' %}</a>
                       {% endifequal %}
                     </li>
                     <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
-                       <a href="/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+                       <a href="/login/" class="buynowbut" id="login_english">{% trans 'LOGIN' %}</a>
                       {% else %}
-                       <a href="/fa-ir/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+                       <a href="/fa-ir/login/" class="buynowbut" id="login_persian">{% trans 'LOGIN' %}</a>
                       {% endifequal %}
                     </li>
 
                     <li class="page-scroll home">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/" class="buynowbut">{% trans 'Main Page' %}</a>
+                            <a href="/" class="buynowbut" id="main_page_english">{% trans 'Main Page' %}</a>
                       {% else %}
-                            <a href="/fa-ir/" class="buynowbut">{% trans 'Main Page' %}</a>
+                            <a href="/fa-ir/" class="buynowbut"id="main_page_persian">{% trans 'Main Page' %}</a>
                       {% endifequal %}
                     </li>
 
                     <li class="page-scroll home">
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/services/">{% trans 'SERVICES' %}</a>
+                            <a href="/services/" id="services_english">{% trans 'SERVICES' %}</a>
                         {% else %}
-                            <a href="/fa-ir/services/">{% trans 'SERVICES' %}</a>
+                            <a href="/fa-ir/services/" id="services_persian">{% trans 'SERVICES' %}</a>
                         {% endifequal %}
                     </li>
 
                     <li class="nav navbar-nav">
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/contact/"> {% trans 'CONTACT' %}</a>
+                            <a href="/contact/" id="contact_us_english"> {% trans 'CONTACT' %}</a>
                             {% else %}
-                                <a href="/fa-ir/contact/"> {% trans 'CONTACT' %}</a>
+                                <a href="/fa-ir/contact/" id="contact_us_persian"> {% trans 'CONTACT' %}</a>
                         {% endifequal %}
 
                     </li>
                     <li class="nav navbar-nav">
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/about/">{% trans 'ABOUT US' %}</a>
+                            <a href="/about/" id="about_us_english">{% trans 'ABOUT US' %}</a>
                         {% else %}
-                            <a href="/fa-ir/about/">{% trans 'ABOUT US' %}</a>
+                            <a href="/fa-ir/about/" id="about_us_persian">{% trans 'ABOUT US' %}</a>
                         {% endifequal %}
                     </li>
                 </ul>

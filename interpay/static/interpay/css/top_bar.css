@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width : 420px)  {
+
+    #trusted_payment_persian{
+        font-size: 15px;
+        position: absolute;
+        padding-left: 80%;
+    }
+    #login_persian {
+        font-size: 15px;
+        padding-left: 55%;
+    }
+
+    #main_page_persian {
+        font-size: 15px;
+        position: absolute;
+        padding-left: 80%;
+    }
+
+    #services_persian {
+        font-size: 15px;
+        position: absolute;
+        padding-left: 60%;
+        padding-top:5%;
+    }
+
+    #contact_us_persian {
+        font-size: 15px;
+        position: absolute;
+        padding-left: 35%;
+        padding-top:5%;
+    }
+
+    #about_us_persian {
+        font-size: 15px;
+        padding-left: 15%;
+        padding-top:2%;
+    }
+
+    #trusted_payment_english{
+        font-size: 12px;
+        position: absolute;
+        padding-left: 60%;
+    }
+    #login_english {
+        font-size: 12px;
+        padding-left: 40%;
+    }
+
+    #main_page_english {
+        font-size: 12px;
+        position: absolute;
+        padding-left: 75%;
+    }
+
+    #services_english {
+        font-size: 12px;
+        position: absolute;
+        padding-left: 50%;
+        padding-top:5%;
+    }
+
+    #contact_us_english {
+        font-size: 12px;
+        position: absolute;
+        padding-left: 25%;
+        padding-top:5%;
+    }
+
+    #about_us_english {
+        font-size: 12px;
+        padding-top:2%;
+    }
+}
+
+@media only screen and (min-width : 420px) and ( max-width: 800px) {
+    #trusted_payment_persian{
+        font-size: 18px;
+        position: absolute;
+        padding-left: 90%;
+    }
+    #login_persian {
+        font-size: 18px;
+        padding-left: 80%;
+        position: absolute;
+    }
+
+    #main_page_persian {
+        font-size: 18px;
+        position: absolute;
+        padding-left: 65%;
+    }
+
+    #services_persian {
+        font-size: 18px;
+        position: absolute;
+        padding-left: 55%;
+    }
+
+    #contact_us_persian {
+        font-size: 18px;
+        position: absolute;
+        padding-left: 40%;
+    }
+
+    #about_us_persian {
+        font-size: 18px;
+        padding-left:28%;
+        padding-top: 0.5%;
+    }
+
+    #trusted_payment_english{
+        font-size: 15px;
+        position: absolute;
+        padding-left:80%;
+    }
+    #login_english {
+        font-size: 15px;
+        padding-left: 70%;
+        position: absolute;
+    }
+
+    #main_page_english {
+        font-size: 15px;
+        position: absolute;
+        padding-left: 55%;
+    }
+
+    #services_english {
+        font-size: 15px;
+        position: absolute;
+        padding-left: 40%;
+    }
+
+    #contact_us_english {
+        font-size: 15px;
+        position: absolute;
+        padding-left: 25%;
+    }
+
+    #about_us_english {
+        font-size: 15px;
+        padding-top:0.5%;
+        padding-left: 8%;
+    }
+}
