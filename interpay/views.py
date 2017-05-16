@@ -728,8 +728,8 @@ def recharge_account(request, **message):
                 cur_date =timezone.localtime(transaction.date)
                 jalali_date_obj = GregorianToJalali(cur_date.year, cur_date.month, cur_date.day)
                 year, month, day = jalali_date_obj.getJalaliList()
-                transaction.date = str(year) + "-" + str(month) + "-" + str(day) + ", " + str(
-                    cur_date.hour) + ":" + str(cur_date.minute) + ":" + str(cur_date.second)
+                transaction.date = str(cur_date.second) + ":" + str(cur_date.minute) + ":" + str(
+                    cur_date.hour) + " , " + str(year) + "/" + str(month) + "/" + str(day)
 
 
     except Exception as e:
@@ -974,7 +974,7 @@ def wallet(request, wallet_id, recom=None):
             cur_date = timezone.localtime(transaction.date)
             jalali_date_obj = GregorianToJalali(cur_date.year, cur_date.month, cur_date.day)
             year, month, day = jalali_date_obj.getJalaliList()
-            transaction.date = str(year) + "-" + str(month) + "-" + str(day)+", " + str(cur_date.hour) + ":" + str(cur_date.minute) + ":" + str(cur_date.second)
+            transaction.date = str(cur_date.second) + ":" + str(cur_date.minute) + ":" + str(cur_date.hour)+ " , " + str(year) + "/" + str(month) + "/" + str(day)
         context = {
             'account': ba,
             'recommended': recommended,
