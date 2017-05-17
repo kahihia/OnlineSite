@@ -26,3 +26,4 @@ django-simple-captcha==0.5.3
 djangorestframework==3.5.3
 BeautifulSoup==3.2.1
 jdatetime
+stripe

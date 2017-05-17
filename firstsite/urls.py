@@ -28,6 +28,7 @@ handler400 = 'interpay.views.handler400'
 urlpatterns = [
     url('^admin/', admin.site.urls),
     url('^manager/', include('manager.urls')),
+    url('^payvisa/', include('internationalcredit.urls')),
     url(r'^currencies/', include('currencies.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'session_security/', include('session_security.urls')),

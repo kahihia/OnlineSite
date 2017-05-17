@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script type="text/javascript">
+    $(function() {
+        $('.donate-button').click(function(event) {
+            var amount = $('#custom-donation-amount').val();
+            $('.stripe-button').attr('data-amount', amount * 100)
+        });
+    });
+</script>
+
+<form action="callback/" method="POST">
+    {% csrf_token %}
+  <script
+    src="https://checkout.stripe.com/checkout.js"
+    class="stripe-button" data-image="images/button.png"
+    data-key={{ stripekey }}
+    data-label="LABEL"
+    data-description="Pay User By Their Mobile Number"
+    data-image="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+    data-name="BUSINESS NAME"
+    data-description="DESCRIPTION"
+    data-locale="auto"
+    data-billing-address="true"
+    data-amount="0">
+  </script>
+  <input type="number" id="custom-donation-amount" name="amount" placeholder="$50.00" min="0" step="10.00 " />
+  <input type="number" id="dest-mobile" name="dest_mobile_no" placeholder="98912xxxxxxx" />
+
+</form>
+{##}
+{#<form action="callback/" method="POST">#}
+{##}
+{#<script#}
+{#  src="https://checkout.stripe.com/checkout.js" class="stripe-button"#}
+{#  data-key="pk_test_SxshFBoT92eoC9Dfu3059jkD"#}
+{#  data-amount="2000"#}
+{#  data-name="technoorconsulting.co.uk"#}
+{#  data-description="2 widgets"#}
+{#  data-image="https://stripe.com/img/documentation/checkout/marketplace.png"#}
+{#  data-locale="auto"#}
+{#  data-zip-code="true"#}
+{#  data-currency="gbp">#}
+{#</script>#}
+{#</form>#}
+{{ emessage }}
+</body>
+</html>
