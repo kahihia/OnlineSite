@@ -76,7 +76,14 @@
     box-sizing: border-box;
    -moz-box-sizing: border-box;
 }
+.fixedInfo{
 
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    right: 0;
+    transition: 0.5s;
+}
  .fixedmenue {
     height: 100%;
     width: 0;
@@ -86,6 +93,13 @@
     left: 0;
     transition: 0.5s;
  }
+ .fixedInfoFarsi{
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    transition: 0.5s;
+}
   .fixedmenueFarsi {
     top: 0;
     right:0;
