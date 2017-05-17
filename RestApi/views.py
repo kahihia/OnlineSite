@@ -106,8 +106,8 @@ def cash_out_order(request):
         response['merOrderRef'] = merchant_order_reference
         response['statusCode'] = check_validation(1)
         response['statusMessage'] = get_status_message(1)
-        if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(mobile_number=payee_mobile):
-            user = UserProfile.objects.get(email=payee_email)
+        if UserProfile.objects.filter(user__email=payee_email) or UserProfile.objects.filter(mobile_number=payee_mobile):
+            user = UserProfile.objects.get(user__email=payee_email)
             if not user:
                 user = UserProfile.objects.get(mobile_number=payee_mobile)
                 response['statusCode'] = check_validation(2)
@@ -133,14 +133,14 @@ def cash_out_order(request):
                     response['status'] = "pending"
                     return JSONResponse(response)
                 else:
-                    if UserProfile.objects.filter(email=payee_email) or UserProfile.objects.filter(
+                    if UserProfile.objects.filter(user__email=payee_email) or UserProfile.objects.filter(
                             mobile_number=payee_mobile):
                         response['statusCode'] = check_validation(2)
                         response['statusMessage'] = get_status_message(2)
                         return JSONResponse(response)
         else:
             user = User.objects.create(username=payee_email, email=payee_email, password="123")
-            up = UserProfile.objects.create(user=user, password='123', national_code='1111111111', email=payee_email,
+            up = UserProfile.objects.create(user=user, national_code='1111111111',
                                             is_active=False, date_of_birth=datetime.datetime.now(),
                                             mobile_number=payee_mobile)
             account = BankAccount(owner=up, method=BankAccount.DEBIT, cur_code=currency, account_id=make_id())

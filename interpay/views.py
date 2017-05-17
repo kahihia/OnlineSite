@@ -182,12 +182,13 @@ def register(request):
         if user_form.is_valid() and registration_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
+            user.email = user_form.cleaned_data['email']
             user.save()
 
             user_profile = registration_form.save(commit=False)
-            user_profile.email = user_form.cleaned_data['email']
+            # user_profile.email = user_form.cleaned_data['email']
             # user_profile.date_of_birth = user_profile.cleaned_data['date_of_birth']
-            user_profile.password = user.password
+            # user_profile.user.password = user.password
             user_profile.user = user
             if 'picture' in request.FILES:
                 user_profile.picture = request.FILES['picture']
@@ -394,7 +395,7 @@ def pay_user(request):
             'error': _("No user with this email.")
         }
         if email:
-            up = UserProfile.objects.filter(email=email)
+            up = UserProfile.objects.filter(user__email=email)
             if up:
                 up = up[0]
             else:
@@ -707,7 +708,7 @@ def recharge_account(request, **message):
                     "date": str(datetime.datetime.utcnow()), "cur_code": cur}
 
             log.debug("new BankAccount object created and saved")
-            zarinpal = zarinpal_payment_gate(request, amnt, user_profile.email, user_profile.mobile_number,
+            zarinpal = zarinpal_payment_gate(request, amnt, user_profile.user.email, user_profile.mobile_number,
                                              'callback_handler')
             new_connection.set(zarinpal['Authority'], data)  # TODO: set proper TTL
             print data, "cached in redis"
@@ -727,8 +728,8 @@ def recharge_account(request, **message):
                 cur_date =timezone.localtime(transaction.date)
                 jalali_date_obj = GregorianToJalali(cur_date.year, cur_date.month, cur_date.day)
                 year, month, day = jalali_date_obj.getJalaliList()
-                transaction.date = str(year) + "-" + str(month) + "-" + str(day) + ", " + str(
-                    cur_date.hour) + ":" + str(cur_date.minute) + ":" + str(cur_date.second)
+                transaction.date = str(cur_date.second) + ":" + str(cur_date.minute) + ":" + str(
+                    cur_date.hour) + " , " + str(year) + "/" + str(month) + "/" + str(day)
 
 
     except Exception as e:
@@ -893,13 +894,6 @@ def bank_accounts(request):
     bank_account_form = CreateBankAccountForm()
     bank_accounts_set = models.BankAccount.objects.filter(owner=user_profile, method=BankAccount.WITHDRAW) \
         .order_by('name')
-    # irr_accounts = BankAccount.objects.filter(owner=user_profile, cur_code="IRR", method=BankAccount.DEBIT)
-    #
-    # if irr_accounts:
-    #     irr_wallet = irr_accounts[0]
-    # else:
-    #     irr_wallet = ""
-    print (irr_wallet.account_id, " ", irr_wallet.balance)
     return render(request, "interpay/bank_accounts.html", {
         'bank_accounts_set': bank_accounts_set,
         'form': bank_account_form,
@@ -934,7 +928,7 @@ class HomeView(TemplateView):
 
 
 @login_required()
-@cache_page(60)
+# @cache_page(60)
 @vary_on_headers('User-Agent', 'Cookie')
 def wallets(request):
     print ("entered wallet")
@@ -973,7 +967,7 @@ def wallet(request, wallet_id, recom=None):
             cur_date = timezone.localtime(transaction.date)
             jalali_date_obj = GregorianToJalali(cur_date.year, cur_date.month, cur_date.day)
             year, month, day = jalali_date_obj.getJalaliList()
-            transaction.date = str(year) + "-" + str(month) + "-" + str(day)+", " + str(cur_date.hour) + ":" + str(cur_date.minute) + ":" + str(cur_date.second)
+            transaction.date = str(cur_date.second) + ":" + str(cur_date.minute) + ":" + str(cur_date.hour)+ " , " + str(year) + "/" + str(month) + "/" + str(day)
         context = {
             'account': ba,
             'recommended': recommended,
@@ -1243,7 +1237,7 @@ def rating_by_email(request):
     email = request.GET.get('email')
     mobile = request.GET.get('mobile')
     response_data = {}
-    userprofile = models.UserProfile.objects.get(email=email)
+    userprofile = models.UserProfile.objects.get(user__email=email)
     log.debug("Getting rating by email")
 
     review_numbers = models.Review.objects.filter(user=userprofile).count()
@@ -1487,108 +1481,3 @@ def callback_handler_withdraw(request, amount):
         res = _("Transaction failed or canceled by user")
         return unregistered_pay(request, message=_("Transaction failed or canceled by you."), link="0")
 
-
-
-    # return render(request, "interpay/review_comments.html")
-
-        # if request.POST['action'] == 'change_national_photo':
-        # form_edit = RegistrationForm_edit(request.POST, request.FILES)
-        # print form_edit
-        # if form_edit.is_valid():
-        # newphoto = form_edit.save(commit=False)
-        # print newphoto
-        # print request.FILES
-        # newphoto.national_card_photo = request.FILES['national_card_photo']
-        # newphoto.save()
-        # print newphoto.national_card_photo
-        # html = '<strong>Your National photo has changed successfully</strong><hr>'
-        # result = {'html': html}
-        # return HttpResponse(json.dumps(result))
-        # if request.POST['action'] == 'change_national_photo':
-        # form_edit = RegistrationForm_edit(request.POST, request.FILES)
-        # print form_edit
-        # if form_edit.is_valid():
-        # newphoto = form_edit.save(commit=False)
-        # print newphoto
-        # print request.FILES
-        # newphoto.national_card_photo = request.FILES['national_card_photo']
-        # newphoto.save()
-        # print newphoto.national_card_photo
-        # html = '<strong>Your National photo has changed successfully</strong><hr>'
-        # result = {'html': html}
-        # return HttpResponse(json.dumps(result))
-
-
-
-        # entered_naional_photo = request.POST.get('national_photo')
-        # full_filename = os.path.join(settings.MEDIA_ROOT+"nationalCardScan/",entered_naional_photo)
-        # registration_form_edit = RegistrationForm_edit(data=request.POST)
-
-
-        # uploaded_filename = request.FILES[' national_photo'].name
-        # print(uploaded_filename)
-        # save the uploaded file inside that folder.
-        # full_filename = os.path.join(settings.MEDIA_ROOT, folder, national_photo)
-        # print(full_filename)
-
-
-        # fout = open(full_filename, 'wb+')
-        # file_content = ContentFile(request.FILES['national_photo'].read())
-        # newdoc = handle_uploaded_file(request.FILES['national_photo'],full_filename)
-        # print newdoc
-        # print "you in"
-        # newdoc.save()
-
-        # Iterate through the chunks.
-        # for chunk in file_content.chunks():
-        #   fout.write(chunk)
-        # fout.close()
-        # user_profile = models.UserProfile.objects.get(user__username=request.user)
-        # user_profile.national_card_photo = full_filename
-        # user_profile.save()
-
-
-
-
-
-
-
-        # class RegistrationView(CreateView):
-        #     template_name = '../templates/registeration_form.html'
-        #     user_form = UserForm
-        #     registration_form = RegistrationForm
-        #     model = UserProfile
-        #     registered = False
-        #
-        #     def post(self, request, *args, **kwargs):
-        #         print("post called")
-        #         user_form = UserForm(data=request.POST)
-        #         registration_form = RegistrationForm(data=request.POST)
-        #         return self.my_form_valid(user_form)
-        #
-        #     def my_form_valid(self, user_form, request):
-        #         print("is valid called")
-        #         user = user_form.save()
-        #         user.set_password(user.password)
-        #         user.save()
-        #
-        #         user_profile = self.registration_form.save(commit=False)
-        #         user_profile.email = user_form.cleaned_data['email']
-        #         user_profile.password = user.password
-        #
-        #         if user.is_active:
-        #             user_profile.is_active = True
-        #         user_profile.user = user
-        #
-        #         if 'picture' in request.FILES:
-        #             user_profile.picture = request.FILES['picture']
-        #         user_profile.save()
-        #         self.registered = True
-        #
-        #         new_user = authenticate(username=user_form.cleaned_data['username'],
-        #                                 password=user_form.cleaned_data['password'], )
-        #         login(request, new_user)
-        #
-        #     def get(self):
-        #         user_form = UserForm()
-        #         registration_form = RegistrationForm()

@@ -16,6 +16,10 @@
         {%  endblock %}
     </title>
 
+    {%  block CSS %}
+        <link rel="stylesheet" href="{% static 'interpay/css/info.css' %}">
+    {%  endblock %}
+
 
 </head>
 
@@ -29,29 +33,39 @@
 
                     <li data-transition="boxslide" data-slotamount="10" data-masterspeed="1000">
                         <!-- MAIN IMAGE -->
-                    <div class="first_image" style="margin-top: 12%">
-                        <img id="img1" class="img-responsive" src="{% static 'interpay/images/first_page1.png' %}">
-                        <img id="img2" class="img-responsive" src="{% static 'interpay/images/first_page2.png' %}">
-
+                    <div class="first_image">
+                        <img id="img1" class= "img-responsive"src="{% static 'interpay/images/first_page1.png' %}">
+                        <img id="img2" class= "img-responsive"  src="{% static 'interpay/images/first_page2.png' %}">
                     </div>
 
                         <div class="tp-caption rs-caption-1 sft start"
                              data-x="center"
                              data-hoffset="0"
-                             data-y="10"
                              data-speed="800"
                              data-start="1000"
                              data-easing="Back.easeInOut"
-                             data-endspeed="300" style="font-size: xx-large">
+                             data-endspeed="300"
+                        >
                             {% ifequal LANGUAGE_CODE 'fa-ir' %}
-                                                            اولین سامانه پرداخت آنلاین رسمی با حمایت بین المللی
+                                <div class="base_line_persian">
+
+                                                            اولین سامانه پرداخت آنلاین رسمی
+                                <br />
+                                    با حمایت بین المللی
+                                </div>
+
                             {% else %}
-                             FIRST OFFICIAL ONLINE PAYMENT SYSTEM WITH INTERNATIONAL SUPPORT
+                                <div class="base_line">
+                             FIRST OFFICIAL ONLINE PAYMENT SYSTEM
+                                <br />
+                                WITH INTERNATIONAL SUPPORT
+                                </div>
                             {% endifequal %}
                         </div>
 
                         <!-- LAYER -->
-                    <div class="tp-caption rs-caption-2 sft"
+
+                        <div class="tp-caption rs-caption-2 sft"
                              data-x="center"
                              data-hoffset="0"
                              data-y="150"
@@ -62,10 +76,16 @@
                              data-endeasing="Power1.easeIn"
                              data-captionhidden="off"
                              style="z-index: 6">
+
                             {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                                <div class="cont_line1_persian">
                             آسان
+                                </div>
                             {% else %}
-                             Easy
+                                <div class="cont_line1">
+                                    Easy
+                                </div>
+
                             {% endifequal %}
                         </div>
 
@@ -80,10 +100,16 @@
                              data-endeasing="Power1.easeIn"
                              data-captionhidden="off"
                              style="z-index: 6">
+
                              {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                                 <div class="cont_line2_persian">
                                  بهبود امنیت
+                                 </div>
                             {% else %}
-                            Enhances Security
+                                 <div class="cont_line2">
+                                    Enhances Security
+                                 </div>
+
                             {% endifequal %}
                         </div>
 
@@ -98,13 +124,18 @@
                              data-endeasing="Power1.easeIn"
                              data-captionhidden="off"
                              style="z-index: 6">
+
                             {% ifequal LANGUAGE_CODE 'fa-ir' %}
+                                <div class="cont_line3_persian">
                             بهبود بازده گردش کار
+                                </div>
+
                             {% else %}
-                            Improved Workflow Efficiencies
+                                <div class="cont_line3">
+                                Improved Workflow Efficiencies
+                                </div>
                             {% endifequal %}
                         </div>
-
 
 
                     </li>

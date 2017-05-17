@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{% static 'interpay/css/logo.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
 
     {% block CSS %}
            <link rel="stylesheet" type="text/css" href="{% static 'interpay/css/w3.css' %}">
@@ -214,7 +215,7 @@
 <div class="container-fluid" style="padding-left: 0;!important; padding-right: 0;!important;">
     <header>
         <ul class="topnav1">
-            <h1  style="margin-top: 0% ; margin-bottom: 2%">
+            <h1  style="margin-top: 1px ; margin-bottom: 3%">
               {% block flag %}
                 {% ifequal LANGUAGE_CODE 'en-gb' %}
                     <a id="to-fa-link" href='/fa-ir{{ request.path }}'>
@@ -228,8 +229,8 @@
                     </a>
                 {% endifequal %}
              {% endblock %}
-                <img  class="rizpal1"   src="{% static 'interpay/images/rizpal.png' %}">
-                <img  class="interpay1" src="{% static 'interpay/images/logo.png' %}">
+                <img  class=" w3-hide-large" style="margin-left: 10px ; margin-bottom: 10px ; margin-top: 1px; " src="{% static 'interpay/images/rizpalfinal.png' %}"  >
+                <img  class=" w3-hide-medium w3-hide-small" style="margin-left: 10px ; margin-bottom: 10px ; margin-top: 2px; " src="{% static 'interpay/images/rizpalfinalL.png' %}"  >
             </h1>
         </ul>
     </header>
