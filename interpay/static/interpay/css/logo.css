@@ -358,7 +358,7 @@
 
 @media only screen and ( max-width: 420px){
 ul.topnav1{
-    height: 40px;
+    height: 45px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -367,7 +367,7 @@ ul.topnav1{
 }
 }
 
-@media only screen and (min-width : 420px) and ( max-width: 900px) {
+@media only screen and (min-width : 420px) and ( max-width: 992px) {
 ul.topnav1{
     height: 45px;
     list-style-type: none;
@@ -378,9 +378,9 @@ ul.topnav1{
 }
 }
 
-@media only screen and (min-width: 900px)  and ( max-width: 1400px) {
+@media only screen and (min-width: 992px)  and ( max-width: 1400px) {
 ul.topnav1{
-     height: 50px;
+     height: 60px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -393,7 +393,7 @@ ul.topnav1{
 
 @media only screen and (min-width : 1400px)  and ( max-width: 1700px) {
 ul.topnav1{
-    height: 50px;
+    height: 60px;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -404,7 +404,7 @@ ul.topnav1{
 
 @media only screen and (min-width : 1700px){
 ul.topnav1{
-    height: 50px;
+    height: 60px;
     list-style-type: none;
     margin: 0;
     padding: 0;

@@ -125,7 +125,7 @@
      <header>
      <nav class="interpay navbar navbar-default navbar-fixed-top" role="navigation">
         <ul class="topnav1" id="myTopnav">
-            <h1  style="margin-top: 0% ; margin-bottom: 3%">
+            <h1  style="margin-top: 1px ; margin-bottom: 3%">
             {%  block change_lang %}
                      {% ifequal LANGUAGE_CODE 'en-gb' %}
                <a id="to-fa-link" href='/fa-ir{{ request.path }}' onclick="to_FA()">
@@ -139,8 +139,9 @@
                     </a>
                 {% endifequal %}
             {%  endblock %}
-                 <img class="rizpal1" src="{% static 'interpay/images/rizpal.png' %}"  >
-                 <img class="interpay1" src="{% static 'interpay/images/logo.png' %}"  >
+                 <img  class=" w3-hide-large" style="margin-left: 10px ; margin-bottom: 10px ; margin-top: 1px; " src="{% static 'interpay/images/rizpalfinal.png' %}"  >
+                 <img  class=" w3-hide-medium w3-hide-small" style="margin-left: 10px ; margin-bottom: 10px ; margin-top: 1px; " src="{% static 'interpay/images/rizpalfinalL.png' %}"  >
+
             </h1>
         </ul>
 
