@@ -19,12 +19,12 @@
     {% csrf_token %}
   <script
     src="https://checkout.stripe.com/checkout.js"
-    class="stripe-button" data-image="images/button.png"
+    class="stripe-button"
     data-key={{ stripekey }}
-    data-label="LABEL"
+    data-label="Send Money to User"
     data-description="Pay User By Their Mobile Number"
-    data-image="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-    data-name="BUSINESS NAME"
+    data-image="https://www.rizpardakht.com/static/interpay/images/rizpal.png"
+    data-name="Rizpardakht"
     data-description="DESCRIPTION"
     data-locale="auto"
     data-billing-address="true"
