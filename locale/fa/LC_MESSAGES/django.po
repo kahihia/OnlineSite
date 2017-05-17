@@ -741,8 +741,8 @@ msgid "Receiver Mobile Number"
 msgstr "شماره تلفن دریافت کننده"
 
 #: templates/interpay/top_bar.html:170
-msgid "Trusted Payment"
-msgstr "پرداخت امن"
+msgid "Direct Payment"
+msgstr "پرداخت مستقیم امن"
 
 #: templates/interpay/unregistered_pay.html:55
 msgid "(Rial)"

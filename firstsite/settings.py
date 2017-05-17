@@ -127,10 +127,6 @@ WSGI_APPLICATION = 'firstsite.wsgi.application'
 # MEDIA_ROOT = '/home/salman/firstsite/media/'
 
 
-MEDIA_ROOT = '/home/sepehr/firstsite/media/'
-MEDIA_URL = '/media/'
-
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 

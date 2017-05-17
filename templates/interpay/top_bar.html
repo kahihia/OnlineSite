@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="{% static 'interpay/bootstrap/css/bootstrap-theme.min.css' %}">
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.css" %}">
     <link rel="stylesheet" href="{% static "interpay/bower_components/font-awesome/css/font-awesome.min.css" %}">
-    <link rel="stylesheet" href="{% static 'interpay/css/info.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'interpay/images/ipay-favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'interpay/css/sweetalert.css' %}"/>
 
@@ -150,48 +149,51 @@
             <div class="menu-container">
                <ul class="nav navbar-nav">
 
+
                <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/" class="buynowbut">{% trans 'Main Page' %}</a>
+                       <a href="/unregistered_pay/" class="buynowbut" id="trusted_payment_english" style="color: #9acfea">{% trans 'Direct Payment' %}</a>
                       {% else %}
-                            <a href="/fa-ir/" class="buynowbut">{% trans 'Main Page' %}</a>
-                      {% endifequal %}
-                    </li>
-               <li class="active">
-                      {% ifequal LANGUAGE_CODE 'en-gb' %}
-                       <a href="/unregistered_pay/" class="buynowbut">{% trans 'Trusted Payment' %}</a>
-                      {% else %}
-                       <a href="/fa-ir/unregistered_pay/" class="buynowbut">{% trans 'Trusted Payment' %}</a>
+                       <a href="/fa-ir/unregistered_pay/" class="buynowbut" id="trusted_payment_persian" style="color: #9acfea">{% trans 'Direct Payment' %}</a>
                       {% endifequal %}
                     </li>
                     <li class="active">
                       {% ifequal LANGUAGE_CODE 'en-gb' %}
-                       <a href="/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+                       <a href="/login/" class="buynowbut" id="login_english" style="color: #eebd14">{% trans 'LOGIN' %}</a>
                       {% else %}
-                       <a href="/fa-ir/login/" class="buynowbut">{% trans 'LOGIN' %}</a>
+                       <a href="/fa-ir/login/" class="buynowbut" id="login_persian" style="color: #eebd14">{% trans 'LOGIN' %}</a>
                       {% endifequal %}
                     </li>
+
+                    <li class="page-scroll home">
+                      {% ifequal LANGUAGE_CODE 'en-gb' %}
+                            <a href="/" class="buynowbut" id="main_page_english">{% trans 'Main Page' %}</a>
+                      {% else %}
+                            <a href="/fa-ir/" class="buynowbut"id="main_page_persian">{% trans 'Main Page' %}</a>
+                      {% endifequal %}
+                    </li>
+
                     <li class="page-scroll home">
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/services/">{% trans 'SERVICES' %}</a>
+                            <a href="/services/" id="services_english">{% trans 'SERVICES' %}</a>
                         {% else %}
-                            <a href="/fa-ir/services/">{% trans 'SERVICES' %}</a>
+                            <a href="/fa-ir/services/" id="services_persian">{% trans 'SERVICES' %}</a>
                         {% endifequal %}
                     </li>
 
                     <li class="nav navbar-nav">
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/contact/"> {% trans 'CONTACT' %}</a>
+                            <a href="/contact/" id="contact_us_english"> {% trans 'CONTACT' %}</a>
                             {% else %}
-                                <a href="/fa-ir/contact/"> {% trans 'CONTACT' %}</a>
+                                <a href="/fa-ir/contact/" id="contact_us_persian"> {% trans 'CONTACT' %}</a>
                         {% endifequal %}
 
                     </li>
                     <li class="nav navbar-nav">
                         {% ifequal LANGUAGE_CODE 'en-gb' %}
-                            <a href="/about/">{% trans 'ABOUT US' %}</a>
+                            <a href="/about/" id="about_us_english">{% trans 'ABOUT US' %}</a>
                         {% else %}
-                            <a href="/fa-ir/about/">{% trans 'ABOUT US' %}</a>
+                            <a href="/fa-ir/about/" id="about_us_persian">{% trans 'ABOUT US' %}</a>
                         {% endifequal %}
                     </li>
                 </ul>
