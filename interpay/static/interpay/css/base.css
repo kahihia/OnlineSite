@@ -76,6 +76,10 @@
     box-sizing: border-box;
    -moz-box-sizing: border-box;
 }
+.InfoMenue{
+    background-color: #FED7A0;
+    background-color: rgba(233, 143, 84, 0.9);
+}
 .fixedInfo{
 
     height: 100%;
@@ -300,7 +304,7 @@
     padding: 5px 5px;
     font-size: 16px;
     font-weight: 100;
-    color: #5B5955;
+    color: black;
     text-decoration: none;
     display: block;
     overflow-wrap: break-word;

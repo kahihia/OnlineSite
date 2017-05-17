@@ -40,6 +40,7 @@
         <script>
            var openside;
            openside = 0 ;
+           openInfo = 0 ;
            function change(x) {
               var y = document.getElementById("edited");
               var z = document.getElementById("profile_name");
@@ -55,15 +56,17 @@
              }
 
           function sidebarfun() {
+                openInfo = 1;
                 var x = document.getElementById("demo");
                 if (x.className.indexOf("w3-show") == -1) {
                     x.className += " w3-show";
                 } else {
                     x.className = x.className.replace(" w3-show", "");
+                    openInfo = 0;
                 }
                     }
             function sidebarfunc1() {
-                openside =1
+                openside = 1;
                 var x = document.getElementById("demoo");
                 if (x.className.indexOf("w3-show") == -1) {
                     x.className += " w3-show"
@@ -73,7 +76,41 @@
                 }
             }
            function sidebarfuncscreen() {
-               if (openside) {
+               if (openInfo && !openside){
+                   var x = document.getElementById("demo");
+                   if (x.className.indexOf("w3-show") == -1) {
+                       x.className += " w3-show"
+                       y.style.display = "none"
+                       openInfo = 0;
+                   }
+                   else {
+                       x.className = x.className.replace("w3-show", "");
+                       openInfo = 0;
+                   }
+               }
+               else if (openside && !openInfo) {
+                   var x = document.getElementById("demoo");
+                   if (x.className.indexOf("w3-show") == -1) {
+                       x.className += " w3-show"
+                       y.style.display = "none"
+                       openside = 0;
+                   }
+                   else {
+                       x.className = x.className.replace("w3-show", "");
+                       openside = 0;
+                   }
+               }
+               else if ( openside && openInfo){
+                   var x = document.getElementById("demo");
+                   if (x.className.indexOf("w3-show") == -1) {
+                       x.className += " w3-show"
+                       y.style.display = "none"
+                       openInfo = 0;
+                   }
+                   else {
+                       x.className = x.className.replace("w3-show", "");
+                       openInfo = 0;
+                   }
                    var x = document.getElementById("demoo");
                    if (x.className.indexOf("w3-show") == -1) {
                        x.className += " w3-show"
@@ -414,14 +451,14 @@
 
         </div>
        {% ifequal LANGUAGE_CODE 'en-gb' %}
-        <div id="demo" class=" fixedInfo sidebar_res w3-hide w3-hide-large w3-hide-medium">
+        <div id="demo" style="width: 30%" class=" fixedInfo sidebar_res w3-hide w3-hide-large w3-hide-medium">
         {% else %}
-        <div id="demo" class=" fixedInfoFarsi sidebar_res w3-hide w3-hide-large w3-hide-medium">
+        <div id="demo" style="width: 30%" class=" fixedInfoFarsi sidebar_res w3-hide w3-hide-large w3-hide-medium">
         {% endifequal %}
             {% ifequal LANGUAGE_CODE 'en-gb' %}
-            <ul class=" InfoMenue w3-navbar w3-left-align w3-animate-right" style="width:30% ;float: right ;  background-color: #FED7A0">
+            <ul class="InfoMenue w3-navbar w3-left-align w3-animate-right" style=" float: right">
               {% else %}
-                <ul class="InfoMenue w3-navbar pull-left w3-animate-left" style="width:30%; background-color: #FED7A0">
+                <ul class="InfoMenue w3-navbar pull-left w3-animate-left">
                  {% endifequal %}
                 <li   class="sidebar-res_entry" id="name"> {{ user.first_name }} {{ user.last_name }}</li>
                 <li   class="sidebar-res_entry" id="Email">{% trans "Email" %}: {{ user.email }}</li>
